@@ -16,29 +16,28 @@
     }
 
     body {
-      background: #0f172A;
-      color: #e2e8f0;
-      padding: 40px 20px;
-    }
-
-    .container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding-top: 40px;
-  padding-left: 40px;
-  padding-right: 20px;
+  background: #0f172A;
+  color: #e2e8f0;
+  margin: 0;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding-left: 20px;
-  }
+    .container {
+  max-width: 1200px;
+  margin-top: 60px;     /* top spacing */
+  margin-left: 60px;    /* left spacing */
+  margin-right: 20px;   /* minimal right */
+  margin-bottom: 20px;  /* minimal bottom */
 }
 
     h1 {
-      font-size: 28px;
-      margin-bottom: 30px;
+      font-size: 30px;
+      margin-bottom: 10px;
       color: #f8fafc;
+    }
+
+    .subtitle-main {
+      color: #94a3b8;
+      margin-bottom: 30px;
     }
 
     h2 {
@@ -51,14 +50,14 @@
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
+      gap: 18px;
     }
 
     .card {
       background: linear-gradient(145deg, #1e293b, #0f172a);
       border: 1px solid #1e293b;
       padding: 18px;
-      border-radius: 12px;
+      border-radius: 14px;
       text-decoration: none;
       color: #e2e8f0;
       transition: all 0.25s ease;
@@ -66,9 +65,9 @@
     }
 
     .card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
       border-color: #38bdf8;
-      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.15);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15);
     }
 
     .title {
@@ -76,27 +75,37 @@
       font-weight: 500;
     }
 
-    .subtitle {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 6px;
+    /* LOGIN CARD */
+    .login-section {
+      margin-bottom: 20px;
     }
 
-    /* LOGIN CARD (highlighted) */
     .login-card {
       background: linear-gradient(135deg, #38bdf8, #0ea5e9);
       color: #0f172A;
       border: none;
-    }
-
-    .login-card .subtitle {
-      color: #0f172A;
-      opacity: 0.8;
+      padding: 24px;
+      border-radius: 16px;
+      text-decoration: none;
+      display: inline-block;
+      min-width: 280px;
+      transition: all 0.25s ease;
     }
 
     .login-card:hover {
-      box-shadow: 0 10px 25px rgba(56,189,248,0.4);
-      transform: translateY(-5px) scale(1.02);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(56,189,248,0.35);
+    }
+
+    .login-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .login-subtitle {
+      font-size: 13px;
+      margin-top: 6px;
+      opacity: 0.85;
     }
 
     .divider {
@@ -105,69 +114,99 @@
       margin: 30px 0;
     }
 
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+    }
+
   </style>
 </head>
 <body>
 
   <div class="container">
 
-    <h1>GiveCentral Atlas Phase 1 Designs</h1>
+    <h1>Atlas UI Screens</h1>
+    <div class="subtitle-main">Phase 1 Design Index</div>
 
-    <!-- LOGIN SECTION -->
-    <h2>Authentication</h2>
-    <div class="grid">
-      <a class="card login-card" href="atlas-login.html">
-        <div class="title">Login</div>
-        <div class="subtitle">Primary Entry Point</div>
-      </a>
-
-      <a class="card" href="atlas-donor-login.html">
-        <div class="title">Donor Login</div>
-        <div class="subtitle">External User Access</div>
+    <!-- LOGIN -->
+    <div class="login-section">
+      <h2>Authentication</h2>
+      <a class="login-card" href="atlas-login.html">
+        <div class="login-title">Atlas Login</div>
+        <div class="login-subtitle">Primary Entry Point</div>
       </a>
     </div>
 
     <div class="divider"></div>
 
-    <!-- APP SCREENS -->
+    <!-- OTHER SCREENS -->
     <h2>Application Screens</h2>
     <div class="grid">
 
-      <a class="card" href="atlas-gap-audit.html"><div class="title">Atlas Gap Audit</div></a>
+      <a class="card" href="atlas-dashboard.html"><div class="title">Dashboard</div></a>
       <a class="card" href="atlas-donors-list.html"><div class="title">Donors List</div></a>
+      <a class="card" href="atlas-donor-360.html"><div class="title">Donor 360</div></a>
+      <a class="card" href="atlas-donor-profile.html"><div class="title">Donor Profile</div></a>
+      <a class="card" href="atlas-donor-portal.html"><div class="title">Donor Portal</div></a>
+      <a class="card" href="atlas-donor-login.html"><div class="title">Donor Login</div></a>
+
       <a class="card" href="atlas-gift-entry.html"><div class="title">Gift Entry</div></a>
       <a class="card" href="atlas-add-constituent.html"><div class="title">Add Constituent</div></a>
       <a class="card" href="atlas-log-activity.html"><div class="title">Log Activity</div></a>
-      <a class="card" href="atlas-task-modal.html"><div class="title">Task Modal</div></a>
+
       <a class="card" href="atlas-tasks.html"><div class="title">Tasks</div></a>
+      <a class="card" href="atlas-task-modal.html"><div class="title">Task Modal</div></a>
+
       <a class="card" href="atlas-search.html"><div class="title">Search</div></a>
 
       <a class="card" href="atlas-donate-onetime.html"><div class="title">Donate One-Time</div></a>
-      <a class="card" href="atlas-donate-confirmation.html"><div class="title">Donation Confirmation</div></a>
       <a class="card" href="atlas-donate-recurring.html"><div class="title">Recurring Donation</div></a>
-
-      <a class="card" href="atlas-donor-profile.html"><div class="title">Donor Profile</div></a>
-      <a class="card" href="atlas-donor-recurring.html"><div class="title">Donor Recurring</div></a>
-
-      <a class="card" href="atlas-email-compose.html"><div class="title">Email Compose</div></a>
+      <a class="card" href="atlas-donate-confirmation.html"><div class="title">Donation Confirmation</div></a>
 
       <a class="card" href="atlas-pledge-create.html"><div class="title">Create Pledge</div></a>
       <a class="card" href="atlas-pledge-detail.html"><div class="title">Pledge Detail</div></a>
 
       <a class="card" href="atlas-campaign-create.html"><div class="title">Create Campaign</div></a>
+      <a class="card" href="atlas-campaign-dashboard.html"><div class="title">Campaign Dashboard</div></a>
 
       <a class="card" href="atlas-communications.html"><div class="title">Communications</div></a>
+      <a class="card" href="atlas-email-compose.html"><div class="title">Email Compose</div></a>
+
       <a class="card" href="atlas-duplicates.html"><div class="title">Duplicates</div></a>
-      <a class="card" href="atlas-merge.html"><div class="title">Merge Records</div></a>
+      <a class="card" href="atlas-merge.html"><div class="title">Merge</div></a>
 
       <a class="card" href="atlas-notifications.html"><div class="title">Notifications</div></a>
-      <a class="card" href="atlas-receipt-preview.html"><div class="title">Receipt Preview</div></a>
 
-      <a class="card" href="atlas-report-detail.html"><div class="title">Report Detail</div></a>
       <a class="card" href="atlas-reports.html"><div class="title">Reports</div></a>
+      <a class="card" href="atlas-report-detail.html"><div class="title">Report Detail</div></a>
+
+      <a class="card" href="atlas-receipt-preview.html"><div class="title">Receipt Preview</div></a>
 
       <a class="card" href="atlas-sync.html"><div class="title">Sync</div></a>
       <a class="card" href="atlas-users-roles.html"><div class="title">Users & Roles</div></a>
+
+      <a class="card" href="atlas-events-dashboard.html"><div class="title">Events Dashboard</div></a>
+      <a class="card" href="atlas-gala-management.html"><div class="title">Gala Management</div></a>
+      <a class="card" href="atlas-volunteer-management.html"><div class="title">Volunteer Management</div></a>
+
+      <a class="card" href="atlas-integrations.html"><div class="title">Integrations</div></a>
+      <a class="card" href="atlas-docusign-agreements.html"><div class="title">DocuSign Agreements</div></a>
+
+      <a class="card" href="atlas-pipeline.html"><div class="title">Pipeline</div></a>
+      <a class="card" href="atlas-wealth-screening.html"><div class="title">Wealth Screening</div></a>
+
+      <a class="card" href="atlas-meeting-brief.html"><div class="title">Meeting Brief</div></a>
+      <a class="card" href="atlas-visit-map.html"><div class="title">Visit Map</div></a>
+
+      <a class="card" href="atlas-checkin.html"><div class="title">Check-in</div></a>
+      <a class="card" href="atlas-location-portal.html"><div class="title">Location Portal</div></a>
+
+      <a class="card" href="atlas-guru-ai.html"><div class="title">Guru AI</div></a>
+      <a class="card" href="atlas-gap-audit.html"><div class="title">GAP Audit</div></a>
+      <a class="card" href="atlas-batch-exceptions.html"><div class="title">Batch Exceptions</div></a>
+      <a class="card" href="atlas-retreat.html"><div class="title">Retreat</div></a>
 
     </div>
 
