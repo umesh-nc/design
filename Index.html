@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral Atlas</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top right, #1e293b, #0f172A 60%);
+  color: #e2e8f0;
+}
+
+.container {
+  max-width: 1200px;
+  margin-top: 60px;
+  margin-left: 60px;
+  margin-right: 20px;
+}
+
+h1 {
+  font-size: 32px;
+  color: #f8fafc;
+}
+
+.subtitle {
+  color: #94a3b8;
+  margin-bottom: 25px;
+}
+
+/* SEARCH */
+.search input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: white;
+  margin-bottom: 30px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+/* CARD */
+.card {
+  background: linear-gradient(145deg, #1e293b, #020617);
+  border: 1px solid #1e293b;
+  padding: 18px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #e2e8f0;
+  transition: 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: #38bdf8;
+  box-shadow: 0 10px 25px rgba(56,189,248,0.2);
+}
+
+/* SPRINT CARDS */
+.sprint-card {
+  padding: 26px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.sprint-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(99,102,241,0.4);
+}
+
+h2 {
+  margin: 40px 0 15px;
+  color: #94a3b8;
+}
+
+.divider {
+  height: 1px;
+  background: #1e293b;
+  margin: 40px 0;
+}
+
+@media (max-width:768px){
+  .container{
+    margin-left:20px;
+    margin-top:30px;
+    margin-right:20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>GiveCentral Atlas</h1>
+<div class="subtitle">UI Index • All Screens</div>
+
+<div class="search">
+  <input type="text" id="search" placeholder="Search screens...">
+</div>
+
+<!-- SPRINT CARDS -->
+<div class="grid">
+  <a href="#s1" class="sprint-card">Sprint 1<br><small>Core CRM</small></a>
+  <a href="#s2" class="sprint-card">Sprint 2<br><small>Donations</small></a>
+  <a href="#s3" class="sprint-card">Sprint 3<br><small>Reports</small></a>
+</div>
+
+<!-- SPRINT 1 -->
+<h2 id="s1">Sprint 1</h2>
+<div class="grid screens">
+<a class="card" href="atlas-login.html">Login</a>
+<a class="card" href="atlas-donors-list.html">Donors List</a>
+<a class="card" href="atlas-gift-entry.html">Gift Entry</a>
+<a class="card" href="atlas-add-constituent.html">Add Constituent</a>
+<a class="card" href="atlas-log-activity.html">Log Activity</a>
+<a class="card" href="atlas-task-modal.html">Task Modal</a>
+<a class="card" href="atlas-tasks.html">Tasks</a>
+<a class="card" href="atlas-search.html">Search</a>
+<a class="card" href="atlas-edit-constituent.html">Edit Constituent</a>
+<a class="card" href="atlas-segment-builder.html">Segment Builder</a>
+<a class="card" href="atlas-duplicates.html">Duplicates</a>
+<a class="card" href="atlas-merge.html">Merge</a>
+</div>
+
+<!-- SPRINT 2 -->
+<h2 id="s2">Sprint 2</h2>
+<div class="grid screens">
+<a class="card" href="atlas-donate-onetime.html">Donate One-Time</a>
+<a class="card" href="atlas-donate-recurring.html">Donate Recurring</a>
+<a class="card" href="atlas-donate-confirmation.html">Confirmation</a>
+<a class="card" href="atlas-donor-login.html">Donor Login</a>
+<a class="card" href="atlas-donor-recurring.html">Donor Recurring</a>
+<a class="card" href="atlas-donor-profile.html">Donor Profile</a>
+<a class="card" href="atlas-email-compose.html">Email Compose</a>
+<a class="card" href="atlas-pledge-create.html">Pledge Create</a>
+<a class="card" href="atlas-pledge-detail.html">Pledge Detail</a>
+<a class="card" href="atlas-gifts-pledges.html">Gifts & Pledges</a>
+<a class="card" href="atlas-pledges-list.html">Pledges List</a>
+<a class="card" href="atlas-stock-gift.html">Stock Gift</a>
+<a class="card" href="atlas-pledge-payment.html">Pledge Payment</a>
+<a class="card" href="atlas-receipt-preview.html">Receipt Preview</a>
+<a class="card" href="atlas-batch-entry.html">Batch Entry</a>
+<a class="card" href="atlas-batch-exceptions.html">Batch Exceptions</a>
+</div>
+
+<!-- SPRINT 3 -->
+<h2 id="s3">Sprint 3</h2>
+<div class="grid screens">
+<a class="card" href="atlas-reports.html">Reports</a>
+<a class="card" href="atlas-report-detail.html">Report Detail</a>
+<a class="card" href="atlas-campaign-create.html">Campaign Create</a>
+<a class="card" href="atlas-campaign-dashboard.html">Campaign Dashboard</a>
+<a class="card" href="atlas-campaign-detail.html">Campaign Detail</a>
+</div>
+
+<div class="divider"></div>
+
+<!-- ALL SCREENS -->
+<h2>All Screens</h2>
+<div class="grid screens">
+
+<a class="card" href="atlas-dashboard.html">Dashboard</a>
+<a class="card" href="atlas-communications.html">Communications</a>
+<a class="card" href="atlas-events-dashboard.html">Events Dashboard</a>
+<a class="card" href="atlas-gala-management.html">Gala Management</a>
+<a class="card" href="atlas-volunteer-management.html">Volunteer Management</a>
+<a class="card" href="atlas-guru-ai.html">Guru AI</a>
+<a class="card" href="atlas-integrations.html">Integrations</a>
+<a class="card" href="atlas-location-portal.html">Location Portal</a>
+<a class="card" href="atlas-notifications.html">Notifications</a>
+<a class="card" href="atlas-pipeline.html">Pipeline</a>
+<a class="card" href="atlas-meeting-brief.html">Meeting Brief</a>
+<a class="card" href="atlas-visit-map.html">Visit Map</a>
+<a class="card" href="atlas-checkin.html">Check-in</a>
+<a class="card" href="atlas-retreat.html">Retreat</a>
+<a class="card" href="atlas-gap-audit.html">GAP Audit</a>
+<a class="card" href="atlas-sync.html">Sync</a>
+<a class="card" href="atlas-users-roles.html">Users & Roles</a>
+<a class="card" href="atlas-wealth-screening.html">Wealth Screening</a>
+<a class="card" href="atlas-docusign-agreements.html">DocuSign</a>
+<a class="card" href="atlas-solicitor-performance.html">Solicitor Performance</a>
+
+</div>
+
+</div>
+
+<script>
+const input = document.getElementById("search");
+input.addEventListener("keyup", function() {
+  const val = input.value.toLowerCase();
+  document.querySelectorAll(".card").forEach(card => {
+    card.style.display = card.innerText.toLowerCase().includes(val) ? "block" : "none";
+  });
+});
+</script>
+
+</body>
+</html>
