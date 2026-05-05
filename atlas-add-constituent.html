@@ -276,23 +276,16 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 .drawer-foot .left { margin-right: auto; font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
 
 
-.wiz-shell { display:grid; grid-template-columns: 240px 1fr; gap:28px; align-items:start; max-width:1080px; }
-.wiz-stepper {
-  background:white; border:1px solid var(--border); border-radius:14px; padding:22px 18px;
-  position:sticky; top:78px;
-}
+.wiz-shell { display:grid; grid-template-columns: 240px 1fr; gap:24px; align-items:start; max-width:1080px; }
+.wiz-stepper { background:white; border:1px solid var(--border); border-radius:14px; padding:22px 18px; position:sticky; top:78px; }
 .wiz-stepper .ttl { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin-bottom:14px; }
-.wiz-step { display:flex; align-items:flex-start; gap:12px; padding:10px 0; position:relative; }
+.wiz-step { display:flex; align-items:flex-start; gap:12px; padding:10px 0; position:relative; cursor:pointer; transition:opacity .15s; }
 .wiz-step + .wiz-step::before { content:''; position:absolute; left:13px; top:-4px; width:2px; height:14px; background:var(--border); }
 .wiz-step.done + .wiz-step::before { background:var(--green); }
-.wiz-step .dot {
-  width:26px; height:26px; border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  background:var(--surface); border:1.5px solid var(--border); color:var(--text-3);
-  font-size:11px; font-weight:700; flex-shrink:0;
-}
+.wiz-step .dot { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--surface); border:1.5px solid var(--border); color:var(--text-3); font-size:11px; font-weight:700; flex-shrink:0; }
 .wiz-step.done .dot { background:var(--green); border-color:var(--green); color:white; }
-.wiz-step.cur  .dot { background:var(--blue);  border-color:var(--blue);  color:white; }
+.wiz-step.cur  .dot { background:var(--blue); border-color:var(--blue); color:white; }
+.wiz-step.disabled { opacity:.5; cursor:not-allowed; }
 .wiz-step .nm { font-size:13px; font-weight:500; color:var(--text); }
 .wiz-step.cur .nm { color:var(--blue); }
 .wiz-step .sub { font-size:11.5px; color:var(--text-3); margin-top:2px; }
@@ -301,142 +294,295 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 .wiz-h { font-family:'DM Serif Display',serif; font-size:24px; letter-spacing:-.02em; margin-bottom:6px; }
 .wiz-sub { color:var(--text-3); font-size:13px; margin-bottom:24px; }
 
-/* Type pickers */
-.type-grid-big { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
-.type-card-big {
-  border:2px solid var(--border); border-radius:14px; padding:18px; cursor:pointer;
-  transition:all .15s; background:white;
-}
-.type-card-big:hover { border-color:#94A3B8; }
-.type-card-big.on { border-color:var(--blue); background:var(--blue-pale); }
-.type-card-big .ico {
-  width:42px; height:42px; border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  background:var(--blue-light); color:var(--blue); margin-bottom:12px;
-}
-.type-card-big.purple .ico { background:var(--purple-light); color:var(--purple); }
-.type-card-big.amber  .ico { background:var(--amber-light); color:var(--amber); }
-.type-card-big .ico svg { width:22px; height:22px; }
-.type-card-big .t { font-weight:600; font-size:15px; color:var(--navy); margin-bottom:4px; }
-.type-card-big .d { font-size:12px; color:var(--text-3); line-height:1.45; }
-.type-card-big .sub-types { margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); display:flex; flex-wrap:wrap; gap:5px; }
-.type-card-big .sub-types span { font-size:10.5px; padding:2px 7px; border-radius:5px; background:var(--surface); color:var(--text-3); }
-.type-card-big.on .sub-types span { background:white; color:var(--text-2); }
+/* panel switching */
+.wiz-panel { display:none; }
+.wiz-panel.active { display:block; }
 
-.section-h { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin:24px 0 12px; padding-top:16px; border-top:1px solid var(--border); }
-.section-h:first-of-type { padding-top:0; border-top:none; margin-top:0; }
 .row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+.section-h { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin:24px 0 12px; padding-top:18px; border-top:1px solid var(--border); }
+.section-h:first-of-type { padding-top:0; border-top:none; margin-top:0; }
+
+/* Type cards */
+.type-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+.type-card {
+  border:2px solid var(--border); border-radius:14px; padding:20px; cursor:pointer;
+  transition:all .15s; background:white;
+}
+.type-card:hover { border-color:#94A3B8; transform:translateY(-1px); }
+.type-card.on { border-color:var(--blue); background:var(--blue-pale); }
+.type-card .ico { width:48px; height:48px; border-radius:11px; display:flex; align-items:center; justify-content:center; margin-bottom:14px; background:var(--blue-light); color:var(--blue); }
+.type-card.purple .ico { background:var(--purple-light); color:var(--purple); }
+.type-card.amber  .ico { background:var(--amber-light); color:var(--amber); }
+.type-card .ico svg { width:24px; height:24px; }
+.type-card .t { font-weight:600; font-size:16px; color:var(--navy); margin-bottom:5px; }
+.type-card .d { font-size:12.5px; color:var(--text-3); line-height:1.45; }
+.type-card .sub-types { margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); display:flex; flex-wrap:wrap; gap:5px; }
+.type-card .sub-types span { font-size:10.5px; padding:2px 7px; border-radius:5px; background:var(--surface); color:var(--text-3); }
+.type-card.on .sub-types span { background:white; color:var(--text-2); }
+
+/* Repeatable rows for emails / addresses / phones */
+.contact-card {
+  border:1px solid var(--border); border-radius:11px; padding:14px 16px;
+  background:var(--surface); margin-bottom:10px;
+}
+.contact-card-head {
+  display:flex; align-items:center; gap:10px; margin-bottom:12px;
+}
+.contact-card-head select.fld { flex:0 0 130px; padding:6px 28px 6px 10px; font-size:12px; }
+.contact-card-head .pri-toggle { display:flex; align-items:center; gap:6px; font-size:12px; cursor:pointer; }
+.contact-card-head .pri-toggle .star { width:18px; height:18px; border-radius:4px; border:1.5px solid var(--border); display:inline-flex; align-items:center; justify-content:center; font-size:11px; }
+.contact-card-head .pri-toggle.on .star { background:var(--gold, #C4973A); border-color:var(--gold, #C4973A); color:white; }
+.contact-card-head .pri-toggle.on { color:var(--gold, #C4973A); font-weight:600; }
+.contact-card-head .dnc-toggle { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-3); margin-left:auto; cursor:pointer; }
+.contact-card-head .dnc-toggle .cb { width:16px; height:16px; border-radius:4px; border:1.5px solid var(--border); display:inline-flex; align-items:center; justify-content:center; font-size:10px; }
+.contact-card-head .dnc-toggle.on .cb { background:var(--rose); border-color:var(--rose); color:white; }
+.contact-card-head .dnc-toggle.on { color:var(--rose); }
+.contact-card-head .x-btn { background:none; border:none; color:var(--text-3); cursor:pointer; font-size:18px; line-height:1; padding:0 6px; }
+.contact-card-head .x-btn:hover { color:var(--rose); }
+
+.add-row {
+  padding:10px 12px; border:1.5px dashed var(--border); border-radius:11px;
+  display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text-3); cursor:pointer;
+  transition:border-color .15s, color .15s;
+}
+.add-row:hover { border-color:var(--blue); color:var(--blue); }
+.add-row svg { width:13px; height:13px; }
+
+/* Tags / interests chip input */
+.chip-input {
+  border:1px solid var(--border); border-radius:8px; padding:6px;
+  display:flex; flex-wrap:wrap; gap:6px; min-height:40px;
+}
+.chip-input.focused { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.10); }
+.chip {
+  display:inline-flex; align-items:center; gap:5px;
+  background:var(--blue-light); color:var(--blue);
+  padding:4px 10px 4px 12px; border-radius:99px;
+  font-size:12px; font-weight:500;
+}
+.chip .x { color:var(--blue); cursor:pointer; padding:0 2px; opacity:.7; }
+.chip .x:hover { opacity:1; }
+.chip-input input {
+  border:none; outline:none; background:none; flex:1; min-width:120px;
+  font-size:13px; padding:4px 6px; font-family:'DM Sans',sans-serif;
+}
+.chip-suggestions {
+  display:flex; flex-wrap:wrap; gap:5px; margin-top:8px;
+}
+.chip-suggestions .sg {
+  font-size:11.5px; padding:3px 9px; border-radius:99px;
+  background:var(--surface); border:1px solid var(--border); color:var(--text-3); cursor:pointer;
+}
+.chip-suggestions .sg:hover { border-color:var(--blue); color:var(--blue); }
+
+/* Soft credit recipient picker */
+.sc-recipient { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:9px; margin-bottom:6px; }
+.sc-recipient .av { width:28px; height:28px; border-radius:50%; background:var(--green); color:white; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
+.sc-recipient .nm { flex:1; font-size:13px; color:var(--text); }
+.sc-recipient .nm small { display:block; color:var(--text-3); font-size:11px; }
+.sc-recipient .x { color:var(--text-3); cursor:pointer; padding:4px 6px; }
+.sc-recipient .x:hover { color:var(--rose); }
+
+/* Review summary */
+.review-block { background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:18px 22px; margin-bottom:14px; }
+.review-block h4 { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.review-block h4 a { color:var(--blue); font-size:11px; font-weight:500; text-transform:none; letter-spacing:0; margin-left:auto; cursor:pointer; }
+.review-row { display:flex; gap:14px; padding:6px 0; font-size:13px; border-bottom:1px dashed var(--border-soft); }
+.review-row:last-child { border-bottom:none; }
+.review-row .l { width:130px; color:var(--text-3); flex-shrink:0; }
+.review-row .v { color:var(--text); font-weight:500; }
+.review-row .v small { display:block; color:var(--text-3); font-weight:400; font-size:11.5px; margin-top:2px; }
+
+.tag {
+  display:inline-flex; align-items:center; font-size:10.5px; font-weight:600;
+  padding:3px 8px; border-radius:5px;
+}
+.tag.green { background:var(--green-light); color:var(--green); }
+.tag.blue { background:var(--blue-light); color:var(--blue); }
+.tag.amber { background:var(--amber-light); color:var(--amber); }
+.tag.purple { background:var(--purple-light); color:var(--purple); }
 
 .wiz-foot {
   margin-top:24px; padding-top:20px; border-top:1px solid var(--border);
   display:flex; align-items:center; gap:8px;
 }
 .wiz-foot .left { margin-right:auto; font-size:12px; color:var(--text-3); display:flex; gap:6px; align-items:center; }
+.wiz-foot .left svg { width:14px; height:14px; }
 
-.address-card { padding:14px; background:var(--surface); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; position:relative; }
-.address-card .pri { position:absolute; top:12px; right:12px; }
-.add-row {
-  padding:10px; border:1px dashed var(--border); border-radius:10px;
-  display:flex; align-items:center; gap:8px;
-  font-size:12.5px; color:var(--text-3); cursor:pointer;
+</style>
+
+<style id="atlas-sidebar-fix">
+/* Canonical sidebar behaviour — applied across all staff screens.
+   Uses position:fixed so the sidebar is anchored to the viewport
+   regardless of how the parent's overflow is configured. */
+.sidebar {
+  width: 220px !important;
+  background: var(--navy, #0E1E35) !important;
+  position: fixed !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  z-index: 10;
 }
-.add-row:hover { border-color:var(--blue); color:var(--blue); }
-
-.affil-row { display:grid; grid-template-columns: 1fr 140px 140px 32px; gap:10px; align-items:end; margin-bottom:10px; }
-.affil-row .x { display:flex; align-items:center; justify-content:center; height:38px; border-radius:8px; background:var(--surface); cursor:pointer; color:var(--text-3); }
-.affil-row .x:hover { background:var(--rose-light); color:var(--rose); }
-
+/* Smooth thin scrollbar inside the sidebar */
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+/* Logo + search bar stay pinned at the top of the sidebar even when nav items scroll */
+.sidebar-logo {
+  position: sticky !important;
+  top: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2 !important;
+}
+.sidebar-search {
+  position: sticky !important;
+  top: 62px !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2 !important;
+  margin-top: 0 !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+/* User block stays pinned at the bottom */
+.sidebar-user {
+  position: sticky !important;
+  bottom: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  margin-top: auto !important;
+}
+/* Push the main column over to make room for the fixed sidebar */
+.main {
+  margin-left: 220px !important;
+  min-height: 100vh;
+  width: calc(100% - 220px);
+}
 </style>
 </head>
 <body>
 
 
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 18 18" fill="none">
-        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
-        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
-      </svg>
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">GiveCentral</span>
+        <span class="logo-sub">Atlas CRM</span>
+      </div>
     </div>
-    <div class="logo-text-wrap">
-      <span class="logo-name">GiveCentral</span>
-      <span class="logo-sub">Atlas CRM</span>
+
+    <a href="atlas-search.html" style="display:block;text-decoration:none">
+      <div class="sidebar-search">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+        <input type="text" placeholder="Search donors, gifts…" readonly>
+      </div>
+    </a>
+
+    <div class="nav-group">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="atlas-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item active" href="atlas-donors-list.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+        Donors
+        <span class="nav-badge">3,847</span>
+      </a>
+      <a class="nav-item" href="atlas-gifts-pledges.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+        Gifts &amp; pledges
+        <span class="nav-badge">142</span>
+      </a>
+      <a class="nav-item" href="atlas-campaign-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+        Reports
+      </a>
     </div>
-  </div>
 
-  <a href="atlas-search.html" style="display:block;text-decoration:none">
-    <div class="sidebar-search">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
-      <input type="text" placeholder="Search donors, gifts…" readonly>
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Fundraising</div>
+      <a class="nav-item" href="atlas-pipeline.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+        Prospect pipeline
+        <span class="nav-badge">28</span>
+      </a>
+      <a class="nav-item" href="atlas-tasks.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+        Tasks &amp; reminders
+        <span class="nav-badge alert">7</span>
+      </a>
+      <a class="nav-item" href="atlas-communications.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+        Communications
+      </a>
+      <a class="nav-item" href="atlas-events-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 2v2M9 2v2"/></svg>
+        Events
+      </a>
+      <a class="nav-item" href="atlas-volunteer-management.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Volunteers
+      </a>
     </div>
-  </a>
 
-  <div class="nav-group">
-    <div class="nav-label">Main</div>
-    <a class="nav-item" href="atlas-dashboard.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
-      Dashboard
-    </a>
-    <a class="nav-item active" href="atlas-donors-list.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
-      Donors
-      <span class="nav-badge">3,847</span>
-    </a>
-    <a class="nav-item" href="atlas-batch-entry.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
-      Gifts &amp; pledges
-      <span class="nav-badge">142</span>
-    </a>
-    <a class="nav-item" href="atlas-campaign-dashboard.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
-      Campaigns
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
-      Reports
-    </a>
-  </div>
-
-  <div class="nav-group" style="margin-top:8px">
-    <div class="nav-label">Fundraising</div>
-    <a class="nav-item" href="atlas-pipeline.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
-      Prospect pipeline
-      <span class="nav-badge">28</span>
-    </a>
-    <a class="nav-item" href="atlas-tasks.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
-      Tasks &amp; reminders
-      <span class="nav-badge alert">7</span>
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
-      Communications
-    </a>
-  </div>
-
-  <div class="nav-group" style="margin-top:8px">
-    <div class="nav-label">Intelligence</div>
-    <a class="nav-item" href="atlas-guru-ai.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
-      Guru AI
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
-      Analytics
-    </a>
-  </div>
-
-  <div class="sidebar-user">
-    <div class="user-avatar">SR</div>
-    <div>
-      <div class="user-name">Sarah Reynolds</div>
-      <div class="user-role">Development Director</div>
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Intelligence</div>
+      <a class="nav-item" href="atlas-guru-ai.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+        Guru AI
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+        Analytics
+      </a>
     </div>
-  </div>
-</aside>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item" href="atlas-users-roles.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Users &amp; roles
+      </a>
+      <a class="nav-item" href="atlas-integrations.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="4" cy="7" r="2.5"/><circle cx="10" cy="7" r="2.5"/><path d="M6.5 7h1"/></svg>
+        Integrations
+      </a>
+      <a class="nav-item" href="atlas-sync.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+        Sync
+      </a>
+      <a class="nav-item" href="atlas-location-portal.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Location portal
+      </a>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">SR</div>
+      <div>
+        <div class="user-name">Sarah Reynolds</div>
+        <div class="user-role">Development Director</div>
+      </div>
+    </div>
+  </aside>
 
 <div class="main">
 
@@ -449,8 +595,8 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
     <kbd>⌘K</kbd>
   </a>
   <div class="topbar-right">
-    <a class="tb-btn tb-ghost" href="atlas-donors-list.html">Cancel</a>
-    <a href="#" class="tb-notif" title="Notifications">
+    
+    <a href="atlas-notifications.html" class="tb-notif" title="Notifications">
       <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
       <div class="notif-dot"></div>
     </a>
@@ -461,184 +607,454 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 
   <div class="page-head">
     <div>
-      <div class="crumb">
-        <a href="atlas-dashboard.html">Atlas</a>
-        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg>
-        <a href="atlas-donors-list.html">Donors</a>
-        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg>
-        <span>Add constituent</span>
-      </div>
+      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <a href="atlas-donors-list.html">Donors</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Add constituent</span></div>
       <div class="page-title">Add a constituent</div>
-      <div class="page-sub">Create a new Individual, Household or Organization. All required fields are marked with <span style="color:var(--rose)">*</span>.</div>
+      <div class="page-sub">Walk through 5 steps. Atlas auto-saves as you go — close anytime and resume from your drafts.</div>
     </div>
   </div>
 
   <div class="wiz-shell">
 
-    <!-- Stepper -->
     <aside class="wiz-stepper">
       <div class="ttl">Steps</div>
-      <div class="wiz-step done"><div class="dot">✓</div><div><div class="nm">Type</div><div class="sub">Individual</div></div></div>
-      <div class="wiz-step cur"><div class="dot">2</div><div><div class="nm">Basic info</div><div class="sub">Name &amp; identity</div></div></div>
-      <div class="wiz-step"><div class="dot">3</div><div><div class="nm">Address &amp; contact</div><div class="sub">Multiple supported</div></div></div>
-      <div class="wiz-step"><div class="dot">4</div><div><div class="nm">Affiliations</div><div class="sub">Parish, employer, codes</div></div></div>
-      <div class="wiz-step"><div class="dot">5</div><div><div class="nm">Review &amp; create</div><div class="sub">Final check</div></div></div>
+      <div class="wiz-step done" data-step="1"><div class="dot">✓</div><div><div class="nm">Type</div><div class="sub" id="step1-sub">Individual</div></div></div>
+      <div class="wiz-step cur" data-step="2"><div class="dot">2</div><div><div class="nm">Basic info</div><div class="sub">Name &amp; identity</div></div></div>
+      <div class="wiz-step disabled" data-step="3"><div class="dot">3</div><div><div class="nm">Address &amp; contact</div><div class="sub">Multiple supported</div></div></div>
+      <div class="wiz-step disabled" data-step="4"><div class="dot">4</div><div><div class="nm">Affiliations</div><div class="sub">Parish, codes, soft credits</div></div></div>
+      <div class="wiz-step disabled" data-step="5"><div class="dot">5</div><div><div class="nm">Review &amp; create</div><div class="sub">Final check</div></div></div>
     </aside>
 
-    <!-- Active step content -->
     <main class="wiz-content">
 
-      <!-- Mini view of step 1 result + jump -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:22px;display:flex;align-items:center;gap:12px;font-size:12.5px;">
-        <span class="tag green">Step 1 ✓</span>
-        <span><strong>Individual</strong> — appears as one mailing unit and one engagement unit</span>
-        <a href="#" style="color:var(--blue);margin-left:auto;font-weight:500">Change type</a>
-      </div>
+      <!-- ── STEP 1: TYPE ─────────────────────────────────────── -->
+      <section class="wiz-panel" data-panel="1">
+        <h2 class="wiz-h">What kind of constituent are you adding?</h2>
+        <p class="wiz-sub">This drives which fields appear next, and (for Organizations) which receipt rules apply.</p>
 
-      <h2 class="wiz-h">Tell us about this person</h2>
-      <p class="wiz-sub">Just the basics. We'll handle linking them to a household, parish, or employer in step 4.</p>
+        <div class="type-grid">
+          <div class="type-card on" data-type="Individual">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M3 22c0-5 4-9 9-9s9 4 9 9"/></svg></div>
+            <div class="t">Individual</div>
+            <div class="d">A single person with their own gift history, preferences, and tasks.</div>
+            <div class="sub-types"><span>Donor</span><span>Prospect</span><span>Volunteer</span><span>Board</span></div>
+          </div>
+          <div class="type-card purple" data-type="Household">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M3 22c0-4 3-7 7-7M14 22c0-3 3-7 7-7"/></svg></div>
+            <div class="t">Household</div>
+            <div class="d">Two or more people as one mailing unit, with separate engagement.</div>
+            <div class="sub-types"><span>Couple</span><span>Family</span><span>Estate</span></div>
+          </div>
+          <div class="type-card amber" data-type="Organization">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></div>
+            <div class="t">Organization</div>
+            <div class="d">Parishes, schools, companies, DAFs, foundations. Sub-type drives receipt rules.</div>
+            <div class="sub-types"><span>Parish</span><span>School</span><span>Company</span><span>DAF</span><span>Foundation</span><span>Diocese</span></div>
+          </div>
+        </div>
 
-      <div class="section-h">Identity</div>
-      <div class="row3">
-        <div>
-          <span class="lbl">First name<span class="req">*</span></span>
-          <input class="fld" placeholder="e.g. Margaret" value="Catherine">
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Type: <strong style="color:var(--text-2)" id="type-summary">Individual</strong>
+          </div>
+          <a class="btn btn-ghost" href="atlas-donors-list.html">Cancel</a>
+          <button class="btn btn-primary" data-go="2">Next: Basic info →</button>
         </div>
-        <div>
-          <span class="lbl">Middle / preferred</span>
-          <input class="fld" placeholder="optional" value="">
-        </div>
-        <div>
-          <span class="lbl">Last name<span class="req">*</span></span>
-          <input class="fld" placeholder="e.g. O'Brien" value="Romano">
-        </div>
-      </div>
-      <div class="row3 mt-12">
-        <div>
-          <span class="lbl">Title / prefix</span>
-          <select class="fld">
-            <option>—</option>
-            <option>Mr.</option>
-            <option selected>Ms.</option>
-            <option>Mrs.</option>
-            <option>Dr.</option>
-            <option>Rev.</option>
-            <option>Sr.</option>
-            <option>Br.</option>
-          </select>
-        </div>
-        <div>
-          <span class="lbl">Suffix</span>
-          <input class="fld" placeholder="Jr., III, Esq.">
-        </div>
-        <div>
-          <span class="lbl">Salutation in letters</span>
-          <input class="fld" placeholder="Defaults to 'Catherine'" value="Catherine">
-        </div>
-      </div>
+      </section>
 
-      <div class="section-h">Personal</div>
-      <div class="row3">
-        <div>
-          <span class="lbl">Date of birth</span>
-          <input class="fld" placeholder="MM / DD / YYYY">
-        </div>
-        <div>
-          <span class="lbl">Gender</span>
-          <select class="fld">
-            <option>—</option>
-            <option>Female</option>
-            <option>Male</option>
-            <option>Non-binary</option>
-            <option>Prefer not to say</option>
-          </select>
-        </div>
-        <div>
-          <span class="lbl">Deceased?</span>
-          <select class="fld">
-            <option selected>No</option>
-            <option>Yes — date known</option>
-            <option>Yes — date unknown</option>
-          </select>
-        </div>
-      </div>
+      <!-- ── STEP 2: BASIC INFO ───────────────────────────────── -->
+      <section class="wiz-panel active" data-panel="2">
+        <h2 class="wiz-h">Tell us about this person</h2>
+        <p class="wiz-sub">Just the basics. We'll handle linking them to a household, parish, or employer in step 4.</p>
 
-      <div class="section-h">Source</div>
-      <div class="row2">
-        <div>
-          <span class="lbl">How was this constituent acquired?</span>
-          <select class="fld">
-            <option>Online giving form (GiveCentral)</option>
-            <option selected>Manual entry — staff</option>
-            <option>Parish roster import</option>
-            <option>Event registration</option>
-            <option>Wealth-screening lead</option>
-            <option>Referral</option>
-          </select>
+        <div class="section-h">Identity</div>
+        <div class="row3">
+          <div><span class="lbl">First name<span class="req">*</span></span><input class="fld" placeholder="e.g. Margaret" value="Catherine"></div>
+          <div><span class="lbl">Middle / preferred</span><input class="fld" placeholder="optional"></div>
+          <div><span class="lbl">Last name<span class="req">*</span></span><input class="fld" placeholder="e.g. O'Brien" value="Romano"></div>
         </div>
-        <div>
-          <span class="lbl">Initial constituent code</span>
-          <select class="fld">
-            <option>—</option>
-            <option>Annual donor</option>
-            <option selected>First-time donor</option>
-            <option>Major prospect</option>
-            <option>Volunteer</option>
-            <option>Board member</option>
-          </select>
+        <div class="row3 mt-12" style="margin-top:12px">
+          <div>
+            <span class="lbl">Title / prefix</span>
+            <select class="fld"><option>—</option><option>Mr.</option><option selected>Ms.</option><option>Mrs.</option><option>Dr.</option><option>Rev.</option><option>Sr.</option><option>Br.</option></select>
+          </div>
+          <div><span class="lbl">Suffix</span><input class="fld" placeholder="Jr., III, Esq."></div>
+          <div><span class="lbl">Salutation in letters</span><input class="fld" value="Catherine"></div>
         </div>
-      </div>
 
-      <!-- Duplicate-detection inline alert -->
-      <div class="rule" style="margin-top:18px;background:var(--blue-pale);border-color:var(--blue-light);">
-        <div class="ico" style="background:var(--blue)">i</div>
-        <div class="body" style="flex:1">
-          <div class="t" style="color:var(--navy)">No duplicates detected so far.</div>
-          <div class="d" style="color:var(--text-2)">Atlas checks for matches on name, email and address as you type. If a match is found, you'll see a side-by-side merge prompt before saving.</div>
+        <div class="section-h">Personal</div>
+        <div class="row3">
+          <div><span class="lbl">Date of birth</span><input class="fld" placeholder="MM / DD / YYYY"></div>
+          <div>
+            <span class="lbl">Gender</span>
+            <select class="fld"><option>—</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option></select>
+          </div>
+          <div>
+            <span class="lbl">Deceased?</span>
+            <select class="fld"><option selected>No</option><option>Yes — date known</option><option>Yes — date unknown</option></select>
+          </div>
         </div>
-      </div>
 
-      <!-- Footer -->
-      <div class="wiz-foot">
-        <div class="left">
-          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green);"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
-          Auto-saved as draft 12s ago
+        <div class="section-h">Source</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">How was this constituent acquired?</span>
+            <select class="fld"><option>Online giving form (GiveCentral)</option><option selected>Manual entry — staff</option><option>Parish roster import</option><option>Event registration</option><option>Wealth-screening lead</option><option>Referral</option></select>
+          </div>
+          <div>
+            <span class="lbl">Initial constituent code</span>
+            <select class="fld"><option>—</option><option>Annual donor</option><option selected>First-time donor</option><option>Major prospect</option><option>Volunteer</option><option>Board member</option></select>
+          </div>
         </div>
-        <button class="btn btn-ghost" onclick="alert('Returning to step 1')">← Back</button>
-        <button class="btn btn-ghost" onclick="alert('Skipped step 2')">Skip</button>
-        <button class="btn btn-primary" onclick="alert('Advancing to step 3 — Address &amp; contact')">Next: Address →</button>
-      </div>
+
+        <!-- Duplicate detection notice -->
+        <div style="margin-top:18px;padding:14px 16px;border-radius:10px;background:var(--blue-pale);border:1px solid var(--blue-light);display:flex;gap:12px;align-items:flex-start;">
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">i</div>
+          <div style="flex:1;font-size:12.5px;color:var(--navy);line-height:1.5">
+            <strong>No duplicates detected so far.</strong> Atlas checks for matches on name, email and address as you type. If a match is found, you'll see a side-by-side <a href="atlas-merge.html" style="color:var(--blue);font-weight:600">merge prompt</a> before saving.
+          </div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Auto-saved as draft 12s ago
+          </div>
+          <button class="btn btn-ghost" data-go="1">← Back</button>
+          <button class="btn btn-ghost" onclick="alert('Skipped step 2')">Skip</button>
+          <button class="btn btn-primary" data-go="3">Next: Address &amp; contact →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 3: ADDRESS & CONTACT (multi-row) ────────────── -->
+      <section class="wiz-panel" data-panel="3">
+        <h2 class="wiz-h">Address &amp; contact methods</h2>
+        <p class="wiz-sub">Add as many addresses, emails, and phone numbers as you need. Mark one of each as primary.</p>
+
+        <div class="section-h">Mailing addresses</div>
+
+        <div class="contact-card">
+          <div class="contact-card-head">
+            <select class="fld"><option selected>Home</option><option>Work</option><option>Seasonal</option><option>Estate</option><option>Other</option></select>
+            <span class="pri-toggle on"><span class="star">★</span> Primary</span>
+            <span class="dnc-toggle"><span class="cb"></span> Do not mail</span>
+            <button class="x-btn" disabled style="opacity:.3">×</button>
+          </div>
+          <input class="fld" placeholder="Street address" value="412 Wendover Drive" style="margin-bottom:10px">
+          <div class="row3" style="grid-template-columns:1.5fr 1fr 1fr;">
+            <input class="fld" placeholder="City" value="Albany">
+            <select class="fld"><option>State</option><option selected>NY</option><option>CT</option><option>NJ</option></select>
+            <input class="fld" placeholder="ZIP" value="12203">
+          </div>
+        </div>
+
+        <div class="add-row">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+          Add another address
+        </div>
+
+        <div class="section-h">Email addresses</div>
+
+        <div class="contact-card">
+          <div class="contact-card-head">
+            <select class="fld"><option selected>Personal</option><option>Work</option><option>Other</option></select>
+            <span class="pri-toggle on"><span class="star">★</span> Primary</span>
+            <span class="dnc-toggle"><span class="cb"></span> Do not email</span>
+            <button class="x-btn" disabled style="opacity:.3">×</button>
+          </div>
+          <input class="fld" type="email" placeholder="email@example.com" value="catherine.romano@email.com">
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-card-head">
+            <select class="fld"><option>Personal</option><option selected>Work</option><option>Other</option></select>
+            <span class="pri-toggle"><span class="star">☆</span> Primary</span>
+            <span class="dnc-toggle"><span class="cb"></span> Do not email</span>
+            <button class="x-btn">×</button>
+          </div>
+          <input class="fld" type="email" value="cromano@stmaryscathedral.org">
+        </div>
+
+        <div class="add-row">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+          Add another email
+        </div>
+
+        <div class="section-h">Phone numbers</div>
+
+        <div class="contact-card">
+          <div class="contact-card-head">
+            <select class="fld"><option>Mobile</option><option selected>Home</option><option>Work</option><option>Other</option></select>
+            <span class="pri-toggle on"><span class="star">★</span> Primary</span>
+            <span class="dnc-toggle"><span class="cb"></span> Do not call</span>
+            <button class="x-btn" disabled style="opacity:.3">×</button>
+          </div>
+          <input class="fld" placeholder="(555) 123-4567" value="(555) 234-9182">
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-card-head">
+            <select class="fld"><option selected>Mobile</option><option>Home</option><option>Work</option><option>Other</option></select>
+            <span class="pri-toggle"><span class="star">☆</span> Primary</span>
+            <span class="dnc-toggle on"><span class="cb">✓</span> Do not call</span>
+            <button class="x-btn">×</button>
+          </div>
+          <input class="fld" value="(555) 902-7148">
+        </div>
+
+        <div class="add-row">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+          Add another phone
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            1 address · 2 emails · 2 phones
+          </div>
+          <button class="btn btn-ghost" data-go="2">← Back</button>
+          <button class="btn btn-ghost" onclick="alert('Skipped step 3')">Skip</button>
+          <button class="btn btn-primary" data-go="4">Next: Affiliations →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 4: AFFILIATIONS ─────────────────────────────── -->
+      <section class="wiz-panel" data-panel="4">
+        <h2 class="wiz-h">Affiliations, interests &amp; soft credits</h2>
+        <p class="wiz-sub">Link this person to a parish, employer, household, or to other constituents who should receive soft credit when they give.</p>
+
+        <div class="section-h">Parish affiliation</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Primary parish</span>
+            <select class="fld"><option selected>St. Mary's Cathedral</option><option>St. Catherine of Siena</option><option>St. Joseph's</option><option>St. Anthony</option><option>—</option></select>
+          </div>
+          <div>
+            <span class="lbl">Member since</span>
+            <input class="fld" placeholder="MM / YYYY" value="03 / 2024">
+          </div>
+        </div>
+        <div class="row2 mt-12" style="margin-top:12px">
+          <div>
+            <span class="lbl">Secondary parish (optional)</span>
+            <select class="fld"><option selected>—</option><option>St. Catherine of Siena</option><option>St. Joseph's</option></select>
+          </div>
+          <div>
+            <span class="lbl">Tertiary parish (optional)</span>
+            <select class="fld"><option selected>—</option><option>St. Catherine of Siena</option><option>St. Joseph's</option></select>
+          </div>
+        </div>
+
+        <div class="section-h">Employer / school</div>
+        <div class="row2">
+          <div><span class="lbl">Employer</span><input class="fld" placeholder="Company name (e.g. Acme Construction)"></div>
+          <div><span class="lbl">Title / role</span><input class="fld"></div>
+        </div>
+        <p class="muted" style="font-size:11.5px;margin-top:8px">Atlas will check the employer for matching-gift eligibility on each gift.</p>
+
+        <div class="section-h">Interests &amp; codes</div>
+        <p class="muted" style="font-size:12px;margin-bottom:10px;margin-top:-6px">Tag what this donor cares about. Used for segmentation, appeals, and Guru AI relevance.</p>
+        <div class="chip-input focused">
+          <span class="chip">Cathedral capital <span class="x">×</span></span>
+          <span class="chip">Music ministry <span class="x">×</span></span>
+          <span class="chip">First-time donor <span class="x">×</span></span>
+          <input type="text" placeholder="Type to add a tag…">
+        </div>
+        <div class="chip-suggestions">
+          <span class="muted" style="font-size:11px;align-self:center;padding:0 4px">Suggestions:</span>
+          <span class="sg">+ Outreach &amp; charity</span>
+          <span class="sg">+ Education</span>
+          <span class="sg">+ Refugee aid</span>
+          <span class="sg">+ Stewardship leader</span>
+          <span class="sg">+ Sponsor</span>
+          <span class="sg">+ Volunteer-Mass</span>
+          <span class="sg">+ Annual partner</span>
+          <span class="sg">+ Estate-prospect</span>
+        </div>
+
+        <div class="section-h">Default soft-credit recipients <span class="muted" style="font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px">(optional)</span></div>
+        <p class="muted" style="font-size:12px;margin-bottom:10px;margin-top:-6px">When this donor gives, Atlas will pre-fill these recipients on the gift's soft-credit panel.</p>
+
+        <div class="sc-recipient">
+          <div class="av">PS</div>
+          <div class="nm">Peter Smith <small>Smith Family Household · spouse</small></div>
+          <span class="x">×</span>
+        </div>
+        <div class="add-row">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+          Add another soft-credit recipient
+        </div>
+
+        <div class="section-h">Initial note</div>
+        <p class="muted" style="font-size:12px;margin-bottom:10px;margin-top:-6px">Saved as the first Action on this donor's timeline. Note: per Atlas policy, future notes attach to specific actions (visit / call / email).</p>
+        <textarea class="fld" placeholder="Anything important about this donor?">Met at Cathedral Easter Mass · husband Peter introduced. Catherine has expressed interest in Cathedral restoration and music ministry. First-time donor — gave $500 to Capital campaign on Mar 15.</textarea>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Auto-saved · 3 tags · 1 soft-credit · 1 note
+          </div>
+          <button class="btn btn-ghost" data-go="3">← Back</button>
+          <button class="btn btn-ghost" onclick="alert('Skipped step 4')">Skip</button>
+          <button class="btn btn-primary" data-go="5">Review &amp; create →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 5: REVIEW ───────────────────────────────────── -->
+      <section class="wiz-panel" data-panel="5">
+        <h2 class="wiz-h">Final check before saving</h2>
+        <p class="wiz-sub">Review what you're about to create. Click "Edit" on any block to jump back.</p>
+
+        <div class="review-block">
+          <h4>Identity <a data-go="2">Edit →</a></h4>
+          <div class="review-row"><span class="l">Type</span><span class="v"><span class="tag blue">Individual</span></span></div>
+          <div class="review-row"><span class="l">Name</span><span class="v">Ms. Catherine Romano</span></div>
+          <div class="review-row"><span class="l">Salutation</span><span class="v">Catherine</span></div>
+          <div class="review-row"><span class="l">Date of birth</span><span class="v" style="color:var(--text-3)">— not provided —</span></div>
+          <div class="review-row"><span class="l">Source</span><span class="v">Manual entry — staff</span></div>
+          <div class="review-row"><span class="l">Constituent code</span><span class="v"><span class="tag green">First-time donor</span></span></div>
+        </div>
+
+        <div class="review-block">
+          <h4>Address &amp; contact <a data-go="3">Edit →</a></h4>
+          <div class="review-row"><span class="l">Address</span><span class="v">412 Wendover Drive, Albany NY 12203<small>Home · Primary</small></span></div>
+          <div class="review-row"><span class="l">Emails</span><span class="v">catherine.romano@email.com (Primary)<small>cromano@stmaryscathedral.org (Work)</small></span></div>
+          <div class="review-row"><span class="l">Phones</span><span class="v">(555) 234-9182 (Home, Primary)<small>(555) 902-7148 (Mobile, Do-not-call)</small></span></div>
+        </div>
+
+        <div class="review-block">
+          <h4>Affiliations &amp; tags <a data-go="4">Edit →</a></h4>
+          <div class="review-row"><span class="l">Primary parish</span><span class="v">St. Mary's Cathedral<small>since March 2024</small></span></div>
+          <div class="review-row"><span class="l">Employer</span><span class="v" style="color:var(--text-3)">— not provided —</span></div>
+          <div class="review-row"><span class="l">Tags / interests</span><span class="v"><span class="tag blue">Cathedral capital</span> <span class="tag blue">Music ministry</span> <span class="tag blue">First-time donor</span></span></div>
+          <div class="review-row"><span class="l">Soft-credit defaults</span><span class="v">Peter Smith (Smith Family Household, spouse)</span></div>
+          <div class="review-row"><span class="l">Initial note</span><span class="v" style="font-style:italic;color:var(--text-2)">"Met at Cathedral Easter Mass · husband Peter introduced…"<small>Will be saved as first Action on her timeline</small></span></div>
+        </div>
+
+        <div style="background:#FFFBEB;border:1px solid #FBBF24;border-radius:11px;padding:16px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start">
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--amber);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">!</div>
+          <div style="flex:1;font-size:12.5px;color:#78350F">
+            <strong>One last duplicate scan…</strong> No matches found above the 0.85 confidence threshold. Atlas will continue checking after creation; if a future gift triggers a match, it'll show up in your <a href="atlas-duplicates.html" style="color:var(--blue)">Duplicate review queue</a>.
+          </div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Ready to create
+          </div>
+          <button class="btn btn-ghost" data-go="4">← Back</button>
+          <button class="btn btn-ghost" onclick="alert('Saved as draft')">Save draft &amp; exit</button>
+          <button class="btn btn-primary" onclick="alert('Constituent created · ID #C-018472 · Catherine Romano added to St. Mary\'s Cathedral'); window.location='atlas-donor-360.html'">
+            <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+            Create constituent
+          </button>
+        </div>
+      </section>
 
     </main>
 
   </div>
 
-  <!-- Bottom: shows the type-picker (step 1) for context — collapsed -->
-  <details style="margin-top:22px;background:white;border:1px solid var(--border);border-radius:14px;padding:18px 22px;max-width:1080px">
-    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--text-2);">View how Step 1 looked when picking type ↓</summary>
-    <div class="type-grid-big mt-16">
-      <div class="type-card-big on">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M3 22c0-5 4-9 9-9s9 4 9 9"/></svg></div>
-        <div class="t">Individual</div>
-        <div class="d">A single person — own gift history, communication preferences, and tasks.</div>
-        <div class="sub-types"><span>Donor</span><span>Prospect</span><span>Volunteer</span><span>Board</span></div>
-      </div>
-      <div class="type-card-big purple">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M3 22c0-4 3-7 7-7M14 22c0-3 3-7 7-7"/></svg></div>
-        <div class="t">Household</div>
-        <div class="d">Two or more individuals as one mailing unit (e.g. "Peter &amp; Colleen Smith") with separate engagement.</div>
-        <div class="sub-types"><span>Couple</span><span>Family</span><span>Estate</span></div>
-      </div>
-      <div class="type-card-big amber">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></div>
-        <div class="t">Organization</div>
-        <div class="d">Parishes, schools, companies, DAFs, foundations and internal legal entities. Sub-type drives receipt rules.</div>
-        <div class="sub-types"><span>Parish</span><span>School</span><span>Company</span><span>DAF</span><span>Foundation</span><span>Diocese</span></div>
-      </div>
-    </div>
-  </details>
-
 </div>
+
+<script>
+  // Step controller
+  (function(){
+    var steps    = document.querySelectorAll('.wiz-step');
+    var panels   = document.querySelectorAll('.wiz-panel');
+    var buttons  = document.querySelectorAll('[data-go]');
+    var typeCards = document.querySelectorAll('.type-card');
+    var maxReached = 2; // we land on step 2
+
+    function show(n){
+      n = parseInt(n, 10);
+      panels.forEach(function(p){ p.classList.toggle('active', p.dataset.panel == n); });
+      steps.forEach(function(s){
+        var sn = parseInt(s.dataset.step, 10);
+        s.classList.remove('cur');
+        if (sn === n) s.classList.add('cur');
+        if (sn < n)   s.classList.add('done');
+        if (sn > maxReached) s.classList.add('disabled');
+        else s.classList.remove('disabled');
+      });
+      if (n > maxReached) maxReached = n;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(e){
+        e.preventDefault();
+        show(b.dataset.go);
+      });
+    });
+    steps.forEach(function(s){
+      s.addEventListener('click', function(){
+        if (s.classList.contains('disabled')) return;
+        show(s.dataset.step);
+      });
+    });
+
+    typeCards.forEach(function(c){
+      c.addEventListener('click', function(){
+        typeCards.forEach(function(x){ x.classList.remove('on'); });
+        c.classList.add('on');
+        var t = c.dataset.type;
+        document.getElementById('type-summary').textContent = t;
+        document.getElementById('step1-sub').textContent = t;
+      });
+    });
+
+    // Soft-credit & address remove demos
+    document.querySelectorAll('.contact-card .x-btn:not([disabled]), .sc-recipient .x').forEach(function(el){
+      el.addEventListener('click', function(){
+        var card = el.closest('.contact-card, .sc-recipient');
+        if (card) card.style.display = 'none';
+      });
+    });
+
+    // Tag chip add/remove demo
+    document.querySelectorAll('.chip-input .chip .x').forEach(function(x){
+      x.addEventListener('click', function(){ x.parentElement.style.display='none'; });
+    });
+    document.querySelectorAll('.chip-suggestions .sg').forEach(function(sg){
+      sg.addEventListener('click', function(){
+        var label = sg.textContent.replace('+ ','').trim();
+        var chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.innerHTML = label + ' <span class="x">×</span>';
+        chip.querySelector('.x').addEventListener('click', function(){ chip.style.display='none'; });
+        document.querySelector('.chip-input').insertBefore(chip, document.querySelector('.chip-input input'));
+        sg.style.display = 'none';
+      });
+    });
+
+    // Pri-toggle / dnc-toggle behaviour
+    document.querySelectorAll('.pri-toggle').forEach(function(t){
+      t.addEventListener('click', function(){
+        var card = t.closest('.contact-card');
+        // figure out which group (parent contact-card siblings)
+        var group = card.parentElement.querySelectorAll('.contact-card');
+        // find toggles of same icon style (★ vs ☆)
+        group.forEach(function(c){
+          var pt = c.querySelector('.pri-toggle');
+          if (pt) {
+            pt.classList.remove('on');
+            pt.querySelector('.star').textContent = '☆';
+          }
+        });
+        t.classList.add('on');
+        t.querySelector('.star').textContent = '★';
+      });
+    });
+    document.querySelectorAll('.dnc-toggle').forEach(function(t){
+      t.addEventListener('click', function(){
+        t.classList.toggle('on');
+        t.querySelector('.cb').textContent = t.classList.contains('on') ? '✓' : '';
+      });
+    });
+  })();
+</script>
 
 </div>
 
