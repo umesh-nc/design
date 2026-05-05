@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral Atlas — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#0E1E35; --navy-2:#152844; --navy-3:#1E3A5F;
+  --blue:#2563EB; --blue-mid:#3B82F6; --blue-light:#DBEAFE; --blue-pale:#EFF6FF;
+  --green:#15803D; --amber:#D97706; --rose:#BE185D;
+  --text:#0F172A; --text-2:#334155; --text-3:#64748B;
+  --border:#E2E8F0; --surface:#F8FAFC; --white:#FFFFFF;
+}
+html { font-size:14px; -webkit-font-smoothing:antialiased; }
+body {
+  font-family:'DM Sans',sans-serif; background:var(--surface); color:var(--text);
+  min-height:100vh; display:flex;
+}
+a { color:inherit; text-decoration:none; }
+
+/* Left: brand panel */
+.brand {
+  flex:1.05; min-width:0; background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  color:white; padding:48px 56px; position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.brand::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(59,130,246,.20), transparent 55%),
+    radial-gradient(circle at 10% 90%, rgba(190,24,93,.10), transparent 60%),
+    radial-gradient(circle at 60% 70%, rgba(13,148,136,.08), transparent 50%);
+}
+.brand-logo {
+  position:relative; display:flex; align-items:center; gap:12px;
+}
+.brand-logo .mark {
+  width:38px; height:38px; background:var(--blue); border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+}
+.brand-logo .mark svg { width:20px; height:20px; }
+.brand-logo .name { font-family:'DM Serif Display',serif; font-size:20px; }
+.brand-logo .sub  { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-top:3px; }
+
+.brand-body { position:relative; margin-top:auto; max-width:520px; }
+.brand-eyebrow { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#93C5FD; font-weight:600; margin-bottom:14px; }
+.brand-title { font-family:'DM Serif Display',serif; font-size:42px; line-height:1.08; letter-spacing:-.5px; margin-bottom:14px; }
+.brand-title em { font-style:italic; color:#93C5FD; }
+.brand-desc { font-size:15px; color:rgba(255,255,255,.72); line-height:1.55; }
+.brand-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:32px; padding-top:28px; border-top:1px solid rgba(255,255,255,.10); }
+.brand-stat .num { font-family:'DM Serif Display',serif; font-size:24px; line-height:1; margin-bottom:4px; }
+.brand-stat .num.amber { color:#FCD34D; }
+.brand-stat .num.green { color:#86EFAC; }
+.brand-stat .lbl { font-size:11px; color:rgba(219,234,254,.7); }
+
+.brand-foot {
+  position:relative; margin-top:36px; display:flex; gap:18px;
+  font-size:11px; color:rgba(255,255,255,.4);
+}
+.brand-foot a:hover { color:rgba(255,255,255,.7); }
+
+/* Right: form panel */
+.signin {
+  flex:1; min-width:0; padding:48px 56px;
+  display:flex; flex-direction:column;
+}
+.signin-top {
+  display:flex; align-items:center; justify-content:flex-end; gap:8px; font-size:12px; color:var(--text-3);
+}
+.signin-top a { color:var(--blue); font-weight:500; }
+
+.signin-body { margin:auto 0; max-width:420px; width:100%; align-self:center; }
+.signin h1 { font-family:'DM Serif Display',serif; font-size:32px; letter-spacing:-.4px; margin-bottom:6px; }
+.signin .lead { color:var(--text-3); font-size:14px; margin-bottom:28px; }
+
+.sso { display:flex; flex-direction:column; gap:9px; margin-bottom:22px; }
+.sso-btn {
+  width:100%; font-family:'DM Sans',sans-serif; font-size:13.5px; font-weight:500;
+  padding:11px 14px; border-radius:10px; cursor:pointer;
+  display:flex; align-items:center; gap:11px;
+  border:1px solid var(--border); background:white; color:var(--text);
+  transition:background .15s, border-color .15s;
+}
+.sso-btn:hover { background:var(--surface); border-color:#94A3B8; }
+.sso-btn .ico { width:18px; height:18px; flex-shrink:0; }
+.sso-btn .pill { margin-left:auto; font-size:10.5px; font-weight:600; padding:2px 7px; border-radius:5px; background:var(--blue-light); color:var(--blue); }
+
+.divider { display:flex; align-items:center; gap:14px; color:var(--text-3); font-size:11px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:18px; }
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.field { margin-bottom:14px; }
+.field label { display:block; font-size:12px; font-weight:600; color:var(--text-2); margin-bottom:6px; }
+.field input {
+  width:100%; font-size:14px; font-family:'DM Sans',sans-serif;
+  padding:11px 14px; border-radius:10px; border:1px solid var(--border); background:white;
+  transition:border-color .15s, box-shadow .15s;
+}
+.field input:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.10); }
+.field-row { display:flex; align-items:center; justify-content:space-between; }
+.field-row a { color:var(--blue); font-size:12px; font-weight:500; }
+
+.opt-row { display:flex; align-items:center; gap:8px; margin-bottom:18px; font-size:12.5px; color:var(--text-2); }
+.cb { width:16px; height:16px; border:1.5px solid var(--border); border-radius:4px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+.cb.on { background:var(--blue); border-color:var(--blue); color:white; font-size:10px; font-weight:700; }
+
+.signin-cta {
+  width:100%; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:13px 16px; border-radius:10px; cursor:pointer;
+  background:var(--blue); color:white; border:none; box-shadow:0 1px 6px rgba(37,99,235,.25);
+}
+.signin-cta:hover { background:#1D4ED8; }
+
+.signin-help { margin-top:14px; font-size:12.5px; color:var(--text-3); text-align:center; }
+.signin-help a { color:var(--blue); font-weight:500; }
+
+.signin-foot {
+  margin-top:auto; display:flex; align-items:center; gap:14px; font-size:11px; color:var(--text-3);
+}
+.signin-foot .dot { width:5px; height:5px; background:var(--green); border-radius:50%; }
+.signin-foot a:hover { color:var(--text-2); }
+
+@media (max-width: 920px) {
+  body { flex-direction:column; }
+  .brand { padding:32px 28px; }
+  .signin { padding:32px 28px; }
+  .brand-title { font-size:30px; }
+}
+</style>
+</head>
+<body>
+
+  <!-- Left: marketing panel -->
+  <section class="brand">
+    <div class="brand-logo">
+      <div class="mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="name">GiveCentral</div>
+        <div class="sub">Atlas CRM</div>
+      </div>
+    </div>
+
+    <div class="brand-body">
+      <div class="brand-eyebrow">Donor intelligence platform</div>
+      <h1 class="brand-title">Every dollar.<br><em>One source of truth.</em></h1>
+      <p class="brand-desc">Atlas connects GiveCentral payments to your donor records the second a gift lands — no middleware, no nightly batch, no reconciliation drift. Built for dioceses, parishes, and faith-based nonprofits.</p>
+      <div class="brand-stats">
+        <div class="brand-stat"><div class="num">3.8k</div><div class="lbl">Donors managed</div></div>
+        <div class="brand-stat"><div class="num green">$2.4M</div><div class="lbl">Raised this year</div></div>
+        <div class="brand-stat"><div class="num amber">60s</div><div class="lbl">Gift sync p95</div></div>
+      </div>
+    </div>
+
+    <div class="brand-foot">
+      <a href="#">Status — operational</a>
+      <a href="#">Privacy</a>
+      <a href="#">Security · SOC 2</a>
+      <span style="margin-left:auto">© GiveCentral 2026</span>
+    </div>
+  </section>
+
+  <!-- Right: sign-in -->
+  <section class="signin">
+    <div class="signin-top">
+      <span>New to Atlas?</span>
+      <a href="#">Contact your administrator</a>
+    </div>
+
+    <div class="signin-body">
+      <h1>Welcome back, Sarah.</h1>
+      <p class="lead">Sign in to continue managing the Cathedral campaign and your prospect portfolio.</p>
+
+      <div class="sso">
+        <a class="sso-btn" href="atlas-dashboard.html">
+          <svg class="ico" viewBox="0 0 18 18" fill="none">
+            <rect x="1" y="1" width="7.5" height="7.5" fill="#F35325"/>
+            <rect x="9.5" y="1" width="7.5" height="7.5" fill="#81BC06"/>
+            <rect x="1" y="9.5" width="7.5" height="7.5" fill="#05A6F0"/>
+            <rect x="9.5" y="9.5" width="7.5" height="7.5" fill="#FFBA08"/>
+          </svg>
+          Continue with Microsoft 365
+          <span class="pill">SSO</span>
+        </a>
+        <a class="sso-btn" href="atlas-dashboard.html">
+          <svg class="ico" viewBox="0 0 18 18" fill="none">
+            <path d="M17.6 9.2c0-.6-.05-1.18-.15-1.74H9v3.3h4.83a4.13 4.13 0 01-1.79 2.71v2.26h2.9c1.7-1.56 2.66-3.86 2.66-6.53z" fill="#4285F4"/>
+            <path d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.95v2.33A9 9 0 009 18z" fill="#34A853"/>
+            <path d="M3.95 10.7A5.4 5.4 0 013.66 9c0-.59.1-1.16.29-1.7V4.97H.95A9 9 0 000 9c0 1.45.35 2.83.95 4.04l3-2.34z" fill="#FBBC05"/>
+            <path d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58A9 9 0 009 0 9 9 0 00.95 4.96l3 2.33C4.66 5.17 6.65 3.58 9 3.58z" fill="#EA4335"/>
+          </svg>
+          Continue with Google Workspace
+        </a>
+      </div>
+
+      <div class="divider">or sign in with email</div>
+
+      <form action="atlas-dashboard.html" method="get" autocomplete="off">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" placeholder="sarah.reynolds@diocese.org" value="sarah.reynolds@diocese.org">
+        </div>
+        <div class="field">
+          <div class="field-row" style="margin-bottom:6px">
+            <label style="margin-bottom:0">Password</label>
+            <a href="#" onclick="alert('Password reset email would be sent to sarah.reynolds@diocese.org');return false;">Forgot?</a>
+          </div>
+          <input type="password" placeholder="Enter your password" value="••••••••••••">
+        </div>
+
+        <div class="opt-row">
+          <span class="cb on" onclick="this.classList.toggle('on')">✓</span>
+          <span>Keep me signed in for 30 days</span>
+        </div>
+
+        <button type="submit" class="signin-cta">Sign in to Atlas →</button>
+
+        <p class="signin-help">Trouble signing in? <a href="#">Contact your administrator</a> or visit our <a href="#">help center</a>.</p>
+      </form>
+    </div>
+
+    <div class="signin-foot">
+      <span class="dot"></span>
+      <span>All systems operational</span>
+      <a href="#" style="margin-left:auto">English (US)</a>
+      <a href="#">Español</a>
+    </div>
+  </section>
+
+</body>
+</html>
