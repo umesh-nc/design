@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas — Gap Audit · User-Flow Completion Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:        #0E1E35;
+  --navy-2:      #152844;
+  --navy-3:      #1E3A5F;
+  --blue:        #2563EB;
+  --blue-mid:    #3B82F6;
+  --blue-light:  #DBEAFE;
+  --blue-pale:   #EFF6FF;
+  --green:       #15803D;
+  --green-light: #DCFCE7;
+  --amber:       #D97706;
+  --amber-light: #FEF3C7;
+  --rose:        #BE185D;
+  --rose-light:  #FCE7F3;
+  --purple:      #7C3AED;
+  --purple-light:#EDE9FE;
+  --gold:        #B45309;
+  --text:        #0F172A;
+  --text-muted:  #475569;
+  --text-soft:   #64748B;
+  --border:      #E2E8F0;
+  --border-soft: #EDF2F7;
+  --bg:          #F8FAFC;
+  --white:       #FFFFFF;
+  --shadow-sm:   0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.05);
+  --shadow-md:   0 4px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+}
+
+html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', -apple-system, system-ui, sans-serif; font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+
+.page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 48px 40px 96px;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 48px 56px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 80% 20%, rgba(59,130,246,.18), transparent 55%),
+                    radial-gradient(circle at 10% 90%, rgba(190,24,93,.10), transparent 60%);
+  pointer-events: none;
+}
+.hero-meta {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(219,234,254,.85);
+  font-weight: 500;
+}
+.hero-meta .dot { width: 6px; height: 6px; background: var(--blue-mid); border-radius: 50%; }
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 44px;
+  line-height: 1.08;
+  letter-spacing: -0.5px;
+  position: relative;
+  margin-bottom: 14px;
+}
+.hero h1 em { font-style: italic; color: #93C5FD; }
+.hero p {
+  position: relative;
+  font-size: 16px;
+  color: rgba(255,255,255,.78);
+  max-width: 760px;
+}
+.hero-stats {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,.10);
+}
+.hero-stat .num { font-family:'DM Serif Display',serif; font-size: 36px; line-height:1; color: white; margin-bottom: 6px; }
+.hero-stat .lbl { font-size: 12px; color: rgba(219,234,254,.75); text-transform: uppercase; letter-spacing: 0.8px; }
+.hero-stat .num.amber { color: #FCD34D; }
+.hero-stat .num.green { color: #86EFAC; }
+.hero-stat .num.rose  { color: #F9A8D4; }
+
+/* Section header */
+.section { margin-top: 56px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+.section-head .left { display: flex; gap: 12px; align-items: baseline; }
+.section-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--blue-light); color: var(--blue);
+  font-size: 12px; font-weight: 700;
+  font-family:'DM Sans';
+}
+.section h2 { font-family:'DM Serif Display',serif; font-size: 28px; letter-spacing: -0.3px; color: var(--navy); }
+.section .sub { color: var(--text-muted); font-size: 14px; max-width: 720px; margin-top: 4px; }
+.section-head .pill { font-size: 11px; font-weight:600; padding: 5px 10px; border-radius: 999px; }
+
+/* Cards */
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+/* TL;DR */
+.tldr {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  border: 1px solid #FBBF24;
+  padding: 24px 28px;
+  border-radius: 14px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.tldr-icon {
+  flex: 0 0 40px; height: 40px; border-radius: 10px;
+  background: var(--amber); color: white;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size: 18px;
+}
+.tldr h3 { font-size: 15px; color: var(--navy); margin-bottom: 6px; font-weight: 700; }
+.tldr p { color: #78350F; font-size: 14px; }
+
+/* Inventory table */
+.inv-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 130px 140px 100px;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  margin-bottom: 6px;
+  background: white;
+  font-size: 13.5px;
+  transition: border-color .15s, transform .15s;
+}
+.inv-row:hover { border-color: var(--blue-light); }
+.inv-row .idx { color: var(--text-soft); font-size: 12px; font-variant-numeric: tabular-nums; }
+.inv-row .file { font-family:'DM Sans'; font-weight: 500; color: var(--navy); }
+.inv-row .file small { display:block; color: var(--text-soft); font-weight: 400; font-size: 12px; margin-top: 2px; }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 500;
+  padding: 4px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.tag.donor   { background: var(--rose-light);   color: var(--rose); }
+.tag.staff   { background: var(--blue-light);   color: var(--blue); }
+.tag.parish  { background: var(--purple-light); color: var(--purple); }
+.tag.events  { background: var(--green-light);  color: var(--green); }
+.tag.admin   { background: #F1F5F9;             color: var(--navy-3); }
+
+.tag.p1 { background: #DBF4DD; color: var(--green); }
+.tag.p2 { background: var(--blue-light); color: var(--blue); }
+.tag.p3 { background: var(--purple-light); color: var(--purple); }
+
+.health {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500;
+  color: var(--text-muted);
+}
+.health .dot { width: 8px; height: 8px; border-radius: 50%; }
+.health.ok    .dot { background: var(--green); }
+.health.warn  .dot { background: var(--amber); }
+.health.bad   .dot { background: var(--rose); }
+
+/* Missing-screens groups */
+.flow-group {
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: white;
+}
+.flow-head {
+  background: var(--navy);
+  color: white;
+  padding: 16px 22px;
+  display: flex; align-items: center; gap: 14px;
+  font-weight: 600;
+}
+.flow-head .num {
+  flex: 0 0 28px; height: 28px; border-radius: 8px;
+  background: rgba(255,255,255,.12);
+  display:flex; align-items:center; justify-content:center;
+  font-size: 13px;
+}
+.flow-head .name { font-size: 15px; }
+.flow-head .meta {
+  margin-left: auto;
+  font-size: 12px;
+  color: rgba(219,234,254,.85);
+  font-weight: 400;
+}
+
+.flow-steps { padding: 6px; }
+.step {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.step:last-child { border-bottom: none; }
+.step .stepnum {
+  background: var(--blue-pale);
+  color: var(--blue);
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.step.have .stepnum { background: var(--green-light); color: var(--green); }
+.step.need .stepnum { background: var(--rose-light);  color: var(--rose); }
+.step .body .title { font-size: 14px; color: var(--navy); font-weight: 500; }
+.step .body .desc  { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+.step .body .file  { font-size: 12px; color: var(--text-soft); margin-top: 4px; font-family: 'DM Sans'; }
+.step .body .file code { background: var(--bg); padding: 2px 6px; border-radius: 4px; font-size: 11.5px; color: var(--navy-3); }
+.step .right .badge {
+  font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 6px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.step.have .right .badge { background: var(--green-light); color: var(--green); }
+.step.need .right .badge { background: var(--rose-light);  color: var(--rose); }
+.step.partial .stepnum { background: var(--amber-light); color: var(--amber); }
+.step.partial .right .badge { background: var(--amber-light); color: var(--amber); }
+
+/* Dead-end CTAs */
+.dead-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 240px;
+  gap: 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 13px;
+}
+.dead-row:last-child { border-bottom: none; }
+.dead-row .src { color: var(--navy); font-weight: 500; font-size: 13px; }
+.dead-row .src code { background: var(--bg); padding: 2px 6px; border-radius: 4px; font-size: 11.5px; color: var(--navy-3); display: inline-block; margin-top: 4px; }
+.dead-row .cta { color: var(--text); }
+.dead-row .cta strong { color: var(--rose); font-weight: 600; }
+.dead-row .target { color: var(--text-muted); font-size: 12.5px; }
+.dead-row .target b { color: var(--green); font-weight: 600; }
+
+/* Priority lanes */
+.lane {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.lane-head {
+  padding: 14px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.lane.s1 .lane-head { background: linear-gradient(135deg, #DCFCE7, #BBF7D0); color: var(--green); }
+.lane.s2 .lane-head { background: linear-gradient(135deg, #DBEAFE, #BFDBFE); color: var(--blue); }
+.lane.s3 .lane-head { background: linear-gradient(135deg, #EDE9FE, #DDD6FE); color: var(--purple); }
+.lane.s1 .lane-head::before, .lane.s2 .lane-head::before, .lane.s3 .lane-head::before {
+  content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+}
+.lane.s1 .lane-head::before { background: var(--green); }
+.lane.s2 .lane-head::before { background: var(--blue); }
+.lane.s3 .lane-head::before { background: var(--purple); }
+.lane-head .count { margin-left:auto; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.5); }
+.lane-body { padding: 8px; }
+.lane-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--navy);
+  cursor: default;
+  border: 1px solid transparent;
+  transition: background .15s, border-color .15s;
+}
+.lane-item:hover { background: var(--bg); border-color: var(--border-soft); }
+.lane-item .chk {
+  flex: 0 0 16px; height: 16px;
+  border: 1.5px solid var(--border); border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; color: white;
+}
+.lane-item.checked .chk { background: var(--blue); border-color: var(--blue); }
+.lane-item.checked .chk::before { content: '✓'; }
+.lane-item .nm { flex: 1; }
+.lane-item .nm small { display: block; color: var(--text-soft); font-size: 11.5px; margin-top: 1px; }
+.lane-item .est { color: var(--text-muted); font-size: 11.5px; }
+
+/* Persona two-up */
+.persona-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+.persona-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.persona-card .accent {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+}
+.persona-card.donor    .accent { background: var(--rose); }
+.persona-card.fundraiser .accent { background: var(--blue); }
+.persona-card h3 { font-family:'DM Serif Display',serif; font-size: 20px; color: var(--navy); margin-bottom: 4px; }
+.persona-card .who { font-size: 12px; color: var(--text-soft); margin-bottom: 14px; }
+.persona-card ul { list-style: none; }
+.persona-card li {
+  padding: 8px 0;
+  border-top: 1px dashed var(--border-soft);
+  font-size: 13px;
+  color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.persona-card li:first-of-type { border-top: none; }
+.persona-card li .num {
+  flex: 0 0 22px; height: 22px; border-radius: 6px;
+  font-size: 11px; font-weight:600; font-variant-numeric: tabular-nums;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.persona-card.donor li .num { background: var(--rose-light); color: var(--rose); }
+.persona-card.fundraiser li .num { background: var(--blue-light); color: var(--blue); }
+.persona-card li.have { color: var(--text-soft); text-decoration: line-through; }
+.persona-card li.have .num { background: var(--green-light); color: var(--green); text-decoration: none; }
+.persona-card li .pill {
+  margin-left: auto;
+  font-size: 10.5px;
+  padding: 2px 7px; border-radius: 5px;
+  background: var(--bg); color: var(--text-soft);
+}
+
+/* Footer / next steps */
+.next {
+  margin-top: 56px;
+  background: var(--navy);
+  color: white;
+  padding: 32px 36px;
+  border-radius: 16px;
+}
+.next h2 { font-family:'DM Serif Display',serif; font-size: 24px; margin-bottom: 8px; }
+.next p { color: rgba(219,234,254,.85); margin-bottom: 22px; max-width: 760px; }
+.next .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.next button {
+  font-family:'DM Sans'; font-size: 13.5px; font-weight: 500;
+  padding: 11px 18px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  color: white;
+  cursor: pointer;
+}
+.next button.primary { background: var(--blue); border-color: var(--blue); font-weight: 600; }
+.next button:hover { background: rgba(255,255,255,.14); }
+.next button.primary:hover { background: var(--blue-mid); }
+
+.legend { display: flex; gap: 18px; margin-bottom: 14px; font-size: 12px; color: var(--text-muted); }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-item .d { width: 10px; height: 10px; border-radius: 3px; }
+
+footer.tag-line { color: var(--text-soft); font-size: 12px; margin-top: 30px; text-align: center; }
+
+@media (max-width: 920px) {
+  .grid-2, .grid-3, .grid-4, .persona-cards, .hero-stats { grid-template-columns: 1fr; }
+  .inv-row { grid-template-columns: 1fr; }
+  .dead-row { grid-template-columns: 1fr; }
+  .hero { padding: 28px; }
+  .hero h1 { font-size: 30px; }
+  .page { padding: 24px 18px 64px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-meta">
+      <span>GiveCentral Atlas</span>
+      <span class="dot"></span>
+      <span>UX Audit · v1</span>
+      <span class="dot"></span>
+      <span>Prepared by Gupesh · 4 May 2026</span>
+    </div>
+    <h1>From <em>22 isolated screens</em> to one navigable product.</h1>
+    <p>The CEO has shipped the hero surfaces. None of them link to one another, and the supporting screens that turn them into a usable system don't exist yet. This audit lists what's there, what's broken, what's missing — and the order I'd build it in to hit the end-of-June Phase 1 gate.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">22</div><div class="lbl">Existing screens</div></div>
+      <div class="hero-stat"><div class="num amber">37</div><div class="lbl">Missing screens</div></div>
+      <div class="hero-stat"><div class="num rose">64</div><div class="lbl">Dead-end CTAs</div></div>
+      <div class="hero-stat"><div class="num green">~57d</div><div class="lbl">To Phase 1 gate</div></div>
+    </div>
+  </section>
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <div class="tldr-icon">!</div>
+    <div>
+      <h3>The single biggest gap</h3>
+      <p>Every existing screen is a static page. The sidebar reads <i>Dashboard · Donors · Gifts &amp; pledges · Campaigns · Reports · Communications · Pipeline · Tasks · Guru AI</i> — but only 6 of those 9 nav targets actually exist. There's no donor list, no single-gift entry form, no add-constituent flow, no merge UI, no login, no donor signup, no donation form, no event registration, and no acknowledgement composer. The CEO built the screens that demo well; the screens that make the product usable still need to be designed.</p>
+    </div>
+  </div>
+
+  <!-- 1. INVENTORY -->
+  <section class="section">
+    <div class="section-head">
+      <div class="left">
+        <div class="section-num">1</div>
+        <div>
+          <h2>What we already have</h2>
+          <div class="sub">22 high-fidelity HTML screens. Map of where each fits in the product, who uses it, and how complete it is in isolation.</div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="d" style="background:var(--green)"></span> Complete</div>
+        <div class="legend-item"><span class="d" style="background:var(--amber)"></span> Visual only · CTAs unwired</div>
+        <div class="legend-item"><span class="d" style="background:var(--rose)"></span> Partial / placeholder data</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="inv-row" style="background:var(--bg);font-weight:600;font-size:11.5px;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.6px;">
+        <div>#</div><div>Screen / file</div><div>Persona</div><div>Phase</div><div>State</div>
+      </div>
+
+      <div class="inv-row"><div class="idx">01</div><div class="file">Fundraiser Dashboard<small><code>atlas-dashboard.html</code> — KPI strip · tasks · pipeline · Guru insights</small></div><div><span class="tag staff">Gift Officer</span></div><div><span class="tag p1">Phase 1</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">02</div><div class="file">Donor 360 Profile<small><code>atlas-donor-360.html</code> — most-used screen · timeline · giving chart · Guru insight</small></div><div><span class="tag staff">DB Admin · Officer</span></div><div><span class="tag p1">Phase 1</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">03</div><div class="file">Moves Management Pipeline<small><code>atlas-pipeline.html</code> — Kanban · 5 stages · 28 prospects</small></div><div><span class="tag staff">Gift Officer</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">04</div><div class="file">Campaign Overview<small><code>atlas-campaign-dashboard.html</code> — 9 campaigns · goal vs. actual · pacing</small></div><div><span class="tag staff">Dev Director</span></div><div><span class="tag p2">Phase 2</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">05</div><div class="file">Campaign Progress Portal<small><code>atlas-location-portal.html</code> — parish-scoped view · gauge · leaderboard</small></div><div><span class="tag parish">Parish Admin</span></div><div><span class="tag p2">Phase 2</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">06</div><div class="file">My Giving (donor portal)<small><code>atlas-donor-portal.html</code> — public-facing · history · receipts · recurring</small></div><div><span class="tag donor">Donor (external)</span></div><div><span class="tag p2">Phase 2</span></div><div><span class="health bad"><span class="dot"></span>Buttons go nowhere</span></div></div>
+
+      <div class="inv-row"><div class="idx">07</div><div class="file">Guru AI Query Interface<small><code>atlas-guru-ai.html</code> — NLP search · saved queries · CSV export</small></div><div><span class="tag staff">All staff</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">08</div><div class="file">Guru AI Meeting Brief<small><code>atlas-meeting-brief.html</code> — pre-meeting summary · ask range · tasks</small></div><div><span class="tag staff">Gift Officer</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">09</div><div class="file">Batch Gift Entry<small><code>atlas-batch-entry.html</code> — keyboard-first grid · validation · control total</small></div><div><span class="tag staff">DB Admin</span></div><div><span class="tag p1">Phase 1</span></div><div><span class="health ok"><span class="dot"></span>Self-contained</span></div></div>
+
+      <div class="inv-row"><div class="idx">10</div><div class="file">Batch Exceptions<small><code>atlas-batch-exceptions.html</code> — exception split · resolve / void</small></div><div><span class="tag staff">DB Admin</span></div><div><span class="tag p1">Phase 1</span></div><div><span class="health warn"><span class="dot"></span>No link in/out</span></div></div>
+
+      <div class="inv-row"><div class="idx">11</div><div class="file">Wealth Screening<small><code>atlas-wealth-screening.html</code> — LAI scores · capacity · RelSci · history</small></div><div><span class="tag staff">Gift Officer</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>Sub-screen of D360</span></div></div>
+
+      <div class="inv-row"><div class="idx">12</div><div class="file">Visit Planning Map<small><code>atlas-visit-map.html</code> — geographic prospect routing</small></div><div><span class="tag staff">Gift Officer</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">13</div><div class="file">DocuSign Gift Agreements<small><code>atlas-docusign-agreements.html</code> — pledge agreements · envelopes · reminders</small></div><div><span class="tag staff">Gift Officer</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">14</div><div class="file">Events Dashboard<small><code>atlas-events-dashboard.html</code> — list of events · create event modal</small></div><div><span class="tag events">Events Lead</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">15</div><div class="file">Bishop's Annual Gala<small><code>atlas-gala-management.html</code> — sponsorships · seating · check-in prep</small></div><div><span class="tag events">Events Lead</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">16</div><div class="file">Gala Check-In<small><code>atlas-checkin.html</code> — day-of guest check-in</small></div><div><span class="tag events">Event Staff</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health ok"><span class="dot"></span>Self-contained</span></div></div>
+
+      <div class="inv-row"><div class="idx">17</div><div class="file">Men's Ignatian Retreat<small><code>atlas-retreat.html</code> — retreat-specific event · room assignment · roster</small></div><div><span class="tag events">Events Lead</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">18</div><div class="file">Volunteer Management<small><code>atlas-volunteer-management.html</code> — opportunities · Samaritan integration</small></div><div><span class="tag events">Volunteer Coord</span></div><div><span class="tag p3">Phase 3</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+      <div class="inv-row"><div class="idx">19</div><div class="file">Integrations<small><code>atlas-integrations.html</code> — QuickBooks · Sage · MailChimp · DocuSign</small></div><div><span class="tag admin">Admin / IT</span></div><div><span class="tag p1">Phase 1</span></div><div><span class="health warn"><span class="dot"></span>CTAs unwired</span></div></div>
+
+    </div>
+  </section>
+
+  <!-- 2. PERSONA JOURNEYS -->
+  <section class="section">
+    <div class="section-head">
+      <div class="left">
+        <div class="section-num">2</div>
+        <div>
+          <h2>The two journeys we're completing</h2>
+          <div class="sub">Per your direction — Donor (external) and Fundraiser (Gift Officer) are the two personas we'll wire end-to-end. Strikethrough = step already supported. Highlighted = step missing a screen.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="persona-cards">
+      <div class="persona-card donor">
+        <div class="accent"></div>
+        <h3>Donor (external)</h3>
+        <div class="who">Phase 2 primary — wants self-service that doesn't require calling the office.</div>
+        <ul>
+          <li><span class="num">1</span>Land on a campaign / giving page<span class="pill">missing</span></li>
+          <li><span class="num">2</span>Pick gift type — one-time, recurring, pledge<span class="pill">missing</span></li>
+          <li><span class="num">3</span>Enter amount + payment (Apple Pay / card / DAF)<span class="pill">missing</span></li>
+          <li><span class="num">4</span>See confirmation + auto-receipt<span class="pill">missing</span></li>
+          <li><span class="num">5</span>Claim / log into donor portal<span class="pill">missing</span></li>
+          <li class="have"><span class="num">6</span>View My Giving history (atlas-donor-portal)</li>
+          <li><span class="num">7</span>Edit recurring gift / payment method<span class="pill">missing</span></li>
+          <li><span class="num">8</span>Download receipt / year-end statement<span class="pill">missing</span></li>
+          <li><span class="num">9</span>Make a new pledge from portal<span class="pill">missing</span></li>
+          <li><span class="num">10</span>Update profile (address, comms prefs)<span class="pill">missing</span></li>
+          <li><span class="num">11</span>Register / pay for an event (e.g. Gala)<span class="pill">missing</span></li>
+        </ul>
+      </div>
+
+      <div class="persona-card fundraiser">
+        <div class="accent"></div>
+        <h3>Fundraiser (Gift Officer)</h3>
+        <div class="who">Phase 1 secondary, Phase 3 primary — carries 75–150 prospects, runs day off Donor 360 + Pipeline.</div>
+        <ul>
+          <li><span class="num">1</span>Log in to staff app<span class="pill">missing</span></li>
+          <li class="have"><span class="num">2</span>Land on Dashboard (atlas-dashboard)</li>
+          <li><span class="num">3</span>Search for / browse a donor list<span class="pill">missing</span></li>
+          <li class="have"><span class="num">4</span>Open Donor 360 (atlas-donor-360)</li>
+          <li class="have"><span class="num">5</span>Read pre-meeting brief (atlas-meeting-brief)</li>
+          <li class="have"><span class="num">6</span>Plan visit on map (atlas-visit-map)</li>
+          <li><span class="num">7</span>Log meeting / activity / note<span class="pill">missing</span></li>
+          <li><span class="num">8</span>Create / update a task<span class="pill">missing</span></li>
+          <li class="have"><span class="num">9</span>View pipeline (atlas-pipeline)</li>
+          <li class="have"><span class="num">10</span>Send DocuSign agreement (atlas-docusign-agreements)</li>
+          <li><span class="num">11</span>Record a single gift / pledge<span class="pill">missing</span></li>
+          <li class="have"><span class="num">12</span>Run batch entry (atlas-batch-entry → exceptions)</li>
+          <li><span class="num">13</span>Send acknowledgement / thank-you email<span class="pill">missing</span></li>
+          <li class="have"><span class="num">14</span>Use Guru AI (atlas-guru-ai)</li>
+          <li><span class="num">15</span>Generate a report<span class="pill">missing</span></li>
+          <li><span class="num">16</span>Manage own profile / notifications<span class="pill">missing</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. MISSING SCREENS GROUPED BY FLOW -->
+  <section class="section">
+    <div class="section-head">
+      <div class="left">
+        <div class="section-num">3</div>
+        <div>
+          <h2>Missing screens, grouped by flow</h2>
+          <div class="sub">37 screens we'd need to build for the two personas to have an unbroken path. Phase pin shows the PRD bucket they fall under — but several Phase 2/3 surfaces have to exist as stubs for Phase 1 navigation to feel complete.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow 1: Auth & shell -->
+    <div class="flow-group">
+      <div class="flow-head">
+        <div class="num">A</div>
+        <div class="name">Auth, shell &amp; global UX</div>
+        <div class="meta">5 screens · cuts across both personas</div>
+      </div>
+      <div class="flow-steps">
+        <div class="step need"><div class="stepnum">1</div><div class="body"><div class="title">Staff login + SSO</div><div class="desc">Email/password + Microsoft 365 / Google Workspace SSO. Forgot password.</div><div class="file"><code>atlas-login.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">2</div><div class="body"><div class="title">Donor login / claim account</div><div class="desc">Donor-side login. "First time? Claim your account" via email magic link.</div><div class="file"><code>atlas-donor-login.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">3</div><div class="body"><div class="title">Global search results</div><div class="desc">Spotlight-style results from the topbar — donors, gifts, campaigns, tasks.</div><div class="file"><code>atlas-search.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">4</div><div class="body"><div class="title">Notifications center</div><div class="desc">Bell-icon dropdown / page — overdue tasks, sync errors, large gifts.</div><div class="file"><code>atlas-notifications.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">5</div><div class="body"><div class="title">User profile &amp; preferences</div><div class="desc">Sarah Reynolds avatar → my profile, password, notification prefs, signature.</div><div class="file"><code>atlas-user-profile.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+      </div>
+    </div>
+
+    <!-- Flow 2: Donor records & gift entry -->
+    <div class="flow-group">
+      <div class="flow-head">
+        <div class="num">B</div>
+        <div class="name">Donor records, gifts &amp; pledges (Phase 1 core)</div>
+        <div class="meta">10 screens · highest urgency for June gate</div>
+      </div>
+      <div class="flow-steps">
+        <div class="step need"><div class="stepnum">1</div><div class="body"><div class="title">Donors list / browse</div><div class="desc">Sidebar "Donors" today goes nowhere. Filterable list, saved views, bulk select.</div><div class="file"><code>atlas-donors-list.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">2</div><div class="body"><div class="title">Add constituent (3 record types)</div><div class="desc">Wizard: Individual / Household / Organization (with sub-types). Address, parish, soft-credit links.</div><div class="file"><code>atlas-add-constituent.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">3</div><div class="body"><div class="title">Edit constituent record</div><div class="desc">Full edit view of Donor 360 — multiple addresses / emails / phones, DNC flags, codes.</div><div class="file"><code>atlas-edit-constituent.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">4</div><div class="body"><div class="title">Single gift entry form</div><div class="desc">Standalone "Record gift" today is a button on Dashboard → goes nowhere. Designation, soft credits, hard-block on receipt for DAF/Foundation/Corporate/Matching.</div><div class="file"><code>atlas-gift-entry.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">5</div><div class="body"><div class="title">Stock / in-kind / DAF gift entry</div><div class="desc">Variant of gift entry that captures shares × high/low, in-kind description, DAF distributor.</div><div class="file"><code>atlas-stock-gift.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">6</div><div class="body"><div class="title">Pledge create + schedule</div><div class="desc">Amount, frequency, instalments. Auto-balance. Link to existing donor.</div><div class="file"><code>atlas-pledge-create.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">7</div><div class="body"><div class="title">Pledge detail + payment history</div><div class="desc">Schedule, partial payments, write-off, link to DocuSign agreement.</div><div class="file"><code>atlas-pledge-detail.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">8</div><div class="body"><div class="title">Duplicate review queue</div><div class="desc">Pending review queue from sync — side-by-side compare, merge / create new. PRD §5.9.</div><div class="file"><code>atlas-duplicates.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">9</div><div class="body"><div class="title">Constituent merge UI</div><div class="desc">Field-level keep/replace, audit, 30-day reverse merge.</div><div class="file"><code>atlas-merge.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">10</div><div class="body"><div class="title">Receipt / acknowledgement preview</div><div class="desc">Preview generated PDF receipt by template family — Cash, Stock (no $), In-kind, Soft-credit.</div><div class="file"><code>atlas-receipt-preview.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+      </div>
+    </div>
+
+    <!-- Flow 3: Activities, tasks, comms -->
+    <div class="flow-group">
+      <div class="flow-head">
+        <div class="num">C</div>
+        <div class="name">Activities, tasks &amp; communications</div>
+        <div class="meta">6 screens · the "Log activity / Add task / Schedule" buttons all go nowhere</div>
+      </div>
+      <div class="flow-steps">
+        <div class="step need"><div class="stepnum">1</div><div class="body"><div class="title">Log activity / contact report (modal)</div><div class="desc">Used from Donor 360, Pipeline cards, Visit Map. Type, date, summary, link to action.</div><div class="file"><code>atlas-log-activity.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">2</div><div class="body"><div class="title">Add / edit task (modal)</div><div class="desc">Owner, due, donor link, priority. Reusable across screens.</div><div class="file"><code>atlas-task-modal.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">3</div><div class="body"><div class="title">Tasks &amp; reminders list</div><div class="desc">Sidebar "Tasks &amp; reminders 7" goes nowhere. Inbox of all tasks across donors.</div><div class="file"><code>atlas-tasks.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">4</div><div class="body"><div class="title">Communications hub</div><div class="desc">Sidebar "Communications" goes nowhere. Sent log, templates, send queue.</div><div class="file"><code>atlas-communications.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">5</div><div class="body"><div class="title">Compose acknowledgement / email</div><div class="desc">Per-entity sender, merge fields, preview, send-test. PRD §5.8.</div><div class="file"><code>atlas-email-compose.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">6</div><div class="body"><div class="title">Email / receipt template editor</div><div class="desc">Cash, Stock, In-kind, Soft-credit families. Per legal entity.</div><div class="file"><code>atlas-templates.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+      </div>
+    </div>
+
+    <!-- Flow 4: Donor-facing -->
+    <div class="flow-group">
+      <div class="flow-head">
+        <div class="num">D</div>
+        <div class="name">Donor-facing (external)</div>
+        <div class="meta">9 screens · Phase 2 in PRD, but donor portal already exists so flows must connect</div>
+      </div>
+      <div class="flow-steps">
+        <div class="step need"><div class="stepnum">1</div><div class="body"><div class="title">Donation form — one-time</div><div class="desc">Apple Pay / Google Pay / card / ACH / DAF · designation picker · cover-fees toggle.</div><div class="file"><code>atlas-donate-onetime.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">2</div><div class="body"><div class="title">Donation form — recurring</div><div class="desc">Frequency · start date · end / open-ended.</div><div class="file"><code>atlas-donate-recurring.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">3</div><div class="body"><div class="title">Pledge form (donor-facing)</div><div class="desc">Total commitment + instalment plan + soft-credit acknowledgement language.</div><div class="file"><code>atlas-pledge-form.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">4</div><div class="body"><div class="title">Donation confirmation + receipt</div><div class="desc">Thank-you screen · receipt download · "Set up portal account" CTA.</div><div class="file"><code>atlas-donate-confirmation.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">5</div><div class="body"><div class="title">Manage recurring gift (donor)</div><div class="desc">Pause · update amount · change card · cancel — wired from My Giving.</div><div class="file"><code>atlas-donor-recurring.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">6</div><div class="body"><div class="title">Update payment method</div><div class="desc">Replace card / ACH on file. PCI-friendly redirect to GiveCentral payments.</div><div class="file"><code>atlas-donor-payment.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">7</div><div class="body"><div class="title">Donor profile &amp; preferences</div><div class="desc">Address, comms prefs, do-not-contact channels.</div><div class="file"><code>atlas-donor-profile.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">8</div><div class="body"><div class="title">Event registration (donor)</div><div class="desc">Public-facing flow — pick tickets / table, attendee details, dietary, pay.</div><div class="file"><code>atlas-event-register.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">9</div><div class="body"><div class="title">Event ticket / confirmation</div><div class="desc">Ticket page with QR for check-in flow.</div><div class="file"><code>atlas-event-ticket.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+      </div>
+    </div>
+
+    <!-- Flow 5: Reporting & admin -->
+    <div class="flow-group">
+      <div class="flow-head">
+        <div class="num">E</div>
+        <div class="name">Reporting, campaigns &amp; admin</div>
+        <div class="meta">7 screens · several wired only as Phase 1 stubs to satisfy nav</div>
+      </div>
+      <div class="flow-steps">
+        <div class="step need"><div class="stepnum">1</div><div class="body"><div class="title">Reports library</div><div class="desc">Standard reports list (Gifts by date, by fund, by appeal, etc.). Saved filters.</div><div class="file"><code>atlas-reports.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">2</div><div class="body"><div class="title">Report viewer / detail</div><div class="desc">Selected report with filters, table, CSV export. PRD §5.10.</div><div class="file"><code>atlas-report-detail.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">3</div><div class="body"><div class="title">Create campaign / appeal / fund</div><div class="desc">Campaign Overview → "New campaign" goes nowhere. 3-level hierarchy wizard.</div><div class="file"><code>atlas-campaign-create.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">4</div><div class="body"><div class="title">Sync &amp; reconciliation</div><div class="desc">GiveCentral sync status, dead-letter queue, retry. PRD §5.3.</div><div class="file"><code>atlas-sync.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">5</div><div class="body"><div class="title">GL export / reconciliation</div><div class="desc">QuickBooks / Sage daily export run + variance report.</div><div class="file"><code>atlas-gl-export.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">6</div><div class="body"><div class="title">Users &amp; roles (RBAC)</div><div class="desc">Admin add user, assign role, scope to legal entity. PRD §5.5.</div><div class="file"><code>atlas-users-roles.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+        <div class="step need"><div class="stepnum">7</div><div class="body"><div class="title">Audit log viewer</div><div class="desc">Searchable record of every change. PRD §5.5.</div><div class="file"><code>atlas-audit-log.html</code></div></div><div class="right"><span class="badge">missing</span></div></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 4. DEAD-END CTAs -->
+  <section class="section">
+    <div class="section-head">
+      <div class="left">
+        <div class="section-num">4</div>
+        <div>
+          <h2>Dead-end CTAs in existing screens</h2>
+          <div class="sub">Top offenders — buttons in the CEO's screens that lead nowhere today and need a destination once the new screens exist.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div class="dead-row" style="background:var(--bg);font-weight:600;font-size:11.5px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.6px;">
+        <div>From screen</div><div>CTA</div><div>Should lead to</div>
+      </div>
+      <div class="dead-row"><div class="src">Fundraiser Dashboard<code>atlas-dashboard.html</code></div><div class="cta"><strong>Record gift</strong></div><div class="target"><b>atlas-gift-entry.html</b></div></div>
+      <div class="dead-row"><div class="src">Fundraiser Dashboard</div><div class="cta"><strong>View 47 LYBUNT donors</strong></div><div class="target"><b>atlas-donors-list.html</b> with filter applied</div></div>
+      <div class="dead-row"><div class="src">Fundraiser Dashboard</div><div class="cta"><strong>Schedule</strong> (task in widget)</div><div class="target"><b>atlas-task-modal.html</b></div></div>
+      <div class="dead-row"><div class="src">Donor 360</div><div class="cta"><strong>Log activity</strong></div><div class="target"><b>atlas-log-activity.html</b> (modal)</div></div>
+      <div class="dead-row"><div class="src">Donor 360</div><div class="cta"><strong>Add task</strong></div><div class="target"><b>atlas-task-modal.html</b></div></div>
+      <div class="dead-row"><div class="src">Donor 360</div><div class="cta"><strong>Schedule</strong></div><div class="target"><b>atlas-visit-map.html</b> or task modal</div></div>
+      <div class="dead-row"><div class="src">Donor 360</div><div class="cta"><strong>Record gift</strong></div><div class="target"><b>atlas-gift-entry.html</b> pre-filled</div></div>
+      <div class="dead-row"><div class="src">Pipeline</div><div class="cta"><strong>Add prospect</strong></div><div class="target"><b>atlas-add-constituent.html</b> + assign-officer</div></div>
+      <div class="dead-row"><div class="src">Pipeline</div><div class="cta"><strong>Record a win</strong></div><div class="target"><b>atlas-gift-entry.html</b></div></div>
+      <div class="dead-row"><div class="src">Campaign Overview</div><div class="cta"><strong>New campaign</strong></div><div class="target"><b>atlas-campaign-create.html</b></div></div>
+      <div class="dead-row"><div class="src">Campaign Overview</div><div class="cta"><strong>View Cathedral campaign →</strong></div><div class="target"><b>atlas-campaign-detail.html</b> (variant of overview)</div></div>
+      <div class="dead-row"><div class="src">Campaign Overview</div><div class="cta"><strong>Create outreach list →</strong></div><div class="target"><b>atlas-donors-list.html</b> + segment</div></div>
+      <div class="dead-row"><div class="src">Campaign Overview</div><div class="cta"><strong>Review overdue pledges →</strong></div><div class="target"><b>atlas-reports.html</b> · pledge-balance report</div></div>
+      <div class="dead-row"><div class="src">Donor Portal</div><div class="cta"><strong>Set up new recurring gift</strong></div><div class="target"><b>atlas-donate-recurring.html</b></div></div>
+      <div class="dead-row"><div class="src">Donor Portal</div><div class="cta"><strong>Download 2025 summary PDF</strong></div><div class="target"><b>atlas-receipt-preview.html</b> · year-end summary</div></div>
+      <div class="dead-row"><div class="src">Donor Portal</div><div class="cta"><strong>Save changes</strong> (preferences)</div><div class="target"><b>atlas-donor-profile.html</b></div></div>
+      <div class="dead-row"><div class="src">Batch Entry</div><div class="cta"><strong>Post batch (10 gifts)</strong></div><div class="target"><b>atlas-batch-exceptions.html</b> on partial-fail · success state on full-pass</div></div>
+      <div class="dead-row"><div class="src">Batch Exceptions</div><div class="cta"><strong>View posted batch</strong></div><div class="target"><b>atlas-batch-detail.html</b> (read-only)</div></div>
+      <div class="dead-row"><div class="src">Visit Map</div><div class="cta"><strong>Plan route</strong></div><div class="target"><b>atlas-visit-route-detail.html</b> or modal</div></div>
+      <div class="dead-row"><div class="src">DocuSign Agreements</div><div class="cta"><strong>View pledge record</strong></div><div class="target"><b>atlas-pledge-detail.html</b></div></div>
+      <div class="dead-row"><div class="src">Wealth Screening</div><div class="cta"><strong>Refresh screening</strong></div><div class="target"><b>atlas-wealth-screening.html</b> with success toast</div></div>
+      <div class="dead-row"><div class="src">All staff screens</div><div class="cta"><strong>Sidebar — Donors</strong></div><div class="target"><b>atlas-donors-list.html</b></div></div>
+      <div class="dead-row"><div class="src">All staff screens</div><div class="cta"><strong>Sidebar — Reports</strong></div><div class="target"><b>atlas-reports.html</b></div></div>
+      <div class="dead-row"><div class="src">All staff screens</div><div class="cta"><strong>Sidebar — Communications</strong></div><div class="target"><b>atlas-communications.html</b></div></div>
+      <div class="dead-row"><div class="src">All staff screens</div><div class="cta"><strong>Sidebar — Tasks &amp; reminders</strong></div><div class="target"><b>atlas-tasks.html</b></div></div>
+      <div class="dead-row"><div class="src">All staff screens</div><div class="cta"><strong>Avatar (Sarah Reynolds)</strong></div><div class="target"><b>atlas-user-profile.html</b></div></div>
+      <div class="dead-row"><div class="src" style="color:var(--text-soft)">+ ~37 more</div><div class="cta" style="color:var(--text-soft)">Modal triggers, in-page toggles, "Manage / Edit / Configure" buttons</div><div class="target" style="color:var(--text-soft)">Mostly addressable inline once destinations exist</div></div>
+    </div>
+  </section>
+
+  <!-- 5. PRIORITY LANES -->
+  <section class="section">
+    <div class="section-head">
+      <div class="left">
+        <div class="section-num">5</div>
+        <div>
+          <h2>Recommended build order</h2>
+          <div class="sub">Three sprints, sized to land the Phase 1 prototype first, then connect Phase 2 / 3 surfaces. Pre-checked items are my recommendation — please uncheck anything you'd defer.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <!-- SPRINT 1 -->
+      <div class="lane s1">
+        <div class="lane-head">Sprint 1 · Wire the spine <span class="count">8 screens</span></div>
+        <div class="lane-body">
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Staff login + SSO<small>Phase 1 entry point</small></div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Donors list / browse<small>fixes sidebar dead-end</small></div><span class="est">L</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Single gift entry form<small>Phase 1 critical · receipt rules</small></div><span class="est">L</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Add constituent (3 record types)<small>Wizard with sub-types</small></div><span class="est">L</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Log activity (modal)<small>Reused 6+ places</small></div><span class="est">S</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Add / edit task (modal)<small>Reused 5+ places</small></div><span class="est">S</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Tasks &amp; reminders list<small>fixes sidebar dead-end</small></div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Global search results<small>topbar destination</small></div><span class="est">M</span></div>
+        </div>
+      </div>
+
+      <!-- SPRINT 2 -->
+      <div class="lane s2">
+        <div class="lane-head">Sprint 2 · Donor flow + comms <span class="count">9 screens</span></div>
+        <div class="lane-body">
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Donation form — one-time<small>Apple Pay / card / DAF</small></div><span class="est">L</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Donation form — recurring<small>variant of one-time</small></div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Donation confirmation + receipt</div><span class="est">S</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Donor login / claim<small>portal entry</small></div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Manage recurring gift (donor)</div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Donor profile &amp; preferences</div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Compose acknowledgement / email<small>used from Donor 360</small></div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Pledge create + schedule</div><span class="est">L</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Pledge detail + payment history</div><span class="est">M</span></div>
+        </div>
+      </div>
+
+      <!-- SPRINT 3 -->
+      <div class="lane s3">
+        <div class="lane-head">Sprint 3 · Reporting + back-office <span class="count">10 screens</span></div>
+        <div class="lane-body">
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Reports library<small>fixes sidebar dead-end</small></div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Report viewer / detail</div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Duplicate review queue</div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Constituent merge UI</div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Receipt / acknowledgement preview</div><span class="est">S</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Communications hub<small>fixes sidebar dead-end</small></div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Sync &amp; reconciliation</div><span class="est">M</span></div>
+          <div class="lane-item checked"><span class="chk"></span><div class="nm">Create campaign / appeal / fund</div><span class="est">M</span></div>
+          <div class="lane-item"><span class="chk"></span><div class="nm">Notifications center<small>defer if tight</small></div><span class="est">S</span></div>
+          <div class="lane-item"><span class="chk"></span><div class="nm">Users &amp; roles (RBAC)<small>defer if tight</small></div><span class="est">M</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. NEXT STEPS -->
+  <section class="next">
+    <h2>What I need from you to start building</h2>
+    <p>Two confirmations: (1) accept or amend the Sprint 1 list above (8 screens, the spine of the staff app), and (2) confirm the donor-facing donation form scope — i.e. how many payment methods to mock up beyond Apple Pay + card. As soon as those are in, I'll start with Sprint 1 and ship the new screens directly into this folder, matching the existing design system pixel-for-pixel.</p>
+    <div class="actions">
+      <button class="primary" onclick="alert('Reply in chat: Approved — start Sprint 1')">Approve Sprint 1 → Start building</button>
+      <button onclick="alert('Reply in chat with the screens you want to swap')">Edit the priority list</button>
+      <button onclick="alert('Reply in chat with feedback')">Push back on the audit</button>
+    </div>
+  </section>
+
+  <footer class="tag-line">
+    Atlas — UX Audit · v1 · Source: Atlas_PRD.docx, Atlas Only.docx, GiveCentral_Atlas_Presentation.pptx, 22 existing HTML screens.
+  </footer>
+
+</div>
+
+<script>
+  // Simple toggle so the audit feels interactive
+  document.querySelectorAll('.lane-item').forEach(el => {
+    el.addEventListener('click', () => el.classList.toggle('checked'));
+  });
+</script>
+</body>
+</html>
