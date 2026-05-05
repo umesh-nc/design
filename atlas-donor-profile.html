@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral — Profile & preferences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#0E1E35; --navy-2:#152844; --navy-3:#1E3A5F;
+  --blue:#2563EB; --blue-mid:#3B82F6; --blue-light:#DBEAFE; --blue-pale:#EFF6FF;
+  --green:#15803D; --green-light:#DCFCE7;
+  --amber:#D97706; --amber-light:#FEF3C7;
+  --rose:#BE185D; --rose-light:#FCE7F3;
+  --teal:#0D9488; --teal-light:#CCFBF1;
+  --gold:#C4973A; --gold-light:#FBF4E8;
+  --text:#0F172A; --text-2:#334155; --text-3:#64748B;
+  --border:#E2E8F0; --border-soft:#EDF2F7;
+  --surface:#F8FAFC; --white:#FFFFFF;
+}
+html { font-size:14px; -webkit-font-smoothing:antialiased; }
+body { font-family:'DM Sans',sans-serif; background:var(--surface); color:var(--text); min-height:100vh; }
+a { color:inherit; text-decoration:none; }
+
+/* ══ HEADER ══ */
+.header {
+  background:var(--navy); height:56px;
+  display:flex; align-items:center; padding:0 28px;
+  position:sticky; top:0; z-index:100;
+}
+.header-logo { display:flex; align-items:center; gap:9px; }
+.logo-mark { width:28px; height:28px; background:var(--blue); border-radius:7px; display:flex; align-items:center; justify-content:center; }
+.logo-mark svg { width:14px; height:14px; }
+.logo-name { font-family:'Lora',serif; font-size:15px; color:white; font-weight:500; }
+.logo-sep { width:1px; height:18px; background:rgba(255,255,255,.15); margin:0 14px; }
+.portal-label { font-size:12px; color:rgba(255,255,255,.5); }
+.header-right { margin-left:auto; display:flex; align-items:center; gap:14px; }
+.header-notif {
+  width:30px; height:30px; background:rgba(255,255,255,.08);
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; position:relative; transition:background .15s;
+}
+.header-notif:hover { background:rgba(255,255,255,.14); }
+.header-notif svg { width:14px; height:14px; color:rgba(255,255,255,.7); }
+.notif-dot { position:absolute; top:6px; right:6px; width:6px; height:6px; background:#EF4444; border-radius:50%; border:1.5px solid var(--navy); }
+.header-user { display:flex; align-items:center; gap:8px; cursor:pointer; }
+.header-avatar {
+  width:30px; height:30px; border-radius:50%; background:var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; color:white;
+}
+.header-user-name { font-size:12px; color:rgba(255,255,255,.75); }
+.header-out { font-size:12px; color:rgba(255,255,255,.5); }
+.header-out:hover { color:white; }
+
+/* ══ Nav tabs ══ */
+.nav-tabs { background:white; border-bottom:1px solid var(--border); padding:0 28px; display:flex; gap:0; }
+.nav-tab {
+  padding:13px 18px; font-size:13px; font-weight:500;
+  color:var(--text-3); cursor:pointer; border-bottom:2px solid transparent;
+  transition:all .15s; white-space:nowrap; margin-bottom:-1px;
+  display:flex; align-items:center; gap:6px;
+}
+.nav-tab svg { width:14px; height:14px; }
+.nav-tab:hover { color:var(--text-2); }
+.nav-tab.active { color:var(--blue); border-bottom-color:var(--blue); font-weight:600; }
+.nav-tab .tab-badge {
+  font-size:9px; font-weight:700; padding:1px 6px; border-radius:10px;
+  background:var(--blue-light); color:var(--blue);
+}
+
+.page-inner { max-width:1080px; margin:0 auto; padding:28px 28px 80px; }
+
+.page-title { font-family:'Lora',serif; font-size:28px; letter-spacing:-.01em; line-height:1.1; }
+.page-sub { color:var(--text-3); font-size:13.5px; margin-top:6px; }
+
+.card {
+  background:white; border:1px solid var(--border); border-radius:14px;
+  padding:24px 26px;
+}
+.card + .card { margin-top:14px; }
+.card h3 { font-family:'Lora',serif; font-size:18px; margin-bottom:6px; }
+.card .sub { color:var(--text-3); font-size:13px; margin-bottom:18px; }
+
+.lbl { display:block; font-size:11px; font-weight:600; color:var(--text-2); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
+.lbl .req { color:var(--rose); margin-left:2px; }
+.fld {
+  width:100%; font-size:13.5px; font-family:'DM Sans',sans-serif;
+  padding:10px 13px; border:1px solid var(--border); border-radius:8px;
+  background:white; color:var(--text); transition:border-color .15s, box-shadow .15s;
+}
+.fld:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.10); }
+.fld[disabled] { background:var(--surface); color:var(--text-3); }
+textarea.fld { min-height:90px; resize:vertical; line-height:1.5; }
+select.fld { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 5l3 3 3-3z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; padding-right:28px; }
+
+.btn {
+  font-family:'DM Sans',sans-serif; font-size:13.5px; font-weight:500;
+  padding:10px 18px; border-radius:9px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid transparent; transition:all .15s;
+}
+.btn svg { width:13px; height:13px; }
+.btn-primary { background:var(--blue); color:white; box-shadow:0 1px 4px rgba(37,99,235,.25); }
+.btn-primary:hover { background:#1D4ED8; }
+.btn-ghost { background:white; border-color:var(--border); color:var(--text-2); }
+.btn-ghost:hover { background:var(--surface); border-color:#94A3B8; }
+.btn-rose { background:var(--rose); color:white; }
+.btn-rose:hover { background:#9D174D; }
+
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+.tag {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:10.5px; font-weight:600; padding:3px 8px; border-radius:6px;
+}
+.tag.green { background:var(--green-light); color:var(--green); }
+.tag.amber { background:var(--amber-light); color:var(--amber); }
+.tag.blue  { background:var(--blue-light); color:var(--blue); }
+.tag.rose  { background:var(--rose-light); color:var(--rose); }
+.tag.gold  { background:var(--gold-light); color:var(--gold); }
+.tag.grey  { background:var(--surface); color:var(--text-3); border:1px solid var(--border); }
+
+.muted { color:var(--text-3); }
+.mono { font-variant-numeric:tabular-nums; }
+
+
+.profile-grid { display:grid; grid-template-columns: 280px 1fr; gap:24px; align-items:start; }
+.profile-side {
+  background:white; border:1px solid var(--border); border-radius:14px;
+  padding:24px; position:sticky; top:80px;
+  text-align:center;
+}
+.ps-avatar {
+  width:88px; height:88px; border-radius:50%; background:var(--blue);
+  margin:0 auto 14px; display:flex; align-items:center; justify-content:center;
+  font-family:'Lora',serif; font-size:32px; color:white;
+  border:4px solid var(--blue-light);
+}
+.ps-name { font-family:'Lora',serif; font-size:20px; margin-bottom:2px; }
+.ps-email { font-size:12.5px; color:var(--text-3); margin-bottom:18px; }
+.ps-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:18px; padding:12px 0; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
+.ps-stat .num { font-family:'Lora',serif; font-size:18px; color:var(--navy); }
+.ps-stat .lbl { font-size:10.5px; color:var(--text-3); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
+
+.section-nav { text-align:left; }
+.section-link { padding:8px 12px; border-radius:8px; cursor:pointer; font-size:13px; color:var(--text-2); display:flex; align-items:center; gap:8px; }
+.section-link:hover { background:var(--surface); }
+.section-link.on { background:var(--blue-pale); color:var(--blue); font-weight:600; }
+.section-link svg { width:13px; height:13px; }
+
+.section { background:white; border:1px solid var(--border); border-radius:14px; padding:24px 28px; margin-bottom:18px; }
+.section h3 { font-family:'Lora',serif; font-size:20px; margin-bottom:6px; }
+.section .sub { color:var(--text-3); font-size:13px; margin-bottom:18px; }
+
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.row3 { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:14px; }
+
+.address-card { background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:14px 16px; position:relative; margin-bottom:10px; }
+.address-card .pri { position:absolute; top:12px; right:12px; }
+.address-card .lines { font-size:13px; color:var(--text-2); line-height:1.55; }
+.address-card .a-actions { margin-top:10px; display:flex; gap:8px; font-size:12px; }
+.address-card .a-actions a { color:var(--blue); }
+
+.add-row {
+  padding:12px; border:1.5px dashed var(--border); border-radius:11px;
+  display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-3); cursor:pointer;
+}
+.add-row:hover { border-color:var(--blue); color:var(--blue); }
+
+.pref-row {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 0; border-bottom:1px solid var(--border-soft);
+}
+.pref-row:last-child { border-bottom:none; }
+.pref-row .body { flex:1; }
+.pref-row .body .t { font-size:13.5px; font-weight:500; color:var(--text); }
+.pref-row .body .d { font-size:12px; color:var(--text-3); margin-top:2px; }
+
+.toggle { display:inline-flex; align-items:center; cursor:pointer; }
+.tog-track { width:40px; height:22px; border-radius:99px; background:var(--blue); position:relative; transition:.15s; }
+.tog-knob { position:absolute; top:2px; right:2px; width:18px; height:18px; background:white; border-radius:50%; transition:.15s; }
+.toggle.off .tog-track { background:var(--border); }
+.toggle.off .tog-knob { transform:translateX(-18px); }
+
+.save-bar {
+  position:sticky; bottom:0; background:white; border-top:1px solid var(--border);
+  padding:14px 28px; margin:0 -28px -80px; display:flex; align-items:center; gap:12px;
+}
+.save-bar .left { flex:1; font-size:12.5px; color:var(--text-3); display:flex; gap:6px; align-items:center; }
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+      </svg>
+    </div>
+    <span class="logo-name">GiveCentral</span>
+  </div>
+  <div class="logo-sep"></div>
+  <span class="portal-label">My Giving</span>
+  <div class="header-right">
+    <div class="header-notif">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="header-user">
+      <div class="header-avatar">MS</div>
+      <span class="header-user-name">Margaret Sullivan</span>
+    </div>
+    <a href="atlas-donor-login.html" class="header-out">Sign out</a>
+  </div>
+</header>
+
+<nav class="nav-tabs">
+  <a class="nav-tab" href="atlas-donor-portal.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+    Overview
+  </a>
+  <a class="nav-tab" href="atlas-donor-portal.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+    Giving history
+  </a>
+  <a class="nav-tab" href="atlas-donor-recurring.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+    Recurring gifts
+    <span class="tab-badge">2</span>
+  </a>
+  <a class="nav-tab" href="#">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3h10v8H2zM2 6h10M5 9h2"/></svg>
+    Pledges
+  </a>
+  <a class="nav-tab" href="#">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M3 1.5h8v11l-2-1.5L7 12.5l-2-1.5-2 1.5z"/></svg>
+    Receipts
+  </a>
+  <a class="nav-tab active" href="atlas-donor-profile.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="2.8"/><path d="M2 13c0-2.7 2.3-5 5-5s5 2.3 5 5"/></svg>
+    Profile
+  </a>
+</nav>
+
+<main class="page-inner">
+
+<div class="page-title">Profile &amp; preferences</div>
+<p class="page-sub">Update your contact info, mailing address, and how you'd like to hear from us.</p>
+
+<div class="profile-grid mt-24" style="margin-top:24px">
+
+  <!-- Left rail -->
+  <aside class="profile-side">
+    <div class="ps-avatar">CR</div>
+    <div class="ps-name">Catherine Romano</div>
+    <div class="ps-email">catherine.romano@email.com</div>
+
+    <div class="ps-stats">
+      <div class="ps-stat"><div class="num">$3,250</div><div class="lbl">Lifetime</div></div>
+      <div class="ps-stat"><div class="num">11</div><div class="lbl">Gifts</div></div>
+    </div>
+
+    <div class="section-nav">
+      <div class="section-link on">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="2.8"/><path d="M2 13c0-2.7 2.3-5 5-5s5 2.3 5 5"/></svg>
+        Personal info
+      </div>
+      <div class="section-link">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Addresses
+      </div>
+      <div class="section-link">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="8" rx="1.5"/><path d="M2 5l5 3 5-3"/></svg>
+        Communications
+      </div>
+      <div class="section-link">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="4" width="10" height="7" rx="1.5"/><path d="M2 7h10"/></svg>
+        Payment methods
+      </div>
+      <div class="section-link">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="2" width="10" height="10" rx="1.5"/><path d="M5 7l1.5 1.5L9 5"/></svg>
+        Privacy &amp; security
+      </div>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- Personal info -->
+    <section class="section">
+      <h3>Personal information</h3>
+      <p class="sub">This is what shows up on your tax receipts. Keep it current.</p>
+
+      <div class="row2">
+        <div><span class="lbl">First name</span><input class="fld" value="Catherine"></div>
+        <div><span class="lbl">Last name</span><input class="fld" value="Romano"></div>
+      </div>
+      <div class="row2 mt-12" style="margin-top:12px">
+        <div><span class="lbl">Salutation</span><select class="fld"><option>—</option><option selected>Ms.</option><option>Mrs.</option><option>Mr.</option><option>Dr.</option><option>Rev.</option></select></div>
+        <div><span class="lbl">Preferred name (in letters)</span><input class="fld" value="Catherine"></div>
+      </div>
+      <div class="row2 mt-12" style="margin-top:12px">
+        <div><span class="lbl">Email<span class="req">*</span></span><input class="fld" value="catherine.romano@email.com"></div>
+        <div><span class="lbl">Phone</span><input class="fld" value="(555) 234-9182"></div>
+      </div>
+    </section>
+
+    <!-- Addresses -->
+    <section class="section">
+      <h3>Mailing addresses</h3>
+      <p class="sub">Used for receipts, holiday cards, and any printed mail.</p>
+
+      <div class="address-card">
+        <span class="pri tag blue">Primary</span>
+        <div class="lines">
+          Catherine Romano<br>
+          412 Wendover Drive<br>
+          Albany, NY 12203<br>
+          United States
+        </div>
+        <div class="a-actions">
+          <a>Edit</a>
+          <a>Make seasonal</a>
+          <span class="muted">·</span>
+          <a style="color:var(--rose)">Remove</a>
+        </div>
+      </div>
+
+      <div class="add-row">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+        Add a seasonal or work address
+      </div>
+    </section>
+
+    <!-- Communications -->
+    <section class="section">
+      <h3>How you'd like to hear from us</h3>
+      <p class="sub">You can opt out of any channel at any time. Required notices (receipts, security) always send to your primary email.</p>
+
+      <div class="pref-row">
+        <div class="body">
+          <div class="t">Annual appeal letter (postal mail)</div>
+          <div class="d">Once a year in November · always tax-deductible</div>
+        </div>
+        <span class="toggle"><span class="tog-track"><span class="tog-knob"></span></span></span>
+      </div>
+      <div class="pref-row">
+        <div class="body">
+          <div class="t">Monthly impact email</div>
+          <div class="d">Stories from the campaigns you've supported · 2nd Tuesday</div>
+        </div>
+        <span class="toggle"><span class="tog-track"><span class="tog-knob"></span></span></span>
+      </div>
+      <div class="pref-row">
+        <div class="body">
+          <div class="t">Event invitations</div>
+          <div class="d">Bishop's Annual Gala, Founders Mass, retreats</div>
+        </div>
+        <span class="toggle off"><span class="tog-track"><span class="tog-knob"></span></span></span>
+      </div>
+      <div class="pref-row">
+        <div class="body">
+          <div class="t">Phone calls (cultivation only)</div>
+          <div class="d">A gift officer may call to thank you or share major news. We never sell.</div>
+        </div>
+        <span class="toggle off"><span class="tog-track"><span class="tog-knob"></span></span></span>
+      </div>
+      <div class="pref-row">
+        <div class="body">
+          <div class="t">SMS (urgent matters only)</div>
+          <div class="d">e.g. payment failure, recurring-gift expiry · ~3 / year</div>
+        </div>
+        <span class="toggle"><span class="tog-track"><span class="tog-knob"></span></span></span>
+      </div>
+    </section>
+
+    <!-- Payment -->
+    <section class="section">
+      <h3>Saved payment methods</h3>
+      <p class="sub">Used for recurring gifts and one-tap one-time donations.</p>
+
+      <div class="address-card" style="display:flex;align-items:center;gap:14px">
+        <span class="pri tag blue">Default</span>
+        <div style="width:42px;height:28px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white">VISA</div>
+        <div class="lines" style="flex:1">
+          Visa ending in <strong>4242</strong> · expires <strong>12 / 28</strong><br>
+          <span class="muted">Used for 2 recurring gifts</span>
+        </div>
+        <div style="display:flex;gap:8px;font-size:12px"><a style="color:var(--blue)">Update</a><a style="color:var(--rose)">Remove</a></div>
+      </div>
+
+      <div class="add-row">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+        Add a card or bank account
+      </div>
+    </section>
+
+    <!-- Save bar -->
+    <div class="save-bar">
+      <div class="left">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+        Auto-saved · last change 12 seconds ago
+      </div>
+      <button class="btn btn-ghost">Discard changes</button>
+      <button class="btn btn-primary" onclick="alert('Profile changes saved')">Save changes</button>
+    </div>
+
+  </main>
+
+</div>
+
+</main>
+</body>
+</html>

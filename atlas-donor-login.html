@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral — Sign in to My Giving</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --navy:#0E1E35; --navy-2:#152844; --navy-3:#1E3A5F;
+  --blue:#2563EB; --blue-mid:#3B82F6; --blue-light:#DBEAFE; --blue-pale:#EFF6FF;
+  --green:#15803D; --amber:#D97706; --rose:#BE185D;
+  --gold:#C4973A; --gold-light:#FBF4E8;
+  --text:#0F172A; --text-2:#334155; --text-3:#64748B;
+  --border:#E2E8F0; --surface:#F8FAFC; --white:#FFFFFF;
+}
+html { font-size:14px; -webkit-font-smoothing:antialiased; }
+body { font-family:'DM Sans',sans-serif; background:var(--surface); color:var(--text); min-height:100vh; display:flex; }
+a { color:inherit; text-decoration:none; }
+
+.brand-side {
+  flex:1; background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%); color:white;
+  padding:48px 56px; position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+}
+.brand-side::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(circle at 80% 30%, rgba(196,151,58,.18), transparent 55%),
+             radial-gradient(circle at 10% 90%, rgba(37,99,235,.18), transparent 60%);
+}
+.brand-logo { position:relative; display:flex; align-items:center; gap:12px; }
+.brand-logo .mark { width:38px; height:38px; background:var(--blue); border-radius:10px; display:flex; align-items:center; justify-content:center; }
+.brand-logo .mark svg { width:20px; height:20px; }
+.brand-logo .name { font-family:'Lora',serif; font-size:20px; }
+.brand-logo .sub { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-top:3px; }
+
+.brand-body { position:relative; margin-top:auto; max-width:520px; }
+.brand-eyebrow { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#FCD34D; font-weight:600; margin-bottom:14px; }
+.brand-title { font-family:'Lora',serif; font-size:42px; line-height:1.08; letter-spacing:-.5px; margin-bottom:14px; }
+.brand-title em { font-style:italic; color:#93C5FD; }
+.brand-desc { font-size:15px; color:rgba(255,255,255,.72); line-height:1.55; margin-bottom:22px; }
+
+.brand-pts { display:flex; flex-direction:column; gap:14px; }
+.brand-pt { display:flex; gap:12px; align-items:flex-start; }
+.brand-pt .ico { width:32px; height:32px; border-radius:8px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.brand-pt .ico svg { width:14px; height:14px; color:#93C5FD; }
+.brand-pt .body strong { color:white; display:block; margin-bottom:2px; }
+.brand-pt .body { font-size:13px; color:rgba(255,255,255,.65); line-height:1.45; }
+
+.brand-foot { position:relative; margin-top:36px; display:flex; gap:18px; font-size:11px; color:rgba(255,255,255,.4); }
+
+.signin {
+  flex:1; padding:48px 56px;
+  display:flex; flex-direction:column;
+}
+.signin-top { display:flex; align-items:center; justify-content:flex-end; gap:8px; font-size:12px; color:var(--text-3); }
+.signin-top a { color:var(--blue); font-weight:500; }
+
+.signin-body { margin:auto 0; max-width:420px; width:100%; align-self:center; }
+.signin h1 { font-family:'Lora',serif; font-size:32px; letter-spacing:-.4px; margin-bottom:6px; }
+.signin .lead { color:var(--text-3); font-size:14px; margin-bottom:24px; }
+
+.tab-row { display:flex; gap:0; margin-bottom:24px; background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:4px; }
+.tab-row .tb {
+  flex:1; padding:10px; text-align:center; font-size:13px; font-weight:500; cursor:pointer;
+  color:var(--text-3); border-radius:8px; transition:all .15s;
+}
+.tab-row .tb.on { background:white; color:var(--text); font-weight:600; box-shadow:0 1px 3px rgba(15,23,42,.06); }
+
+.field { margin-bottom:14px; }
+.field label { display:block; font-size:12px; font-weight:600; color:var(--text-2); margin-bottom:6px; }
+.field input {
+  width:100%; font-size:14px; font-family:'DM Sans',sans-serif;
+  padding:11px 14px; border-radius:10px; border:1px solid var(--border); background:white;
+}
+.field input:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.10); }
+
+.cta {
+  width:100%; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:13px 16px; border-radius:11px; cursor:pointer;
+  background:var(--blue); color:white; border:none; box-shadow:0 1px 6px rgba(37,99,235,.25);
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.cta:hover { background:#1D4ED8; }
+.cta svg { width:14px; height:14px; }
+
+.help { margin-top:14px; font-size:12.5px; color:var(--text-3); text-align:center; line-height:1.6; }
+.help a { color:var(--blue); font-weight:500; }
+
+.divider { display:flex; align-items:center; gap:14px; color:var(--text-3); font-size:11px; text-transform:uppercase; letter-spacing:.1em; margin:18px 0; }
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.foot { margin-top:auto; display:flex; align-items:center; gap:14px; font-size:11px; color:var(--text-3); }
+
+.magic-card {
+  background:var(--blue-pale); border:1px solid var(--blue-light); border-radius:12px;
+  padding:18px; margin-bottom:14px;
+}
+.magic-card .h { font-weight:600; color:var(--navy); font-size:14px; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+.magic-card .h svg { width:14px; height:14px; color:var(--blue); }
+.magic-card .d { font-size:12.5px; color:var(--text-2); line-height:1.5; }
+
+@media (max-width:920px) {
+  body { flex-direction:column; }
+  .brand-side, .signin { padding:32px 28px; }
+  .brand-title { font-size:30px; }
+}
+</style>
+</head>
+<body>
+
+  <section class="brand-side">
+    <div class="brand-logo">
+      <div class="mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="name">GiveCentral</div>
+        <div class="sub">My Giving</div>
+      </div>
+    </div>
+
+    <div class="brand-body">
+      <div class="brand-eyebrow">Donor portal</div>
+      <h1 class="brand-title">Manage your giving in <em>under a minute</em>.</h1>
+      <p class="brand-desc">See every gift you've ever made, edit your monthly amount or payment method, download IRS-ready receipts, and track the impact of campaigns you support.</p>
+
+      <div class="brand-pts">
+        <div class="brand-pt">
+          <div class="ico"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg></div>
+          <div class="body"><strong>Every gift in one place</strong>One login = your entire history across diocese, parishes, and Catholic Charities.</div>
+        </div>
+        <div class="brand-pt">
+          <div class="ico"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2"/></svg></div>
+          <div class="body"><strong>Recurring gifts on your terms</strong>Pause, change amount, or cancel without calling — takes 30 seconds.</div>
+        </div>
+        <div class="brand-pt">
+          <div class="ico"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 1.5h8v11l-2-1.5L7 12.5l-2-1.5-2 1.5z"/></svg></div>
+          <div class="body"><strong>Year-end tax statements</strong>Auto-generated every January. Download or forward to your accountant.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-foot">
+      <a href="#">Privacy</a>
+      <a href="#">Security</a>
+      <a href="#">Help</a>
+      <span style="margin-left:auto">© GiveCentral 2026</span>
+    </div>
+  </section>
+
+  <section class="signin">
+    <div class="signin-top">
+      <span>Want to give first?</span>
+      <a href="atlas-donate-onetime.html">Make a gift →</a>
+    </div>
+
+    <div class="signin-body">
+      <h1>Welcome to My Giving.</h1>
+      <p class="lead">Sign in or claim your account to manage your gifts.</p>
+
+      <div class="tab-row">
+        <div class="tb on">Sign in</div>
+        <div class="tb">First time? Claim account</div>
+      </div>
+
+      <!-- Magic-link recommended -->
+      <div class="magic-card">
+        <div class="h">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3-5 3 5 2-2-1 5-2-2-3 5-3-5-2 2 1-5z"/></svg>
+          Recommended — magic link
+        </div>
+        <div class="d">We'll email you a one-tap sign-in link. No password needed. Most donors choose this option.</div>
+      </div>
+
+      <form action="atlas-donor-portal.html">
+        <div class="field">
+          <label>Email address</label>
+          <input type="email" placeholder="catherine.romano@email.com" value="catherine.romano@email.com">
+        </div>
+
+        <button type="submit" class="cta">
+          Email me a sign-in link
+          <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M2 7l4 4 6-7"/></svg>
+        </button>
+
+        <div class="divider">or use a password</div>
+
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="Your password" value="">
+        </div>
+
+        <button type="submit" class="cta" style="background:white;color:var(--text);border:1px solid var(--border);box-shadow:none">
+          Sign in with password
+        </button>
+
+        <p class="help">
+          <a href="#">Forgot password?</a><br>
+          By signing in you agree to GiveCentral's <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </form>
+    </div>
+
+    <div class="foot">
+      <span>SSL secured · PCI compliant</span>
+      <a href="atlas-login.html" style="margin-left:auto">Are you staff? Sign in here →</a>
+    </div>
+  </section>
+
+</body>
+</html>

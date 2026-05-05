@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral Atlas — Duplicate review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:        #0E1E35;
+  --navy-2:      #152844;
+  --navy-3:      #1E3A5F;
+  --blue:        #2563EB;
+  --blue-mid:    #3B82F6;
+  --blue-light:  #DBEAFE;
+  --blue-pale:   #EFF6FF;
+  --teal:        #0D9488;
+  --teal-light:  #CCFBF1;
+  --green:       #15803D;
+  --green-light: #DCFCE7;
+  --amber:       #D97706;
+  --amber-light: #FEF3C7;
+  --rose:        #BE185D;
+  --rose-light:  #FCE7F3;
+  --purple:      #7C3AED;
+  --purple-light:#EDE9FE;
+  --gold:        #B45309;
+  --text:        #0F172A;
+  --text-2:      #334155;
+  --text-3:      #64748B;
+  --border:      #E2E8F0;
+  --border-soft: #EDF2F7;
+  --surface:     #F8FAFC;
+  --white:       #FFFFFF;
+  --sidebar-w:   220px;
+  --shadow-sm:   0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.05);
+  --shadow-md:   0 4px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+}
+
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--text); min-height: 100vh; display: flex; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  width: var(--sidebar-w); background: var(--navy);
+  min-height: 100vh; display: flex; flex-direction: column;
+  flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 18px 18px 14px; display: flex; align-items: center; gap: 9px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.logo-mark {
+  width: 30px; height: 30px; background: var(--blue); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 15px; height: 15px; }
+.logo-text-wrap { display: flex; flex-direction: column; }
+.logo-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: white; line-height: 1; }
+.logo-sub  { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 3px; }
+
+.sidebar-search {
+  margin: 12px 12px 6px; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  cursor: pointer;
+}
+.sidebar-search svg { width: 13px; height: 13px; color: rgba(255,255,255,.3); flex-shrink: 0; }
+.sidebar-search input {
+  background: none; border: none; outline: none; width: 100%;
+  font-size: 12px; color: rgba(255,255,255,.6); font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+.sidebar-search input::placeholder { color: rgba(255,255,255,.3); }
+
+.nav-group { padding: 8px 8px 0; }
+.nav-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.28); padding: 0 10px; margin-bottom: 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+  border-radius: 7px; font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,.55); cursor: pointer; transition: all .15s; margin-bottom: 1px;
+}
+.nav-item:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.85); }
+.nav-item.active { background: var(--blue); color: white; }
+.nav-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: rgba(255,255,255,.12); color: rgba(255,255,255,.6);
+  border-radius: 10px; padding: 1px 7px; font-size: 10px; font-weight: 600;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,.2); color: white; }
+.nav-badge.alert { background: #EF4444; color: white; }
+
+.sidebar-user {
+  margin-top: auto; padding: 12px; border-top: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; transition: background .15s;
+}
+.sidebar-user:hover { background: rgba(255,255,255,.04); }
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.user-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.75); }
+.user-role { font-size: 10px; color: rgba(255,255,255,.35); margin-top: 1px; }
+
+/* ══ MAIN ══ */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 52px;
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.topbar-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.topbar-date { font-size: 12px; color: var(--text-3); }
+.topbar-search {
+  flex: 1;
+  max-width: 460px; margin: 0 18px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+  cursor: text;
+}
+.topbar-search svg { width: 13px; height: 13px; color: var(--text-3); }
+.topbar-search input { background: none; border: none; outline: none; width: 100%; font-size: 12.5px; color: var(--text); font-family: 'DM Sans', sans-serif; }
+.topbar-search input::placeholder { color: var(--text-3); }
+.topbar-search kbd {
+  margin-left: auto; font-size: 10.5px; font-family: 'DM Sans';
+  background: white; border: 1px solid var(--border); border-radius: 4px;
+  padding: 1px 6px; color: var(--text-3);
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.tb-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 7px 13px; border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.tb-btn svg { width: 12px; height: 12px; }
+.tb-ghost   { background: none; border: 1px solid var(--border); color: var(--text-2); }
+.tb-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.tb-primary { background: var(--blue); border: none; color: white; box-shadow: 0 1px 4px rgba(37,99,235,.3); }
+.tb-primary:hover { background: #1D4ED8; }
+.tb-notif {
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+  background: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; transition: background .15s;
+}
+.tb-notif:hover { background: var(--surface); }
+.tb-notif svg { width: 15px; height: 15px; color: var(--text-2); }
+.notif-dot {
+  position: absolute; top: 7px; right: 7px;
+  width: 7px; height: 7px; background: #EF4444; border-radius: 50%;
+  border: 2px solid white;
+}
+
+.dash { padding: 24px; overflow-y: auto; }
+
+/* ══ Common Cards & helpers (used across screens) ══ */
+.card {
+  background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.card-header {
+  padding: 14px 18px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.card-title { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.card-action { font-size: 11px; font-weight: 500; color: var(--blue); cursor: pointer; display: flex; align-items: center; gap: 3px; }
+.card-action:hover { color: #1D4ED8; }
+.card-action svg { width: 10px; height: 10px; }
+.card-body { padding: 14px 18px 18px; }
+
+/* ══ Page header (titles + crumb + actions) ══ */
+.page-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  margin-bottom: 20px;
+}
+.crumb { font-size: 12px; color: var(--text-3); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.crumb a { color: var(--blue); }
+.crumb a:hover { text-decoration: underline; }
+.crumb svg { width: 10px; height: 10px; }
+.page-title {
+  font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: -.02em;
+  color: var(--text); line-height: 1.1;
+}
+.page-sub { color: var(--text-3); font-size: 13px; margin-top: 4px; }
+
+/* ══ Tags & badges (shared) ══ */
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.tag.blue  { background: var(--blue-light);  color: var(--blue); }
+.tag.green { background: var(--green-light); color: var(--green); }
+.tag.amber { background: var(--amber-light); color: var(--amber); }
+.tag.rose  { background: var(--rose-light);  color: var(--rose); }
+.tag.purple{ background: var(--purple-light);color: var(--purple); }
+.tag.grey  { background: var(--surface);     color: var(--text-3); border: 1px solid var(--border); }
+.tag.gold  { background: #FEF3C7;            color: var(--gold); }
+
+/* ══ Inputs ══ */
+.lbl { display: block; font-size: 11px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.lbl .req { color: var(--rose); margin-left: 2px; }
+.fld {
+  width: 100%; font-size: 13px; font-family: 'DM Sans', sans-serif;
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+  background: white; color: var(--text); transition: border-color .15s, box-shadow .15s;
+}
+.fld:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+.fld[disabled] { background: var(--surface); color: var(--text-3); }
+.fld::placeholder { color: #94A3B8; }
+textarea.fld { min-height: 90px; resize: vertical; line-height: 1.5; }
+select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 5l3 3 3-3z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
+
+.btn {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 9px 16px; border-radius: 8px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid transparent; transition: background .15s, border-color .15s, color .15s;
+}
+.btn svg { width: 13px; height: 13px; }
+.btn-primary { background: var(--blue); color: white; box-shadow: 0 1px 4px rgba(37,99,235,.25); }
+.btn-primary:hover { background: #1D4ED8; }
+.btn-ghost   { background: white; border-color: var(--border); color: var(--text-2); }
+.btn-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.btn-rose    { background: var(--rose); color: white; }
+.btn-rose:hover { background: #9D174D; }
+.btn-link    { background: none; color: var(--blue); padding: 6px 8px; }
+.btn-link:hover { color: #1D4ED8; }
+
+/* helpful utilities */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-10 { gap: 10px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; } .gap-20 { gap: 20px; }
+.grow { flex: 1; }
+.muted { color: var(--text-3); }
+.mono  { font-variant-numeric: tabular-nums; }
+.mt-4 { margin-top: 4px; } .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+.mb-4 { margin-bottom: 4px; } .mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
+
+/* Slide-over drawer (used on log-activity, task-modal screens) */
+.scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 30; }
+.drawer {
+  position: fixed; right: 0; top: 0; bottom: 0; width: 560px; max-width: 100vw;
+  background: white; box-shadow: -16px 0 40px rgba(15,23,42,.10); z-index: 31;
+  display: flex; flex-direction: column;
+}
+.drawer-head {
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  flex-shrink: 0;
+}
+.drawer-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); letter-spacing: -.01em; }
+.drawer-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.drawer-x {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); background: white; cursor: pointer;
+}
+.drawer-x:hover { background: var(--surface); }
+.drawer-x svg { width: 13px; height: 13px; color: var(--text-2); }
+.drawer-body { flex: 1; overflow-y: auto; padding: 22px; }
+.drawer-foot {
+  padding: 14px 22px; border-top: 1px solid var(--border);
+  background: var(--surface); display: flex; align-items: center; gap: 8px; justify-content: flex-end;
+  flex-shrink: 0;
+}
+.drawer-foot .left { margin-right: auto; font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
+
+
+.dup-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+.ds { background:white; border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+.ds .l { font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--text-3); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.ds .l .pip { width:8px; height:8px; border-radius:50%; }
+.ds .v { font-family:'DM Serif Display',serif; font-size:24px; line-height:1; color:var(--navy); }
+.ds .d { font-size:11.5px; color:var(--text-3); margin-top:6px; }
+.ds.high .pip { background:var(--rose); }
+.ds.high .v { color:var(--rose); }
+.ds.med .pip { background:var(--amber); }
+.ds.med .v { color:var(--amber); }
+.ds.low .pip { background:var(--blue); }
+
+.tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:18px; }
+.tab { padding:10px 14px; cursor:pointer; font-size:13px; font-weight:500; color:var(--text-3); border-bottom:2px solid transparent; }
+.tab.on { color:var(--blue); border-color:var(--blue); font-weight:600; }
+.tab .ct { font-size:10.5px; padding:1px 7px; border-radius:99px; background:var(--surface); margin-left:6px; }
+.tab.on .ct { background:var(--blue-pale); color:var(--blue); }
+
+.dup-card { background:white; border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:14px; }
+
+.dup-head { padding:14px 22px; display:flex; align-items:center; gap:14px; border-bottom:1px solid var(--border-soft); }
+.dup-score { display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:99px; font-size:12px; font-weight:600; }
+.dup-score.high { background:var(--rose-light); color:var(--rose); }
+.dup-score.med { background:var(--amber-light); color:var(--amber); }
+.dup-score.low { background:var(--blue-light); color:var(--blue); }
+.dup-score .pct { font-family:'DM Sans'; font-weight:700; font-size:13px; }
+
+.dup-head .src { font-size:11.5px; color:var(--text-3); }
+.dup-head .src strong { color:var(--text-2); font-weight:600; }
+.dup-head .right { margin-left:auto; display:flex; gap:6px; }
+
+.dup-body { padding:18px 22px; display:grid; grid-template-columns: 1fr auto 1fr; gap:18px; align-items:stretch; }
+
+.dup-side {
+  background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:14px 16px;
+  display:flex; flex-direction:column; gap:10px;
+}
+.dup-side .heading { display:flex; align-items:center; gap:10px; padding-bottom:10px; border-bottom:1px solid var(--border-soft); }
+.dup-side .heading .av { width:40px; height:40px; border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-weight:700; }
+.dup-side .heading .nm { font-weight:600; color:var(--navy); }
+.dup-side .heading .meta { font-size:11.5px; color:var(--text-3); margin-top:2px; }
+.dup-side .heading .pri { margin-left:auto; font-size:10.5px; padding:3px 8px; border-radius:6px; background:var(--blue-light); color:var(--blue); font-weight:600; }
+.dup-side .keep-tag { font-size:10.5px; padding:2px 8px; border-radius:6px; font-weight:600; align-self:flex-start; }
+.dup-side .keep-tag.older { background:var(--green-light); color:var(--green); }
+.dup-side .keep-tag.fresh { background:var(--blue-light); color:var(--blue); }
+
+.dup-row { display:flex; gap:8px; font-size:12.5px; padding:6px 0; border-bottom:1px dashed var(--border-soft); }
+.dup-row .l { width:90px; color:var(--text-3); flex-shrink:0; }
+.dup-row .v { color:var(--text); font-weight:500; }
+.dup-row .v.same { color:var(--green); }
+.dup-row .v.diff { color:var(--amber); }
+.dup-row:last-of-type { border-bottom:none; }
+
+.dup-arrow {
+  display:flex; align-items:center; justify-content:center;
+  width:36px; color:var(--text-3); font-size:18px;
+}
+
+.dup-foot { padding:14px 22px; background:var(--surface); display:flex; align-items:center; gap:8px; border-top:1px solid var(--border-soft); }
+.dup-foot .left { font-size:12px; color:var(--text-3); }
+.dup-foot .right { margin-left:auto; display:flex; gap:8px; }
+
+</style>
+</head>
+<body>
+
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+      </svg>
+    </div>
+    <div class="logo-text-wrap">
+      <span class="logo-name">GiveCentral</span>
+      <span class="logo-sub">Atlas CRM</span>
+    </div>
+  </div>
+
+  <a href="atlas-search.html" style="display:block;text-decoration:none">
+    <div class="sidebar-search">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+      <input type="text" placeholder="Search donors, gifts…" readonly>
+    </div>
+  </a>
+
+  <div class="nav-group">
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="atlas-dashboard.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item active" href="atlas-donors-list.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+      Donors
+      <span class="nav-badge">3,847</span>
+    </a>
+    <a class="nav-item" href="atlas-batch-entry.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+      Gifts &amp; pledges
+      <span class="nav-badge">142</span>
+    </a>
+    <a class="nav-item" href="atlas-campaign-dashboard.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+      Campaigns
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+      Reports
+    </a>
+  </div>
+
+  <div class="nav-group" style="margin-top:8px">
+    <div class="nav-label">Fundraising</div>
+    <a class="nav-item" href="atlas-pipeline.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+      Prospect pipeline
+      <span class="nav-badge">28</span>
+    </a>
+    <a class="nav-item" href="atlas-tasks.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+      Tasks &amp; reminders
+      <span class="nav-badge alert">7</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+      Communications
+    </a>
+  </div>
+
+  <div class="nav-group" style="margin-top:8px">
+    <div class="nav-label">Intelligence</div>
+    <a class="nav-item" href="atlas-guru-ai.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+      Guru AI
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+      Analytics
+    </a>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">SR</div>
+    <div>
+      <div class="user-name">Sarah Reynolds</div>
+      <div class="user-role">Development Director</div>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
+
+<div class="topbar">
+  <span class="topbar-title">Duplicate review queue</span>
+  <span class="topbar-date">Monday, May 4, 2026</span>
+  <a href="atlas-search.html" class="topbar-search">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+    <input type="text" placeholder="Search donors, gifts, campaigns…" readonly style="cursor:pointer">
+    <kbd>⌘K</kbd>
+  </a>
+  <div class="topbar-right">
+    
+    <a href="#" class="tb-notif" title="Notifications">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
+      <div class="notif-dot"></div>
+    </a>
+  </div>
+</div>
+
+<div class="dash">
+
+  <div class="page-head">
+    <div>
+      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <a href="atlas-donors-list.html">Donors</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Pending review</span></div>
+      <div class="page-title">Duplicate review queue</div>
+      <div class="page-sub">Atlas auto-flags suspected duplicates from GiveCentral sync, batch import, and parish rosters. Resolve them here so receipts route correctly.</div>
+    </div>
+    <div class="flex gap-8">
+      <button class="btn btn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2"/></svg> Re-scan now</button>
+      <button class="btn btn-ghost">Settings</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="dup-stats">
+    <div class="ds high"><div class="l"><span class="pip"></span>High confidence</div><div class="v">3</div><div class="d">≥ 95% match · safe to auto-merge</div></div>
+    <div class="ds med"><div class="l"><span class="pip"></span>Medium confidence</div><div class="v">4</div><div class="d">85–94% · needs human review</div></div>
+    <div class="ds low"><div class="l"><span class="pip"></span>Low confidence</div><div class="v">2</div><div class="d">75–84% · likely false positives</div></div>
+    <div class="ds"><div class="l">Cleared this week</div><div class="v" style="color:var(--green)">42</div><div class="d">38 merged · 4 kept separate</div></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab on">All pending <span class="ct">9</span></div>
+    <div class="tab">High confidence <span class="ct">3</span></div>
+    <div class="tab">Medium <span class="ct">4</span></div>
+    <div class="tab">Low <span class="ct">2</span></div>
+    <div class="tab">Resolved <span class="ct">42</span></div>
+  </div>
+
+  
+    <div class="dup-card">
+      <div class="dup-head">
+        <span class="dup-score high">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+          <span class="pct">98%</span> match
+        </span>
+        <span class="src">Source: <strong>GiveCentral sync · 12 min ago</strong> · detected 12 minutes ago</span>
+        <div class="right">
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px">Snooze</button>
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;color:var(--rose)">Mark not duplicate</button>
+        </div>
+      </div>
+
+      <div class="dup-body">
+        <div class="dup-side">
+          <div class="heading">
+            <div class="av" style="background:#64748B">K</div>
+            <div>
+              <div class="nm">Kevin Ramirez</div>
+              <div class="meta">Indiv. · pending review · 1 gift</div>
+            </div>
+            <span class="pri">Will be kept</span>
+          </div>
+          <div class="keep-tag older">Original record</div>
+          <div class="dup-row"><span class="l">Email</span><span class="v same">kevin.ramirez@email.com</span></div><div class="dup-row"><span class="l">Phone</span><span class="v same">(555) 821-0413</span></div><div class="dup-row"><span class="l">Address</span><span class="v same">212 Madison Ave, Albany</span></div><div class="dup-row"><span class="l">Parish</span><span class="v same">St. Mary's Cathedral</span></div><div class="dup-row"><span class="l">Largest gift</span><span class="v diff">$100</span></div>
+        </div>
+
+        <div class="dup-arrow">↔</div>
+
+        <div class="dup-side">
+          <div class="heading">
+            <div class="av" style="background:#2563EB">K</div>
+            <div>
+              <div class="nm">Kevin J. Ramirez</div>
+              <div class="meta">Indiv. · created from Apple Pay gift</div>
+            </div>
+            
+          </div>
+          <div class="keep-tag fresh">Newer · 8 min old</div>
+          <div class="dup-row"><span class="l">Email</span><span class="v same">kevin.ramirez@email.com</span></div><div class="dup-row"><span class="l">Phone</span><span class="v same">(555) 821-0413</span></div><div class="dup-row"><span class="l">Address</span><span class="v same">212 Madison Ave, Albany</span></div><div class="dup-row"><span class="l">Parish</span><span class="v same">St. Mary's Cathedral</span></div><div class="dup-row"><span class="l">Largest gift</span><span class="v diff">$50 (this one)</span></div>
+        </div>
+      </div>
+
+      <div class="dup-foot">
+        <span class="left"><strong style="color:var(--text-2)">Recommended:</strong> merge — fields below are field-level customizable.</span>
+        <div class="right">
+          <button class="btn btn-ghost" style="font-size:12.5px">Keep both as separate</button>
+          <a class="btn btn-ghost" href="atlas-merge.html" style="font-size:12.5px">Open field-level merge</a>
+          <a class="btn btn-primary" href="atlas-merge.html" style="font-size:12.5px">Quick-merge with recommendations →</a>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="dup-card">
+      <div class="dup-head">
+        <span class="dup-score high">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+          <span class="pct">96%</span> match
+        </span>
+        <span class="src">Source: <strong>Parish roster import · April 2026 — St. Joseph's</strong> · detected 1 hour ago</span>
+        <div class="right">
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px">Snooze</button>
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;color:var(--rose)">Mark not duplicate</button>
+        </div>
+      </div>
+
+      <div class="dup-body">
+        <div class="dup-side">
+          <div class="heading">
+            <div class="av" style="background:#7C3AED">S</div>
+            <div>
+              <div class="nm">Smith Family Household</div>
+              <div class="meta">HH · 2 indiv · $42k lifetime</div>
+            </div>
+            <span class="pri">Will be kept</span>
+          </div>
+          <div class="keep-tag older">Existing household</div>
+          <div class="dup-row"><span class="l">Address</span><span class="v same">17 Beech Lane, Albany NY</span></div><div class="dup-row"><span class="l">Spouse 1</span><span class="v same">Peter Smith</span></div><div class="dup-row"><span class="l">Spouse 2</span><span class="v same">Colleen Smith</span></div><div class="dup-row"><span class="l">Phone</span><span class="v same">(555) 442-0991</span></div><div class="dup-row"><span class="l">Parish aff.</span><span class="v diff">St. Joseph's (since 2018)</span></div>
+        </div>
+
+        <div class="dup-arrow">↔</div>
+
+        <div class="dup-side">
+          <div class="heading">
+            <div class="av" style="background:#0D9488">S</div>
+            <div>
+              <div class="nm">Peter & Colleen Smith</div>
+              <div class="meta">HH · imported from parish roster</div>
+            </div>
+            
+          </div>
+          <div class="keep-tag fresh">Imported just now</div>
+          <div class="dup-row"><span class="l">Address</span><span class="v same">17 Beech Lane, Albany</span></div><div class="dup-row"><span class="l">Spouse 1</span><span class="v same">Peter Smith</span></div><div class="dup-row"><span class="l">Spouse 2</span><span class="v same">Colleen Smith</span></div><div class="dup-row"><span class="l">Phone</span><span class="v same">(555) 442-0991</span></div><div class="dup-row"><span class="l">Parish aff.</span><span class="v diff">St. Joseph's (no date)</span></div>
+        </div>
+      </div>
+
+      <div class="dup-foot">
+        <span class="left"><strong style="color:var(--text-2)">Recommended:</strong> merge — fields below are field-level customizable.</span>
+        <div class="right">
+          <button class="btn btn-ghost" style="font-size:12.5px">Keep both as separate</button>
+          <a class="btn btn-ghost" href="atlas-merge.html" style="font-size:12.5px">Open field-level merge</a>
+          <a class="btn btn-primary" href="atlas-merge.html" style="font-size:12.5px">Quick-merge with recommendations →</a>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="dup-card">
+      <div class="dup-head">
+        <span class="dup-score med">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+          <span class="pct">89%</span> match
+        </span>
+        <span class="src">Source: <strong>Manual entry · Daniel Cho</strong> · detected this morning</span>
+        <div class="right">
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px">Snooze</button>
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;color:var(--rose)">Mark not duplicate</button>
+        </div>
+      </div>
+
+      <div class="dup-body">
+        <div class="dup-side">
+          <div class="heading">
+            <div class="av" style="background:#2563EB">M</div>
+            <div>
+              <div class="nm">Margaret Sullivan</div>
+              <div class="meta">Indiv. · 12 gifts · $4,200 lifetime</div>
+            </div>
+            <span class="pri">Will be kept</span>
+          </div>
+          <div class="keep-tag older">Original record</div>
+          <div class="dup-row"><span class="l">Email</span><span class="v diff">margaret.s@email.com</span></div><div class="dup-row"><span class="l">Phone</span><span class="v same">(555) 113-9281</span></div><div class="dup-row"><span class="l">Address</span><span class="v diff">88 Cedar Pl, Albany NY</span></div><div class="dup-row"><span class="l">Parish</span><span class="v same">St. Catherine of Siena</span></div><div class="dup-row"><span class="l">DoB</span><span class="v diff">1962-04-18</span></div>
+        </div>
+
+        <div class="dup-arrow">↔</div>
+
+        <div class="dup-side">
+          <div class="heading">
+            <div class="av" style="background:#BE185D">M</div>
+            <div>
+              <div class="nm">Margaret S. Sullivan</div>
+              <div class="meta">Indiv. · just created</div>
+            </div>
+            
+          </div>
+          <div class="keep-tag fresh">Newer · today</div>
+          <div class="dup-row"><span class="l">Email</span><span class="v diff">margaret.sullivan.albany@email.com</span></div><div class="dup-row"><span class="l">Phone</span><span class="v same">(555) 113-9281</span></div><div class="dup-row"><span class="l">Address</span><span class="v diff">88 Cedar Place, Albany</span></div><div class="dup-row"><span class="l">Parish</span><span class="v same">St. Catherine of Siena</span></div><div class="dup-row"><span class="l">DoB</span><span class="v diff">—</span></div>
+        </div>
+      </div>
+
+      <div class="dup-foot">
+        <span class="left"><strong style="color:var(--text-2)">Recommended:</strong> merge — fields below are field-level customizable.</span>
+        <div class="right">
+          <button class="btn btn-ghost" style="font-size:12.5px">Keep both as separate</button>
+          <a class="btn btn-ghost" href="atlas-merge.html" style="font-size:12.5px">Open field-level merge</a>
+          <a class="btn btn-primary" href="atlas-merge.html" style="font-size:12.5px">Quick-merge with recommendations →</a>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="dup-card">
+      <div class="dup-head">
+        <span class="dup-score low">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+          <span class="pct">78%</span> possible
+        </span>
+        <span class="src">Source: <strong>GiveCentral sync · check before merging</strong> · detected 30 minutes ago</span>
+        <div class="right">
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px">Snooze</button>
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;color:var(--rose)">Mark not duplicate</button>
+        </div>
+      </div>
+
+      <div class="dup-body">
+        <div class="dup-side">
+          <div class="heading">
+            <div class="av" style="background:#15803D">J</div>
+            <div>
+              <div class="nm">John Smith</div>
+              <div class="meta">Indiv. · $250 lifetime</div>
+            </div>
+            <span class="pri">Will be kept</span>
+          </div>
+          <div class="keep-tag older">Original record</div>
+          <div class="dup-row"><span class="l">Email</span><span class="v diff">john.smith@email.com</span></div><div class="dup-row"><span class="l">Phone</span><span class="v same">(555) 902-0414</span></div><div class="dup-row"><span class="l">Address</span><span class="v diff">14 Oak St, Albany NY</span></div><div class="dup-row"><span class="l">Parish</span><span class="v diff">St. Joseph's</span></div><div class="dup-row"><span class="l">Notes</span><span class="v diff">"prefers Jonathan"</span></div>
+        </div>
+
+        <div class="dup-arrow">↔</div>
+
+        <div class="dup-side">
+          <div class="heading">
+            <div class="av" style="background:#D97706">J</div>
+            <div>
+              <div class="nm">Jonathan Smith</div>
+              <div class="meta">Indiv. · just created</div>
+            </div>
+            
+          </div>
+          <div class="keep-tag fresh">Imported · 30 min ago</div>
+          <div class="dup-row"><span class="l">Email</span><span class="v diff">jsmith2026@gmail.com</span></div><div class="dup-row"><span class="l">Phone</span><span class="v same">(555) 902-0414</span></div><div class="dup-row"><span class="l">Address</span><span class="v diff">14 Oak Street, Albany NY</span></div><div class="dup-row"><span class="l">Parish</span><span class="v diff">—</span></div><div class="dup-row"><span class="l">Notes</span><span class="v diff">—</span></div>
+        </div>
+      </div>
+
+      <div class="dup-foot">
+        <span class="left"><strong style="color:var(--text-2)">Recommended:</strong> merge — fields below are field-level customizable.</span>
+        <div class="right">
+          <button class="btn btn-ghost" style="font-size:12.5px">Keep both as separate</button>
+          <a class="btn btn-ghost" href="atlas-merge.html" style="font-size:12.5px">Open field-level merge</a>
+          <a class="btn btn-primary" href="atlas-merge.html" style="font-size:12.5px">Quick-merge with recommendations →</a>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

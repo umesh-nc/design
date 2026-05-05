@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral — Recurring gifts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#0E1E35; --navy-2:#152844; --navy-3:#1E3A5F;
+  --blue:#2563EB; --blue-mid:#3B82F6; --blue-light:#DBEAFE; --blue-pale:#EFF6FF;
+  --green:#15803D; --green-light:#DCFCE7;
+  --amber:#D97706; --amber-light:#FEF3C7;
+  --rose:#BE185D; --rose-light:#FCE7F3;
+  --teal:#0D9488; --teal-light:#CCFBF1;
+  --gold:#C4973A; --gold-light:#FBF4E8;
+  --text:#0F172A; --text-2:#334155; --text-3:#64748B;
+  --border:#E2E8F0; --border-soft:#EDF2F7;
+  --surface:#F8FAFC; --white:#FFFFFF;
+}
+html { font-size:14px; -webkit-font-smoothing:antialiased; }
+body { font-family:'DM Sans',sans-serif; background:var(--surface); color:var(--text); min-height:100vh; }
+a { color:inherit; text-decoration:none; }
+
+/* ══ HEADER ══ */
+.header {
+  background:var(--navy); height:56px;
+  display:flex; align-items:center; padding:0 28px;
+  position:sticky; top:0; z-index:100;
+}
+.header-logo { display:flex; align-items:center; gap:9px; }
+.logo-mark { width:28px; height:28px; background:var(--blue); border-radius:7px; display:flex; align-items:center; justify-content:center; }
+.logo-mark svg { width:14px; height:14px; }
+.logo-name { font-family:'Lora',serif; font-size:15px; color:white; font-weight:500; }
+.logo-sep { width:1px; height:18px; background:rgba(255,255,255,.15); margin:0 14px; }
+.portal-label { font-size:12px; color:rgba(255,255,255,.5); }
+.header-right { margin-left:auto; display:flex; align-items:center; gap:14px; }
+.header-notif {
+  width:30px; height:30px; background:rgba(255,255,255,.08);
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; position:relative; transition:background .15s;
+}
+.header-notif:hover { background:rgba(255,255,255,.14); }
+.header-notif svg { width:14px; height:14px; color:rgba(255,255,255,.7); }
+.notif-dot { position:absolute; top:6px; right:6px; width:6px; height:6px; background:#EF4444; border-radius:50%; border:1.5px solid var(--navy); }
+.header-user { display:flex; align-items:center; gap:8px; cursor:pointer; }
+.header-avatar {
+  width:30px; height:30px; border-radius:50%; background:var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; color:white;
+}
+.header-user-name { font-size:12px; color:rgba(255,255,255,.75); }
+.header-out { font-size:12px; color:rgba(255,255,255,.5); }
+.header-out:hover { color:white; }
+
+/* ══ Nav tabs ══ */
+.nav-tabs { background:white; border-bottom:1px solid var(--border); padding:0 28px; display:flex; gap:0; }
+.nav-tab {
+  padding:13px 18px; font-size:13px; font-weight:500;
+  color:var(--text-3); cursor:pointer; border-bottom:2px solid transparent;
+  transition:all .15s; white-space:nowrap; margin-bottom:-1px;
+  display:flex; align-items:center; gap:6px;
+}
+.nav-tab svg { width:14px; height:14px; }
+.nav-tab:hover { color:var(--text-2); }
+.nav-tab.active { color:var(--blue); border-bottom-color:var(--blue); font-weight:600; }
+.nav-tab .tab-badge {
+  font-size:9px; font-weight:700; padding:1px 6px; border-radius:10px;
+  background:var(--blue-light); color:var(--blue);
+}
+
+.page-inner { max-width:1080px; margin:0 auto; padding:28px 28px 80px; }
+
+.page-title { font-family:'Lora',serif; font-size:28px; letter-spacing:-.01em; line-height:1.1; }
+.page-sub { color:var(--text-3); font-size:13.5px; margin-top:6px; }
+
+.card {
+  background:white; border:1px solid var(--border); border-radius:14px;
+  padding:24px 26px;
+}
+.card + .card { margin-top:14px; }
+.card h3 { font-family:'Lora',serif; font-size:18px; margin-bottom:6px; }
+.card .sub { color:var(--text-3); font-size:13px; margin-bottom:18px; }
+
+.lbl { display:block; font-size:11px; font-weight:600; color:var(--text-2); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
+.lbl .req { color:var(--rose); margin-left:2px; }
+.fld {
+  width:100%; font-size:13.5px; font-family:'DM Sans',sans-serif;
+  padding:10px 13px; border:1px solid var(--border); border-radius:8px;
+  background:white; color:var(--text); transition:border-color .15s, box-shadow .15s;
+}
+.fld:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.10); }
+.fld[disabled] { background:var(--surface); color:var(--text-3); }
+textarea.fld { min-height:90px; resize:vertical; line-height:1.5; }
+select.fld { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 5l3 3 3-3z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; padding-right:28px; }
+
+.btn {
+  font-family:'DM Sans',sans-serif; font-size:13.5px; font-weight:500;
+  padding:10px 18px; border-radius:9px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid transparent; transition:all .15s;
+}
+.btn svg { width:13px; height:13px; }
+.btn-primary { background:var(--blue); color:white; box-shadow:0 1px 4px rgba(37,99,235,.25); }
+.btn-primary:hover { background:#1D4ED8; }
+.btn-ghost { background:white; border-color:var(--border); color:var(--text-2); }
+.btn-ghost:hover { background:var(--surface); border-color:#94A3B8; }
+.btn-rose { background:var(--rose); color:white; }
+.btn-rose:hover { background:#9D174D; }
+
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+.tag {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:10.5px; font-weight:600; padding:3px 8px; border-radius:6px;
+}
+.tag.green { background:var(--green-light); color:var(--green); }
+.tag.amber { background:var(--amber-light); color:var(--amber); }
+.tag.blue  { background:var(--blue-light); color:var(--blue); }
+.tag.rose  { background:var(--rose-light); color:var(--rose); }
+.tag.gold  { background:var(--gold-light); color:var(--gold); }
+.tag.grey  { background:var(--surface); color:var(--text-3); border:1px solid var(--border); }
+
+.muted { color:var(--text-3); }
+.mono { font-variant-numeric:tabular-nums; }
+
+
+.gift-card {
+  background:white; border:1px solid var(--border); border-radius:14px;
+  overflow:hidden; margin-bottom:14px;
+}
+.gift-card.paused { background:#FFFBEB; border-color:#FBBF24; }
+
+.gc-head {
+  padding:18px 22px; display:flex; align-items:center; gap:14px;
+  border-bottom:1px solid var(--border-soft);
+}
+.gc-head .ico {
+  width:42px; height:42px; border-radius:10px; background:var(--blue-pale); color:var(--blue);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.gc-head .ico svg { width:20px; height:20px; }
+.gift-card.paused .gc-head .ico { background:var(--amber-light); color:var(--amber); }
+
+.gc-head .meta { flex:1; }
+.gc-head .nm { font-family:'Lora',serif; font-size:18px; color:var(--navy); }
+.gc-head .sub { font-size:12.5px; color:var(--text-3); margin-top:2px; }
+.gc-head .right { text-align:right; }
+.gc-head .right .a { font-family:'Lora',serif; font-size:24px; color:var(--navy); font-weight:600; }
+.gc-head .right .f { font-size:11.5px; color:var(--text-3); }
+
+.gc-body { padding:18px 22px; display:grid; grid-template-columns:1.4fr 1fr; gap:24px; }
+.gc-meta-list { display:flex; flex-direction:column; gap:10px; }
+.gc-meta-list .row { display:flex; justify-content:space-between; font-size:13px; padding:8px 0; border-bottom:1px dashed var(--border-soft); }
+.gc-meta-list .row:last-child { border-bottom:none; }
+.gc-meta-list .l { color:var(--text-3); }
+.gc-meta-list .v { color:var(--text); font-weight:500; }
+
+.next-charge { background:var(--blue-pale); border:1px solid var(--blue-light); border-radius:11px; padding:14px; }
+.next-charge .l { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--blue); margin-bottom:4px; }
+.next-charge .v { font-family:'Lora',serif; font-size:18px; color:var(--navy); }
+.next-charge .d { font-size:12px; color:var(--text-2); margin-top:4px; }
+
+.gc-actions { padding:14px 22px; background:var(--surface); display:flex; gap:8px; flex-wrap:wrap; border-top:1px solid var(--border-soft); }
+.gc-actions .btn { padding:8px 14px; font-size:12.5px; }
+
+.history { display:flex; flex-direction:column; gap:6px; }
+.hist-row { display:flex; align-items:center; gap:12px; padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:9px; font-size:12.5px; }
+.hist-row .d { color:var(--text-3); width:90px; flex-shrink:0; }
+.hist-row .v { color:var(--text); font-weight:500; }
+.hist-row .tag { margin-left:auto; }
+
+.next-actions { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:24px; }
+.na-card {
+  background:white; border:1px solid var(--border); border-radius:12px; padding:18px;
+  cursor:pointer; transition:border-color .15s;
+}
+.na-card:hover { border-color:var(--blue); }
+.na-card .ico { width:32px; height:32px; border-radius:8px; background:var(--blue-pale); color:var(--blue); display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
+.na-card .ico svg { width:14px; height:14px; }
+.na-card h4 { font-family:'Lora',serif; font-size:15px; color:var(--navy); margin-bottom:4px; }
+.na-card p { font-size:12px; color:var(--text-3); line-height:1.45; }
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+      </svg>
+    </div>
+    <span class="logo-name">GiveCentral</span>
+  </div>
+  <div class="logo-sep"></div>
+  <span class="portal-label">My Giving</span>
+  <div class="header-right">
+    <div class="header-notif">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="header-user">
+      <div class="header-avatar">MS</div>
+      <span class="header-user-name">Margaret Sullivan</span>
+    </div>
+    <a href="atlas-donor-login.html" class="header-out">Sign out</a>
+  </div>
+</header>
+
+<nav class="nav-tabs">
+  <a class="nav-tab" href="atlas-donor-portal.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+    Overview
+  </a>
+  <a class="nav-tab" href="atlas-donor-portal.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+    Giving history
+  </a>
+  <a class="nav-tab active" href="atlas-donor-recurring.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+    Recurring gifts
+    <span class="tab-badge">2</span>
+  </a>
+  <a class="nav-tab" href="#">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3h10v8H2zM2 6h10M5 9h2"/></svg>
+    Pledges
+  </a>
+  <a class="nav-tab" href="#">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M3 1.5h8v11l-2-1.5L7 12.5l-2-1.5-2 1.5z"/></svg>
+    Receipts
+  </a>
+  <a class="nav-tab" href="atlas-donor-profile.html">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="2.8"/><path d="M2 13c0-2.7 2.3-5 5-5s5 2.3 5 5"/></svg>
+    Profile
+  </a>
+</nav>
+
+<main class="page-inner">
+
+<div class="page-title">Recurring gifts</div>
+<p class="page-sub">You have <strong style="color:var(--text-2)">2 active recurring gifts</strong> and 1 paused. Pause, change amount, or cancel anytime.</p>
+
+<div style="margin-top:24px">
+
+  <!-- Active recurring 1 -->
+  <div class="gift-card">
+    <div class="gc-head">
+      <div class="ico">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 10a7 7 0 0114 0M17 14a7 7 0 01-14 0M15 5l2-1L18 2M5 15l-2 1L2 18"/></svg>
+      </div>
+      <div class="meta">
+        <div class="nm">St. Mary's Cathedral · General Fund</div>
+        <div class="sub">Active since Jan 12, 2024 · 28 successful charges · $1,400 lifetime</div>
+      </div>
+      <div class="right">
+        <div class="a mono">$50.00</div>
+        <div class="f">monthly · 1st of month</div>
+      </div>
+    </div>
+
+    <div class="gc-body">
+      <div class="gc-meta-list">
+        <div class="row"><span class="l">Frequency</span><span class="v">Monthly · 1st of month</span></div>
+        <div class="row"><span class="l">Payment</span><span class="v">Visa ending 4242 · expires 12/28</span></div>
+        <div class="row"><span class="l">Designation</span><span class="v">General Fund — wherever needed most</span></div>
+        <div class="row"><span class="l">End date</span><span class="v">No end date · runs until you cancel</span></div>
+        <div class="row"><span class="l">Annual receipt</span><span class="v">Auto-emailed every January 15</span></div>
+      </div>
+      <div class="next-charge">
+        <div class="l">Next charge</div>
+        <div class="v">Mon, June 1, 2026</div>
+        <div class="d">$50.00 to Visa •4242 · You'll get an email receipt within 30 seconds.</div>
+      </div>
+    </div>
+
+    <div class="gc-actions">
+      <button class="btn btn-ghost">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1v6l4 2"/><circle cx="7" cy="7" r="5.5"/></svg>
+        Change amount
+      </button>
+      <button class="btn btn-ghost">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="4" width="10" height="7" rx="1.5"/><path d="M2 7h10"/></svg>
+        Update card
+      </button>
+      <button class="btn btn-ghost">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10"/></svg>
+        Change designation
+      </button>
+      <button class="btn btn-ghost">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 3v8M9 3v8"/></svg>
+        Pause
+      </button>
+      <button class="btn btn-ghost" style="margin-left:auto;color:var(--rose)">
+        Cancel this gift
+      </button>
+    </div>
+  </div>
+
+  <!-- Active recurring 2 -->
+  <div class="gift-card">
+    <div class="gc-head">
+      <div class="ico" style="background:var(--green-light);color:var(--green)">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 10a7 7 0 0114 0M17 14a7 7 0 01-14 0M15 5l2-1L18 2M5 15l-2 1L2 18"/></svg>
+      </div>
+      <div class="meta">
+        <div class="nm">Catholic Charities · Refugee Aid</div>
+        <div class="sub">Active since Sep 3, 2025 · 8 successful charges · $200 lifetime</div>
+      </div>
+      <div class="right">
+        <div class="a mono">$25.00</div>
+        <div class="f">monthly · 15th of month</div>
+      </div>
+    </div>
+
+    <div class="gc-body">
+      <div class="gc-meta-list">
+        <div class="row"><span class="l">Frequency</span><span class="v">Monthly · 15th of month</span></div>
+        <div class="row"><span class="l">Payment</span><span class="v">Visa ending 4242 · expires 12/28</span></div>
+        <div class="row"><span class="l">Designation</span><span class="v">Refugee Aid — Catholic Charities</span></div>
+        <div class="row"><span class="l">End date</span><span class="v">Until I cancel</span></div>
+      </div>
+      <div class="next-charge" style="background:#DCFCE7;border-color:#86EFAC">
+        <div class="l" style="color:var(--green)">Next charge</div>
+        <div class="v">Sun, May 15, 2026</div>
+        <div class="d">$25.00 — your 9th gift to Refugee Aid this year.</div>
+      </div>
+    </div>
+
+    <div class="gc-actions">
+      <button class="btn btn-ghost">Change amount</button>
+      <button class="btn btn-ghost">Update card</button>
+      <button class="btn btn-ghost">Pause</button>
+      <button class="btn btn-ghost" style="margin-left:auto;color:var(--rose)">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Paused -->
+  <div class="gift-card paused">
+    <div class="gc-head">
+      <div class="ico">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M7 5v10M13 5v10"/></svg>
+      </div>
+      <div class="meta">
+        <div class="nm">St. Joseph's Music Ministry</div>
+        <div class="sub">Paused on Mar 8, 2026 · resumes June 15, 2026 · 14 prior charges</div>
+      </div>
+      <div class="right">
+        <div class="a mono" style="color:var(--amber)">Paused</div>
+        <div class="f">$15 / mo · resumes 6/15</div>
+      </div>
+    </div>
+    <div class="gc-actions">
+      <button class="btn btn-primary">Resume now</button>
+      <button class="btn btn-ghost">Extend pause</button>
+      <button class="btn btn-ghost" style="margin-left:auto;color:var(--rose)">Cancel permanently</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Recent payments -->
+<div class="card mt-24" style="margin-top:24px">
+  <h3>Recent automatic charges</h3>
+  <p class="sub">Your last 6 recurring transactions across all gifts.</p>
+
+  <div class="history">
+    <div class="hist-row"><span class="d">May 1, 2026</span><span class="v">St. Mary's Cathedral · General Fund</span><span style="color:var(--text)" class="mono">$50.00</span><span class="tag green">✓ Charged</span></div>
+    <div class="hist-row"><span class="d">Apr 15, 2026</span><span class="v">Catholic Charities · Refugee Aid</span><span style="color:var(--text)" class="mono">$25.00</span><span class="tag green">✓ Charged</span></div>
+    <div class="hist-row"><span class="d">Apr 1, 2026</span><span class="v">St. Mary's Cathedral · General Fund</span><span style="color:var(--text)" class="mono">$50.00</span><span class="tag green">✓ Charged</span></div>
+    <div class="hist-row"><span class="d">Mar 15, 2026</span><span class="v">Catholic Charities · Refugee Aid</span><span style="color:var(--text)" class="mono">$25.00</span><span class="tag green">✓ Charged</span></div>
+    <div class="hist-row"><span class="d">Mar 8, 2026</span><span class="v">St. Joseph's Music Ministry</span><span style="color:var(--text-3)" class="mono">—</span><span class="tag amber">Paused</span></div>
+    <div class="hist-row"><span class="d">Mar 1, 2026</span><span class="v">St. Mary's Cathedral · General Fund</span><span style="color:var(--text)" class="mono">$50.00</span><span class="tag green">✓ Charged</span></div>
+  </div>
+</div>
+
+<!-- Discovery -->
+<div class="next-actions">
+  <a class="na-card" href="atlas-donate-recurring.html">
+    <div class="ico"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg></div>
+    <h4>Add another recurring gift</h4>
+    <p>Set up giving to another fund or campaign — choose any frequency.</p>
+  </a>
+  <a class="na-card" href="atlas-donate-onetime.html">
+    <div class="ico"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v8M3.5 5.5L7 1.5l3.5 4M2 12h10"/></svg></div>
+    <h4>Make a one-time gift</h4>
+    <p>For a special campaign — like the Cathedral bell tower.</p>
+  </a>
+  <a class="na-card" href="atlas-donor-profile.html">
+    <div class="ico"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="2.8"/><path d="M2 13c0-2.7 2.3-5 5-5s5 2.3 5 5"/></svg></div>
+    <h4>Update your profile</h4>
+    <p>Change address, comms preferences, or payment method on file.</p>
+  </a>
+</div>
+
+</main>
+</body>
+</html>

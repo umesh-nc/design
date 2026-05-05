@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral — Donate to Cathedral Restoration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --navy:#0E1E35; --navy-2:#152844; --navy-3:#1E3A5F;
+  --blue:#2563EB; --blue-mid:#3B82F6; --blue-light:#DBEAFE; --blue-pale:#EFF6FF;
+  --green:#15803D; --green-light:#DCFCE7;
+  --amber:#D97706; --amber-light:#FEF3C7;
+  --rose:#BE185D; --rose-light:#FCE7F3;
+  --teal:#0D9488; --teal-light:#CCFBF1;
+  --gold:#C4973A; --gold-light:#FBF4E8;
+  --text:#0F172A; --text-2:#334155; --text-3:#64748B;
+  --border:#E2E8F0; --border-soft:#EDF2F7;
+  --surface:#F8FAFC; --white:#FFFFFF;
+}
+html { font-size:14px; -webkit-font-smoothing:antialiased; }
+body { font-family:'DM Sans',sans-serif; background:var(--surface); color:var(--text); min-height:100vh; }
+a { color:inherit; text-decoration:none; }
+
+/* Top bar (minimal — branding + secure indicator) */
+.checkout-top {
+  background:white; border-bottom:1px solid var(--border);
+  padding:12px 28px;
+  display:flex; align-items:center; gap:14px;
+}
+.checkout-top .logo { display:flex; align-items:center; gap:9px; }
+.checkout-top .mark { width:28px; height:28px; background:var(--blue); border-radius:7px; display:flex; align-items:center; justify-content:center; }
+.checkout-top .mark svg { width:14px; height:14px; }
+.checkout-top .name { font-family:'Lora',serif; font-size:15px; color:var(--navy); font-weight:500; }
+.checkout-top .sep { width:1px; height:20px; background:var(--border); margin:0 6px; }
+.checkout-top .org { font-size:12px; color:var(--text-3); }
+.checkout-top .org strong { color:var(--text-2); font-weight:600; }
+.checkout-top .right { margin-left:auto; display:flex; align-items:center; gap:14px; font-size:11.5px; color:var(--text-3); }
+.checkout-top .secure { display:flex; align-items:center; gap:6px; }
+.checkout-top .secure svg { width:13px; height:13px; color:var(--green); }
+.checkout-top .signin { color:var(--blue); font-weight:500; }
+.checkout-top .signin:hover { text-decoration:underline; }
+
+/* Page hero (campaign brand + heading) */
+.cmp-hero {
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  color:white; padding:36px 0 90px; position:relative; overflow:hidden;
+}
+.cmp-hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 80% 30%, rgba(196,151,58,.18), transparent 55%),
+             radial-gradient(circle at 10% 80%, rgba(37,99,235,.15), transparent 60%);
+  pointer-events:none;
+}
+.cmp-hero-inner { position:relative; max-width:980px; margin:0 auto; padding:0 28px; }
+.cmp-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:99px; background:rgba(196,151,58,.18); border:1px solid rgba(196,151,58,.32); color:#FCD34D; font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; margin-bottom:14px; }
+.cmp-h { font-family:'Lora',serif; font-size:36px; line-height:1.1; letter-spacing:-.4px; max-width:680px; }
+.cmp-h em { font-style:italic; color:#93C5FD; }
+.cmp-d { color:rgba(219,234,254,.75); font-size:14.5px; max-width:600px; margin-top:10px; line-height:1.55; }
+.cmp-progress { margin-top:24px; max-width:600px; }
+.cmp-bar { background:rgba(255,255,255,.10); border-radius:99px; height:7px; overflow:hidden; }
+.cmp-bar-fill { background:linear-gradient(90deg, #FCD34D, #C4973A); height:100%; border-radius:99px; }
+.cmp-stats { display:flex; gap:24px; margin-top:10px; font-size:12px; color:rgba(255,255,255,.7); }
+.cmp-stats b { color:white; font-weight:600; }
+
+/* Layout: form + summary */
+.checkout {
+  max-width:980px; margin:-66px auto 80px; padding:0 28px;
+  display:grid; grid-template-columns: 1fr 340px; gap:22px; align-items:start;
+}
+.ck-form { display:flex; flex-direction:column; gap:14px; }
+.ck-card {
+  background:white; border:1px solid var(--border); border-radius:16px;
+  padding:24px 26px; box-shadow:0 1px 3px rgba(15,23,42,.04);
+}
+.ck-card h3 {
+  font-family:'Lora',serif; font-size:18px; letter-spacing:-.01em;
+  margin-bottom:6px; display:flex; align-items:center; gap:10px;
+}
+.ck-card h3 .step {
+  width:24px; height:24px; border-radius:50%; background:var(--blue); color:white;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; font-family:'DM Sans';
+}
+.ck-card h3 .step.done { background:var(--green); }
+.ck-card h3 .step.pending { background:var(--surface); color:var(--text-3); border:1.5px solid var(--border); }
+.ck-card .sub { color:var(--text-3); font-size:12.5px; margin-bottom:16px; padding-left:34px; }
+
+/* Express pay */
+.express { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.express button {
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:13px; border-radius:10px; cursor:pointer;
+  border:none; color:white;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.express .apple { background:black; }
+.express .gpay  { background:white; color:black; border:1px solid var(--border); }
+.express .gpay:hover { background:var(--surface); }
+.express .apple:hover { background:#222; }
+.express svg { width:18px; height:18px; }
+
+.divider { display:flex; align-items:center; gap:14px; color:var(--text-3); font-size:11px; text-transform:uppercase; letter-spacing:.1em; margin:18px 0; }
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Amount picker */
+.amt-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px; }
+.amt-pill {
+  padding:14px 8px; border:2px solid var(--border); border-radius:11px; cursor:pointer;
+  text-align:center; font-family:'DM Sans'; font-size:18px; font-weight:600; color:var(--text);
+  background:white; transition:all .15s;
+}
+.amt-pill:hover { border-color:#94A3B8; }
+.amt-pill.on { border-color:var(--blue); background:var(--blue-pale); color:var(--blue); }
+.amt-pill .lbl { display:block; font-size:10.5px; font-weight:500; color:var(--text-3); text-transform:uppercase; letter-spacing:.05em; margin-top:4px; }
+.amt-pill.on .lbl { color:var(--blue); }
+.amt-pill.custom { color:var(--text-3); font-size:14px; font-weight:500; }
+
+.amt-input-wrap { position:relative; }
+.amt-input-wrap .ccy { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-3); font-weight:500; font-size:18px; }
+.amt-input-wrap input.fld { padding-left:32px; font-size:18px; font-weight:600; }
+
+/* Designation cards */
+.dsg-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.dsg-card {
+  border:2px solid var(--border); border-radius:11px; padding:13px 14px; cursor:pointer;
+  background:white; transition:all .15s;
+}
+.dsg-card:hover { border-color:#94A3B8; }
+.dsg-card.on { border-color:var(--blue); background:var(--blue-pale); }
+.dsg-card .name { font-weight:600; font-size:13.5px; color:var(--navy); }
+.dsg-card .desc { font-size:11.5px; color:var(--text-3); margin-top:3px; line-height:1.4; }
+.dsg-card .pct { margin-top:8px; height:4px; background:var(--border-soft); border-radius:2px; overflow:hidden; }
+.dsg-card .pct-fill { background:var(--blue); height:100%; border-radius:2px; }
+.dsg-card .pct-lbl { font-size:10.5px; color:var(--text-3); margin-top:4px; }
+
+/* Pay method selector */
+.pay-types { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+.pay-pill {
+  padding:14px 6px; border:2px solid var(--border); border-radius:11px; cursor:pointer;
+  text-align:center; background:white; transition:all .15s;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.pay-pill svg { width:20px; height:20px; color:var(--text-2); }
+.pay-pill .nm { font-size:11.5px; font-weight:600; color:var(--text); }
+.pay-pill:hover { border-color:#94A3B8; }
+.pay-pill.on { border-color:var(--blue); background:var(--blue-pale); }
+.pay-pill.on svg { color:var(--blue); }
+.pay-pill.on .nm { color:var(--blue); }
+
+/* Cover-fees toggle */
+.cover-fees {
+  background:var(--blue-pale); border:1px solid var(--blue-light); border-radius:11px;
+  padding:14px 16px; display:flex; align-items:center; gap:12px;
+}
+.cover-fees .ico { width:32px; height:32px; border-radius:8px; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; font-weight:700; }
+.cover-fees .body { flex:1; font-size:12.5px; color:var(--navy); }
+.cover-fees .body b { color:var(--blue); }
+.toggle { display:inline-flex; align-items:center; cursor:pointer; }
+.tog-track { width:40px; height:22px; border-radius:99px; background:var(--blue); position:relative; transition:.15s; }
+.tog-knob { position:absolute; top:2px; right:2px; width:18px; height:18px; background:white; border-radius:50%; transition:.15s; }
+.toggle.off .tog-track { background:var(--border); }
+.toggle.off .tog-knob { transform:translateX(-18px); }
+
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+/* Right summary */
+.sum {
+  background:white; border:1px solid var(--border); border-radius:16px;
+  padding:22px; position:sticky; top:80px;
+  box-shadow:0 1px 3px rgba(15,23,42,.04);
+}
+.sum h4 { font-family:'Lora',serif; font-size:18px; margin-bottom:6px; }
+.sum .by { font-size:12px; color:var(--text-3); margin-bottom:18px; }
+
+.sum-line { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed var(--border-soft); font-size:13px; }
+.sum-line .l { color:var(--text-3); }
+.sum-line .v { color:var(--text); font-weight:500; }
+.sum-line.total { border-bottom:none; padding-top:14px; }
+.sum-line.total .l { color:var(--text); font-weight:600; }
+.sum-line.total .v { font-family:'Lora',serif; font-size:24px; color:var(--navy); font-weight:600; }
+
+.sum-cta {
+  width:100%; margin-top:18px;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:14px 16px; border-radius:11px; cursor:pointer;
+  background:var(--blue); color:white; border:none;
+  box-shadow:0 1px 8px rgba(37,99,235,.25);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.sum-cta:hover { background:#1D4ED8; }
+.sum-cta svg { width:14px; height:14px; }
+
+.trust {
+  margin-top:14px; padding:12px 14px; background:var(--surface); border-radius:10px;
+  font-size:11.5px; color:var(--text-3); display:flex; gap:10px; align-items:flex-start;
+}
+.trust svg { width:14px; height:14px; color:var(--green); flex-shrink:0; margin-top:1px; }
+.trust b { color:var(--text-2); }
+
+.foot {
+  text-align:center; max-width:980px; margin:0 auto 40px; padding:0 28px;
+  color:var(--text-3); font-size:11.5px;
+}
+.foot a { color:var(--text-3); margin:0 8px; }
+.foot a:hover { color:var(--blue); }
+
+@media (max-width:840px) {
+  .checkout { grid-template-columns:1fr; margin-top:-50px; }
+  .cmp-h { font-size:28px; }
+  .amt-grid { grid-template-columns:repeat(2,1fr); }
+  .pay-types { grid-template-columns:repeat(2,1fr); }
+}
+
+</style>
+</head>
+<body>
+
+  <header class="checkout-top">
+    <div class="logo">
+      <div class="mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <span class="name">GiveCentral</span>
+    </div>
+    <div class="sep"></div>
+    <div class="org">Donating to <strong>Diocese of Albany — St. Mary's Cathedral</strong></div>
+    <div class="right">
+      <span class="secure">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="6" width="10" height="7" rx="1.5"/><path d="M4 6V4a3 3 0 016 0v2"/></svg>
+        SSL secured · PCI compliant
+      </span>
+      <a class="signin" href="atlas-donor-login.html">Sign in</a>
+    </div>
+  </header>
+
+  <section class="cmp-hero">
+    <div class="cmp-hero-inner">
+      <span class="cmp-tag">★ Cathedral Capital Campaign</span>
+      <h1 class="cmp-h">Help restore the <em>1888 bell tower</em> for another century of prayer.</h1>
+      <p class="cmp-d">Your gift funds masonry, bell-frame restoration, and lead-flashing repair — work that protects the cathedral for the next 130 years. Every dollar designated to "Cathedral Restoration" is matched 1:1 by an anonymous family up to $250,000.</p>
+      <div class="cmp-progress">
+        <div class="cmp-bar"><div class="cmp-bar-fill" style="width:60%"></div></div>
+        <div class="cmp-stats">
+          <span><b>$1,205,400</b> raised</span>
+          <span>of <b>$2,000,000</b> goal</span>
+          <span><b>847</b> donors · <b>43 days</b> left</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="checkout">
+
+    <!-- Form (left) -->
+    <div class="ck-form">
+
+      <!-- Express pay -->
+      <div class="ck-card">
+        <h3><span class="step">1</span> Quick gift</h3>
+        <p class="sub">Use Apple Pay or Google Pay for the fastest checkout — your name, address, and email are filled in automatically.</p>
+        <div class="express">
+          <button class="apple" onclick="alert('Apple Pay sheet would appear · gift would post in 2-3s')">
+            <svg viewBox="0 0 18 18" fill="white"><path d="M14 9.5c0-2 1.5-2.8 1.5-2.8-.8-1.2-2.1-1.4-2.5-1.4-1.1-.1-2.1.6-2.7.6-.6 0-1.4-.6-2.4-.6-1.2 0-2.4.7-3 1.8-1.3 2.2-.3 5.5 1 7.3.6.9 1.3 1.9 2.3 1.8.9 0 1.3-.6 2.4-.6s1.5.6 2.5.6c1 0 1.7-.9 2.3-1.8.6-.9.9-1.7 1-1.8-.1 0-1.9-.7-1.9-2.9zm-2.1-5c.5-.6.9-1.5.8-2.4-.7 0-1.6.5-2.1 1.1-.5.5-.9 1.4-.8 2.3.8 0 1.6-.4 2.1-1z"/></svg>
+            Apple Pay
+          </button>
+          <button class="gpay" onclick="alert('Google Pay sheet would appear · gift would post in 2-3s')">
+            <svg viewBox="0 0 18 18">
+              <path d="M9 7.4v3.2h4.5c-.2 1-.7 1.9-1.6 2.5l2.5 2c1.5-1.4 2.4-3.4 2.4-5.8 0-.6 0-1.1-.2-1.6L9 7.4z" fill="#4285F4"/>
+              <path d="M9 17.5c2.2 0 4-.7 5.4-2l-2.5-2c-.7.5-1.6.8-2.9.8-2.2 0-4.1-1.5-4.7-3.5H1.7v2.1A8.5 8.5 0 009 17.5z" fill="#34A853"/>
+              <path d="M4.3 10.8c-.2-.5-.3-1-.3-1.5s.1-1 .3-1.5V5.7H1.7A8.5 8.5 0 00.5 9.3c0 1.4.3 2.7.9 3.6l2.9-2.1z" fill="#FBBC05"/>
+              <path d="M9 4.4c1.2 0 2.3.4 3.2 1.2l2.2-2.2A8.5 8.5 0 009 1c-3.4 0-6.3 1.9-7.8 4.7l2.9 2.1C4.9 5.9 6.8 4.4 9 4.4z" fill="#EA4335"/>
+            </svg>
+            Google Pay
+          </button>
+        </div>
+        <div class="divider">or pay another way</div>
+        <p style="font-size:12px;color:var(--text-3)">→ Choose your gift amount and pay with card, ACH, or DAF below.</p>
+      </div>
+
+      <!-- Amount -->
+      <div class="ck-card">
+        <h3><span class="step">2</span> Choose your gift</h3>
+        <p class="sub">Every gift over $50 receives a hand-written thank-you from the rector.</p>
+
+        <div class="amt-grid">
+          <div class="amt-pill">$50<span class="lbl">starter</span></div>
+          <div class="amt-pill">$100<span class="lbl">popular</span></div>
+          <div class="amt-pill on">$250<span class="lbl">matched</span></div>
+          <div class="amt-pill">$500<span class="lbl">brass</span></div>
+          <div class="amt-pill">$1,000<span class="lbl">silver</span></div>
+          <div class="amt-pill">$2,500<span class="lbl">gold</span></div>
+          <div class="amt-pill">$5,000<span class="lbl">platinum</span></div>
+          <div class="amt-pill custom">Custom</div>
+        </div>
+
+        <span class="lbl mt-12" style="margin-top:14px;display:block">Or enter a custom amount</span>
+        <div class="amt-input-wrap">
+          <span class="ccy">$</span>
+          <input class="fld" placeholder="Enter amount" value="250.00">
+        </div>
+
+        <p class="muted" style="font-size:11.5px;margin-top:10px">
+          With the 1:1 match, your $250 becomes <strong style="color:var(--green)">$500</strong> for the cathedral.
+        </p>
+      </div>
+
+      <!-- Designation -->
+      <div class="ck-card">
+        <h3><span class="step">3</span> Direct your gift</h3>
+        <p class="sub">Choose how the cathedral applies your contribution.</p>
+
+        <div class="dsg-grid">
+          <div class="dsg-card on">
+            <div class="name">Cathedral Restoration</div>
+            <div class="desc">Bell tower, masonry, lead flashing</div>
+            <div class="pct"><div class="pct-fill" style="width:60%"></div></div>
+            <div class="pct-lbl">60% to goal · matched 1:1</div>
+          </div>
+          <div class="dsg-card">
+            <div class="name">General Fund</div>
+            <div class="desc">Wherever the cathedral needs it most</div>
+            <div class="pct"><div class="pct-fill" style="width:48%;background:var(--text-3)"></div></div>
+            <div class="pct-lbl">Year-round operating</div>
+          </div>
+          <div class="dsg-card">
+            <div class="name">Music Ministry</div>
+            <div class="desc">Choir, organ maintenance, scholarships</div>
+            <div class="pct"><div class="pct-fill" style="width:30%;background:var(--text-3)"></div></div>
+            <div class="pct-lbl">Supports 12 scholars</div>
+          </div>
+          <div class="dsg-card">
+            <div class="name">Outreach &amp; Charity</div>
+            <div class="desc">Food pantry, refugee aid, soup kitchen</div>
+            <div class="pct"><div class="pct-fill" style="width:74%;background:var(--text-3)"></div></div>
+            <div class="pct-lbl">Serves 1,400 people / month</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment method -->
+      <div class="ck-card">
+        <h3><span class="step">4</span> Payment</h3>
+        <p class="sub">All transactions are encrypted end-to-end. We never store your card details.</p>
+
+        <div class="pay-types">
+          <div class="pay-pill on">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h2"/></svg>
+            <span class="nm">Card</span>
+          </div>
+          <div class="pay-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 21h18M5 18V10M9 18V10M15 18V10M19 18V10M3 9l9-6 9 6"/></svg>
+            <span class="nm">ACH bank</span>
+          </div>
+          <div class="pay-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4h16v16H4zM4 8h16M8 12h8M8 16h5"/></svg>
+            <span class="nm">DAF</span>
+          </div>
+          <div class="pay-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+            <span class="nm">Stock</span>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div>
+            <span class="lbl">Card number</span>
+            <input class="fld" placeholder="1234 1234 1234 1234" value="4242 4242 4242 4242">
+          </div>
+          <div>
+            <span class="lbl">Name on card</span>
+            <input class="fld" placeholder="As it appears on your card">
+          </div>
+        </div>
+        <div class="row2 mt-12" style="margin-top:12px">
+          <div>
+            <span class="lbl">Expiry</span>
+            <input class="fld" placeholder="MM / YY" value="12 / 28">
+          </div>
+          <div>
+            <span class="lbl">CVC</span>
+            <input class="fld" placeholder="3 digits" value="•••">
+          </div>
+        </div>
+
+        <!-- Cover fees -->
+        <div class="cover-fees" style="margin-top:18px">
+          <div class="ico">+</div>
+          <div class="body">
+            <strong>Cover the processing fee?</strong> Add <b>$8.13</b> so the cathedral receives your full gift of $250.
+          </div>
+          <span class="toggle"><span class="tog-track"><span class="tog-knob"></span></span></span>
+        </div>
+      </div>
+
+      <!-- Donor info -->
+      <div class="ck-card">
+        <h3><span class="step">5</span> Your information</h3>
+        <p class="sub">For your tax receipt — IRS Pub 1771 requires name, address, gift amount and date.</p>
+
+        <div class="row2">
+          <div>
+            <span class="lbl">First name<span class="req">*</span></span>
+            <input class="fld" placeholder="Jane" value="">
+          </div>
+          <div>
+            <span class="lbl">Last name<span class="req">*</span></span>
+            <input class="fld" placeholder="Smith" value="">
+          </div>
+        </div>
+        <div class="row2 mt-12" style="margin-top:12px">
+          <div>
+            <span class="lbl">Email<span class="req">*</span></span>
+            <input class="fld" placeholder="jane@example.com" value="">
+          </div>
+          <div>
+            <span class="lbl">Phone (optional)</span>
+            <input class="fld" placeholder="(555) 123-4567">
+          </div>
+        </div>
+        <div class="mt-12" style="margin-top:12px">
+          <span class="lbl">Mailing address</span>
+          <input class="fld" placeholder="Street address" value="">
+        </div>
+        <div class="row3 mt-12" style="margin-top:12px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:12px">
+          <input class="fld" placeholder="City">
+          <select class="fld"><option>State</option><option selected>NY</option><option>CT</option><option>NJ</option></select>
+          <input class="fld" placeholder="ZIP">
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:flex-start;margin-top:16px;font-size:12.5px;color:var(--text-2)">
+          <span style="width:16px;height:16px;border:1.5px solid var(--blue);border-radius:4px;background:var(--blue);color:white;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">✓</span>
+          Send me email updates about how my gift is being used.
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:12.5px;color:var(--text-3)">
+          <span style="width:16px;height:16px;border:1.5px solid var(--border);border-radius:4px;flex-shrink:0"></span>
+          Make this gift in honor or memory of someone…
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: live summary -->
+    <aside>
+      <div class="sum">
+        <h4>Your gift</h4>
+        <div class="by">to St. Mary's Cathedral</div>
+
+        <div class="sum-line"><span class="l">Gift amount</span><span class="v mono">$250.00</span></div>
+        <div class="sum-line"><span class="l">Cover fee (8.13)</span><span class="v">— skipped</span></div>
+        <div class="sum-line"><span class="l">Designation</span><span class="v">Cathedral Restoration</span></div>
+        <div class="sum-line"><span class="l">Match</span><span class="v" style="color:var(--green)">+ $250 (1:1)</span></div>
+
+        <div class="sum-line total"><span class="l">You pay today</span><span class="v">$250.00</span></div>
+
+        <button class="sum-cta" onclick="window.location='atlas-donate-confirmation.html'">
+          Give $250 securely
+          <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="6" width="10" height="7" rx="1.5"/><path d="M4 6V4a3 3 0 016 0v2"/></svg>
+        </button>
+
+        <div class="trust">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1.5L2 4v3.5C2 11 7 13 7 13s5-2 5-5.5V4z"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+          <span><b>Tax-deductible</b> · IRS receipt emailed within 60 seconds. Diocese of Albany, EIN 14-•••2401. <a href="#" style="color:var(--blue)">Why we ask for this info</a></span>
+        </div>
+
+        <div class="trust" style="margin-top:8px">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+          <span>Want to give monthly instead? <a href="atlas-donate-recurring.html" style="color:var(--blue)">Switch to a recurring gift →</a></span>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="foot">
+    Powered by GiveCentral · <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Refund policy</a> · <a href="#">Contact</a>
+    <br>
+    Diocese of Albany is a 501(c)(3) public charity. Your gift is tax-deductible to the full extent of the law.
+  </footer>
+
+</body>
+</html>

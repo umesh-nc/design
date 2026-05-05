@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral — Thank you</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --navy:#0E1E35; --navy-2:#152844; --navy-3:#1E3A5F;
+  --blue:#2563EB; --blue-mid:#3B82F6; --blue-light:#DBEAFE; --blue-pale:#EFF6FF;
+  --green:#15803D; --green-light:#DCFCE7;
+  --amber:#D97706; --amber-light:#FEF3C7;
+  --rose:#BE185D; --rose-light:#FCE7F3;
+  --teal:#0D9488; --teal-light:#CCFBF1;
+  --gold:#C4973A; --gold-light:#FBF4E8;
+  --text:#0F172A; --text-2:#334155; --text-3:#64748B;
+  --border:#E2E8F0; --border-soft:#EDF2F7;
+  --surface:#F8FAFC; --white:#FFFFFF;
+}
+html { font-size:14px; -webkit-font-smoothing:antialiased; }
+body { font-family:'DM Sans',sans-serif; background:var(--surface); color:var(--text); min-height:100vh; }
+a { color:inherit; text-decoration:none; }
+
+/* Top bar (minimal — branding + secure indicator) */
+.checkout-top {
+  background:white; border-bottom:1px solid var(--border);
+  padding:12px 28px;
+  display:flex; align-items:center; gap:14px;
+}
+.checkout-top .logo { display:flex; align-items:center; gap:9px; }
+.checkout-top .mark { width:28px; height:28px; background:var(--blue); border-radius:7px; display:flex; align-items:center; justify-content:center; }
+.checkout-top .mark svg { width:14px; height:14px; }
+.checkout-top .name { font-family:'Lora',serif; font-size:15px; color:var(--navy); font-weight:500; }
+.checkout-top .sep { width:1px; height:20px; background:var(--border); margin:0 6px; }
+.checkout-top .org { font-size:12px; color:var(--text-3); }
+.checkout-top .org strong { color:var(--text-2); font-weight:600; }
+.checkout-top .right { margin-left:auto; display:flex; align-items:center; gap:14px; font-size:11.5px; color:var(--text-3); }
+.checkout-top .secure { display:flex; align-items:center; gap:6px; }
+.checkout-top .secure svg { width:13px; height:13px; color:var(--green); }
+.checkout-top .signin { color:var(--blue); font-weight:500; }
+.checkout-top .signin:hover { text-decoration:underline; }
+
+/* Page hero (campaign brand + heading) */
+.cmp-hero {
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  color:white; padding:36px 0 90px; position:relative; overflow:hidden;
+}
+.cmp-hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 80% 30%, rgba(196,151,58,.18), transparent 55%),
+             radial-gradient(circle at 10% 80%, rgba(37,99,235,.15), transparent 60%);
+  pointer-events:none;
+}
+.cmp-hero-inner { position:relative; max-width:980px; margin:0 auto; padding:0 28px; }
+.cmp-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:99px; background:rgba(196,151,58,.18); border:1px solid rgba(196,151,58,.32); color:#FCD34D; font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; margin-bottom:14px; }
+.cmp-h { font-family:'Lora',serif; font-size:36px; line-height:1.1; letter-spacing:-.4px; max-width:680px; }
+.cmp-h em { font-style:italic; color:#93C5FD; }
+.cmp-d { color:rgba(219,234,254,.75); font-size:14.5px; max-width:600px; margin-top:10px; line-height:1.55; }
+.cmp-progress { margin-top:24px; max-width:600px; }
+.cmp-bar { background:rgba(255,255,255,.10); border-radius:99px; height:7px; overflow:hidden; }
+.cmp-bar-fill { background:linear-gradient(90deg, #FCD34D, #C4973A); height:100%; border-radius:99px; }
+.cmp-stats { display:flex; gap:24px; margin-top:10px; font-size:12px; color:rgba(255,255,255,.7); }
+.cmp-stats b { color:white; font-weight:600; }
+
+/* Layout: form + summary */
+.checkout {
+  max-width:980px; margin:-66px auto 80px; padding:0 28px;
+  display:grid; grid-template-columns: 1fr 340px; gap:22px; align-items:start;
+}
+.ck-form { display:flex; flex-direction:column; gap:14px; }
+.ck-card {
+  background:white; border:1px solid var(--border); border-radius:16px;
+  padding:24px 26px; box-shadow:0 1px 3px rgba(15,23,42,.04);
+}
+.ck-card h3 {
+  font-family:'Lora',serif; font-size:18px; letter-spacing:-.01em;
+  margin-bottom:6px; display:flex; align-items:center; gap:10px;
+}
+.ck-card h3 .step {
+  width:24px; height:24px; border-radius:50%; background:var(--blue); color:white;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; font-family:'DM Sans';
+}
+.ck-card h3 .step.done { background:var(--green); }
+.ck-card h3 .step.pending { background:var(--surface); color:var(--text-3); border:1.5px solid var(--border); }
+.ck-card .sub { color:var(--text-3); font-size:12.5px; margin-bottom:16px; padding-left:34px; }
+
+/* Express pay */
+.express { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.express button {
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  padding:13px; border-radius:10px; cursor:pointer;
+  border:none; color:white;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.express .apple { background:black; }
+.express .gpay  { background:white; color:black; border:1px solid var(--border); }
+.express .gpay:hover { background:var(--surface); }
+.express .apple:hover { background:#222; }
+.express svg { width:18px; height:18px; }
+
+.divider { display:flex; align-items:center; gap:14px; color:var(--text-3); font-size:11px; text-transform:uppercase; letter-spacing:.1em; margin:18px 0; }
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Amount picker */
+.amt-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px; }
+.amt-pill {
+  padding:14px 8px; border:2px solid var(--border); border-radius:11px; cursor:pointer;
+  text-align:center; font-family:'DM Sans'; font-size:18px; font-weight:600; color:var(--text);
+  background:white; transition:all .15s;
+}
+.amt-pill:hover { border-color:#94A3B8; }
+.amt-pill.on { border-color:var(--blue); background:var(--blue-pale); color:var(--blue); }
+.amt-pill .lbl { display:block; font-size:10.5px; font-weight:500; color:var(--text-3); text-transform:uppercase; letter-spacing:.05em; margin-top:4px; }
+.amt-pill.on .lbl { color:var(--blue); }
+.amt-pill.custom { color:var(--text-3); font-size:14px; font-weight:500; }
+
+.amt-input-wrap { position:relative; }
+.amt-input-wrap .ccy { position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-3); font-weight:500; font-size:18px; }
+.amt-input-wrap input.fld { padding-left:32px; font-size:18px; font-weight:600; }
+
+/* Designation cards */
+.dsg-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.dsg-card {
+  border:2px solid var(--border); border-radius:11px; padding:13px 14px; cursor:pointer;
+  background:white; transition:all .15s;
+}
+.dsg-card:hover { border-color:#94A3B8; }
+.dsg-card.on { border-color:var(--blue); background:var(--blue-pale); }
+.dsg-card .name { font-weight:600; font-size:13.5px; color:var(--navy); }
+.dsg-card .desc { font-size:11.5px; color:var(--text-3); margin-top:3px; line-height:1.4; }
+.dsg-card .pct { margin-top:8px; height:4px; background:var(--border-soft); border-radius:2px; overflow:hidden; }
+.dsg-card .pct-fill { background:var(--blue); height:100%; border-radius:2px; }
+.dsg-card .pct-lbl { font-size:10.5px; color:var(--text-3); margin-top:4px; }
+
+/* Pay method selector */
+.pay-types { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+.pay-pill {
+  padding:14px 6px; border:2px solid var(--border); border-radius:11px; cursor:pointer;
+  text-align:center; background:white; transition:all .15s;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+}
+.pay-pill svg { width:20px; height:20px; color:var(--text-2); }
+.pay-pill .nm { font-size:11.5px; font-weight:600; color:var(--text); }
+.pay-pill:hover { border-color:#94A3B8; }
+.pay-pill.on { border-color:var(--blue); background:var(--blue-pale); }
+.pay-pill.on svg { color:var(--blue); }
+.pay-pill.on .nm { color:var(--blue); }
+
+/* Cover-fees toggle */
+.cover-fees {
+  background:var(--blue-pale); border:1px solid var(--blue-light); border-radius:11px;
+  padding:14px 16px; display:flex; align-items:center; gap:12px;
+}
+.cover-fees .ico { width:32px; height:32px; border-radius:8px; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; font-weight:700; }
+.cover-fees .body { flex:1; font-size:12.5px; color:var(--navy); }
+.cover-fees .body b { color:var(--blue); }
+.toggle { display:inline-flex; align-items:center; cursor:pointer; }
+.tog-track { width:40px; height:22px; border-radius:99px; background:var(--blue); position:relative; transition:.15s; }
+.tog-knob { position:absolute; top:2px; right:2px; width:18px; height:18px; background:white; border-radius:50%; transition:.15s; }
+.toggle.off .tog-track { background:var(--border); }
+.toggle.off .tog-knob { transform:translateX(-18px); }
+
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+/* Right summary */
+.sum {
+  background:white; border:1px solid var(--border); border-radius:16px;
+  padding:22px; position:sticky; top:80px;
+  box-shadow:0 1px 3px rgba(15,23,42,.04);
+}
+.sum h4 { font-family:'Lora',serif; font-size:18px; margin-bottom:6px; }
+.sum .by { font-size:12px; color:var(--text-3); margin-bottom:18px; }
+
+.sum-line { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed var(--border-soft); font-size:13px; }
+.sum-line .l { color:var(--text-3); }
+.sum-line .v { color:var(--text); font-weight:500; }
+.sum-line.total { border-bottom:none; padding-top:14px; }
+.sum-line.total .l { color:var(--text); font-weight:600; }
+.sum-line.total .v { font-family:'Lora',serif; font-size:24px; color:var(--navy); font-weight:600; }
+
+.sum-cta {
+  width:100%; margin-top:18px;
+  font-family:'DM Sans',sans-serif; font-size:15px; font-weight:600;
+  padding:14px 16px; border-radius:11px; cursor:pointer;
+  background:var(--blue); color:white; border:none;
+  box-shadow:0 1px 8px rgba(37,99,235,.25);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.sum-cta:hover { background:#1D4ED8; }
+.sum-cta svg { width:14px; height:14px; }
+
+.trust {
+  margin-top:14px; padding:12px 14px; background:var(--surface); border-radius:10px;
+  font-size:11.5px; color:var(--text-3); display:flex; gap:10px; align-items:flex-start;
+}
+.trust svg { width:14px; height:14px; color:var(--green); flex-shrink:0; margin-top:1px; }
+.trust b { color:var(--text-2); }
+
+.foot {
+  text-align:center; max-width:980px; margin:0 auto 40px; padding:0 28px;
+  color:var(--text-3); font-size:11.5px;
+}
+.foot a { color:var(--text-3); margin:0 8px; }
+.foot a:hover { color:var(--blue); }
+
+@media (max-width:840px) {
+  .checkout { grid-template-columns:1fr; margin-top:-50px; }
+  .cmp-h { font-size:28px; }
+  .amt-grid { grid-template-columns:repeat(2,1fr); }
+  .pay-types { grid-template-columns:repeat(2,1fr); }
+}
+
+/* confirmation specific */
+.thanks-hero {
+  background:white; text-align:center; padding:64px 28px 48px;
+  border-bottom:1px solid var(--border);
+}
+.thanks-mark {
+  width:88px; height:88px; border-radius:50%;
+  background:linear-gradient(135deg, var(--green) 0%, #059669 100%);
+  margin:0 auto 24px; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 32px rgba(21,128,61,.25);
+  position:relative;
+}
+.thanks-mark::before {
+  content:''; position:absolute; inset:-12px;
+  background:radial-gradient(circle, rgba(21,128,61,.18), transparent 70%);
+  border-radius:50%;
+}
+.thanks-mark svg { width:42px; height:42px; color:white; position:relative; }
+.thanks-h {
+  font-family:'Lora',serif; font-size:42px; line-height:1.08; letter-spacing:-.5px;
+  margin-bottom:14px;
+}
+.thanks-h em { font-style:italic; color:var(--blue); }
+.thanks-d { color:var(--text-3); font-size:15px; max-width:560px; margin:0 auto; line-height:1.55; }
+
+.conf-grid { max-width:880px; margin:-30px auto 50px; padding:0 28px; display:grid; grid-template-columns:1fr 320px; gap:22px; align-items:start; }
+
+.conf-card {
+  background:white; border:1px solid var(--border); border-radius:16px;
+  padding:24px 28px; box-shadow:0 1px 3px rgba(15,23,42,.04);
+}
+.conf-card + .conf-card { margin-top:14px; }
+.conf-card h3 { font-family:'Lora',serif; font-size:20px; margin-bottom:6px; }
+.conf-card .sub { color:var(--text-3); font-size:13px; margin-bottom:14px; }
+
+.receipt-box {
+  background:var(--surface); border:1px dashed var(--border);
+  border-radius:12px; padding:20px 24px;
+}
+.receipt-row { display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px dashed var(--border); }
+.receipt-row:last-of-type { border-bottom:none; }
+.receipt-row .l { color:var(--text-3); }
+.receipt-row .v { color:var(--text); font-weight:500; }
+.receipt-row .v.amount { font-family:'Lora',serif; font-size:22px; color:var(--navy); font-weight:600; }
+
+.actions-row { display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
+.actions-row .btn { flex:1; min-width:160px; justify-content:center; }
+
+.next-steps { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+.ns-card {
+  background:linear-gradient(135deg, var(--blue-pale) 0%, white 100%);
+  border:1px solid var(--blue-light); border-radius:12px; padding:20px;
+}
+.ns-card h4 { font-family:'Lora',serif; font-size:16px; color:var(--navy); margin-bottom:6px; }
+.ns-card p { font-size:12.5px; color:var(--text-2); margin-bottom:12px; line-height:1.5; }
+.ns-card .btn-link { color:var(--blue); font-weight:600; font-size:13px; }
+
+.share-row { display:flex; gap:8px; margin-top:14px; }
+.share-row .sh-btn {
+  flex:1; padding:10px; border:1px solid var(--border); border-radius:10px;
+  background:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;
+  font-size:12.5px; color:var(--text-2);
+}
+.share-row .sh-btn:hover { border-color:#94A3B8; }
+.share-row .sh-btn svg { width:14px; height:14px; }
+
+.aside-card {
+  background:white; border:1px solid var(--border); border-radius:14px; padding:18px 20px;
+}
+.aside-card h4 { font-family:'Lora',serif; font-size:16px; margin-bottom:10px; }
+.aside-card .progress { font-size:12px; color:var(--text-3); margin-bottom:14px; }
+.aside-card .bar { height:6px; background:var(--border-soft); border-radius:99px; overflow:hidden; margin-bottom:8px; }
+.aside-card .bar-fill { background:linear-gradient(90deg, var(--blue), var(--green)); height:100%; border-radius:99px; }
+.aside-card .stat-row { display:flex; justify-content:space-between; font-size:13px; margin-top:6px; }
+.aside-card .stat-row b { color:var(--text); font-weight:600; }
+
+.aside-card + .aside-card { margin-top:14px; }
+</style>
+</head>
+<body>
+
+  <header class="checkout-top">
+    <div class="logo">
+      <div class="mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <span class="name">GiveCentral</span>
+    </div>
+    <div class="sep"></div>
+    <div class="org">Confirmation from <strong>Diocese of Albany — St. Mary's Cathedral</strong></div>
+    <div class="right">
+      <span class="secure">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+        Gift confirmed
+      </span>
+    </div>
+  </header>
+
+  <section class="thanks-hero">
+    <div class="thanks-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-11"/></svg>
+    </div>
+    <h1 class="thanks-h">Thank you, <em>Catherine</em>.</h1>
+    <p class="thanks-d">Your $250 gift has been received and will go to work on the bell tower restoration immediately. Your tax receipt is in your inbox at <strong>catherine.romano@email.com</strong>.</p>
+  </section>
+
+  <div class="conf-grid">
+
+    <!-- Left: receipt + next steps -->
+    <main>
+      <div class="conf-card">
+        <h3>Your receipt</h3>
+        <p class="sub">Receipt #R-2026-1843 · IRS Pub 1771 compliant · Diocese of Albany EIN 14-•••2401</p>
+
+        <div class="receipt-box">
+          <div class="receipt-row"><span class="l">Receipt #</span><span class="v mono">R-2026-1843</span></div>
+          <div class="receipt-row"><span class="l">Date</span><span class="v">May 4, 2026 · 2:47 PM ET</span></div>
+          <div class="receipt-row"><span class="l">Donor</span><span class="v">Catherine Romano</span></div>
+          <div class="receipt-row"><span class="l">Designation</span><span class="v">Cathedral Restoration · 1:1 match applied</span></div>
+          <div class="receipt-row"><span class="l">Payment method</span><span class="v">Visa ending in 4242</span></div>
+          <div class="receipt-row"><span class="l">Total</span><span class="v amount">$250.00</span></div>
+        </div>
+
+        <div class="actions-row">
+          <button class="btn btn-primary" onclick="alert('Receipt PDF downloaded')">
+            <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M7 1.5v8M3.5 6.5L7 9.5l3.5-3M2 12h10"/></svg>
+            Download receipt PDF
+          </button>
+          <button class="btn btn-ghost" onclick="alert('Receipt resent to catherine.romano@email.com')">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="10" height="8" rx="1.5"/><path d="M2 5l5 3 5-3"/></svg>
+            Email me a copy
+          </button>
+          <a class="btn btn-ghost" href="#">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="10" height="10" rx="1.5"/><path d="M5 2v10M9 2v10"/></svg>
+            Print
+          </a>
+        </div>
+      </div>
+
+      <!-- Next steps -->
+      <div class="conf-card">
+        <h3>What happens now?</h3>
+
+        <div class="next-steps">
+
+          <div class="ns-card">
+            <h4>Set up your donor portal</h4>
+            <p>Track this gift, manage your future contributions, and download your year-end tax statement — all in one place.</p>
+            <a class="btn-link" href="atlas-donor-login.html">
+              Claim your account →
+            </a>
+          </div>
+
+          <div class="ns-card" style="background:linear-gradient(135deg, #FBF4E8, white);border-color:#F1D78F">
+            <h4>Become a monthly partner</h4>
+            <p>Convert this $250 to a $25 monthly sustaining gift — same total impact over the year, more predictable for the cathedral.</p>
+            <a class="btn-link" href="atlas-donate-recurring.html" style="color:var(--gold)">
+              Switch to monthly →
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Share -->
+      <div class="conf-card">
+        <h3>Share to inspire others</h3>
+        <p class="sub">Cathedral campaigns hit goal 38% faster when donors share their gift.</p>
+        <div class="share-row">
+          <button class="sh-btn">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M11 6l-3-3v2c-3 0-5 2-5 5 0-1 1-3 5-3v2z"/></svg>
+            Share on X
+          </button>
+          <button class="sh-btn">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="2" width="10" height="10" rx="1.5"/><path d="M8 11V7H6v-1c0-.5.5-1 1-1h1V3"/></svg>
+            Share on Facebook
+          </button>
+          <button class="sh-btn">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="2" width="10" height="10" rx="1.5"/><path d="M5 6v5M5 4v.5M9 11V8a1 1 0 011-1"/></svg>
+            Share on LinkedIn
+          </button>
+          <button class="sh-btn">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7h10M7 2l5 5-5 5"/></svg>
+            Copy link
+          </button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Right: campaign progress -->
+    <aside>
+      <div class="aside-card">
+        <h4>Cathedral Capital Campaign</h4>
+        <div class="progress">61% to goal · updated live</div>
+        <div class="bar"><div class="bar-fill" style="width:61%"></div></div>
+        <div class="stat-row"><span style="color:var(--text-3)">Raised</span><b>$1,205,650</b></div>
+        <div class="stat-row"><span style="color:var(--text-3)">Goal</span><b>$2,000,000</b></div>
+        <div class="stat-row"><span style="color:var(--text-3)">Donors</span><b>848</b></div>
+        <div class="stat-row"><span style="color:var(--text-3)">Days remaining</span><b>43</b></div>
+        <p style="font-size:11.5px;color:var(--text-3);margin-top:12px;line-height:1.5">
+          You are now donor #848. Your $250 gift bumped us $500 closer to the bell-tower goal (1:1 match).
+        </p>
+      </div>
+
+      <div class="aside-card">
+        <h4>From the rector</h4>
+        <p style="font-size:13px;color:var(--text-2);font-style:italic;line-height:1.55">
+          "Catherine — thank you. Your gift is the kind of quiet, faithful generosity that built this cathedral 138 years ago. I'll write a longer note this week."
+        </p>
+        <p style="font-size:12px;color:var(--text-3);margin-top:10px">— Fr. Michael Reilly</p>
+      </div>
+
+    </aside>
+  </div>
+
+  <footer class="foot" style="margin-top:40px">
+    Powered by GiveCentral · <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Refund policy</a>
+  </footer>
+
+</body>
+</html>

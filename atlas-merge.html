@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral Atlas — Merge records</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:        #0E1E35;
+  --navy-2:      #152844;
+  --navy-3:      #1E3A5F;
+  --blue:        #2563EB;
+  --blue-mid:    #3B82F6;
+  --blue-light:  #DBEAFE;
+  --blue-pale:   #EFF6FF;
+  --teal:        #0D9488;
+  --teal-light:  #CCFBF1;
+  --green:       #15803D;
+  --green-light: #DCFCE7;
+  --amber:       #D97706;
+  --amber-light: #FEF3C7;
+  --rose:        #BE185D;
+  --rose-light:  #FCE7F3;
+  --purple:      #7C3AED;
+  --purple-light:#EDE9FE;
+  --gold:        #B45309;
+  --text:        #0F172A;
+  --text-2:      #334155;
+  --text-3:      #64748B;
+  --border:      #E2E8F0;
+  --border-soft: #EDF2F7;
+  --surface:     #F8FAFC;
+  --white:       #FFFFFF;
+  --sidebar-w:   220px;
+  --shadow-sm:   0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.05);
+  --shadow-md:   0 4px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+}
+
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--text); min-height: 100vh; display: flex; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  width: var(--sidebar-w); background: var(--navy);
+  min-height: 100vh; display: flex; flex-direction: column;
+  flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 18px 18px 14px; display: flex; align-items: center; gap: 9px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.logo-mark {
+  width: 30px; height: 30px; background: var(--blue); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 15px; height: 15px; }
+.logo-text-wrap { display: flex; flex-direction: column; }
+.logo-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: white; line-height: 1; }
+.logo-sub  { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 3px; }
+
+.sidebar-search {
+  margin: 12px 12px 6px; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  cursor: pointer;
+}
+.sidebar-search svg { width: 13px; height: 13px; color: rgba(255,255,255,.3); flex-shrink: 0; }
+.sidebar-search input {
+  background: none; border: none; outline: none; width: 100%;
+  font-size: 12px; color: rgba(255,255,255,.6); font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+.sidebar-search input::placeholder { color: rgba(255,255,255,.3); }
+
+.nav-group { padding: 8px 8px 0; }
+.nav-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.28); padding: 0 10px; margin-bottom: 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+  border-radius: 7px; font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,.55); cursor: pointer; transition: all .15s; margin-bottom: 1px;
+}
+.nav-item:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.85); }
+.nav-item.active { background: var(--blue); color: white; }
+.nav-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: rgba(255,255,255,.12); color: rgba(255,255,255,.6);
+  border-radius: 10px; padding: 1px 7px; font-size: 10px; font-weight: 600;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,.2); color: white; }
+.nav-badge.alert { background: #EF4444; color: white; }
+
+.sidebar-user {
+  margin-top: auto; padding: 12px; border-top: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; transition: background .15s;
+}
+.sidebar-user:hover { background: rgba(255,255,255,.04); }
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.user-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.75); }
+.user-role { font-size: 10px; color: rgba(255,255,255,.35); margin-top: 1px; }
+
+/* ══ MAIN ══ */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 52px;
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.topbar-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.topbar-date { font-size: 12px; color: var(--text-3); }
+.topbar-search {
+  flex: 1;
+  max-width: 460px; margin: 0 18px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+  cursor: text;
+}
+.topbar-search svg { width: 13px; height: 13px; color: var(--text-3); }
+.topbar-search input { background: none; border: none; outline: none; width: 100%; font-size: 12.5px; color: var(--text); font-family: 'DM Sans', sans-serif; }
+.topbar-search input::placeholder { color: var(--text-3); }
+.topbar-search kbd {
+  margin-left: auto; font-size: 10.5px; font-family: 'DM Sans';
+  background: white; border: 1px solid var(--border); border-radius: 4px;
+  padding: 1px 6px; color: var(--text-3);
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.tb-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 7px 13px; border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.tb-btn svg { width: 12px; height: 12px; }
+.tb-ghost   { background: none; border: 1px solid var(--border); color: var(--text-2); }
+.tb-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.tb-primary { background: var(--blue); border: none; color: white; box-shadow: 0 1px 4px rgba(37,99,235,.3); }
+.tb-primary:hover { background: #1D4ED8; }
+.tb-notif {
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+  background: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; transition: background .15s;
+}
+.tb-notif:hover { background: var(--surface); }
+.tb-notif svg { width: 15px; height: 15px; color: var(--text-2); }
+.notif-dot {
+  position: absolute; top: 7px; right: 7px;
+  width: 7px; height: 7px; background: #EF4444; border-radius: 50%;
+  border: 2px solid white;
+}
+
+.dash { padding: 24px; overflow-y: auto; }
+
+/* ══ Common Cards & helpers (used across screens) ══ */
+.card {
+  background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.card-header {
+  padding: 14px 18px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.card-title { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.card-action { font-size: 11px; font-weight: 500; color: var(--blue); cursor: pointer; display: flex; align-items: center; gap: 3px; }
+.card-action:hover { color: #1D4ED8; }
+.card-action svg { width: 10px; height: 10px; }
+.card-body { padding: 14px 18px 18px; }
+
+/* ══ Page header (titles + crumb + actions) ══ */
+.page-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  margin-bottom: 20px;
+}
+.crumb { font-size: 12px; color: var(--text-3); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.crumb a { color: var(--blue); }
+.crumb a:hover { text-decoration: underline; }
+.crumb svg { width: 10px; height: 10px; }
+.page-title {
+  font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: -.02em;
+  color: var(--text); line-height: 1.1;
+}
+.page-sub { color: var(--text-3); font-size: 13px; margin-top: 4px; }
+
+/* ══ Tags & badges (shared) ══ */
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.tag.blue  { background: var(--blue-light);  color: var(--blue); }
+.tag.green { background: var(--green-light); color: var(--green); }
+.tag.amber { background: var(--amber-light); color: var(--amber); }
+.tag.rose  { background: var(--rose-light);  color: var(--rose); }
+.tag.purple{ background: var(--purple-light);color: var(--purple); }
+.tag.grey  { background: var(--surface);     color: var(--text-3); border: 1px solid var(--border); }
+.tag.gold  { background: #FEF3C7;            color: var(--gold); }
+
+/* ══ Inputs ══ */
+.lbl { display: block; font-size: 11px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.lbl .req { color: var(--rose); margin-left: 2px; }
+.fld {
+  width: 100%; font-size: 13px; font-family: 'DM Sans', sans-serif;
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+  background: white; color: var(--text); transition: border-color .15s, box-shadow .15s;
+}
+.fld:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+.fld[disabled] { background: var(--surface); color: var(--text-3); }
+.fld::placeholder { color: #94A3B8; }
+textarea.fld { min-height: 90px; resize: vertical; line-height: 1.5; }
+select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 5l3 3 3-3z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
+
+.btn {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 9px 16px; border-radius: 8px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid transparent; transition: background .15s, border-color .15s, color .15s;
+}
+.btn svg { width: 13px; height: 13px; }
+.btn-primary { background: var(--blue); color: white; box-shadow: 0 1px 4px rgba(37,99,235,.25); }
+.btn-primary:hover { background: #1D4ED8; }
+.btn-ghost   { background: white; border-color: var(--border); color: var(--text-2); }
+.btn-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.btn-rose    { background: var(--rose); color: white; }
+.btn-rose:hover { background: #9D174D; }
+.btn-link    { background: none; color: var(--blue); padding: 6px 8px; }
+.btn-link:hover { color: #1D4ED8; }
+
+/* helpful utilities */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-10 { gap: 10px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; } .gap-20 { gap: 20px; }
+.grow { flex: 1; }
+.muted { color: var(--text-3); }
+.mono  { font-variant-numeric: tabular-nums; }
+.mt-4 { margin-top: 4px; } .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+.mb-4 { margin-bottom: 4px; } .mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
+
+/* Slide-over drawer (used on log-activity, task-modal screens) */
+.scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 30; }
+.drawer {
+  position: fixed; right: 0; top: 0; bottom: 0; width: 560px; max-width: 100vw;
+  background: white; box-shadow: -16px 0 40px rgba(15,23,42,.10); z-index: 31;
+  display: flex; flex-direction: column;
+}
+.drawer-head {
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  flex-shrink: 0;
+}
+.drawer-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); letter-spacing: -.01em; }
+.drawer-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.drawer-x {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); background: white; cursor: pointer;
+}
+.drawer-x:hover { background: var(--surface); }
+.drawer-x svg { width: 13px; height: 13px; color: var(--text-2); }
+.drawer-body { flex: 1; overflow-y: auto; padding: 22px; }
+.drawer-foot {
+  padding: 14px 22px; border-top: 1px solid var(--border);
+  background: var(--surface); display: flex; align-items: center; gap: 8px; justify-content: flex-end;
+  flex-shrink: 0;
+}
+.drawer-foot .left { margin-right: auto; font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
+
+
+.merge-grid { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px; align-items:start; }
+.merge-col { background:white; border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+
+.mc-head { padding:18px 22px; border-bottom:1px solid var(--border-soft); display:flex; align-items:center; gap:12px; }
+.mc-head .av { width:42px; height:42px; border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
+.mc-head .nm { font-family:'DM Serif Display',serif; font-size:16px; color:var(--navy); }
+.mc-head .meta { font-size:11.5px; color:var(--text-3); margin-top:2px; }
+.mc-head .badge { font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:5px; }
+.mc-head .badge.keep { background:var(--green); color:white; }
+.mc-head .badge.merged { background:var(--blue); color:white; }
+.mc-head .badge.discard { background:var(--surface); color:var(--text-3); border:1px solid var(--border); }
+
+.mc-body { padding:8px 22px 18px; display:flex; flex-direction:column; }
+
+.field-row {
+  padding:11px 0; border-bottom:1px solid var(--border-soft);
+  font-size:12.5px;
+}
+.field-row:last-child { border-bottom:none; }
+.field-row .l { font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin-bottom:5px; }
+.field-row .v { color:var(--text); display:flex; align-items:center; gap:8px; }
+.field-row.discard .v { text-decoration:line-through; color:var(--text-3); }
+.field-row.keep .v { font-weight:500; }
+.field-row.keep .v::after { content:''; width:14px; height:14px; border-radius:50%; background:var(--green); color:white; display:inline-flex; align-items:center; justify-content:center; font-size:9px; margin-left:auto; flex-shrink:0; box-shadow:0 0 0 0 transparent; }
+.field-row.keep::after { display:none; }
+
+.merge-toggle {
+  display:flex; gap:6px; margin-top:6px;
+}
+.merge-toggle .opt {
+  flex:1; padding:6px; border-radius:6px; cursor:pointer;
+  font-size:11.5px; font-weight:500; text-align:center;
+  border:1px solid var(--border); background:white; color:var(--text-3);
+}
+.merge-toggle .opt.on { background:var(--blue); border-color:var(--blue); color:white; font-weight:600; }
+.merge-toggle .opt:hover:not(.on) { border-color:#94A3B8; }
+
+/* Merged column */
+.merge-col.merged { background:linear-gradient(135deg, #EFF6FF 0%, white 100%); border-color:var(--blue); box-shadow:0 4px 16px rgba(37,99,235,.10); }
+
+.audit-card { margin-top:18px; background:white; border:1px solid var(--border); border-radius:12px; padding:18px 22px; }
+.audit-card h3 { font-family:'DM Serif Display',serif; font-size:18px; margin-bottom:6px; }
+.audit-card .sub { color:var(--text-3); font-size:13px; margin-bottom:14px; }
+
+.action-bar { margin-top:18px; padding:16px 22px; background:white; border:1px solid var(--border); border-radius:12px; display:flex; align-items:center; gap:12px; }
+.action-bar .left { flex:1; font-size:12.5px; color:var(--text-3); display:flex; gap:8px; align-items:center; }
+.action-bar .left svg { width:14px; height:14px; color:var(--blue); }
+
+</style>
+</head>
+<body>
+
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+      </svg>
+    </div>
+    <div class="logo-text-wrap">
+      <span class="logo-name">GiveCentral</span>
+      <span class="logo-sub">Atlas CRM</span>
+    </div>
+  </div>
+
+  <a href="atlas-search.html" style="display:block;text-decoration:none">
+    <div class="sidebar-search">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+      <input type="text" placeholder="Search donors, gifts…" readonly>
+    </div>
+  </a>
+
+  <div class="nav-group">
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="atlas-dashboard.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item active" href="atlas-donors-list.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+      Donors
+      <span class="nav-badge">3,847</span>
+    </a>
+    <a class="nav-item" href="atlas-batch-entry.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+      Gifts &amp; pledges
+      <span class="nav-badge">142</span>
+    </a>
+    <a class="nav-item" href="atlas-campaign-dashboard.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+      Campaigns
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+      Reports
+    </a>
+  </div>
+
+  <div class="nav-group" style="margin-top:8px">
+    <div class="nav-label">Fundraising</div>
+    <a class="nav-item" href="atlas-pipeline.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+      Prospect pipeline
+      <span class="nav-badge">28</span>
+    </a>
+    <a class="nav-item" href="atlas-tasks.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+      Tasks &amp; reminders
+      <span class="nav-badge alert">7</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+      Communications
+    </a>
+  </div>
+
+  <div class="nav-group" style="margin-top:8px">
+    <div class="nav-label">Intelligence</div>
+    <a class="nav-item" href="atlas-guru-ai.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+      Guru AI
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+      Analytics
+    </a>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">SR</div>
+    <div>
+      <div class="user-name">Sarah Reynolds</div>
+      <div class="user-role">Development Director</div>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
+
+<div class="topbar">
+  <span class="topbar-title">Merge records</span>
+  <span class="topbar-date">Monday, May 4, 2026</span>
+  <a href="atlas-search.html" class="topbar-search">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+    <input type="text" placeholder="Search donors, gifts, campaigns…" readonly style="cursor:pointer">
+    <kbd>⌘K</kbd>
+  </a>
+  <div class="topbar-right">
+    
+    <a href="#" class="tb-notif" title="Notifications">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
+      <div class="notif-dot"></div>
+    </a>
+  </div>
+</div>
+
+<div class="dash">
+
+  <div class="page-head">
+    <div>
+      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <a href="atlas-duplicates.html">Duplicates</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Merge — Kevin Ramirez</span></div>
+      <div class="page-title">Field-level merge</div>
+      <div class="page-sub">98% match · choose which value to keep for each field. Atlas pre-selects the most authoritative value.</div>
+    </div>
+    <div class="flex gap-8">
+      <button class="btn btn-ghost">Apply recommendations</button>
+    </div>
+  </div>
+
+  <div class="merge-grid">
+
+    <!-- Record A -->
+    <div class="merge-col">
+      <div class="mc-head">
+        <div class="av" style="background:#64748B">K</div>
+        <div style="flex:1">
+          <div class="nm">Kevin Ramirez</div>
+          <div class="meta">Created Jan 14, 2024 · 1 gift · $100 lifetime</div>
+        </div>
+        <span class="badge keep">Will be kept</span>
+      </div>
+      <div class="mc-body">
+        <div class="field-row keep">
+          <div class="l">Email</div>
+          <div class="v">kevin.ramirez@email.com</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Phone</div>
+          <div class="v">(555) 821-0413</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Address</div>
+          <div class="v">212 Madison Ave, Albany NY 12203</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Parish</div>
+          <div class="v">St. Mary's Cathedral · since Jan 2024</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Largest gift</div>
+          <div class="v">$100 · Mar 2024</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Constituent code</div>
+          <div class="v">First-time donor</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Notes</div>
+          <div class="v" style="font-style:italic;color:var(--text-2)">"Met at Mass — interested in becoming recurring."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Record B -->
+    <div class="merge-col">
+      <div class="mc-head">
+        <div class="av" style="background:#2563EB">K</div>
+        <div style="flex:1">
+          <div class="nm">Kevin J. Ramirez</div>
+          <div class="meta">Created May 4, 2026 · 1 gift · $50</div>
+        </div>
+        <span class="badge discard">Will be discarded</span>
+      </div>
+      <div class="mc-body">
+        <div class="field-row discard">
+          <div class="l">Email</div>
+          <div class="v">kevin.ramirez@email.com (same)</div>
+        </div>
+        <div class="field-row discard">
+          <div class="l">Phone</div>
+          <div class="v">(555) 821-0413 (same)</div>
+        </div>
+        <div class="field-row discard">
+          <div class="l">Address</div>
+          <div class="v">212 Madison Ave, Albany NY (same)</div>
+        </div>
+        <div class="field-row discard">
+          <div class="l">Parish</div>
+          <div class="v">St. Mary's Cathedral (no date)</div>
+        </div>
+        <div class="field-row">
+          <div class="l">Largest gift</div>
+          <div class="v">$50 · May 2026 (this one)</div>
+          <div class="merge-toggle">
+            <div class="opt">Keep A's $100</div>
+            <div class="opt on">Add to history</div>
+          </div>
+        </div>
+        <div class="field-row discard">
+          <div class="l">Constituent code</div>
+          <div class="v">— (none)</div>
+        </div>
+        <div class="field-row">
+          <div class="l">Middle name "J."</div>
+          <div class="v">Add to record A?</div>
+          <div class="merge-toggle">
+            <div class="opt">Skip</div>
+            <div class="opt on">Add</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Merged result -->
+    <div class="merge-col merged">
+      <div class="mc-head" style="background:linear-gradient(135deg, #DBEAFE, #EFF6FF);border-bottom-color:#BFDBFE">
+        <div class="av" style="background:#2563EB">K</div>
+        <div style="flex:1">
+          <div class="nm" style="color:var(--blue)">Kevin J. Ramirez</div>
+          <div class="meta">Merged record · 2 gifts · $150 lifetime</div>
+        </div>
+        <span class="badge merged">Preview</span>
+      </div>
+      <div class="mc-body">
+        <div class="field-row keep">
+          <div class="l">Email</div>
+          <div class="v">kevin.ramirez@email.com</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Phone</div>
+          <div class="v">(555) 821-0413</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Address</div>
+          <div class="v">212 Madison Ave, Albany NY 12203</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Parish</div>
+          <div class="v">St. Mary's Cathedral · since Jan 2024</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Largest gift</div>
+          <div class="v">$100 · Mar 2024</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Gift history</div>
+          <div class="v">$100 (Mar 2024) + $50 (May 2026)</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Middle name</div>
+          <div class="v">J.</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Constituent code</div>
+          <div class="v">First-time donor</div>
+        </div>
+        <div class="field-row keep">
+          <div class="l">Notes</div>
+          <div class="v" style="font-style:italic;color:var(--text-2)">"Met at Mass — interested in becoming recurring."</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Audit notes -->
+  <div class="audit-card">
+    <h3>Audit notes</h3>
+    <p class="sub">Required for high-stakes merges. Kept on the immutable audit log for 7 years.</p>
+    <textarea class="fld" placeholder="Why are you merging these records?">98% match — same email, phone, and address. Newer record was auto-created by GiveCentral sync from Apple Pay gift; the original from Jan 2024 has gift history we want to preserve. Adding the middle initial "J." Reverse-merge available for 30 days.</textarea>
+  </div>
+
+  <div class="action-bar">
+    <div class="left">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v3.5M7 9v.5"/></svg>
+      <strong style="color:var(--text-2)">Reverse-merge available for 30 days</strong> · the pre-merge state of both records is preserved automatically.
+    </div>
+    <button class="btn btn-ghost" onclick="window.location='atlas-duplicates.html'">Cancel</button>
+    <button class="btn btn-ghost">Save as decision (don't merge yet)</button>
+    <button class="btn btn-primary" onclick="alert('Records merged · audit entry created · reverse-merge available until June 3, 2026'); window.location='atlas-duplicates.html'">
+      <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+      Merge records
+    </button>
+  </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

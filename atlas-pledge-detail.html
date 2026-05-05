@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral Atlas — Pledge detail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:        #0E1E35;
+  --navy-2:      #152844;
+  --navy-3:      #1E3A5F;
+  --blue:        #2563EB;
+  --blue-mid:    #3B82F6;
+  --blue-light:  #DBEAFE;
+  --blue-pale:   #EFF6FF;
+  --teal:        #0D9488;
+  --teal-light:  #CCFBF1;
+  --green:       #15803D;
+  --green-light: #DCFCE7;
+  --amber:       #D97706;
+  --amber-light: #FEF3C7;
+  --rose:        #BE185D;
+  --rose-light:  #FCE7F3;
+  --purple:      #7C3AED;
+  --purple-light:#EDE9FE;
+  --gold:        #B45309;
+  --text:        #0F172A;
+  --text-2:      #334155;
+  --text-3:      #64748B;
+  --border:      #E2E8F0;
+  --border-soft: #EDF2F7;
+  --surface:     #F8FAFC;
+  --white:       #FFFFFF;
+  --sidebar-w:   220px;
+  --shadow-sm:   0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.05);
+  --shadow-md:   0 4px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+}
+
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--text); min-height: 100vh; display: flex; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  width: var(--sidebar-w); background: var(--navy);
+  min-height: 100vh; display: flex; flex-direction: column;
+  flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 18px 18px 14px; display: flex; align-items: center; gap: 9px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.logo-mark {
+  width: 30px; height: 30px; background: var(--blue); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 15px; height: 15px; }
+.logo-text-wrap { display: flex; flex-direction: column; }
+.logo-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: white; line-height: 1; }
+.logo-sub  { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 3px; }
+
+.sidebar-search {
+  margin: 12px 12px 6px; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  cursor: pointer;
+}
+.sidebar-search svg { width: 13px; height: 13px; color: rgba(255,255,255,.3); flex-shrink: 0; }
+.sidebar-search input {
+  background: none; border: none; outline: none; width: 100%;
+  font-size: 12px; color: rgba(255,255,255,.6); font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+.sidebar-search input::placeholder { color: rgba(255,255,255,.3); }
+
+.nav-group { padding: 8px 8px 0; }
+.nav-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.28); padding: 0 10px; margin-bottom: 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+  border-radius: 7px; font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,.55); cursor: pointer; transition: all .15s; margin-bottom: 1px;
+}
+.nav-item:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.85); }
+.nav-item.active { background: var(--blue); color: white; }
+.nav-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: rgba(255,255,255,.12); color: rgba(255,255,255,.6);
+  border-radius: 10px; padding: 1px 7px; font-size: 10px; font-weight: 600;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,.2); color: white; }
+.nav-badge.alert { background: #EF4444; color: white; }
+
+.sidebar-user {
+  margin-top: auto; padding: 12px; border-top: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; transition: background .15s;
+}
+.sidebar-user:hover { background: rgba(255,255,255,.04); }
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.user-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.75); }
+.user-role { font-size: 10px; color: rgba(255,255,255,.35); margin-top: 1px; }
+
+/* ══ MAIN ══ */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 52px;
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.topbar-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.topbar-date { font-size: 12px; color: var(--text-3); }
+.topbar-search {
+  flex: 1;
+  max-width: 460px; margin: 0 18px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+  cursor: text;
+}
+.topbar-search svg { width: 13px; height: 13px; color: var(--text-3); }
+.topbar-search input { background: none; border: none; outline: none; width: 100%; font-size: 12.5px; color: var(--text); font-family: 'DM Sans', sans-serif; }
+.topbar-search input::placeholder { color: var(--text-3); }
+.topbar-search kbd {
+  margin-left: auto; font-size: 10.5px; font-family: 'DM Sans';
+  background: white; border: 1px solid var(--border); border-radius: 4px;
+  padding: 1px 6px; color: var(--text-3);
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.tb-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 7px 13px; border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.tb-btn svg { width: 12px; height: 12px; }
+.tb-ghost   { background: none; border: 1px solid var(--border); color: var(--text-2); }
+.tb-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.tb-primary { background: var(--blue); border: none; color: white; box-shadow: 0 1px 4px rgba(37,99,235,.3); }
+.tb-primary:hover { background: #1D4ED8; }
+.tb-notif {
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+  background: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; transition: background .15s;
+}
+.tb-notif:hover { background: var(--surface); }
+.tb-notif svg { width: 15px; height: 15px; color: var(--text-2); }
+.notif-dot {
+  position: absolute; top: 7px; right: 7px;
+  width: 7px; height: 7px; background: #EF4444; border-radius: 50%;
+  border: 2px solid white;
+}
+
+.dash { padding: 24px; overflow-y: auto; }
+
+/* ══ Common Cards & helpers (used across screens) ══ */
+.card {
+  background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.card-header {
+  padding: 14px 18px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.card-title { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.card-action { font-size: 11px; font-weight: 500; color: var(--blue); cursor: pointer; display: flex; align-items: center; gap: 3px; }
+.card-action:hover { color: #1D4ED8; }
+.card-action svg { width: 10px; height: 10px; }
+.card-body { padding: 14px 18px 18px; }
+
+/* ══ Page header (titles + crumb + actions) ══ */
+.page-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  margin-bottom: 20px;
+}
+.crumb { font-size: 12px; color: var(--text-3); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.crumb a { color: var(--blue); }
+.crumb a:hover { text-decoration: underline; }
+.crumb svg { width: 10px; height: 10px; }
+.page-title {
+  font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: -.02em;
+  color: var(--text); line-height: 1.1;
+}
+.page-sub { color: var(--text-3); font-size: 13px; margin-top: 4px; }
+
+/* ══ Tags & badges (shared) ══ */
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.tag.blue  { background: var(--blue-light);  color: var(--blue); }
+.tag.green { background: var(--green-light); color: var(--green); }
+.tag.amber { background: var(--amber-light); color: var(--amber); }
+.tag.rose  { background: var(--rose-light);  color: var(--rose); }
+.tag.purple{ background: var(--purple-light);color: var(--purple); }
+.tag.grey  { background: var(--surface);     color: var(--text-3); border: 1px solid var(--border); }
+.tag.gold  { background: #FEF3C7;            color: var(--gold); }
+
+/* ══ Inputs ══ */
+.lbl { display: block; font-size: 11px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.lbl .req { color: var(--rose); margin-left: 2px; }
+.fld {
+  width: 100%; font-size: 13px; font-family: 'DM Sans', sans-serif;
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+  background: white; color: var(--text); transition: border-color .15s, box-shadow .15s;
+}
+.fld:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+.fld[disabled] { background: var(--surface); color: var(--text-3); }
+.fld::placeholder { color: #94A3B8; }
+textarea.fld { min-height: 90px; resize: vertical; line-height: 1.5; }
+select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 5l3 3 3-3z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
+
+.btn {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 9px 16px; border-radius: 8px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid transparent; transition: background .15s, border-color .15s, color .15s;
+}
+.btn svg { width: 13px; height: 13px; }
+.btn-primary { background: var(--blue); color: white; box-shadow: 0 1px 4px rgba(37,99,235,.25); }
+.btn-primary:hover { background: #1D4ED8; }
+.btn-ghost   { background: white; border-color: var(--border); color: var(--text-2); }
+.btn-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.btn-rose    { background: var(--rose); color: white; }
+.btn-rose:hover { background: #9D174D; }
+.btn-link    { background: none; color: var(--blue); padding: 6px 8px; }
+.btn-link:hover { color: #1D4ED8; }
+
+/* helpful utilities */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-10 { gap: 10px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; } .gap-20 { gap: 20px; }
+.grow { flex: 1; }
+.muted { color: var(--text-3); }
+.mono  { font-variant-numeric: tabular-nums; }
+.mt-4 { margin-top: 4px; } .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+.mb-4 { margin-bottom: 4px; } .mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
+
+/* Slide-over drawer (used on log-activity, task-modal screens) */
+.scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 30; }
+.drawer {
+  position: fixed; right: 0; top: 0; bottom: 0; width: 560px; max-width: 100vw;
+  background: white; box-shadow: -16px 0 40px rgba(15,23,42,.10); z-index: 31;
+  display: flex; flex-direction: column;
+}
+.drawer-head {
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  flex-shrink: 0;
+}
+.drawer-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); letter-spacing: -.01em; }
+.drawer-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.drawer-x {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); background: white; cursor: pointer;
+}
+.drawer-x:hover { background: var(--surface); }
+.drawer-x svg { width: 13px; height: 13px; color: var(--text-2); }
+.drawer-body { flex: 1; overflow-y: auto; padding: 22px; }
+.drawer-foot {
+  padding: 14px 22px; border-top: 1px solid var(--border);
+  background: var(--surface); display: flex; align-items: center; gap: 8px; justify-content: flex-end;
+  flex-shrink: 0;
+}
+.drawer-foot .left { margin-right: auto; font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
+
+
+.pl-hero {
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%); color:white;
+  border-radius:16px; padding:28px 32px; margin-bottom:22px; position:relative; overflow:hidden;
+}
+.pl-hero::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(circle at 90% 30%, rgba(196,151,58,.18), transparent 55%),
+             radial-gradient(circle at 10% 90%, rgba(37,99,235,.15), transparent 60%);
+}
+.pl-hero-inner { position:relative; }
+.pl-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:99px; background:rgba(196,151,58,.18); border:1px solid rgba(196,151,58,.32); color:#FCD34D; font-size:10.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:12px; }
+.pl-h { font-family:'DM Serif Display',serif; font-size:32px; line-height:1.1; letter-spacing:-.4px; }
+.pl-d { color:rgba(219,234,254,.75); font-size:13.5px; margin-top:6px; }
+
+.pl-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:24px; padding-top:24px; border-top:1px solid rgba(255,255,255,.10); }
+.pl-stat .num { font-family:'DM Serif Display',serif; font-size:30px; line-height:1; margin-bottom:6px; }
+.pl-stat .num.green { color:#86EFAC; }
+.pl-stat .num.gold  { color:#FCD34D; }
+.pl-stat .lbl { font-size:11px; color:rgba(219,234,254,.65); text-transform:uppercase; letter-spacing:.05em; }
+.pl-progress {
+  margin-top:16px; height:8px; background:rgba(255,255,255,.10); border-radius:99px; overflow:hidden;
+}
+.pl-progress-fill { background:linear-gradient(90deg, #FCD34D, #C4973A); height:100%; border-radius:99px; }
+
+.pl-grid { display:grid; grid-template-columns:1.8fr 1fr; gap:20px; align-items:start; }
+
+.card { background:white; border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.card + .card { margin-top:14px; }
+.card-header { padding:14px 22px 0; display:flex; align-items:center; justify-content:space-between; }
+.card-title { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); }
+.card-body { padding:14px 22px 22px; }
+
+.schedule-row {
+  display:grid; grid-template-columns: 30px 1fr 110px 120px 120px 80px; gap:12px; align-items:center;
+  padding:12px 14px; border:1px solid var(--border); border-radius:10px; margin-bottom:6px;
+  font-size:13px; transition:border-color .12s;
+}
+.schedule-row.paid { background:#F0FDF4; border-color:#86EFAC; }
+.schedule-row.due  { background:#FFFBEB; border-color:#FBBF24; }
+.schedule-row.future { background:white; }
+
+.schedule-row .num {
+  width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:var(--surface); border:1.5px solid var(--border); color:var(--text-3); font-size:11px; font-weight:700;
+}
+.schedule-row.paid .num { background:var(--green); border-color:var(--green); color:white; }
+.schedule-row.due  .num { background:var(--amber); border-color:var(--amber); color:white; }
+
+.schedule-row .body .d { color:var(--text); font-weight:500; }
+.schedule-row .body .x { color:var(--text-3); font-size:11.5px; margin-top:2px; }
+.schedule-row .amt { font-weight:600; color:var(--text); text-align:right; }
+.schedule-row .status { font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; }
+.schedule-row .ref a { color:var(--blue); font-size:12px; }
+.schedule-row .actions { text-align:right; }
+
+.timeline { display:flex; flex-direction:column; gap:0; }
+.timeline-row { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border-soft); }
+.timeline-row:last-child { border-bottom:none; }
+.timeline-row .ico { width:30px; height:30px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.timeline-row .ico.green { background:var(--green-light); color:var(--green); }
+.timeline-row .ico.blue  { background:var(--blue-light); color:var(--blue); }
+.timeline-row .ico.amber { background:var(--amber-light); color:var(--amber); }
+.timeline-row .ico.gold  { background:var(--gold-light); color:var(--gold); }
+.timeline-row .body .t { font-size:13px; color:var(--text); font-weight:500; }
+.timeline-row .body .d { font-size:11.5px; color:var(--text-3); margin-top:2px; }
+
+.aside-card { background:white; border:1px solid var(--border); border-radius:14px; padding:18px 20px; }
+.aside-card + .aside-card { margin-top:14px; }
+.aside-card h4 { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin-bottom:14px; }
+
+.donor-mini { display:flex; align-items:center; gap:12px; }
+.donor-mini .av { width:42px; height:42px; border-radius:50%; background:var(--rose); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; }
+.donor-mini .nm { font-weight:600; font-size:14px; color:var(--navy); }
+.donor-mini .meta { font-size:11.5px; color:var(--text-3); margin-top:2px; }
+
+.detail-list { display:flex; flex-direction:column; gap:0; }
+.detail-list .row { display:flex; justify-content:space-between; padding:8px 0; font-size:12.5px; border-bottom:1px dashed var(--border-soft); }
+.detail-list .row:last-child { border-bottom:none; }
+.detail-list .l { color:var(--text-3); }
+.detail-list .v { color:var(--text); font-weight:500; }
+
+.docusign-pill {
+  display:flex; align-items:center; gap:10px;
+  background:linear-gradient(135deg,#FBF4E8,white); border:1px solid #F1D78F; border-radius:11px;
+  padding:12px 14px; margin-top:14px;
+}
+.docusign-pill .ico { width:30px; height:30px; border-radius:7px; background:var(--gold); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; flex-shrink:0; }
+.docusign-pill .body { flex:1; font-size:12.5px; color:var(--navy); }
+.docusign-pill .body small { display:block; color:var(--text-3); }
+
+</style>
+</head>
+<body>
+
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+      </svg>
+    </div>
+    <div class="logo-text-wrap">
+      <span class="logo-name">GiveCentral</span>
+      <span class="logo-sub">Atlas CRM</span>
+    </div>
+  </div>
+
+  <a href="atlas-search.html" style="display:block;text-decoration:none">
+    <div class="sidebar-search">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+      <input type="text" placeholder="Search donors, gifts…" readonly>
+    </div>
+  </a>
+
+  <div class="nav-group">
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="atlas-dashboard.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" href="atlas-donors-list.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+      Donors
+      <span class="nav-badge">3,847</span>
+    </a>
+    <a class="nav-item active" href="atlas-batch-entry.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+      Gifts &amp; pledges
+      <span class="nav-badge">142</span>
+    </a>
+    <a class="nav-item" href="atlas-campaign-dashboard.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+      Campaigns
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+      Reports
+    </a>
+  </div>
+
+  <div class="nav-group" style="margin-top:8px">
+    <div class="nav-label">Fundraising</div>
+    <a class="nav-item" href="atlas-pipeline.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+      Prospect pipeline
+      <span class="nav-badge">28</span>
+    </a>
+    <a class="nav-item" href="atlas-tasks.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+      Tasks &amp; reminders
+      <span class="nav-badge alert">7</span>
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+      Communications
+    </a>
+  </div>
+
+  <div class="nav-group" style="margin-top:8px">
+    <div class="nav-label">Intelligence</div>
+    <a class="nav-item" href="atlas-guru-ai.html">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+      Guru AI
+    </a>
+    <a class="nav-item" href="#">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+      Analytics
+    </a>
+  </div>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">SR</div>
+    <div>
+      <div class="user-name">Sarah Reynolds</div>
+      <div class="user-role">Development Director</div>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
+
+<div class="topbar">
+  <span class="topbar-title">Pledge PL-2026-094</span>
+  <span class="topbar-date">Monday, May 4, 2026</span>
+  <a href="atlas-search.html" class="topbar-search">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+    <input type="text" placeholder="Search donors, gifts, campaigns…" readonly style="cursor:pointer">
+    <kbd>⌘K</kbd>
+  </a>
+  <div class="topbar-right">
+    
+    <a href="#" class="tb-notif" title="Notifications">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
+      <div class="notif-dot"></div>
+    </a>
+  </div>
+</div>
+
+<div class="dash">
+
+  <div class="page-head">
+    <div>
+      <div class="crumb">
+        <a href="atlas-dashboard.html">Atlas</a>
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg>
+        <a href="atlas-donor-360.html">Margaret O'Brien</a>
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg>
+        <span>Pledge PL-2026-094</span>
+      </div>
+    </div>
+    <div class="flex gap-8">
+      <button class="btn btn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1.5v8M3.5 6.5L7 9.5l3.5-3M2 12h10"/></svg>Export PDF</button>
+      <button class="btn btn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 5l5 3 5-3v6H2zM2 5h10"/></svg>Email statement</button>
+      <button class="btn btn-primary"><svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M7 1v12M1 7h12"/></svg>Record payment</button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="pl-hero">
+    <div class="pl-hero-inner">
+      <span class="pl-tag">★ Capital pledge · 3-year</span>
+      <h1 class="pl-h">$30,000 to Cathedral Restoration</h1>
+      <p class="pl-d">Made by Margaret O'Brien on May 4, 2026 · 3 annual instalments · $10,000 each year through June 2028.</p>
+
+      <div class="pl-progress"><div class="pl-progress-fill" style="width:33%"></div></div>
+
+      <div class="pl-stats">
+        <div class="pl-stat"><div class="num green">$10,000</div><div class="lbl">Paid · 1 instalment</div></div>
+        <div class="pl-stat"><div class="num gold">$20,000</div><div class="lbl">Outstanding</div></div>
+        <div class="pl-stat"><div class="num">Jun 30, 2027</div><div class="lbl">Next due</div></div>
+        <div class="pl-stat"><div class="num">Active</div><div class="lbl">On schedule</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-grid">
+
+    <!-- LEFT: schedule + activity -->
+    <main>
+
+      <!-- Payment schedule -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Payment schedule</span>
+          <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px">Add custom payment</button>
+        </div>
+        <div class="card-body">
+
+          <div class="schedule-row paid">
+            <div class="num">✓</div>
+            <div class="body"><div class="d">Installment 1 of 3</div><div class="x">Cash · paid May 4, 2026 · receipt #R-2026-0148</div></div>
+            <div class="amt mono">$10,000.00</div>
+            <div class="status" style="background:var(--green-light);color:var(--green)">Paid</div>
+            <div class="ref"><a href="atlas-donor-360.html">View gift →</a></div>
+            <div class="actions"><span class="muted" style="font-size:12px">·</span></div>
+          </div>
+
+          <div class="schedule-row due">
+            <div class="num">2</div>
+            <div class="body"><div class="d">Installment 2 of 3</div><div class="x">Reminder will fire June 16 (14 days before due)</div></div>
+            <div class="amt mono">$10,000.00</div>
+            <div class="status" style="background:var(--amber-light);color:var(--amber)">Due Jun 30, 2027</div>
+            <div class="ref"><span class="muted" style="font-size:12px">—</span></div>
+            <div class="actions"><a href="atlas-gift-entry.html" style="font-size:12px;color:var(--blue)">Record →</a></div>
+          </div>
+
+          <div class="schedule-row future">
+            <div class="num">3</div>
+            <div class="body"><div class="d">Installment 3 of 3</div><div class="x">Final payment · closes the pledge</div></div>
+            <div class="amt mono">$10,000.00</div>
+            <div class="status" style="background:var(--surface);color:var(--text-3);border:1px solid var(--border)">Due Jun 30, 2028</div>
+            <div class="ref"><span class="muted" style="font-size:12px">—</span></div>
+            <div class="actions"><span class="muted" style="font-size:12px">·</span></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Activity timeline -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Activity</span>
+          <a class="card-action" href="atlas-log-activity.html">+ Log activity</a>
+        </div>
+        <div class="card-body">
+          <div class="timeline">
+
+            <div class="timeline-row">
+              <div class="ico green">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 8l2 2 4-4"/></svg>
+              </div>
+              <div class="body">
+                <div class="t">First instalment paid · $10,000 cash</div>
+                <div class="d">May 4, 2026 · 2:51 PM · gift recorded by Sarah Reynolds · receipt R-2026-0148</div>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="ico gold">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3h10v10H3zM3 7h10M3 11h10"/></svg>
+              </div>
+              <div class="body">
+                <div class="t">DocuSign gift agreement sent</div>
+                <div class="d">May 4, 2026 · 3:20 PM · envelope #DS-2926 · awaiting Margaret's signature · cc: Bridget</div>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="ico blue">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l2 1.5"/></svg>
+              </div>
+              <div class="body">
+                <div class="t">Pledge created · $30,000 over 3 years</div>
+                <div class="d">May 4, 2026 · 3:18 PM · solicitor Sarah Reynolds · linked to Cathedral Capital Campaign</div>
+              </div>
+            </div>
+
+            <div class="timeline-row">
+              <div class="ico amber">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 13c0-3 2-5 5-5s5 2 5 5"/><circle cx="8" cy="5" r="3"/></svg>
+              </div>
+              <div class="body">
+                <div class="t">Cultivation visit — Cathedral capital ask discussed</div>
+                <div class="d">May 4, 2026 · 2:30–3:45 PM · outcome: positive · $30k verbal commitment confirmed</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- RIGHT: details rail -->
+    <aside>
+
+      <div class="aside-card">
+        <h4>Donor</h4>
+        <div class="donor-mini">
+          <div class="av">M</div>
+          <div>
+            <div class="nm">Margaret O'Brien</div>
+            <div class="meta">Major donor · St. Mary's Cathedral</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <a class="btn btn-ghost" style="flex:1;justify-content:center;padding:8px;font-size:12px" href="atlas-donor-360.html">Donor 360</a>
+          <a class="btn btn-ghost" style="flex:1;justify-content:center;padding:8px;font-size:12px" href="atlas-meeting-brief.html">Meeting brief</a>
+        </div>
+      </div>
+
+      <div class="aside-card">
+        <h4>Pledge details</h4>
+        <div class="detail-list">
+          <div class="row"><span class="l">Pledge ID</span><span class="v mono">PL-2026-094</span></div>
+          <div class="row"><span class="l">Status</span><span class="v"><span class="tag green">Active · on schedule</span></span></div>
+          <div class="row"><span class="l">Type</span><span class="v">Capital · multi-year</span></div>
+          <div class="row"><span class="l">Campaign</span><span class="v">Cathedral Capital 2026</span></div>
+          <div class="row"><span class="l">Fund</span><span class="v">Cathedral Restoration</span></div>
+          <div class="row"><span class="l">Legal entity</span><span class="v">Diocese of Albany</span></div>
+          <div class="row"><span class="l">GL code</span><span class="v">4001</span></div>
+          <div class="row"><span class="l">Soft credit</span><span class="v">Peter Smith — 100%</span></div>
+          <div class="row"><span class="l">Solicitor</span><span class="v">Sarah Reynolds</span></div>
+          <div class="row"><span class="l">Reminder</span><span class="v">14 days before · email + task</span></div>
+          <div class="row"><span class="l">Lapse rule</span><span class="v">60 days after missed</span></div>
+        </div>
+      </div>
+
+      <div class="aside-card">
+        <h4>Gift agreement</h4>
+        <div class="docusign-pill">
+          <div class="ico">D</div>
+          <div class="body">
+            <strong>Cathedral Capital · 3-year</strong>
+            <small>DocuSign envelope #DS-2926 · sent May 4 · awaiting signature</small>
+          </div>
+        </div>
+        <a class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:10px" href="atlas-docusign-agreements.html">View envelope →</a>
+      </div>
+
+      <div class="aside-card">
+        <h4>Quick actions</h4>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <a class="btn btn-ghost" href="atlas-gift-entry.html">Record next instalment</a>
+          <a class="btn btn-ghost" href="atlas-email-compose.html">Send pledge statement</a>
+          <a class="btn btn-ghost" href="atlas-task-modal.html">Add reminder task</a>
+          <a class="btn btn-ghost" style="color:var(--rose)">Write off pledge</a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+</div>
+
+</div>
+
+</body>
+</html>
