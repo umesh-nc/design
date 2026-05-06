@@ -279,12 +279,13 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 .wiz-shell { display:grid; grid-template-columns: 240px 1fr; gap:24px; align-items:start; max-width:1080px; }
 .wiz-stepper { background:white; border:1px solid var(--border); border-radius:14px; padding:22px 18px; position:sticky; top:78px; }
 .wiz-stepper .ttl { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin-bottom:14px; }
-.wiz-step { display:flex; align-items:flex-start; gap:12px; padding:10px 0; position:relative; }
+.wiz-step { display:flex; align-items:flex-start; gap:12px; padding:10px 0; position:relative; cursor:pointer; transition:opacity .15s; }
 .wiz-step + .wiz-step::before { content:''; position:absolute; left:13px; top:-4px; width:2px; height:14px; background:var(--border); }
 .wiz-step.done + .wiz-step::before { background:var(--green); }
 .wiz-step .dot { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--surface); border:1.5px solid var(--border); color:var(--text-3); font-size:11px; font-weight:700; flex-shrink:0; }
 .wiz-step.done .dot { background:var(--green); border-color:var(--green); color:white; }
 .wiz-step.cur  .dot { background:var(--blue); border-color:var(--blue); color:white; }
+.wiz-step.disabled { opacity:.5; cursor:not-allowed; }
 .wiz-step .nm { font-size:13px; font-weight:500; color:var(--text); }
 .wiz-step.cur .nm { color:var(--blue); }
 .wiz-step .sub { font-size:11.5px; color:var(--text-3); margin-top:2px; }
@@ -293,13 +294,22 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 .wiz-h { font-family:'DM Serif Display',serif; font-size:24px; letter-spacing:-.02em; margin-bottom:6px; }
 .wiz-sub { color:var(--text-3); font-size:13px; margin-bottom:24px; }
 
+.wiz-panel { display:none; }
+.wiz-panel.active { display:block; }
+
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+.section-h { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin:24px 0 12px; padding-top:18px; border-top:1px solid var(--border); }
+.section-h:first-of-type { padding-top:0; border-top:none; margin-top:0; }
+
 /* Type cards */
 .type-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 .type-card {
   border:2px solid var(--border); border-radius:14px; padding:20px; cursor:pointer;
   transition:all .15s; background:white;
 }
-.type-card:hover { border-color:#94A3B8; }
+.type-card:hover { border-color:#94A3B8; transform:translateY(-1px); }
 .type-card.on { border-color:var(--blue); background:var(--blue-pale); }
 .type-card .ico { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:12px; background:var(--blue-light); color:var(--blue); }
 .type-card.gold .ico { background:#FBF4E8; color:var(--gold); }
@@ -310,126 +320,254 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 .type-card .d { font-size:12.5px; color:var(--text-3); line-height:1.45; margin-bottom:10px; }
 .type-card .examples { font-size:11px; color:var(--text-3); }
 .type-card .examples b { color:var(--text-2); font-weight:600; }
+.type-card .template-note { font-size:10.5px; color:var(--blue); font-weight:600; margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); }
 
-.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
-
-.section-h { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin:24px 0 12px; padding-top:18px; border-top:1px solid var(--border); }
-.section-h:first-of-type { margin-top:0; padding-top:0; border-top:none; }
-
-.hierarchy {
-  background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:14px 18px;
-}
-.h-node { display:flex; align-items:center; gap:10px; padding:8px 0; }
-.h-node .indent { width:14px; flex-shrink:0; }
-.h-node .ico-sm { width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:11px; font-weight:700; }
+/* Hierarchy builder */
+.hierarchy { background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:18px; }
+.h-node { display:grid; grid-template-columns: 24px 32px 1fr 110px 110px 32px; gap:10px; align-items:center; padding:10px 8px; border-radius:8px; transition:background .12s; }
+.h-node:hover { background:white; }
+.h-node .indent {}
+.h-node .ico-sm { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:11px; font-weight:700; }
 .h-node .ico-sm.c { background:var(--purple); color:white; }
 .h-node .ico-sm.a { background:var(--blue); color:white; }
 .h-node .ico-sm.f { background:var(--green); color:white; }
-.h-node .nm { flex:1; font-size:13px; color:var(--text); font-weight:500; }
-.h-node .nm small { display:block; color:var(--text-3); font-weight:400; font-size:11.5px; margin-top:2px; }
-.h-node .v { font-variant-numeric:tabular-nums; font-size:13px; font-weight:600; color:var(--text); }
-.h-node .x { color:var(--text-3); cursor:pointer; padding:4px 6px; }
-.h-node .x:hover { background:white; border-radius:5px; color:var(--rose); }
+.h-node .nm-input {
+  background:transparent; border:none; outline:none; font-size:13.5px; color:var(--text); font-weight:500;
+  font-family:'DM Sans',sans-serif; width:100%; padding:4px 6px; border-radius:5px;
+}
+.h-node .nm-input:focus { background:var(--blue-pale); }
+.h-node .nm-input.appeal { font-size:13px; }
+.h-node .nm-input.fund { font-size:12.5px; }
+.h-node .meta-input { background:transparent; border:none; outline:none; font-size:11.5px; color:var(--text-3); width:100%; padding:2px 6px; }
+.h-node .meta-input:focus { background:var(--blue-pale); color:var(--text-2); }
+.h-node .goal-input {
+  border:1px solid var(--border); border-radius:6px; padding:5px 8px; font-size:12.5px;
+  font-variant-numeric:tabular-nums; text-align:right; background:white; width:100%;
+  font-family:'DM Sans',sans-serif;
+}
+.h-node .goal-input:focus { outline:none; border-color:var(--blue); }
+.h-node .x-btn { background:none; border:none; color:var(--text-3); cursor:pointer; padding:4px; border-radius:5px; font-size:14px; }
+.h-node .x-btn:hover { background:var(--rose-light); color:var(--rose); }
 
-.add-node { padding:10px; border:1px dashed var(--border); border-radius:9px; font-size:12.5px; color:var(--text-3); cursor:pointer; display:flex; align-items:center; gap:8px; margin-top:8px; }
+.add-node { padding:10px; border:1.5px dashed var(--border); border-radius:9px; font-size:12.5px; color:var(--text-3); cursor:pointer; display:flex; align-items:center; gap:8px; margin-top:6px; transition:border-color .12s, color .12s; }
 .add-node:hover { border-color:var(--blue); color:var(--blue); }
 .add-node.appeal { margin-left:32px; }
 .add-node.fund { margin-left:64px; }
+.add-node svg { width:13px; height:13px; }
 
-.wiz-foot { margin-top:24px; padding-top:20px; border-top:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+.goal-summary { margin-top:16px; padding:14px 16px; background:var(--blue-pale); border:1px solid var(--blue-light); border-radius:11px; display:flex; gap:14px; align-items:center; }
+.goal-summary .l { font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--blue); }
+.goal-summary .v { font-family:'DM Serif Display',serif; font-size:18px; color:var(--navy); }
+.goal-summary .ok { color:var(--green); font-size:12px; font-weight:600; margin-left:auto; }
+.goal-summary .warn { color:var(--amber); font-size:12px; font-weight:600; margin-left:auto; }
+
+/* Solicitor multi-select */
+.sol-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.sol-card { padding:12px 14px; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:10px; background:white; transition:all .15s; }
+.sol-card:hover { border-color:#94A3B8; }
+.sol-card.on { border-color:var(--blue); background:var(--blue-pale); }
+.sol-card .av { width:34px; height:34px; border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
+.sol-card .body .nm { font-weight:600; font-size:13px; color:var(--navy); }
+.sol-card .body .role { font-size:11.5px; color:var(--text-3); margin-top:2px; }
+.sol-card .check { margin-left:auto; width:18px; height:18px; border:1.5px solid var(--border); border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:11px; color:white; }
+.sol-card.on .check { background:var(--blue); border-color:var(--blue); }
+
+/* Review block */
+.review-block { background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:18px 22px; margin-bottom:14px; }
+.review-block h4 { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.review-block h4 a { color:var(--blue); font-size:11px; font-weight:500; text-transform:none; letter-spacing:0; margin-left:auto; cursor:pointer; }
+.review-row { display:flex; gap:14px; padding:6px 0; font-size:13px; border-bottom:1px dashed var(--border-soft); }
+.review-row:last-child { border-bottom:none; }
+.review-row .l { width:140px; color:var(--text-3); flex-shrink:0; }
+.review-row .v { color:var(--text); font-weight:500; }
+.review-row .v small { display:block; color:var(--text-3); font-weight:400; font-size:11.5px; margin-top:2px; }
+
+.tag { display:inline-flex; align-items:center; font-size:10.5px; font-weight:600; padding:3px 8px; border-radius:5px; margin-right:4px; }
+.tag.green { background:var(--green-light); color:var(--green); }
+.tag.blue { background:var(--blue-light); color:var(--blue); }
+.tag.amber { background:var(--amber-light); color:var(--amber); }
+.tag.purple { background:var(--purple-light); color:var(--purple); }
+.tag.gold { background:var(--gold-light); color:var(--gold); }
+
+.wiz-foot {
+  margin-top:24px; padding-top:20px; border-top:1px solid var(--border);
+  display:flex; align-items:center; gap:8px;
+}
 .wiz-foot .left { margin-right:auto; font-size:12px; color:var(--text-3); display:flex; gap:6px; align-items:center; }
+.wiz-foot .left svg { width:14px; height:14px; }
 
+</style>
+
+<style id="atlas-sidebar-fix">
+/* Canonical sidebar behaviour — applied across all staff screens.
+   Uses position:fixed so the sidebar is anchored to the viewport
+   regardless of how the parent's overflow is configured. */
+.sidebar {
+  width: 220px !important;
+  background: var(--navy, #0E1E35) !important;
+  position: fixed !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  z-index: 10;
+}
+/* Smooth thin scrollbar inside the sidebar */
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+/* Logo + search bar stay pinned at the top of the sidebar even when nav items scroll */
+.sidebar-logo {
+  position: sticky !important;
+  top: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2 !important;
+}
+.sidebar-search {
+  position: sticky !important;
+  top: 62px !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2 !important;
+  margin-top: 0 !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+/* User block stays pinned at the bottom */
+.sidebar-user {
+  position: sticky !important;
+  bottom: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  margin-top: auto !important;
+}
+/* Push the main column over to make room for the fixed sidebar */
+.main {
+  margin-left: 220px !important;
+  min-height: 100vh;
+  width: calc(100% - 220px);
+}
 </style>
 </head>
 <body>
 
 
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 18 18" fill="none">
-        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
-        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
-      </svg>
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">GiveCentral</span>
+        <span class="logo-sub">Atlas CRM</span>
+      </div>
     </div>
-    <div class="logo-text-wrap">
-      <span class="logo-name">GiveCentral</span>
-      <span class="logo-sub">Atlas CRM</span>
+
+    <a href="atlas-search.html" style="display:block;text-decoration:none">
+      <div class="sidebar-search">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+        <input type="text" placeholder="Search donors, gifts…" readonly>
+      </div>
+    </a>
+
+    <div class="nav-group">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="atlas-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="atlas-donors-list.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+        Donors
+        <span class="nav-badge">3,847</span>
+      </a>
+      <a class="nav-item" href="atlas-gifts-pledges.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+        Gifts &amp; pledges
+        <span class="nav-badge">142</span>
+      </a>
+      <a class="nav-item active" href="atlas-campaign-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+        Reports
+      </a>
     </div>
-  </div>
 
-  <a href="atlas-search.html" style="display:block;text-decoration:none">
-    <div class="sidebar-search">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
-      <input type="text" placeholder="Search donors, gifts…" readonly>
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Fundraising</div>
+      <a class="nav-item" href="atlas-pipeline.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+        Prospect pipeline
+        <span class="nav-badge">28</span>
+      </a>
+      <a class="nav-item" href="atlas-tasks.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+        Tasks &amp; reminders
+        <span class="nav-badge alert">7</span>
+      </a>
+      <a class="nav-item" href="atlas-communications.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+        Communications
+      </a>
+      <a class="nav-item" href="atlas-events-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 2v2M9 2v2"/></svg>
+        Events
+      </a>
+      <a class="nav-item" href="atlas-volunteer-management.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Volunteers
+      </a>
     </div>
-  </a>
 
-  <div class="nav-group">
-    <div class="nav-label">Main</div>
-    <a class="nav-item" href="atlas-dashboard.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
-      Dashboard
-    </a>
-    <a class="nav-item" href="atlas-donors-list.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
-      Donors
-      <span class="nav-badge">3,847</span>
-    </a>
-    <a class="nav-item" href="atlas-batch-entry.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
-      Gifts &amp; pledges
-      <span class="nav-badge">142</span>
-    </a>
-    <a class="nav-item active" href="atlas-campaign-dashboard.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
-      Campaigns
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
-      Reports
-    </a>
-  </div>
-
-  <div class="nav-group" style="margin-top:8px">
-    <div class="nav-label">Fundraising</div>
-    <a class="nav-item" href="atlas-pipeline.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
-      Prospect pipeline
-      <span class="nav-badge">28</span>
-    </a>
-    <a class="nav-item" href="atlas-tasks.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
-      Tasks &amp; reminders
-      <span class="nav-badge alert">7</span>
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
-      Communications
-    </a>
-  </div>
-
-  <div class="nav-group" style="margin-top:8px">
-    <div class="nav-label">Intelligence</div>
-    <a class="nav-item" href="atlas-guru-ai.html">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
-      Guru AI
-    </a>
-    <a class="nav-item" href="#">
-      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
-      Analytics
-    </a>
-  </div>
-
-  <div class="sidebar-user">
-    <div class="user-avatar">SR</div>
-    <div>
-      <div class="user-name">Sarah Reynolds</div>
-      <div class="user-role">Development Director</div>
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Intelligence</div>
+      <a class="nav-item" href="atlas-guru-ai.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+        Guru AI
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+        Analytics
+      </a>
     </div>
-  </div>
-</aside>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item" href="atlas-users-roles.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Users &amp; roles
+      </a>
+      <a class="nav-item" href="atlas-integrations.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="4" cy="7" r="2.5"/><circle cx="10" cy="7" r="2.5"/><path d="M6.5 7h1"/></svg>
+        Integrations
+      </a>
+      <a class="nav-item" href="atlas-sync.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+        Sync
+      </a>
+      <a class="nav-item" href="atlas-location-portal.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Location portal
+      </a>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">SR</div>
+      <div>
+        <div class="user-name">Sarah Reynolds</div>
+        <div class="user-role">Development Director</div>
+      </div>
+    </div>
+  </aside>
 
 <div class="main">
 
@@ -443,7 +581,7 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
   </a>
   <div class="topbar-right">
     
-    <a href="#" class="tb-notif" title="Notifications">
+    <a href="atlas-notifications.html" class="tb-notif" title="Notifications">
       <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
       <div class="notif-dot"></div>
     </a>
@@ -456,7 +594,7 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
     <div>
       <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <a href="atlas-campaign-dashboard.html">Campaigns</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>New campaign</span></div>
       <div class="page-title">Create a campaign</div>
-      <div class="page-sub">3-level hierarchy: Campaign → Appeal → Fund. Atlas auto-creates GL codes and form mappings on save.</div>
+      <div class="page-sub">5 steps. Atlas auto-saves as you go — close anytime and resume from your drafts.</div>
     </div>
   </div>
 
@@ -464,190 +602,498 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 
     <aside class="wiz-stepper">
       <div class="ttl">Steps</div>
-      <div class="wiz-step done"><div class="dot">✓</div><div><div class="nm">Type</div><div class="sub">Capital campaign</div></div></div>
-      <div class="wiz-step cur"><div class="dot">2</div><div><div class="nm">Goal &amp; dates</div><div class="sub">Targets and timeline</div></div></div>
-      <div class="wiz-step"><div class="dot">3</div><div><div class="nm">Hierarchy</div><div class="sub">Appeals &amp; funds</div></div></div>
-      <div class="wiz-step"><div class="dot">4</div><div><div class="nm">Team &amp; access</div><div class="sub">Solicitors &amp; entity scope</div></div></div>
-      <div class="wiz-step"><div class="dot">5</div><div><div class="nm">Review &amp; create</div><div class="sub">Final check</div></div></div>
+      <div class="wiz-step cur" data-step="1"><div class="dot">1</div><div><div class="nm">Type</div><div class="sub" id="step1-sub">Pick a campaign type</div></div></div>
+      <div class="wiz-step disabled" data-step="2"><div class="dot">2</div><div><div class="nm">Goal &amp; dates</div><div class="sub">Targets &amp; timeline</div></div></div>
+      <div class="wiz-step disabled" data-step="3"><div class="dot">3</div><div><div class="nm">Hierarchy</div><div class="sub">Appeals &amp; funds</div></div></div>
+      <div class="wiz-step disabled" data-step="4"><div class="dot">4</div><div><div class="nm">Team &amp; access</div><div class="sub">Solicitors &amp; entity scope</div></div></div>
+      <div class="wiz-step disabled" data-step="5"><div class="dot">5</div><div><div class="nm">Review &amp; create</div><div class="sub">Final check</div></div></div>
     </aside>
 
     <main class="wiz-content">
 
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:22px;display:flex;align-items:center;gap:12px;font-size:12.5px">
-        <span class="tag green">Step 1 ✓</span>
-        <span><strong>Capital campaign</strong> · multi-year capital project with named gift recognition</span>
-        <a href="#" style="color:var(--blue);margin-left:auto;font-weight:500">Change type</a>
-      </div>
+      <!-- ── STEP 1: TYPE ─────────────────────────────────────── -->
+      <section class="wiz-panel active" data-panel="1">
+        <h2 class="wiz-h">What kind of campaign are you launching?</h2>
+        <p class="wiz-sub">This drives the recommended hierarchy template and which receipt rules apply.</p>
 
-      <h2 class="wiz-h">Goal &amp; dates</h2>
-      <p class="wiz-sub">Set your overall fundraising target and the campaign window. You can adjust these later — Atlas will pace progress to whichever values you keep current.</p>
+        <div class="type-grid">
+          <div class="type-card on" data-type="capital">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 21h18M5 18V8M9 18V8M15 18V8M19 18V8M3 7l9-5 9 5"/></svg></div>
+            <div class="t">Capital campaign</div>
+            <div class="d">Multi-year capital project with named-gift recognition. Big asks, longer timelines, naming opportunities.</div>
+            <div class="examples"><b>e.g.</b> Cathedral restoration · new school wing · scholarship endowment</div>
+            <div class="template-note">Template: Major-donor cultivation · Online giving · Gala</div>
+          </div>
+          <div class="type-card green" data-type="annual">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12l5-5 5 5"/></svg></div>
+            <div class="t">Annual appeal</div>
+            <div class="d">Yearly recurring appeal — seasonal mailings, online forms, pledge drives.</div>
+            <div class="examples"><b>e.g.</b> Annual Appeal 2026 · Christmas appeal · Easter offering</div>
+            <div class="template-note">Template: Spring mailing · Year-end · Online giving</div>
+          </div>
+          <div class="type-card gold" data-type="event">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M5 8h14M9 3v18"/></svg></div>
+            <div class="t">Special / event</div>
+            <div class="d">Single-event campaign — gala, retreat, or one-off project with a fixed end date.</div>
+            <div class="examples"><b>e.g.</b> Bishop&#39;s Annual Gala · Refugee Aid emergency · Building dedication</div>
+            <div class="template-note">Template: Sponsorships · Tickets · Online donation</div>
+          </div>
+          <div class="type-card purple" data-type="memorial">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div>
+            <div class="t">Memorial / planned giving</div>
+            <div class="d">Bequest cultivation with deferred-pledge tracking. Multi-decade timelines.</div>
+            <div class="examples"><b>e.g.</b> Heritage Society · estate-gift outreach · planned-giving campaign</div>
+            <div class="template-note">Template: Heritage Society · Pledge intentions · Stewardship</div>
+          </div>
+        </div>
 
-      <div class="section-h">Campaign basics</div>
-      <div class="row2">
-        <div>
-          <span class="lbl">Campaign name<span class="req">*</span></span>
-          <input class="fld" value="Cathedral Capital Campaign 2026">
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Type: <strong style="color:var(--text-2)" id="type-summary">Capital campaign</strong>
+          </div>
+          <a class="btn btn-ghost" href="atlas-campaign-dashboard.html">Cancel</a>
+          <button class="btn btn-primary" data-go="2">Next: Goal &amp; dates →</button>
         </div>
-        <div>
-          <span class="lbl">Internal code</span>
-          <input class="fld" value="CC2026" placeholder="Auto-generated">
-        </div>
-      </div>
-      <div class="mt-12" style="margin-top:12px">
-        <span class="lbl">Public description</span>
-        <textarea class="fld" placeholder="Shown on donation forms and the location portal">Restoring the 1888 cathedral — bell-tower masonry, lead flashing, and stained-glass conservation. 1:1 matched gifts available up to $250,000.</textarea>
-      </div>
+      </section>
 
-      <div class="section-h">Goal</div>
-      <div class="row3">
-        <div>
-          <span class="lbl">Total goal<span class="req">*</span></span>
-          <input class="fld" value="$2,000,000.00" style="font-size:18px;font-weight:600">
-        </div>
-        <div>
-          <span class="lbl">Stretch goal</span>
-          <input class="fld" value="$2,500,000.00" placeholder="Optional">
-        </div>
-        <div>
-          <span class="lbl">Currency</span>
-          <select class="fld"><option selected>USD</option><option>CAD</option><option>EUR</option></select>
-        </div>
-      </div>
+      <!-- ── STEP 2: GOAL & DATES ─────────────────────────────── -->
+      <section class="wiz-panel" data-panel="2">
+        <h2 class="wiz-h">Goal &amp; timeline</h2>
+        <p class="wiz-sub">Set your overall fundraising target and the campaign window. You can adjust these later — Atlas paces progress to whichever values you keep current.</p>
 
-      <div class="section-h">Timeline</div>
-      <div class="row3">
-        <div>
-          <span class="lbl">Public start<span class="req">*</span></span>
-          <input class="fld" value="January 1, 2026">
+        <div class="section-h">Campaign basics</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Campaign name<span class="req">*</span></span>
+            <input class="fld" value="Cathedral Capital Campaign 2026" id="campaign-name-input">
+          </div>
+          <div>
+            <span class="lbl">Internal code</span>
+            <input class="fld" value="CC2026" placeholder="Auto-generated">
+          </div>
         </div>
-        <div>
-          <span class="lbl">Public end<span class="req">*</span></span>
-          <input class="fld" value="June 30, 2026">
+        <div class="mt-12" style="margin-top:12px">
+          <span class="lbl">Public description</span>
+          <textarea class="fld" placeholder="Shown on donation forms and the location portal">Restoring the 1888 cathedral — bell-tower masonry, lead flashing, and stained-glass conservation. 1:1 matched gifts available up to $250,000.</textarea>
         </div>
-        <div>
-          <span class="lbl">Quiet phase</span>
-          <select class="fld"><option>No quiet phase</option><option selected>Started Sep 2025 · 4-month silent phase</option></select>
-        </div>
-      </div>
 
-      <div class="section-h">Recognition</div>
-      <div class="row2">
-        <div>
-          <span class="lbl">Recognition tiers</span>
-          <select class="fld">
-            <option>None</option>
-            <option selected>Bronze ($1k) · Silver ($5k) · Gold ($25k) · Platinum ($100k)</option>
-            <option>Custom tiers…</option>
-          </select>
+        <div class="section-h">Goal</div>
+        <div class="row3">
+          <div>
+            <span class="lbl">Total goal<span class="req">*</span></span>
+            <input class="fld" value="$2,000,000.00" style="font-size:18px;font-weight:600">
+          </div>
+          <div>
+            <span class="lbl">Stretch goal</span>
+            <input class="fld" value="$2,500,000.00" placeholder="Optional">
+          </div>
+          <div>
+            <span class="lbl">Currency</span>
+            <select class="fld"><option selected>USD</option><option>CAD</option><option>EUR</option></select>
+          </div>
         </div>
-        <div>
-          <span class="lbl">Naming opportunities?</span>
-          <select class="fld"><option>No</option><option selected>Yes · 12 named opportunities</option></select>
-        </div>
-      </div>
 
-      <div class="wiz-foot">
-        <div class="left">
-          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
-          Auto-saved as draft 8s ago
+        <div class="section-h">Timeline</div>
+        <div class="row3">
+          <div>
+            <span class="lbl">Public start<span class="req">*</span></span>
+            <input class="fld" value="January 1, 2026">
+          </div>
+          <div>
+            <span class="lbl">Public end<span class="req">*</span></span>
+            <input class="fld" value="June 30, 2026">
+          </div>
+          <div>
+            <span class="lbl">Quiet phase</span>
+            <select class="fld"><option>No quiet phase</option><option selected>Started Sep 2025 · 4-month silent phase</option></select>
+          </div>
         </div>
-        <button class="btn btn-ghost">← Back</button>
-        <button class="btn btn-primary" onclick="alert('Advancing to step 3 — Hierarchy. Below is what step 3 will look like.')">Next: Hierarchy →</button>
-      </div>
 
-      <!-- Preview of step 3 -->
-      <div style="margin-top:32px;padding-top:24px;border-top:1px dashed var(--border)">
-        <p class="muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:12px">Coming in step 3 · Hierarchy preview</p>
+        <div class="section-h">Recognition</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Recognition tiers</span>
+            <select class="fld">
+              <option>None</option>
+              <option selected>Bronze ($1k) · Silver ($5k) · Gold ($25k) · Platinum ($100k)</option>
+              <option>Custom tiers…</option>
+            </select>
+          </div>
+          <div>
+            <span class="lbl">Naming opportunities?</span>
+            <select class="fld"><option>No</option><option selected>Yes · 12 named opportunities</option></select>
+          </div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Auto-saved as draft 8s ago
+          </div>
+          <button class="btn btn-ghost" data-go="1">← Back</button>
+          <button class="btn btn-primary" data-go="3">Next: Hierarchy →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 3: HIERARCHY ────────────────────────────────── -->
+      <section class="wiz-panel" data-panel="3">
+        <h2 class="wiz-h">Build your hierarchy</h2>
+        <p class="wiz-sub">Atlas pre-loaded the recommended hierarchy for your campaign type. Edit names and goals inline — add or remove appeals and funds as needed. Goals roll up automatically.</p>
+
         <div class="hierarchy">
+
+          <!-- Campaign root -->
           <div class="h-node">
+            <div class="indent"></div>
             <div class="ico-sm c">C</div>
-            <div class="nm">Cathedral Capital Campaign 2026<small>Goal $2.0M · 6-month public phase</small></div>
-            <div class="v">$2,000,000</div>
-            <span class="x">⋯</span>
+            <div>
+              <input class="nm-input" value="Cathedral Capital Campaign 2026">
+              <input class="meta-input" value="Goal $2.0M · 6-month public phase · Diocese of Albany">
+            </div>
+            <div></div>
+            <div><input class="goal-input" value="$2,000,000" readonly title="Auto = sum of appeal goals" style="background:var(--blue-pale);color:var(--blue);font-weight:600"></div>
+            <div></div>
           </div>
 
-          <div class="h-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="nm">Spring 2026 — major donor cultivation<small>Lead-gift outreach to top 50 prospects</small></div>
-            <div class="v">$800,000</div>
-            <span class="x">×</span>
+          <!-- Appeal 1 -->
+          <div class="h-node">
+            <div class="indent" style="grid-column:1"></div>
+            <div class="ico-sm a" style="grid-column:2;margin-left:24px">A</div>
+            <div style="grid-column:3">
+              <input class="nm-input appeal" value="Spring 2026 — major-donor cultivation">
+              <input class="meta-input" value="Lead-gift outreach · top 50 prospects">
+            </div>
+            <div></div>
+            <div><input class="goal-input" value="$800,000"></div>
+            <div><button class="x-btn">×</button></div>
           </div>
 
-          <div class="h-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="nm">Cathedral Restoration<small>GL 4001 · Diocese of Albany</small></div>
-            <div class="v">$800,000</div>
-            <span class="x">×</span>
+          <!-- Fund 1.1 -->
+          <div class="h-node">
+            <div class="indent" style="grid-column:1"></div>
+            <div class="ico-sm f" style="grid-column:2;margin-left:48px">F</div>
+            <div style="grid-column:3">
+              <input class="nm-input fund" value="Cathedral Restoration">
+              <input class="meta-input" value="GL 4001 · Diocese of Albany · matched 1:1">
+            </div>
+            <div></div>
+            <div><input class="goal-input" value="$800,000"></div>
+            <div><button class="x-btn">×</button></div>
           </div>
 
-          <div class="h-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="nm">Online giving — public campaign page<small>GiveCentral form: cathedral-2026</small></div>
-            <div class="v">$1,000,000</div>
-            <span class="x">×</span>
+          <div class="add-node fund">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+            Add fund under Spring 2026
           </div>
 
-          <div class="h-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="nm">Cathedral Restoration<small>GL 4001 (shared)</small></div>
-            <div class="v">$800,000</div>
-            <span class="x">×</span>
+          <!-- Appeal 2 -->
+          <div class="h-node" style="margin-top:8px">
+            <div class="indent" style="grid-column:1"></div>
+            <div class="ico-sm a" style="grid-column:2;margin-left:24px">A</div>
+            <div style="grid-column:3">
+              <input class="nm-input appeal" value="Online giving — public campaign page">
+              <input class="meta-input" value="GiveCentral form: cathedral-2026 · Apple Pay / Google Pay / DAF">
+            </div>
+            <div></div>
+            <div><input class="goal-input" value="$1,000,000"></div>
+            <div><button class="x-btn">×</button></div>
           </div>
 
-          <div class="h-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="nm">Music Ministry<small>GL 4002 · for matched gifts</small></div>
-            <div class="v">$200,000</div>
-            <span class="x">×</span>
+          <!-- Fund 2.1 -->
+          <div class="h-node">
+            <div class="indent" style="grid-column:1"></div>
+            <div class="ico-sm f" style="grid-column:2;margin-left:48px">F</div>
+            <div style="grid-column:3">
+              <input class="nm-input fund" value="Cathedral Restoration">
+              <input class="meta-input" value="GL 4001 (shared) · routed via online form">
+            </div>
+            <div></div>
+            <div><input class="goal-input" value="$800,000"></div>
+            <div><button class="x-btn">×</button></div>
           </div>
 
-          <div class="h-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="nm">Bishop's Annual Gala 2026<small>One-night event · table sponsorships</small></div>
-            <div class="v">$200,000</div>
-            <span class="x">×</span>
+          <!-- Fund 2.2 -->
+          <div class="h-node">
+            <div class="indent" style="grid-column:1"></div>
+            <div class="ico-sm f" style="grid-column:2;margin-left:48px">F</div>
+            <div style="grid-column:3">
+              <input class="nm-input fund" value="Music Ministry">
+              <input class="meta-input" value="GL 4002 · for matched gifts only · protected ladder">
+            </div>
+            <div></div>
+            <div><input class="goal-input" value="$200,000"></div>
+            <div><button class="x-btn">×</button></div>
           </div>
 
-          <div class="add-node appeal">+ Add appeal</div>
+          <div class="add-node fund">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+            Add fund under Online giving
+          </div>
+
+          <!-- Appeal 3 -->
+          <div class="h-node" style="margin-top:8px">
+            <div class="indent" style="grid-column:1"></div>
+            <div class="ico-sm a" style="grid-column:2;margin-left:24px">A</div>
+            <div style="grid-column:3">
+              <input class="nm-input appeal" value="Bishop&#39;s Annual Gala 2026">
+              <input class="meta-input" value="One-night event · table sponsorships · April 24">
+            </div>
+            <div></div>
+            <div><input class="goal-input" value="$200,000"></div>
+            <div><button class="x-btn">×</button></div>
+          </div>
+
+          <!-- Fund 3.1 -->
+          <div class="h-node">
+            <div class="indent" style="grid-column:1"></div>
+            <div class="ico-sm f" style="grid-column:2;margin-left:48px">F</div>
+            <div style="grid-column:3">
+              <input class="nm-input fund" value="Cathedral Restoration">
+              <input class="meta-input" value="GL 4001 (shared) · gala net proceeds">
+            </div>
+            <div></div>
+            <div><input class="goal-input" value="$200,000"></div>
+            <div><button class="x-btn">×</button></div>
+          </div>
+
+          <div class="add-node fund">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+            Add fund under Gala
+          </div>
+
+          <div class="add-node appeal" style="margin-top:14px">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 3v8M3 7h8"/></svg>
+            Add another appeal
+          </div>
         </div>
-      </div>
+
+        <div class="goal-summary">
+          <span class="l">Roll-up</span>
+          <span class="v">3 appeals · 4 funds</span>
+          <span class="v">$800k + $1.0M + $200k = <strong>$2.0M</strong></span>
+          <span class="ok">✓ Matches campaign goal</span>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Auto-saved · roll-up balanced
+          </div>
+          <button class="btn btn-ghost" data-go="2">← Back</button>
+          <button class="btn btn-primary" data-go="4">Next: Team &amp; access →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 4: TEAM & ACCESS ────────────────────────────── -->
+      <section class="wiz-panel" data-panel="4">
+        <h2 class="wiz-h">Team &amp; access</h2>
+        <p class="wiz-sub">Assign solicitors, set the legal entity scope, and decide which roles can edit the campaign.</p>
+
+        <div class="section-h">Legal entity scope</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Primary legal entity<span class="req">*</span></span>
+            <select class="fld">
+              <option selected>Diocese of Albany (EIN 14-•••2401)</option>
+              <option>Catholic Charities of Albany (EIN 14-•••5512)</option>
+              <option>Diocesan Foundation (EIN 14-•••8847)</option>
+              <option>Scholarship Foundation (EIN 14-•••9201)</option>
+            </select>
+          </div>
+          <div>
+            <span class="lbl">Cross-entity?</span>
+            <select class="fld">
+              <option selected>Single entity</option>
+              <option>Allow funds across multiple entities</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-h">Solicitors assigned to this campaign</div>
+        <p class="muted" style="font-size:12px;margin-top:-6px;margin-bottom:10px">Click cards to add officers. Only assigned solicitors will see this campaign in their pipeline filter.</p>
+
+        <div class="sol-grid">
+          <div class="sol-card on">
+            <div class="av" style="background:var(--rose)">SR</div>
+            <div class="body"><div class="nm">Sarah Reynolds</div><div class="role">Dev Director · 18 prospects · all entities</div></div>
+            <div class="check">✓</div>
+          </div>
+          <div class="sol-card on">
+            <div class="av" style="background:var(--purple)">BM</div>
+            <div class="body"><div class="nm">Bridget McCarthy</div><div class="role">Dev Director · 15 prospects · all entities</div></div>
+            <div class="check">✓</div>
+          </div>
+          <div class="sol-card on">
+            <div class="av" style="background:var(--green)">JK</div>
+            <div class="body"><div class="nm">Julia Kelleher</div><div class="role">Officer · 22 prospects · Diocese, Foundation</div></div>
+            <div class="check">✓</div>
+          </div>
+          <div class="sol-card">
+            <div class="av" style="background:var(--blue)">DC</div>
+            <div class="body"><div class="nm">Daniel Cho</div><div class="role">DB Admin · supports all officers</div></div>
+            <div class="check"></div>
+          </div>
+        </div>
+
+        <div class="section-h">Communications kickoff</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Send launch email to assigned solicitors?</span>
+            <select class="fld"><option selected>Yes — send tomorrow at 8 AM</option><option>Yes — send now</option><option>No · I&#39;ll handle it</option></select>
+          </div>
+          <div>
+            <span class="lbl">Auto-create kickoff tasks?</span>
+            <select class="fld"><option selected>Yes — "Identify 5 prospects" · due May 11</option><option>No</option></select>
+          </div>
+        </div>
+
+        <div class="section-h">Campaign visibility &amp; permissions</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Who can edit this campaign?</span>
+            <select class="fld"><option selected>Dev Directors only</option><option>Dev Directors + assigned solicitors</option><option>Custom…</option></select>
+          </div>
+          <div>
+            <span class="lbl">Public campaign page</span>
+            <select class="fld"><option selected>Yes — visible at givecentral.org/cathedral-2026</option><option>No — internal only</option></select>
+          </div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            3 solicitors assigned · single-entity scope
+          </div>
+          <button class="btn btn-ghost" data-go="3">← Back</button>
+          <button class="btn btn-primary" data-go="5">Review &amp; create →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 5: REVIEW ───────────────────────────────────── -->
+      <section class="wiz-panel" data-panel="5">
+        <h2 class="wiz-h">Final check before creating</h2>
+        <p class="wiz-sub">Click "Edit" on any block to jump back. Once created, the campaign appears in the Campaigns dashboard and assigned solicitors see it in their pipeline filter.</p>
+
+        <div class="review-block">
+          <h4>Type &amp; basics <a data-go="1">Edit →</a></h4>
+          <div class="review-row"><span class="l">Type</span><span class="v"><span class="tag blue">Capital campaign</span></span></div>
+          <div class="review-row"><span class="l">Name</span><span class="v">Cathedral Capital Campaign 2026 <small>internal code: CC2026</small></span></div>
+          <div class="review-row"><span class="l">Public description</span><span class="v" style="font-style:italic;color:var(--text-2)">"Restoring the 1888 cathedral — bell-tower masonry, lead flashing, and stained-glass conservation. 1:1 matched gifts available up to $250,000."</span></div>
+        </div>
+
+        <div class="review-block">
+          <h4>Goal &amp; dates <a data-go="2">Edit →</a></h4>
+          <div class="review-row"><span class="l">Total goal</span><span class="v">$2,000,000.00 USD <small>stretch goal $2,500,000.00</small></span></div>
+          <div class="review-row"><span class="l">Public phase</span><span class="v">Jan 1, 2026 → Jun 30, 2026 <small>6 months</small></span></div>
+          <div class="review-row"><span class="l">Quiet phase</span><span class="v">Sep 2025 (4-month silent phase)</span></div>
+          <div class="review-row"><span class="l">Recognition</span><span class="v">Bronze · Silver · Gold · Platinum tiers <small>12 named opportunities</small></span></div>
+        </div>
+
+        <div class="review-block">
+          <h4>Hierarchy <a data-go="3">Edit →</a></h4>
+          <div class="review-row"><span class="l">Structure</span><span class="v">3 appeals · 4 funds · 1 legal entity</span></div>
+          <div class="review-row"><span class="l">Spring cultivation</span><span class="v">$800k · 1 fund (Cathedral Restoration · GL 4001)</span></div>
+          <div class="review-row"><span class="l">Online giving</span><span class="v">$1.0M · 2 funds (Cathedral Restoration · Music Ministry)</span></div>
+          <div class="review-row"><span class="l">Bishop&#39;s Gala</span><span class="v">$200k · 1 fund (Cathedral Restoration)</span></div>
+          <div class="review-row"><span class="l">Roll-up</span><span class="v" style="color:var(--green);font-weight:600">✓ $800k + $1.0M + $200k = $2.0M (matches campaign goal)</span></div>
+        </div>
+
+        <div class="review-block">
+          <h4>Team <a data-go="4">Edit →</a></h4>
+          <div class="review-row"><span class="l">Legal entity</span><span class="v">Diocese of Albany <small>EIN 14-•••2401</small></span></div>
+          <div class="review-row"><span class="l">Solicitors</span><span class="v"><span class="tag blue">Sarah Reynolds</span><span class="tag blue">Bridget McCarthy</span><span class="tag blue">Julia Kelleher</span> <small>3 assigned</small></span></div>
+          <div class="review-row"><span class="l">Edit permissions</span><span class="v">Dev Directors only</span></div>
+          <div class="review-row"><span class="l">Public page</span><span class="v">Yes — <strong>givecentral.org/cathedral-2026</strong></span></div>
+          <div class="review-row"><span class="l">On create</span><span class="v">Launch email tomorrow 8 AM <small>kickoff tasks "Identify 5 prospects" auto-created · due May 11</small></span></div>
+        </div>
+
+        <div style="background:var(--green-light);border:1px solid #86EFAC;border-radius:11px;padding:16px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start">
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">✓</div>
+          <div style="flex:1;font-size:12.5px;color:#14532D;line-height:1.5">
+            <strong>All checks passed.</strong> GL codes are valid · solicitors have entity access · public URL is available · roll-up matches campaign goal. The campaign is ready to create.
+          </div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Ready to create
+          </div>
+          <button class="btn btn-ghost" data-go="4">← Back</button>
+          <button class="btn btn-ghost" onclick="alert('Saved as draft')">Save draft &amp; exit</button>
+          <button class="btn btn-primary" onclick="alert('Campaign created · ID #CC2026 · 3 solicitors notified · 3 kickoff tasks queued'); window.location='atlas-campaign-detail.html'">
+            <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+            Create campaign
+          </button>
+        </div>
+      </section>
 
     </main>
 
   </div>
 
-  <!-- Type picker (step 1) -->
-  <details style="margin-top:22px;background:white;border:1px solid var(--border);border-radius:14px;padding:18px 22px;max-width:1080px">
-    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--text-2)">View Step 1 type-picker ↓</summary>
-    <div class="type-grid mt-16" style="margin-top:16px">
-      <div class="type-card on">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 21h18M5 18V8M9 18V8M15 18V8M19 18V8M3 7l9-5 9 5"/></svg></div>
-        <div class="t">Capital campaign</div>
-        <div class="d">Multi-year capital project with named gift recognition.</div>
-        <div class="examples"><b>e.g.</b> Cathedral restoration · new school wing</div>
-      </div>
-      <div class="type-card green">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/></svg></div>
-        <div class="t">Annual appeal</div>
-        <div class="d">Yearly recurring appeal with seasonal mailings &amp; online forms.</div>
-        <div class="examples"><b>e.g.</b> Annual Appeal 2026 · Christmas appeal</div>
-      </div>
-      <div class="type-card gold">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 3h14v18H5z"/><path d="M5 8h14M9 3v18"/></svg></div>
-        <div class="t">Special / event</div>
-        <div class="d">Single-event campaign — gala, retreat, or one-off project.</div>
-        <div class="examples"><b>e.g.</b> Bishop's Annual Gala · Refugee Aid emergency</div>
-      </div>
-      <div class="type-card purple">
-        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div>
-        <div class="t">Memorial / planned giving</div>
-        <div class="d">Bequest cultivation with deferred-pledge tracking.</div>
-        <div class="examples"><b>e.g.</b> Heritage Society · estate-gift outreach</div>
-      </div>
-    </div>
-  </details>
-
 </div>
+
+<script>
+  (function(){
+    var steps  = document.querySelectorAll('.wiz-step');
+    var panels = document.querySelectorAll('.wiz-panel');
+    var buttons = document.querySelectorAll('[data-go]');
+    var typeCards = document.querySelectorAll('.type-card');
+    var solCards = document.querySelectorAll('.sol-card');
+    var maxReached = 1;
+
+    function show(n){
+      n = parseInt(n, 10);
+      panels.forEach(function(p){ p.classList.toggle('active', p.dataset.panel == n); });
+      steps.forEach(function(s){
+        var sn = parseInt(s.dataset.step, 10);
+        s.classList.remove('cur');
+        if (sn === n) s.classList.add('cur');
+        if (sn < n)   s.classList.add('done');
+        if (sn > maxReached) s.classList.add('disabled');
+        else s.classList.remove('disabled');
+      });
+      if (n > maxReached) maxReached = n;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(e){ e.preventDefault(); show(b.dataset.go); });
+    });
+    steps.forEach(function(s){
+      s.addEventListener('click', function(){
+        if (s.classList.contains('disabled')) return;
+        show(s.dataset.step);
+      });
+    });
+
+    typeCards.forEach(function(c){
+      c.addEventListener('click', function(){
+        typeCards.forEach(function(x){ x.classList.remove('on'); });
+        c.classList.add('on');
+        var t = c.querySelector('.t').textContent;
+        var sub = document.getElementById('step1-sub');
+        var summary = document.getElementById('type-summary');
+        if (sub) sub.textContent = t;
+        if (summary) summary.textContent = t;
+      });
+    });
+
+    solCards.forEach(function(c){
+      c.addEventListener('click', function(){ c.classList.toggle('on'); });
+    });
+
+    // Remove a hierarchy node when its × is clicked
+    document.querySelectorAll('.hierarchy .x-btn').forEach(function(b){
+      b.addEventListener('click', function(){
+        var node = b.closest('.h-node');
+        if (node) node.style.display = 'none';
+      });
+    });
+  })();
+</script>
 
 </div>
 
