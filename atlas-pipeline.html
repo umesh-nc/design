@@ -323,6 +323,111 @@
     .detail-drawer:not(.hidden) { animation: slideIn .25s ease forwards; }
     .prospect-card { animation: fadeUp .2s ease forwards; opacity: 0; }
   </style>
+
+<style id="atlas-sidebar-fix">
+/* Minimal sidebar fix — keeps the CEO's per-page .main / .content
+   layouts untouched. We ONLY:
+     1. Pin the sidebar to the viewport with position:fixed
+     2. Reserve a 220px gutter on the body via padding-left
+     3. Normalize the sidebar's internal flex layout (logo + search top,
+        nav scrolls middle, user block bottom)
+     4. Force SVG icon sizes in the sidebar (some screens lost them) */
+
+html, body { overflow-x: hidden !important; }
+body {
+  padding-left: 220px !important;
+  box-sizing: border-box !important;
+  min-height: 100vh !important;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+.sidebar {
+  width: 220px !important;
+  background: var(--navy, #0E1E35) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;          /* sidebar itself does NOT scroll */
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Logo + search are direct flex children that never scroll */
+.sidebar > .sidebar-logo,
+.sidebar > a > .sidebar-search,
+.sidebar > .sidebar-search,
+.sidebar-logo,
+.sidebar-search {
+  position: static !important;
+  flex-shrink: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2;
+}
+
+/* Fix oversized search icon — explicit 13×13 wins over any inheriting style */
+.sidebar-search {
+  margin: 12px 12px 6px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.sidebar-search svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
+  color: rgba(255,255,255,.4) !important;
+}
+.sidebar-search input {
+  font-size: 12px !important;
+  height: auto !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+}
+/* Logo mark sizing — same fix prevents the brand SVG from ballooning */
+.sidebar-logo .logo-mark {
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+.sidebar-logo .logo-mark svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* The MIDDLE area is the only scrollable child */
+.sidebar-scroll {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;        /* critical: lets flex item shrink */
+  display: flex !important;
+  flex-direction: column !important;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+
+/* User block sits at the bottom of the sidebar, never scrolls */
+.sidebar-user {
+  position: static !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  background: var(--navy, #0E1E35) !important;
+}
+
+/* .main is intentionally NOT overridden — each page keeps its own layout. */
+</style>
 </head>
 <body>
 
@@ -330,30 +435,118 @@
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-mark">
-        <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/><path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/></svg>
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
       </div>
-      <div><div class="logo-name">GiveCentral</div><div class="logo-sub">Atlas CRM</div></div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">GiveCentral</span>
+        <span class="logo-sub">Atlas CRM</span>
+      </div>
     </div>
+
+    <a href="atlas-search.html" style="display:block;text-decoration:none">
+      <div class="sidebar-search">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+        <input type="text" placeholder="Search donors, gifts…" readonly>
+      </div>
+    </a>
+
+    <div class="sidebar-scroll">
+
     <div class="nav-group">
       <div class="nav-label">Main</div>
-      <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>Dashboard</div>
-      <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>Donors<span class="nav-badge">3,847</span></div>
-      <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>Gifts &amp; pledges</div>
-      <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>Campaigns</div>
+      <a class="nav-item" href="atlas-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="atlas-donors-list.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+        Donors
+        <span class="nav-badge">3,847</span>
+      </a>
+      <a class="nav-item" href="atlas-gifts-pledges.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+        Gifts &amp; pledges
+        <span class="nav-badge">142</span>
+      </a>
+      <a class="nav-item" href="atlas-campaign-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+        Reports
+      </a>
     </div>
+
     <div class="nav-group" style="margin-top:8px">
       <div class="nav-label">Fundraising</div>
-      <div class="nav-item active"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>Prospect pipeline<span class="nav-badge">28</span></div>
-      <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>Tasks &amp; reminders<span class="nav-badge">7</span></div>
-      <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10"/></svg>Communications</div>
+      <a class="nav-item active" href="atlas-pipeline.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+        Prospect pipeline
+        <span class="nav-badge">28</span>
+      </a>
+      <a class="nav-item" href="atlas-tasks.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+        Tasks &amp; reminders
+        <span class="nav-badge alert">7</span>
+      </a>
+      <a class="nav-item" href="atlas-communications.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+        Communications
+      </a>
+      <a class="nav-item" href="atlas-events-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 2v2M9 2v2"/></svg>
+        Events
+      </a>
+      <a class="nav-item" href="atlas-volunteer-management.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Volunteers
+      </a>
     </div>
+
     <div class="nav-group" style="margin-top:8px">
       <div class="nav-label">Intelligence</div>
-      <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>Guru AI</div>
+      <a class="nav-item" href="atlas-guru-ai.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+        Guru AI
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+        Analytics
+      </a>
     </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item" href="atlas-users-roles.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Users &amp; roles
+      </a>
+      <a class="nav-item" href="atlas-integrations.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="4" cy="7" r="2.5"/><circle cx="10" cy="7" r="2.5"/><path d="M6.5 7h1"/></svg>
+        Integrations
+      </a>
+      <a class="nav-item" href="atlas-sync.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+        Sync
+      </a>
+      <a class="nav-item" href="atlas-location-manage.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Location portal
+      </a>
+    </div>
+
+    </div><!-- /.sidebar-scroll -->
+
     <div class="sidebar-user">
       <div class="user-avatar">SR</div>
-      <div><div class="user-name">Sarah Reynolds</div><div class="user-role">Development Director</div></div>
+      <div>
+        <div class="user-name">Sarah Reynolds</div>
+        <div class="user-role">Development Director</div>
+      </div>
     </div>
   </aside>
 
@@ -366,6 +559,7 @@
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
       </div>
       <span class="topbar-title">Prospect pipeline</span>
+      <span style="font-size:12px;color:var(--text-3);margin-left:10px">· <a href="atlas-pipeline-flow.html" style="color:var(--blue);font-weight:500">end-to-end flow doc</a> · <a href="atlas-pipeline-forecast.html" style="color:var(--blue);font-weight:500">forecast</a> · <a href="atlas-portfolio-assign.html" style="color:var(--blue);font-weight:500">rebalance</a></span>
       <div class="topbar-right">
         <div class="view-toggle">
           <button class="vt-btn active">
@@ -385,10 +579,10 @@
           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1.5 3h9M1.5 6h6M1.5 9h4"/></svg>
           Sort
         </button>
-        <button class="tb-btn tb-purple" onclick="openDrawer('new')">
+        <a class="tb-btn tb-purple" href="atlas-add-prospect.html" style="text-decoration:none">
           <svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round"><path d="M6 1v10M1 6h10"/></svg>
           Add prospect
-        </button>
+        </a>
       </div>
     </div>
 
@@ -1045,6 +1239,843 @@
       check.textContent = '✓';
       el.appendChild(check);
     }
+
+    /* ── CTA-completeness shim · added 2026-05-12 ───────────────────────
+       Makes every clickable element on this page functional. */
+    (function(){
+
+      // 0) Collapse the hidden drawer so it doesn't reserve 340px of layout space
+      var drawerCollapseStyle = document.createElement('style');
+      drawerCollapseStyle.textContent =
+        '.detail-drawer.hidden { width:0 !important; padding:0 !important; border-left:0 !important; overflow:hidden !important; transform:none !important; }' +
+        '.detail-drawer { transition: width .2s ease, opacity .2s ease !important; }';
+      document.head.appendChild(drawerCollapseStyle);
+
+      // 1) Every prospect-card opens the drawer. Cards already with onclick keep their key.
+      var cardKeys = ['obrien','walsh','grant','sullivan','fitz','romano','riccardi','lin','whitmore','heritage','kelleher','doherty'];
+      document.querySelectorAll('.prospect-card').forEach(function(card, i){
+        if (card.hasAttribute('onclick')) return;
+        card.style.cursor = 'pointer';
+        var key = cardKeys[i % cardKeys.length];
+        card.addEventListener('click', function(){
+          if (typeof openDrawer === 'function') openDrawer(key);
+        });
+      });
+
+      // 2) Kanban / List view toggle — List routes to the tabular forecast view
+      document.querySelectorAll('.vt-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var label = btn.textContent.trim();
+          if (label === 'List') {
+            // Tabular view of the same prospects → forecast page has the table layout
+            window.location = 'atlas-pipeline-forecast.html';
+            return;
+          }
+          document.querySelectorAll('.vt-btn').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+        });
+      });
+
+      // 3) Filter — opens an inline filter strip directly under the topbar
+      var filterBtn = Array.prototype.find.call(document.querySelectorAll('.tb-btn.tb-ghost'), function(b){ return (b.textContent || '').trim() === 'Filter'; });
+      if (filterBtn) {
+        filterBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          var existing = document.getElementById('inline-filter');
+          if (existing) { existing.remove(); return; }
+          var strip = document.createElement('div');
+          strip.id = 'inline-filter';
+          strip.style.cssText = 'background:white;border-bottom:1px solid #E2E8F0;padding:10px 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-family:DM Sans,sans-serif;font-size:12px;animation:fadeUp .2s ease;';
+          strip.innerHTML =
+            '<span style="font-size:11px;color:#64748B;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:0 4px">Filter by</span>' +
+            ['Solicitor: Sarah','Stage: Cultivation','Ask: $25k+','Campaign: Cathedral','Days in stage: &lt; 90'].map(function(l){
+              return '<span style="padding:5px 11px;border-radius:99px;background:#EFF6FF;border:1px solid #DBEAFE;color:#2563EB;font-weight:600;cursor:pointer">' + l + ' ×</span>';
+            }).join('') +
+            '<span style="padding:5px 11px;border-radius:99px;background:white;border:1px dashed #E2E8F0;color:#64748B;cursor:pointer">+ Add filter</span>' +
+            '<span style="margin-left:auto;font-size:11.5px;color:#64748B">Showing <strong style="color:#0F172A">14 of 28</strong> · <a href="atlas-segment-builder.html" style="color:#2563EB;font-weight:500">Build saved segment →</a></span>';
+          var ps = document.querySelector('.pipeline-strip');
+          if (ps && ps.parentNode) ps.parentNode.insertBefore(strip, ps);
+          else document.querySelector('.topbar').after(strip);
+        });
+      }
+
+      // 4) Sort — opens a small dropdown with sort options
+      var sortBtn = Array.prototype.find.call(document.querySelectorAll('.tb-btn.tb-ghost'), function(b){ return (b.textContent || '').trim() === 'Sort'; });
+      if (sortBtn) {
+        sortBtn.style.position = 'relative';
+        sortBtn.addEventListener('click', function(e){
+          e.preventDefault(); e.stopPropagation();
+          var existing = document.getElementById('sort-menu');
+          if (existing) { existing.remove(); return; }
+          var menu = document.createElement('div');
+          menu.id = 'sort-menu';
+          menu.style.cssText = 'position:absolute;top:100%;right:0;margin-top:6px;background:white;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;min-width:240px;z-index:1000;font-family:DM Sans,sans-serif;font-size:13px;';
+          var options = ['Ask amount ↓ (largest first)','Days in stage ↑ (most stale)','Last activity ↓ (most recent)','AI score ↓','Conversion likelihood ↓','Donor name A → Z'];
+          menu.innerHTML = options.map(function(o, i){
+            return '<div style="padding:8px 10px;border-radius:6px;cursor:pointer;color:#334155;display:flex;align-items:center;gap:9px"><span style="width:14px;height:14px;border-radius:50%;border:1.5px solid '+(i===0?'#2563EB':'#E2E8F0')+';background:'+(i===0?'#2563EB':'white')+';box-shadow:'+(i===0?'inset 0 0 0 3px white':'none')+';flex-shrink:0"></span>'+o+'</div>';
+          }).join('');
+          menu.querySelectorAll('div').forEach(function(opt){
+            opt.addEventListener('mouseenter', function(){ opt.style.background='#EFF6FF'; });
+            opt.addEventListener('mouseleave', function(){ opt.style.background='transparent'; });
+            opt.addEventListener('click', function(){
+              menu.querySelectorAll('span:first-child').forEach(function(c){ c.style.border='1.5px solid #E2E8F0'; c.style.background='white'; c.style.boxShadow='none'; });
+              opt.querySelector('span').style.border='1.5px solid #2563EB';
+              opt.querySelector('span').style.background='#2563EB';
+              opt.querySelector('span').style.boxShadow='inset 0 0 0 3px white';
+              setTimeout(function(){ menu.remove(); }, 200);
+            });
+          });
+          sortBtn.appendChild(menu);
+          // close on outside click
+          setTimeout(function(){
+            document.addEventListener('click', function close(ev){
+              if (!sortBtn.contains(ev.target)) { menu.remove(); document.removeEventListener('click', close); }
+            });
+          }, 10);
+        });
+      }
+
+      // 4) Drawer action buttons
+      document.querySelectorAll('button').forEach(function(b){
+        var t = (b.textContent || '').trim();
+        if (t === 'Move prospect here') {
+          b.addEventListener('click', function(e){
+            e.preventDefault(); e.stopPropagation();
+            alert('To move a prospect:\\n\\n  1. Click the stage chips inside the drawer (left side), OR\\n  2. Drag a card from another column onto this one.');
+          });
+        }
+        if (t === 'Record a win') {
+          b.addEventListener('click', function(e){
+            e.preventDefault(); e.stopPropagation();
+            openRecordWinModal();
+          });
+        }
+        if (t === 'Save action') {
+          b.addEventListener('click', function(e){
+            e.preventDefault();
+            // Read the textarea + date
+            var area = document.querySelector('.na-field');
+            var dateEl = document.querySelector('.na-date');
+            var text = area ? area.value.trim() : '';
+            var date = dateEl ? dateEl.value : '';
+            if (!text) {
+              area && area.focus();
+              alert('Type the next step in the textarea before saving.');
+              return;
+            }
+            if (!date) {
+              dateEl && dateEl.focus();
+              alert('Pick a due date for this action.');
+              return;
+            }
+            // Prepend to Contact history timeline so the user sees it land
+            var tl = document.querySelector('.timeline');
+            var nm = document.getElementById('d-name');
+            var who = nm ? nm.textContent : 'this prospect';
+            if (tl) {
+              var dispDate = new Date(date + 'T12:00:00');
+              var dateStr = dispDate.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+              var entry = document.createElement('div');
+              entry.className = 'tl-item';
+              entry.style.cssText = 'animation: fadeUp .25s ease;';
+              entry.innerHTML =
+                '<div class="tl-dot" style="background:#EDE9FE;color:#7C3AED">' +
+                  '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="3.5"/><path d="M5 3v2.5l1.5 1.5"/></svg>' +
+                '</div>' +
+                '<div class="tl-body">' +
+                  '<div class="tl-text"><strong>Next action scheduled</strong> — ' + text.replace(/</g,'&lt;') + '</div>' +
+                  '<div class="tl-date">Due ' + dateStr + ' · task added to your inbox</div>' +
+                '</div>';
+              tl.insertBefore(entry, tl.firstChild);
+            }
+            // Toast confirmation (reuse the drag-drop toast)
+            var toast = document.getElementById('dnd-toast');
+            if (!toast) {
+              toast = document.createElement('div');
+              toast.id = 'dnd-toast';
+              toast.innerHTML = '<span class="ico">✓</span><span class="msg"></span><span class="undo">Undo</span>';
+              document.body.appendChild(toast);
+            }
+            toast.querySelector('.msg').textContent = 'Action saved for ' + who + ' · task in your inbox due ' + (date || 'today');
+            toast.querySelector('.undo').style.display = 'none';
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(function(){ toast.classList.remove('show'); toast.querySelector('.undo').style.display = ''; }, 3500);
+            // Reset textarea so officer can plan the NEXT next-action (multiple sequential saves)
+            if (area) { area.value = ''; area.focus(); }
+          });
+        }
+      });
+
+      // 4b) Add an "+ Open full task modal" link under the date row, next to Save action
+      (function addTaskInboxLink(){
+        var saveBtn = document.querySelector('.na-save');
+        if (!saveBtn) return;
+        var row = saveBtn.parentNode;
+        if (!row || row.querySelector('.na-extra-link')) return;
+        var link = document.createElement('a');
+        link.className = 'na-extra-link';
+        link.href = 'atlas-task-modal.html';
+        link.textContent = '+ Open full task modal';
+        link.style.cssText = 'font-size:11.5px;color:#2563EB;font-weight:500;text-decoration:none;margin-right:auto;align-self:center';
+        row.insertBefore(link, row.firstChild);
+      })();
+
+      // 5) Card kebabs — already handled by atlas-wire global script, but a fallback alert keeps things consistent
+      document.querySelectorAll('.card-kebab, .prospect-card .kebab').forEach(function(k){
+        if (k.dataset.wired) return;
+        k.dataset.wired = '1';
+        k.addEventListener('click', function(e){
+          e.preventDefault(); e.stopPropagation();
+          // atlas-wire injects a dropdown — this is a safety net if that hasn't loaded yet
+          if (!document.querySelector('.atlas-kebab-menu')) {
+            alert('Open: View profile · Edit · Record gift · Log activity · Add task · Send email · Merge · Archive');
+          }
+        });
+      });
+
+      // 5.5) Drag-and-drop · move prospect cards between stages
+      (function setupDnD(){
+        // Inject styles for drag visual feedback + toast
+        var s = document.createElement('style');
+        s.textContent =
+          '.prospect-card { transition: opacity .15s, transform .15s; }' +
+          '.prospect-card.dragging { opacity: .35; cursor: grabbing; }' +
+          '.cards-area.dnd-over { background: rgba(124,58,237,.06); outline: 2px dashed #7C3AED; outline-offset: -6px; border-radius: 8px; }' +
+          '.stage-col.dnd-over .stage-header { box-shadow: inset 0 -2px 0 #7C3AED; }' +
+          '#dnd-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0F172A; color: white; padding: 12px 18px; border-radius: 10px; box-shadow: 0 8px 24px rgba(15,23,42,.20); font-size: 13px; font-family: DM Sans,sans-serif; z-index: 10000; display: flex; align-items: center; gap: 10px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; }' +
+          '#dnd-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }' +
+          '#dnd-toast .ico { width: 22px; height: 22px; border-radius: 50%; background: #15803D; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }' +
+          '#dnd-toast .undo { color: #93C5FD; cursor: pointer; font-weight: 600; padding-left: 10px; border-left: 1px solid rgba(255,255,255,.20); margin-left: 6px; }';
+        document.head.appendChild(s);
+
+        // Stage names mapped from column class
+        var stageNames = {
+          'col-id': 'Identification',
+          'col-qual': 'Qualification',
+          'col-cul': 'Cultivation',
+          'col-sol': 'Solicitation',
+          'col-stew': 'Stewardship',
+          'col-close': 'Closed'
+        };
+        function stageOf(col){
+          for (var k in stageNames){ if (col.classList.contains(k)) return stageNames[k]; }
+          return 'Stage';
+        }
+
+        function showToast(msg, undoFn){
+          var t = document.getElementById('dnd-toast');
+          if (!t) {
+            t = document.createElement('div');
+            t.id = 'dnd-toast';
+            t.innerHTML = '<span class="ico">✓</span><span class="msg"></span><span class="undo">Undo</span>';
+            document.body.appendChild(t);
+            t.querySelector('.undo').addEventListener('click', function(){
+              if (typeof t._undo === 'function') t._undo();
+              t.classList.remove('show');
+            });
+          }
+          t.querySelector('.msg').textContent = msg;
+          t._undo = undoFn;
+          t.classList.add('show');
+          clearTimeout(t._timer);
+          t._timer = setTimeout(function(){ t.classList.remove('show'); }, 4500);
+        }
+
+        function refreshCounts(){
+          // Update the count + value pill at the top of each stage column
+          document.querySelectorAll('.stage-col').forEach(function(col){
+            var cards = col.querySelectorAll('.cards-area .prospect-card');
+            var n = cards.length;
+            var total = 0;
+            cards.forEach(function(c){
+              var ask = c.querySelector('.pc-ask');
+              if (!ask) return;
+              var m = ask.textContent.match(/\$?\s*([\d.]+)\s*([kKmM])?/);
+              if (!m) return;
+              var v = parseFloat(m[1]);
+              var suf = (m[2]||'').toLowerCase();
+              if (suf === 'k') v *= 1000;
+              if (suf === 'm') v *= 1000000;
+              total += v;
+            });
+            var countEl = col.querySelector('.stage-count');
+            var valueEl = col.querySelector('.stage-value');
+            if (countEl) countEl.textContent = n;
+            if (valueEl) {
+              if (total >= 1000000) valueEl.textContent = '$' + (total/1000000).toFixed(1).replace(/\.0$/,'') + 'M';
+              else if (total >= 1000) valueEl.textContent = '$' + Math.round(total/1000) + 'k';
+              else valueEl.textContent = '$' + total;
+            }
+          });
+        }
+
+        var dragged = null;
+        var originParent = null;
+        var originNext = null;
+
+        document.querySelectorAll('.prospect-card').forEach(function(card){
+          card.setAttribute('draggable', 'true');
+          card.style.cursor = 'grab';
+
+          card.addEventListener('dragstart', function(e){
+            dragged = card;
+            originParent = card.parentNode;
+            originNext = card.nextSibling;
+            card.classList.add('dragging');
+            try { e.dataTransfer.setData('text/plain', 'prospect-card'); } catch(_){}
+            e.dataTransfer.effectAllowed = 'move';
+          });
+          card.addEventListener('dragend', function(){
+            card.classList.remove('dragging');
+            document.querySelectorAll('.cards-area.dnd-over').forEach(function(el){ el.classList.remove('dnd-over'); });
+            document.querySelectorAll('.stage-col.dnd-over').forEach(function(el){ el.classList.remove('dnd-over'); });
+            dragged = null; originParent = null; originNext = null;
+          });
+        });
+
+        document.querySelectorAll('.stage-col .cards-area').forEach(function(area){
+          area.addEventListener('dragover', function(e){
+            if (!dragged) return;
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            area.classList.add('dnd-over');
+            var col = area.closest('.stage-col');
+            if (col) col.classList.add('dnd-over');
+          });
+          area.addEventListener('dragleave', function(){
+            area.classList.remove('dnd-over');
+            var col = area.closest('.stage-col');
+            if (col) col.classList.remove('dnd-over');
+          });
+          area.addEventListener('drop', function(e){
+            e.preventDefault();
+            if (!dragged) return;
+            var fromCol = originParent ? originParent.closest('.stage-col') : null;
+            var toCol = area.closest('.stage-col');
+            if (!toCol) return;
+            // Same column · no-op
+            if (fromCol === toCol) {
+              area.classList.remove('dnd-over');
+              toCol.classList.remove('dnd-over');
+              return;
+            }
+            // Move the card. Append at end (could be enhanced to insert at cursor position).
+            // Skip the "+ Add prospect" placeholder if present.
+            var addBtn = area.querySelector('.add-card-btn, .empty-add, [data-role="add-prospect"]');
+            if (addBtn) area.insertBefore(dragged, addBtn);
+            else area.appendChild(dragged);
+
+            var nm = dragged.querySelector('.pc-name');
+            var who = nm ? nm.textContent.trim() : 'this prospect';
+            var fromStage = fromCol ? stageOf(fromCol) : '?';
+            var toStage = stageOf(toCol);
+
+            refreshCounts();
+            area.classList.remove('dnd-over');
+            toCol.classList.remove('dnd-over');
+
+            // Capture for undo
+            var card = dragged;
+            var snapParent = originParent;
+            var snapNext = originNext;
+
+            showToast(
+              who + ' moved · ' + fromStage + ' → ' + toStage + ' · activity logged',
+              function(){
+                if (snapParent) {
+                  if (snapNext) snapParent.insertBefore(card, snapNext);
+                  else snapParent.appendChild(card);
+                  refreshCounts();
+                }
+              }
+            );
+          });
+        });
+
+        // Run an initial count refresh in case data drifts at load time
+        refreshCounts();
+      })();
+
+      // 7) "Call scheduled" meta chip — popover with quick actions
+      var cardActionStyle = document.createElement('style');
+      cardActionStyle.textContent =
+        '.pc-meta-item.due-today { cursor:pointer; transition:filter .12s; }' +
+        '.pc-meta-item.due-today:hover { filter:brightness(.96); text-decoration:underline; text-decoration-color:rgba(217,119,6,.6); }' +
+        '.pc-ai { cursor:pointer; transition:background .15s, border-left-width .15s; }' +
+        '.pc-ai:hover { background:#EDE9FE; border-left-width:3px; }' +
+        '.pc-ai-expanded { background:linear-gradient(135deg,#EDE9FE,#FAF5FF); border-left-width:3px !important; padding:10px 12px !important; }' +
+        '.pc-ai-detail { margin-top:8px; padding-top:8px; border-top:1px dashed #C4B5FD; }' +
+        '.pc-ai-detail .row { font-size:10.5px; color:#5B21B6; padding:3px 0; display:flex; gap:8px; }' +
+        '.pc-ai-detail .row b { color:#4C1D95; font-weight:600; min-width:90px; }' +
+        '.pc-ai-actions { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }' +
+        '.pc-ai-actions a { font-size:10.5px; padding:4px 9px; border-radius:99px; background:white; border:1px solid #C4B5FD; color:#7C3AED; font-weight:600; text-decoration:none; }' +
+        '.pc-ai-actions a:hover { background:#7C3AED; color:white; }' +
+        '.call-popover { position:absolute; background:white; border:1px solid #E2E8F0; border-radius:10px; box-shadow:0 8px 24px rgba(15,23,42,.15); padding:6px; min-width:220px; z-index:200; font-family:DM Sans,sans-serif; }' +
+        '.call-popover .pop-action { padding:8px 10px; border-radius:7px; cursor:pointer; display:flex; align-items:center; gap:9px; font-size:12.5px; color:#334155; }' +
+        '.call-popover .pop-action:hover { background:#FFF7ED; color:#9A3412; }' +
+        '.call-popover .pop-action .ico { width:22px; height:22px; border-radius:6px; background:#FED7AA; color:#9A3412; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }' +
+        '.call-popover .pop-sep { height:1px; background:#F1F5F9; margin:3px 8px; }';
+      document.head.appendChild(cardActionStyle);
+
+      function closeAllCallPopovers(){ document.querySelectorAll('.call-popover').forEach(function(p){ p.remove(); }); }
+      document.addEventListener('click', closeAllCallPopovers);
+
+      document.querySelectorAll('.pc-meta-item.due-today').forEach(function(chip){
+        chip.addEventListener('click', function(e){
+          e.preventDefault(); e.stopPropagation();
+          closeAllCallPopovers();
+          var card = chip.closest('.prospect-card');
+          var nm = card ? card.querySelector('.pc-name') : null;
+          var who = nm ? nm.textContent.trim() : 'this prospect';
+          var pop = document.createElement('div');
+          pop.className = 'call-popover';
+          pop.innerHTML =
+            '<div class="pop-action" data-act="complete"><span class="ico" style="background:#86EFAC;color:#14532D">✓</span><div><div style="font-weight:600">Mark call completed</div><div style="font-size:10.5px;color:#64748B">Auto-log activity on ' + who + "'s timeline</div></div></div>" +
+            '<div class="pop-action" data-act="reschedule"><span class="ico">↻</span><div><div style="font-weight:600">Reschedule</div><div style="font-size:10.5px;color:#64748B">Pick a new time · creates task</div></div></div>' +
+            '<div class="pop-sep"></div>' +
+            '<a class="pop-action" href="atlas-meeting-brief.html" style="text-decoration:none;color:#334155"><span class="ico" style="background:#EDE9FE;color:#7C3AED">★</span><div><div style="font-weight:600">Open meeting brief</div><div style="font-size:10.5px;color:#64748B">Guru AI pre-call summary</div></div></a>' +
+            '<a class="pop-action" href="atlas-log-activity.html" style="text-decoration:none;color:#334155"><span class="ico" style="background:#DBEAFE;color:#2563EB">+</span><div><div style="font-weight:600">Log other activity</div><div style="font-size:10.5px;color:#64748B">Visit · email · letter</div></div></a>';
+          var rect = chip.getBoundingClientRect();
+          pop.style.top = (window.scrollY + rect.bottom + 6) + 'px';
+          pop.style.left = (window.scrollX + rect.left) + 'px';
+          document.body.appendChild(pop);
+          // Wire the in-popover actions
+          pop.querySelectorAll('[data-act]').forEach(function(opt){
+            opt.addEventListener('click', function(){
+              var act = opt.dataset.act;
+              if (act === 'complete') alert('Call marked complete · activity logged on ' + who + "'s timeline · auto-task 'Send follow-up email' created for tomorrow.");
+              else if (act === 'reschedule') window.location = 'atlas-task-modal.html';
+              closeAllCallPopovers();
+            });
+          });
+          pop.addEventListener('click', function(e){ e.stopPropagation(); });
+        });
+      });
+
+      // 8) Guru AI insight — expand inline with full reasoning + actions
+      document.querySelectorAll('.pc-ai').forEach(function(ai){
+        ai.addEventListener('click', function(e){
+          e.preventDefault(); e.stopPropagation();
+          if (ai.dataset.expanded === '1') {
+            // Collapse: remove the appended detail block
+            var detail = ai.querySelector('.pc-ai-detail');
+            var actions = ai.querySelector('.pc-ai-actions');
+            if (detail) detail.remove();
+            if (actions) actions.remove();
+            ai.classList.remove('pc-ai-expanded');
+            ai.dataset.expanded = '0';
+            return;
+          }
+          // Expand
+          var card = ai.closest('.prospect-card');
+          var nm = card ? card.querySelector('.pc-name') : null;
+          var who = nm ? nm.textContent.trim().split(' ')[0] : 'them';
+          var ask = card ? (card.querySelector('.pc-ask') ? card.querySelector('.pc-ask').textContent.trim() : '') : '';
+          ai.classList.add('pc-ai-expanded');
+          ai.dataset.expanded = '1';
+          var detail = document.createElement('div');
+          detail.className = 'pc-ai-detail';
+          detail.innerHTML =
+            '<div class="row"><b>Score breakdown</b>Largest gift × 3 (RFM-adj) + capacity tier · 5yr cumulative · interest signal</div>' +
+            '<div class="row"><b>Confidence</b>High · backed by 24mo of similar Cathedral prospects (n=42)</div>' +
+            '<div class="row"><b>Best ask window</b>Within next 30 days · before campaign year-end</div>' +
+            '<div class="row"><b>Recommended ask</b>' + (ask || '$25k') + ' Cathedral Restoration · matched 1:1</div>' +
+            '<div class="row"><b>Risk flags</b>None · no overdue tasks · last contact &lt; 60d</div>';
+          ai.appendChild(detail);
+          var actions = document.createElement('div');
+          actions.className = 'pc-ai-actions';
+          actions.innerHTML =
+            '<a href="atlas-meeting-brief.html">Open full brief →</a>' +
+            '<a href="atlas-guru-ai.html">Ask Guru about ' + who + '</a>' +
+            '<a href="atlas-pledge-create.html">Create pledge at this ask</a>';
+          ai.appendChild(actions);
+          // Prevent action-link clicks from re-triggering toggle/parent
+          ai.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(ev){ ev.stopPropagation(); }); });
+        });
+      });
+
+      // 6) Key Metrics "Edit" — pin overrides on Ask amount, AI score, Days in stage (PRD §5.4 Wealth Engine override)
+      document.body.addEventListener('click', function(e){
+        var btn = e.target.closest && e.target.closest('.drawer-edit');
+        if (!btn) return;
+        e.preventDefault(); e.stopPropagation();
+
+        // If editor already open, toggle off
+        var existing = document.getElementById('metric-editor');
+        if (existing) { existing.remove(); btn.textContent = 'Edit'; return; }
+
+        var grid = btn.closest('.drawer-section').querySelector('.info-grid');
+        if (!grid) return;
+
+        // Read current values from the info-grid
+        var items = grid.querySelectorAll('.info-item');
+        var ask = items[0] ? items[0].querySelector('.info-value').textContent.trim() : '$25,000';
+        var lifetime = items[1] ? items[1].querySelector('.info-value').textContent.trim() : '—';
+        var ai = items[2] ? items[2].querySelector('.info-value').textContent.trim() : '95 / 100';
+
+        btn.textContent = 'Close';
+        var editor = document.createElement('div');
+        editor.id = 'metric-editor';
+        editor.style.cssText = 'margin-top:12px;padding:14px;background:#EDE9FE;border:1px solid #DDD6FE;border-radius:10px;font-family:DM Sans,sans-serif;';
+        editor.innerHTML =
+          '<div style="font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7C3AED;margin-bottom:10px;display:flex;align-items:center;gap:8px">' +
+            '<span style="background:#7C3AED;color:white;padding:2px 7px;border-radius:5px;font-size:9px">PIN OVERRIDE</span>' +
+            'Surfaces above Wealth Engine output' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">' +
+            '<div>' +
+              '<div style="font-size:10.5px;font-weight:600;color:#334155;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Pinned ask amount</div>' +
+              '<input id="me-ask" value="' + ask + '" style="width:100%;font-size:13px;padding:7px 10px;border:1px solid #C4B5FD;border-radius:7px;font-family:DM Sans,sans-serif;font-weight:600;color:#0F172A">' +
+              '<div style="font-size:10.5px;color:#7C3AED;margin-top:3px">Wealth Engine suggests: $8k–$12k</div>' +
+            '</div>' +
+            '<div>' +
+              '<div style="font-size:10.5px;font-weight:600;color:#334155;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">AI score override</div>' +
+              '<input id="me-ai" value="' + ai + '" style="width:100%;font-size:13px;padding:7px 10px;border:1px solid #C4B5FD;border-radius:7px;font-family:DM Sans,sans-serif;font-weight:600;color:#0F172A">' +
+              '<div style="font-size:10.5px;color:#7C3AED;margin-top:3px">Atlas computed: 78 / 100</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="margin-bottom:10px">' +
+            '<div style="font-size:10.5px;font-weight:600;color:#334155;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Reason for override <span style="color:#BE185D">*</span></div>' +
+            '<select id="me-reason" style="width:100%;font-size:12.5px;padding:7px 10px;border:1px solid #C4B5FD;border-radius:7px;font-family:DM Sans,sans-serif;background:white">' +
+              '<option>Direct conversation with donor confirmed capacity higher than Wealth Engine estimate</option>' +
+              '<option>Board referral / peer-screen signals upgrade potential</option>' +
+              '<option>Recent life event (business sale, retirement, inheritance)</option>' +
+              '<option>Family / household giving combined exceeds individual estimate</option>' +
+              '<option>Other — specify in note below</option>' +
+            '</select>' +
+          '</div>' +
+          '<div style="margin-bottom:10px">' +
+            '<div style="font-size:10.5px;font-weight:600;color:#334155;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Justification note (audit trail)</div>' +
+            '<textarea id="me-note" placeholder="Specifics — Atlas keeps this in the audit log for 7 years" rows="2" style="width:100%;font-size:12.5px;padding:7px 10px;border:1px solid #C4B5FD;border-radius:7px;font-family:DM Sans,sans-serif;resize:vertical">Margaret confirmed $30k Cathedral capital pledge at May 4 cultivation visit. Husband is board member; household giving capacity well above the $8–12k engine estimate.</textarea>' +
+          '</div>' +
+          '<div style="display:flex;gap:8px;align-items:center">' +
+            '<button id="me-cancel" style="padding:7px 12px;font-size:12px;font-weight:500;background:white;border:1px solid #C4B5FD;border-radius:7px;color:#334155;cursor:pointer">Cancel</button>' +
+            '<button id="me-save" style="padding:7px 14px;font-size:12px;font-weight:600;background:#7C3AED;color:white;border:none;border-radius:7px;cursor:pointer;margin-left:auto">Save pinned override</button>' +
+          '</div>';
+        grid.parentNode.appendChild(editor);
+
+        editor.querySelector('#me-cancel').addEventListener('click', function(){
+          editor.remove();
+          btn.textContent = 'Edit';
+        });
+        editor.querySelector('#me-save').addEventListener('click', function(){
+          var newAsk = editor.querySelector('#me-ask').value.trim();
+          var newAI  = editor.querySelector('#me-ai').value.trim();
+          // Update visible values
+          if (items[0]) items[0].querySelector('.info-value').textContent = newAsk;
+          if (items[2]) items[2].querySelector('.info-value').textContent = newAI;
+          // Add visual indicator that the value is pinned
+          if (items[0]) items[0].querySelector('.info-value').style.borderBottom = '2px dotted #7C3AED';
+          if (items[2]) items[2].querySelector('.info-value').style.borderBottom = '2px dotted #7C3AED';
+          editor.remove();
+          btn.textContent = 'Edit';
+          alert("Override pinned · Atlas will surface " + newAsk + " above Wealth Engine output · audit entry created (7-year retention).");
+        });
+      });
+
+      // 9) Record a Win — purpose-built modal (replaces wire-script redirect to generic gift entry)
+      window.openRecordWinModal = function openRecordWinModal(){
+        if (document.getElementById('rw-overlay')) return;
+
+        // Pull candidate prospects from Solicitation + Cultivation columns (most wins close from those stages)
+        function pullProspects(){
+          var out = [];
+          ['col-sol','col-cul'].forEach(function(cls){
+            var col = document.querySelector('.' + cls);
+            if (!col) return;
+            var stageName = col.querySelector('.stage-name');
+            var stageLabel = stageName ? stageName.textContent.trim() : cls;
+            col.querySelectorAll('.prospect-card').forEach(function(card){
+              var name = (card.querySelector('.pc-name')||{}).textContent || 'Unnamed prospect';
+              var org  = (card.querySelector('.pc-org') ||{}).textContent || '';
+              var ask  = (card.querySelector('.pc-ask') ||{}).textContent || '';
+              var av   = card.querySelector('.pc-avatar');
+              var avBg = av ? (av.style.background || '#EDE9FE') : '#EDE9FE';
+              var avFg = av ? (av.style.color || '#7C3AED')      : '#7C3AED';
+              var avTx = av ? av.textContent.trim()              : '??';
+              out.push({ name:name.trim(), org:org.trim(), ask:ask.trim(), avBg:avBg, avFg:avFg, avTx:avTx, stage:stageLabel, _card:card });
+            });
+          });
+          return out;
+        }
+        var prospects = pullProspects();
+        var today = new Date().toISOString().slice(0,10);
+
+        var overlay = document.createElement('div');
+        overlay.id = 'rw-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:10001;display:flex;align-items:center;justify-content:center;animation:fadeIn .15s ease;font-family:DM Sans,sans-serif;';
+        overlay.innerHTML =
+          '<style>@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes popIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}' +
+          '.rw-card{background:white;width:min(640px,94vw);max-height:92vh;overflow:auto;border-radius:14px;box-shadow:0 28px 80px rgba(15,23,42,.32);animation:popIn .18s ease}' +
+          '.rw-head{padding:18px 22px 14px;background:linear-gradient(135deg,#15803D 0%,#16A34A 100%);color:white;border-radius:14px 14px 0 0;display:flex;align-items:center;gap:12px}' +
+          '.rw-head .ico{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px}' +
+          '.rw-head h3{margin:0;font-family:DM Serif Display,serif;font-size:20px;font-weight:400;letter-spacing:-.01em}' +
+          '.rw-head .sub{font-size:12px;opacity:.85;margin-top:2px}' +
+          '.rw-x{margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1}' +
+          '.rw-body{padding:18px 22px}' +
+          '.rw-section{margin-bottom:16px}' +
+          '.rw-label{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#475569;margin-bottom:7px;display:flex;align-items:center;gap:6px}' +
+          '.rw-label .req{color:#BE185D}' +
+          '.rw-input,.rw-select,.rw-textarea{width:100%;padding:9px 11px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;font-family:DM Sans,sans-serif;color:#0F172A;outline:none;transition:border-color .15s;box-sizing:border-box}' +
+          '.rw-input:focus,.rw-select:focus,.rw-textarea:focus{border-color:#15803D;box-shadow:0 0 0 3px rgba(21,128,61,.08)}' +
+          '.rw-textarea{resize:vertical;min-height:64px;font-family:DM Sans,sans-serif}' +
+          '.rw-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}' +
+          '.rw-pp{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow:auto;padding:6px;border:1.5px solid #E2E8F0;border-radius:8px;background:#FAFAFA}' +
+          '.rw-pp-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;cursor:pointer;background:white;border:1.5px solid transparent}' +
+          '.rw-pp-item:hover{background:#F0FDF4}' +
+          '.rw-pp-item.sel{background:#F0FDF4;border-color:#15803D}' +
+          '.rw-pp-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}' +
+          '.rw-pp-name{font-size:13px;font-weight:600;color:#0F172A;line-height:1.2}' +
+          '.rw-pp-org{font-size:11px;color:#64748B;margin-top:1px}' +
+          '.rw-pp-ask{margin-left:auto;font-size:12px;font-weight:600;color:#15803D;font-variant-numeric:tabular-nums}' +
+          '.rw-pp-stage{font-size:9.5px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.04em;background:#EDE9FE;padding:2px 6px;border-radius:4px;margin-right:6px}' +
+          '.rw-check{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;font-size:12.5px;color:#334155;cursor:pointer;border:1.5px solid #E2E8F0;background:white;transition:all .15s}' +
+          '.rw-check input{margin:0;cursor:pointer;accent-color:#15803D}' +
+          '.rw-check.on{border-color:#15803D;background:#F0FDF4;color:#15803D;font-weight:600}' +
+          '.rw-foot{padding:14px 22px 18px;display:flex;gap:10px;align-items:center;border-top:1px solid #F1F5F9}' +
+          '.rw-cancel{padding:9px 16px;font-size:13px;background:white;border:1.5px solid #E2E8F0;border-radius:8px;color:#475569;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:500}' +
+          '.rw-save{padding:9px 18px;font-size:13px;background:linear-gradient(135deg,#15803D,#16A34A);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;margin-left:auto;box-shadow:0 4px 12px rgba(21,128,61,.25)}' +
+          '.rw-save:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(21,128,61,.32)}' +
+          '.rw-hint{font-size:11px;color:#64748B;margin-top:5px}</style>' +
+          '<div class="rw-card" role="dialog" aria-modal="true" aria-labelledby="rw-title">' +
+            '<div class="rw-head">' +
+              '<div class="ico">🎉</div>' +
+              '<div>' +
+                '<h3 id="rw-title">Record a major-gift win</h3>' +
+                '<div class="sub">Closes the moves-management loop · moves the prospect to Closed · Won</div>' +
+              '</div>' +
+              '<div class="rw-x" id="rw-x" aria-label="Close">×</div>' +
+            '</div>' +
+            '<div class="rw-body">' +
+              '<div class="rw-section">' +
+                '<div class="rw-label">Prospect <span class="req">*</span></div>' +
+                '<div class="rw-pp" id="rw-pp">' +
+                  (prospects.length ? prospects.map(function(p, i){
+                    return '<div class="rw-pp-item" data-i="' + i + '">' +
+                             '<div class="rw-pp-av" style="background:' + p.avBg + ';color:' + p.avFg + '">' + p.avTx + '</div>' +
+                             '<div>' +
+                               '<div class="rw-pp-name">' + p.name + '</div>' +
+                               '<div class="rw-pp-org">' + p.org + '</div>' +
+                             '</div>' +
+                             '<div class="rw-pp-ask"><span class="rw-pp-stage">' + p.stage + '</span>' + p.ask + '</div>' +
+                           '</div>';
+                  }).join('') : '<div style="padding:14px;text-align:center;color:#64748B;font-size:12.5px">No prospects in Solicitation or Cultivation. Move a card there first, or add a new prospect.</div>') +
+                '</div>' +
+                '<div class="rw-hint">Pre-loaded from Solicitation + Cultivation columns. Pick one to auto-fill the gift amount.</div>' +
+              '</div>' +
+              '<div class="rw-row">' +
+                '<div class="rw-section">' +
+                  '<div class="rw-label">Gift amount <span class="req">*</span></div>' +
+                  '<input class="rw-input" id="rw-amount" placeholder="e.g. $25,000" inputmode="numeric">' +
+                '</div>' +
+                '<div class="rw-section">' +
+                  '<div class="rw-label">Gift type</div>' +
+                  '<select class="rw-select" id="rw-type">' +
+                    '<option>Cash / Check</option>' +
+                    '<option>Stock / Securities</option>' +
+                    '<option>In-kind</option>' +
+                    '<option>Pledge (multi-year)</option>' +
+                    '<option>Planned gift</option>' +
+                  '</select>' +
+                '</div>' +
+              '</div>' +
+              '<div class="rw-row">' +
+                '<div class="rw-section">' +
+                  '<div class="rw-label">Designation</div>' +
+                  '<select class="rw-select" id="rw-desig">' +
+                    '<option>Cathedral Restoration</option>' +
+                    '<option>Annual Fund</option>' +
+                    '<option>Bishop\'s Annual Appeal</option>' +
+                    '<option>Schools Endowment</option>' +
+                    '<option>Capital Campaign</option>' +
+                    '<option>Unrestricted</option>' +
+                  '</select>' +
+                '</div>' +
+                '<div class="rw-section">' +
+                  '<div class="rw-label">Close date</div>' +
+                  '<input class="rw-input" id="rw-date" type="date" value="' + today + '">' +
+                '</div>' +
+              '</div>' +
+              '<div class="rw-section">' +
+                '<div class="rw-label">Celebration note · the story behind the close <span class="req">*</span></div>' +
+                '<textarea class="rw-textarea" id="rw-story" placeholder="One sentence the team will see in the Wins feed — e.g. &#34;Bishop&#39;s personal call sealed it after 18 months of cultivation.&#34;" maxlength="220"></textarea>' +
+                '<div class="rw-hint"><span id="rw-count">0</span>/220 · this appears on the dashboard Wins ticker</div>' +
+              '</div>' +
+              '<div class="rw-section">' +
+                '<div class="rw-label">Stewardship actions</div>' +
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+                  '<label class="rw-check on"><input type="checkbox" id="rw-thanks" checked>Send thank-you in 48h</label>' +
+                  '<label class="rw-check on"><input type="checkbox" id="rw-steward" checked>Schedule 90-day check-in</label>' +
+                  '<label class="rw-check"><input type="checkbox" id="rw-recog">Add to recognition list</label>' +
+                  '<label class="rw-check"><input type="checkbox" id="rw-notify">Notify Director of Development</label>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="rw-foot">' +
+              '<button class="rw-cancel" id="rw-cancel">Cancel</button>' +
+              '<button class="rw-save" id="rw-save">Record win &amp; move to Closed · Won</button>' +
+            '</div>' +
+          '</div>';
+        document.body.appendChild(overlay);
+
+        var selected = null;
+        var pp = overlay.querySelector('#rw-pp');
+        pp.querySelectorAll('.rw-pp-item').forEach(function(item){
+          item.addEventListener('click', function(){
+            pp.querySelectorAll('.rw-pp-item').forEach(function(x){ x.classList.remove('sel'); });
+            item.classList.add('sel');
+            selected = prospects[+item.dataset.i];
+            // Pre-fill amount from ask
+            var amt = overlay.querySelector('#rw-amount');
+            if (selected && selected.ask && !amt.value) amt.value = selected.ask;
+          });
+        });
+
+        // Toggle stewardship checkbox visuals
+        overlay.querySelectorAll('.rw-check input').forEach(function(cb){
+          cb.addEventListener('change', function(){
+            cb.closest('.rw-check').classList.toggle('on', cb.checked);
+          });
+        });
+
+        // Live counter
+        var story = overlay.querySelector('#rw-story');
+        var counter = overlay.querySelector('#rw-count');
+        story.addEventListener('input', function(){ counter.textContent = story.value.length; });
+
+        function close(){ overlay.remove(); }
+        overlay.querySelector('#rw-x').addEventListener('click', close);
+        overlay.querySelector('#rw-cancel').addEventListener('click', close);
+        overlay.addEventListener('click', function(e){ if (e.target === overlay) close(); });
+
+        // Save handler
+        overlay.querySelector('#rw-save').addEventListener('click', function(){
+          if (!selected) { alert('Pick the prospect this win belongs to.'); pp.scrollIntoView({block:'center'}); return; }
+          var amount = overlay.querySelector('#rw-amount').value.trim();
+          if (!amount) { alert('Enter the gift amount.'); overlay.querySelector('#rw-amount').focus(); return; }
+          var storyTxt = story.value.trim();
+          if (!storyTxt) { alert('Add a one-line celebration note — the team sees this in the Wins feed.'); story.focus(); return; }
+          var type   = overlay.querySelector('#rw-type').value;
+          var desig  = overlay.querySelector('#rw-desig').value;
+          var dateV  = overlay.querySelector('#rw-date').value || today;
+          var thanks = overlay.querySelector('#rw-thanks').checked;
+          var steward= overlay.querySelector('#rw-steward').checked;
+
+          // Parse the amount into a number for KPI totals
+          var amtNum = parseFloat(amount.replace(/[^0-9.]/g,'')) || 0;
+          // Detect "$25k"-style abbreviated values
+          if (/k$/i.test(amount.replace(/[^0-9.kK]/g,''))) amtNum = amtNum * 1000;
+
+          // Format for display ("$25,000" or "$1.2M")
+          function fmt(n){
+            if (n >= 1000000) return '$' + (n/1000000).toFixed(n%1000000===0?0:1) + 'M';
+            if (n >= 1000)    return '$' + Math.round(n/1000) + 'k';
+            return '$' + n.toLocaleString();
+          }
+          var dispAmt = amount.startsWith('$') ? amount : fmt(amtNum);
+
+          // 1) Move the card from its origin column to Closed/Won
+          var origCard = selected._card;
+          var origCol  = origCard ? origCard.closest('.stage-col') : null;
+          var winCol   = document.querySelector('.col-close .cards-area');
+          if (origCard && winCol) {
+            // Style the moved card as a Won card
+            origCard.classList.add('won');
+            // Update meta to show close info
+            var amtEl = origCard.querySelector('.pc-ask');
+            if (amtEl) { amtEl.textContent = dispAmt; amtEl.style.color = '#15803D'; }
+            // Replace tags with "Gift received ✓"
+            var tags = origCard.querySelector('.pc-tags');
+            if (tags) tags.innerHTML = '<span class="pc-tag" style="background:#DCFCE7;color:#15803D">Gift received ✓</span>';
+            // Footer days badge
+            var days = origCard.querySelector('.pc-days');
+            if (days) { days.textContent = 'Won ✓'; days.className = 'pc-days days-won'; }
+            // Insert before Record-a-win button
+            var addBtn = winCol.parentNode.querySelector('.add-card-btn');
+            origCard.style.cssText += ';animation:popIn .25s ease';
+            winCol.appendChild(origCard);
+
+            // Update column counts/values via existing refresh helper if present, else manual
+            if (typeof refreshStageCounts === 'function') {
+              try { refreshStageCounts(); } catch(_) {}
+            } else {
+              // Manual: increment Closed/Won count + value, decrement origin
+              [origCol, document.querySelector('.col-close')].forEach(function(col){
+                if (!col) return;
+                var cnt = col.querySelector('.stage-count');
+                var n = col.querySelectorAll('.cards-area .prospect-card').length;
+                if (cnt) cnt.textContent = n;
+              });
+            }
+          }
+
+          // 2) Update KPI strip · Won this year (find by label text)
+          document.querySelectorAll('.ps-item').forEach(function(item){
+            var lbl = item.querySelector('.ps-label');
+            if (lbl && /won this year/i.test(lbl.textContent)) {
+              var val = item.querySelector('.ps-value');
+              if (val) {
+                var cur = parseFloat(val.textContent.replace(/[^0-9.]/g,'')) || 0;
+                if (/k/i.test(val.textContent)) cur = cur * 1000;
+                if (/m/i.test(val.textContent)) cur = cur * 1000000;
+                var next = cur + amtNum;
+                val.textContent = fmt(next);
+                val.style.transition = 'color .6s'; val.style.color = '#15803D';
+              }
+            }
+          });
+
+          // 3) Append timeline entry if drawer is showing this prospect
+          var drawerName = document.getElementById('d-name');
+          if (drawerName && selected && drawerName.textContent.trim() === selected.name) {
+            var tl = document.querySelector('.timeline');
+            if (tl) {
+              var entry = document.createElement('div');
+              entry.className = 'tl-item';
+              entry.innerHTML =
+                '<div class="tl-dot" style="background:#DCFCE7;color:#15803D">' +
+                  '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2.5 5l1.8 1.8L7.5 3.5"/></svg>' +
+                '</div>' +
+                '<div class="tl-body">' +
+                  '<div class="tl-text"><strong>Gift closed</strong> — ' + dispAmt + ' ' + type + ' · ' + desig + '</div>' +
+                  '<div class="tl-date" style="font-style:italic">"' + storyTxt.replace(/</g,'&lt;') + '"</div>' +
+                '</div>';
+              tl.insertBefore(entry, tl.firstChild);
+            }
+          }
+
+          // 4) Fire celebration toast with 6s undo window (longer than DnD)
+          var toast = document.getElementById('dnd-toast');
+          if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'dnd-toast';
+            toast.innerHTML = '<span class="ico">✓</span><span class="msg"></span><span class="undo">Undo</span>';
+            document.body.appendChild(toast);
+          }
+          var undoBtn = toast.querySelector('.undo');
+          toast.querySelector('.ico').textContent = '🎉';
+          toast.querySelector('.msg').textContent = dispAmt + ' from ' + selected.name + ' recorded · ' + (steward ? 'stewardship task scheduled · ' : '') + (thanks ? 'thank-you queued' : '');
+          undoBtn.style.display = '';
+          toast.classList.add('show');
+          clearTimeout(toast._timer);
+          // Undo: move the card back
+          undoBtn.onclick = function(){
+            if (origCard && origCol) {
+              origCard.classList.remove('won');
+              var area = origCol.querySelector('.cards-area');
+              if (area) area.appendChild(origCard);
+            }
+            toast.classList.remove('show');
+            alert('Win undone · prospect returned to ' + (selected.stage || 'previous stage') + '. Refresh to reset KPI totals.');
+          };
+          toast._timer = setTimeout(function(){ toast.classList.remove('show'); }, 6000);
+
+          close();
+        });
+      };
+
+    })();
   </script>
 
 
@@ -1181,8 +2212,87 @@
     // Users & roles
     ['users & roles',                'atlas-users-roles.html'],
     ['users &amp; roles',            'atlas-users-roles.html'],
-    ['invite user',                  'atlas-users-roles.html'],
-    ['add integration',              'atlas-integrations.html'],
+    ['invite user',                  'atlas-invite-user.html'],
+    ['add user',                     'atlas-invite-user.html'],
+    ['new user',                     'atlas-invite-user.html'],
+    ['invite a new user',            'atlas-invite-user.html'],
+    ['define a custom role',         'atlas-role-builder.html'],
+    ['+ define a custom role',       'atlas-role-builder.html'],
+    ['define custom role',           'atlas-role-builder.html'],
+    ['new role',                     'atlas-role-builder.html'],
+    ['edit role',                    'atlas-role-builder.html'],
+    ['add integration',              'atlas-add-integration.html'],
+    ['connect integration',          'atlas-add-integration.html'],
+    ['new integration',              'atlas-add-integration.html'],
+    ['add another integration',      'atlas-add-integration.html'],
+    ['locations',                    'atlas-location-manage.html'],
+    ['locations & parishes',         'atlas-location-manage.html'],
+    ['locations &amp; parishes',     'atlas-location-manage.html'],
+    ['manage locations',             'atlas-location-manage.html'],
+    ['manage parishes',              'atlas-location-manage.html'],
+    ['add location',                 'atlas-location-manage.html'],
+    ['component library',            'atlas-component-library.html'],
+    ['design system',                'atlas-component-library.html'],
+    ['guided tour',                  'atlas-guided-tour.html'],
+    ['take a tour',                  'atlas-guided-tour.html'],
+    ['product tour',                 'atlas-guided-tour.html'],
+    ['onboarding tour',              'atlas-guided-tour.html'],
+
+    // Event sub-screens
+    ["bishop's annual gala",         'atlas-gala-management.html'],
+    ['annual gala',                  'atlas-gala-management.html'],
+    ['gala management',              'atlas-gala-management.html'],
+    ['ignatian retreat',             'atlas-retreat.html'],
+    ["men's retreat",                'atlas-retreat.html'],
+    ['retreat',                      'atlas-retreat.html'],
+    ['check-in',                     'atlas-checkin.html'],
+    ['day-of check-in',              'atlas-checkin.html'],
+    ['event check-in',               'atlas-checkin.html'],
+    ['check in guest',               'atlas-checkin.html'],
+
+    // Wealth screening sub-page
+    ['wealth screening',             'atlas-wealth-screening.html'],
+    ['refresh screening',            'atlas-wealth-screening.html'],
+    ['lai scores',                   'atlas-wealth-screening.html'],
+    ['capacity rating',              'atlas-wealth-screening.html'],
+
+    // ── Sprint 4 ──
+    ['gifts & pledges',              'atlas-gifts-pledges.html'],
+    ['gifts &amp; pledges',          'atlas-gifts-pledges.html'],
+    ['gifts and pledges',            'atlas-gifts-pledges.html'],
+    ['edit constituent',             'atlas-edit-constituent.html'],
+    ['edit profile',                 'atlas-edit-constituent.html'],
+    ['edit',                         'atlas-edit-constituent.html'],
+    ['view all pledges',             'atlas-pledges-list.html'],
+    ['open pledges',                 'atlas-pledges-list.html'],
+    ['stock gift',                   'atlas-stock-gift.html'],
+    ['record stock',                 'atlas-stock-gift.html'],
+    ['pledge payment',               'atlas-pledge-payment.html'],
+    ['record payment',               'atlas-pledge-payment.html'],
+    ['record next instalment',       'atlas-pledge-payment.html'],
+    ['record installment',           'atlas-pledge-payment.html'],
+    ['view cathedral campaign',      'atlas-campaign-detail.html'],
+    ['campaign detail',              'atlas-campaign-detail.html'],
+    ['view campaign',                'atlas-campaign-detail.html'],
+    ['build outreach list',          'atlas-segment-builder.html'],
+    ['build a segment',              'atlas-segment-builder.html'],
+    ['segment builder',              'atlas-segment-builder.html'],
+    ['solicitor performance',        'atlas-solicitor-performance.html'],
+    ['solicitor leaderboard',        'atlas-solicitor-performance.html'],
+
+    // ── Pipeline final flow ──
+    ['portfolio rebalance',          'atlas-portfolio-assign.html'],
+    ['rebalance portfolios',         'atlas-portfolio-assign.html'],
+    ['add prospect',                 'atlas-add-prospect.html'],
+    ['new prospect',                 'atlas-add-prospect.html'],
+    ['identify prospect',            'atlas-add-prospect.html'],
+    ['promote to prospect',          'atlas-add-prospect.html'],
+    ['portfolio assign',             'atlas-portfolio-assign.html'],
+    ['bulk assign',                  'atlas-portfolio-assign.html'],
+    ['pipeline forecast',            'atlas-pipeline-forecast.html'],
+    ['forecast',                     'atlas-pipeline-forecast.html'],
+    ['expected to close',            'atlas-pipeline-forecast.html'],
+    ['pipeline flow',                'atlas-pipeline-flow.html'],
   ];
 
   function routeFor(text) {
@@ -1238,6 +2348,59 @@
       // Don't intercept obvious modal-trigger buttons (those have onclick attr that opens local modal)
       // Heuristic: if button has 'onclick' attr that already changes state, only follow when routes match strongly
       window.location = dest;
+    });
+  });
+
+  // 4b) Plain <a href="#"> anchors that aren't policy/footer — try text routing
+  document.querySelectorAll('a[href="#"]').forEach(function(el){
+    // Skip if it already has another routing handler
+    if (el.dataset.atlasWired) return;
+    var txt = (el.innerText || el.textContent || '').toLowerCase().trim();
+    // Skip explicit policy/footer placeholders
+    var policyWords = ['privacy','terms','help','forgot','security','status','refund','contact','help center','english','español','administrator','here','bishop','phase','print','define a custom role','change type','+ saved view','manage seasonal','why we ask'];
+    if (policyWords.some(function(w){ return txt.indexOf(w) !== -1; })) return;
+    var dest = routeFor(txt);
+    if (!dest || dest === '#') return;
+    el.setAttribute('href', dest);
+    el.dataset.atlasWired = '1';
+  });
+
+  // 4c) Kebab menus on donor-list / pledge-list / gift-list rows — open an action dropdown
+  var KEBAB_MENU = [
+    ['View profile',     'atlas-donor-360.html',       'M12 14a3 3 0 100-6 3 3 0 000 6zM2 21c0-5.5 4.5-10 10-10s10 4.5 10 10'],
+    ['Edit',             'atlas-edit-constituent.html','M3 17l8-8 4 4-8 8H3v-4zM12 6l3-3 3 3-3 3-3-3z'],
+    ['Record gift',      'atlas-gift-entry.html',      'M12 5v14M5 12h14'],
+    ['Log activity',     'atlas-log-activity.html',    'M3 13c0-3 2-5 5-5s5 2 5 5M8 5a3 3 0 100-0.01'],
+    ['Add task',         'atlas-task-modal.html',      'M4 6h2l1-3 2 6 1-4h6'],
+    ['Send email',       'atlas-email-compose.html',   'M3 6h18v12H3zM3 6l9 7 9-7'],
+    ['Merge duplicate',  'atlas-merge.html',           'M6 6l4-4M6 6l-4 4M6 6h10'],
+    ['Archive',          '#',                          'M3 6h18M5 6v14h14V6M9 10h6']
+  ];
+  function closeKebabMenus(){ document.querySelectorAll('.atlas-kebab-menu').forEach(function(m){ m.remove(); }); }
+  document.addEventListener('click', closeKebabMenus);
+
+  document.querySelectorAll('.kebab').forEach(function(k){
+    k.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      closeKebabMenus();
+      var menu = document.createElement('div');
+      menu.className = 'atlas-kebab-menu';
+      menu.style.cssText = 'position:absolute;background:white;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;min-width:200px;z-index:100;font-family:DM Sans,sans-serif;font-size:13px;';
+      KEBAB_MENU.forEach(function(item){
+        var a = document.createElement('a');
+        a.href = item[1];
+        a.style.cssText = 'display:flex;align-items:center;gap:9px;padding:8px 10px;color:#334155;text-decoration:none;border-radius:6px;cursor:pointer;';
+        a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#64748B"><path d="'+item[2]+'"/></svg>' + item[0];
+        a.addEventListener('mouseenter', function(){ a.style.background='#EFF6FF'; a.style.color='#2563EB'; });
+        a.addEventListener('mouseleave', function(){ a.style.background='transparent'; a.style.color='#334155'; });
+        if (item[0] === 'Archive') { a.style.color = '#BE185D'; a.style.borderTop='1px solid #EDF2F7'; a.style.marginTop='4px'; a.style.paddingTop='10px'; }
+        menu.appendChild(a);
+      });
+      // Position
+      var rect = k.getBoundingClientRect();
+      menu.style.top  = (window.scrollY + rect.bottom + 4) + 'px';
+      menu.style.left = (window.scrollX + rect.right - 200) + 'px';
+      document.body.appendChild(menu);
     });
   });
 
