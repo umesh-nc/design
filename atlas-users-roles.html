@@ -607,7 +607,7 @@ body {
     </div>
     <div class="flex gap-8">
       <button class="btn btn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="10" height="10" rx="1.5"/><path d="M5 7l1.5 1.5L9 5"/></svg> View audit log</button>
-      <button class="btn btn-primary"><svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg> Invite user</button>
+      <button class="btn btn-primary" id="invite-user-btn" onclick="openInviteDrawer()"><svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg> Invite user</button>
     </div>
   </div>
 
@@ -813,6 +813,294 @@ body {
 </div>
 
 </div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- Inline Invite-user slide-over drawer                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<style id="iu-drawer-css">
+  #iu-scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 10002; opacity: 0; pointer-events: none; transition: opacity .18s ease; }
+  #iu-scrim.show { opacity: 1; pointer-events: auto; }
+  #iu-drawer { position: fixed; top: 0; right: 0; height: 100vh; width: min(520px, 92vw); background: white; z-index: 10003; box-shadow: -16px 0 40px rgba(15,23,42,.18); transform: translateX(100%); transition: transform .22s cubic-bezier(.22,.61,.36,1); display: flex; flex-direction: column; font-family: 'DM Sans', sans-serif; }
+  #iu-drawer.show { transform: none; }
+  #iu-drawer .iu-head { padding: 18px 22px 14px; background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%); color: white; display: flex; align-items: flex-start; gap: 12px; }
+  #iu-drawer .iu-head .ico { width: 36px; height: 36px; border-radius: 9px; background: rgba(255,255,255,.20); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  #iu-drawer .iu-head h3 { margin: 0; font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; letter-spacing: -.01em; }
+  #iu-drawer .iu-head .sub { font-size: 12px; opacity: .88; margin-top: 3px; line-height: 1.4; }
+  #iu-drawer .iu-x { margin-left: auto; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  #iu-drawer .iu-body { padding: 20px 22px; overflow-y: auto; flex: 1; }
+  #iu-drawer .iu-sec { margin-bottom: 18px; }
+  #iu-drawer .iu-lbl { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #475569; margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+  #iu-drawer .iu-lbl .req { color: #BE185D; }
+  #iu-drawer .iu-fld { width: 100%; padding: 9px 11px; border: 1.5px solid #E2E8F0; border-radius: 8px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: #0F172A; outline: none; transition: border-color .15s; box-sizing: border-box; }
+  #iu-drawer .iu-fld:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+  #iu-drawer .iu-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  #iu-drawer .iu-role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  #iu-drawer .iu-role { padding: 10px 12px; border: 1.5px solid #E2E8F0; border-radius: 9px; cursor: pointer; transition: all .15s; background: white; }
+  #iu-drawer .iu-role:hover { border-color: #93C5FD; background: #F0F9FF; }
+  #iu-drawer .iu-role.sel { border-color: #2563EB; background: #EFF6FF; box-shadow: 0 0 0 2px rgba(37,99,235,.10); }
+  #iu-drawer .iu-role .rn { font-size: 12.5px; font-weight: 600; color: #0F172A; display: flex; align-items: center; gap: 6px; }
+  #iu-drawer .iu-role .rd { font-size: 11px; color: #64748B; margin-top: 3px; line-height: 1.35; }
+  #iu-drawer .iu-role .rtag { font-size: 9.5px; font-weight: 700; text-transform: uppercase; padding: 1px 6px; border-radius: 4px; letter-spacing: .04em; }
+  #iu-drawer .iu-role .rtag.admin   { background: #FEE2E2; color: #B91C1C; }
+  #iu-drawer .iu-role .rtag.dba     { background: #FEF3C7; color: #92400E; }
+  #iu-drawer .iu-role .rtag.dev     { background: #DBEAFE; color: #1E40AF; }
+  #iu-drawer .iu-role .rtag.officer { background: #DCFCE7; color: #15803D; }
+  #iu-drawer .iu-role .rtag.read    { background: #F1F5F9; color: #475569; }
+  #iu-drawer .iu-scope { display: flex; flex-wrap: wrap; gap: 8px; }
+  #iu-drawer .iu-chip { padding: 7px 12px; border: 1.5px solid #E2E8F0; border-radius: 20px; font-size: 12px; font-weight: 500; color: #475569; cursor: pointer; transition: all .15s; background: white; user-select: none; }
+  #iu-drawer .iu-chip:hover { border-color: #93C5FD; }
+  #iu-drawer .iu-chip.on { border-color: #2563EB; background: #2563EB; color: white; }
+  #iu-drawer .iu-chip .ch { font-size: 10px; margin-right: 4px; opacity: 0; transition: opacity .15s; }
+  #iu-drawer .iu-chip.on .ch { opacity: 1; }
+  #iu-drawer .iu-note { padding: 12px 14px; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 9px; display: flex; gap: 10px; font-size: 12px; color: #1E40AF; line-height: 1.5; }
+  #iu-drawer .iu-note .i { width: 22px; height: 22px; border-radius: 50%; background: #2563EB; color: white; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; }
+  #iu-drawer .iu-foot { padding: 14px 22px; border-top: 1px solid #F1F5F9; display: flex; gap: 10px; align-items: center; background: #FAFAFA; }
+  #iu-drawer .iu-foot .left { font-size: 11.5px; color: #64748B; display: flex; align-items: center; gap: 6px; }
+  #iu-drawer .iu-cancel { padding: 9px 16px; font-size: 13px; background: white; border: 1.5px solid #E2E8F0; border-radius: 8px; color: #475569; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; }
+  #iu-drawer .iu-send { padding: 9px 18px; font-size: 13px; background: linear-gradient(135deg, #2563EB, #1E40AF); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-left: auto; box-shadow: 0 4px 12px rgba(37,99,235,.25); display: flex; align-items: center; gap: 7px; }
+  #iu-drawer .iu-send:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(37,99,235,.32); }
+  #iu-drawer .iu-link { font-size: 11.5px; color: #2563EB; text-decoration: none; font-weight: 500; }
+  #iu-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: #0F172A; color: white; padding: 12px 18px; border-radius: 10px; box-shadow: 0 8px 24px rgba(15,23,42,.20); font-size: 13px; font-family: 'DM Sans', sans-serif; z-index: 10004; display: flex; align-items: center; gap: 10px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; }
+  #iu-toast.show { opacity: 1; transform: translateX(-50%); pointer-events: auto; }
+  #iu-toast .ico { width: 22px; height: 22px; border-radius: 50%; background: #15803D; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
+  @keyframes iuFadeUp { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  .ut-row.iu-just-added { animation: iuFadeUp .35s ease; background: #EFF6FF; }
+</style>
+
+<div id="iu-scrim" onclick="closeInviteDrawer()"></div>
+<aside id="iu-drawer" role="dialog" aria-modal="true" aria-labelledby="iu-title">
+  <div class="iu-head">
+    <div class="ico">
+      <svg viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="6" r="3"/><path d="M2 16c0-3 2.2-5 5-5M13 9v6M10 12h6"/></svg>
+    </div>
+    <div>
+      <h3 id="iu-title">Invite a new user</h3>
+      <div class="sub">A magic-link invitation expires in 7 days · audit-logged for 7 years</div>
+    </div>
+    <div class="iu-x" onclick="closeInviteDrawer()" aria-label="Close">
+      <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+    </div>
+  </div>
+
+  <div class="iu-body">
+
+    <div class="iu-sec">
+      <div class="iu-row2">
+        <div>
+          <div class="iu-lbl">First name <span class="req">*</span></div>
+          <input class="iu-fld" id="iu-first" placeholder="e.g. Jamie">
+        </div>
+        <div>
+          <div class="iu-lbl">Last name <span class="req">*</span></div>
+          <input class="iu-fld" id="iu-last" placeholder="e.g. Morrison">
+        </div>
+      </div>
+    </div>
+
+    <div class="iu-sec">
+      <div class="iu-row2">
+        <div>
+          <div class="iu-lbl">Work email <span class="req">*</span></div>
+          <input class="iu-fld" id="iu-email" type="email" placeholder="jamie@diocese.org">
+        </div>
+        <div>
+          <div class="iu-lbl">Title</div>
+          <input class="iu-fld" id="iu-title-fld" placeholder="e.g. Gift Officer">
+        </div>
+      </div>
+    </div>
+
+    <div class="iu-sec">
+      <div class="iu-lbl">Role <span class="req">*</span></div>
+      <div class="iu-role-grid" id="iu-roles">
+        <div class="iu-role" data-role="Administrator"  data-tag="admin">
+          <div class="rn"><span class="rtag admin">Admin</span> Administrator</div>
+          <div class="rd">Full access · users · billing · audit log</div>
+        </div>
+        <div class="iu-role" data-role="Database Admin" data-tag="dba">
+          <div class="rn"><span class="rtag dba">DBA</span> Database Admin</div>
+          <div class="rd">Gift entry · batches · receipts · rosters</div>
+        </div>
+        <div class="iu-role" data-role="Dev Director"   data-tag="dev">
+          <div class="rn"><span class="rtag dev">Dev</span> Development Director</div>
+          <div class="rd">Fundraising performance · board reporting</div>
+        </div>
+        <div class="iu-role sel" data-role="Gift Officer" data-tag="officer">
+          <div class="rn"><span class="rtag officer">Officer</span> Gift Officer</div>
+          <div class="rd">75–150 prospects · pipeline · briefs · logs</div>
+        </div>
+        <div class="iu-role" data-role="Read-only"      data-tag="read">
+          <div class="rn"><span class="rtag read">Read</span> Read-only</div>
+          <div class="rd">View only · no edits or sends</div>
+        </div>
+        <div class="iu-role" data-role="Custom"         data-tag="read" onclick="event.stopPropagation(); window.location='atlas-role-builder.html'">
+          <div class="rn"><span class="rtag read">+</span> Custom role…</div>
+          <div class="rd">Open role builder &rarr;</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="iu-sec">
+      <div class="iu-lbl">Legal-entity scope <span class="req">*</span></div>
+      <div class="iu-scope" id="iu-scope">
+        <div class="iu-chip on" data-scope="Diocese"><span class="ch">✓</span>Diocese of Albany</div>
+        <div class="iu-chip on" data-scope="Foundation"><span class="ch">✓</span>Diocesan Foundation</div>
+        <div class="iu-chip" data-scope="CC"><span class="ch">✓</span>Catholic Charities</div>
+        <div class="iu-chip" data-scope="Scholarship"><span class="ch">✓</span>Scholarship Foundation</div>
+      </div>
+    </div>
+
+    <div class="iu-sec">
+      <div class="iu-note">
+        <div class="i">i</div>
+        <div><strong>Domain SSO ready.</strong> If the email ends in <code>@diocese.org</code> Atlas signs them in via Microsoft 365 — no password needed. Other domains get a magic-link first sign-in.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="iu-foot">
+    <div class="left">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:#15803D"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+      Auto-saved · audit active
+    </div>
+    <button class="iu-cancel" onclick="closeInviteDrawer()">Cancel</button>
+    <button class="iu-send" id="iu-send">
+      <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M2 7l11-5-3 11-3-4-5-2z"/></svg>
+      Send invitation
+    </button>
+  </div>
+</aside>
+
+<div id="iu-toast" role="status">
+  <span class="ico">✓</span>
+  <span class="msg"></span>
+</div>
+
+<script>
+(function(){
+  var scrim  = document.getElementById('iu-scrim');
+  var drawer = document.getElementById('iu-drawer');
+  var roles  = document.getElementById('iu-roles');
+  var scope  = document.getElementById('iu-scope');
+  var sendBtn= document.getElementById('iu-send');
+  var toast  = document.getElementById('iu-toast');
+
+  window.openInviteDrawer = function(){
+    scrim.classList.add('show');
+    drawer.classList.add('show');
+    // Reset form on open (preserve role + scope defaults)
+    document.getElementById('iu-first').value = '';
+    document.getElementById('iu-last').value = '';
+    document.getElementById('iu-email').value = '';
+    document.getElementById('iu-title-fld').value = '';
+    setTimeout(function(){ document.getElementById('iu-first').focus(); }, 220);
+    document.addEventListener('keydown', escClose);
+  };
+
+  window.closeInviteDrawer = function(){
+    scrim.classList.remove('show');
+    drawer.classList.remove('show');
+    document.removeEventListener('keydown', escClose);
+  };
+
+  function escClose(e){ if (e.key === 'Escape') closeInviteDrawer(); }
+
+  // Role selection
+  roles.addEventListener('click', function(e){
+    var card = e.target.closest('.iu-role');
+    if (!card || card.dataset.role === 'Custom') return;
+    roles.querySelectorAll('.iu-role').forEach(function(c){ c.classList.remove('sel'); });
+    card.classList.add('sel');
+  });
+
+  // Scope toggling
+  scope.addEventListener('click', function(e){
+    var chip = e.target.closest('.iu-chip');
+    if (!chip) return;
+    chip.classList.toggle('on');
+  });
+
+  // Send invitation
+  sendBtn.addEventListener('click', function(){
+    var first = document.getElementById('iu-first').value.trim();
+    var last  = document.getElementById('iu-last').value.trim();
+    var email = document.getElementById('iu-email').value.trim();
+    var title = document.getElementById('iu-title-fld').value.trim() || 'New team member';
+    var roleCard = roles.querySelector('.iu-role.sel');
+    var role    = roleCard ? roleCard.dataset.role : 'Gift Officer';
+    var roleTag = roleCard ? roleCard.dataset.tag  : 'officer';
+    var scopes = Array.from(scope.querySelectorAll('.iu-chip.on')).map(function(c){ return c.dataset.scope; });
+
+    if (!first) { alert('Enter the first name.'); document.getElementById('iu-first').focus(); return; }
+    if (!last)  { alert('Enter the last name.');  document.getElementById('iu-last').focus(); return; }
+    if (!email || !/.+@.+\..+/.test(email)) { alert('Enter a valid work email.'); document.getElementById('iu-email').focus(); return; }
+    if (!scopes.length) { alert('Pick at least one legal entity scope.'); return; }
+
+    // 1) Build the new user row and prepend to the table
+    var table = document.querySelector('.user-table');
+    var head  = table ? table.querySelector('.ut-head') : null;
+    if (table && head) {
+      var initials = (first[0] || '?').toUpperCase() + (last[0] || '').toUpperCase();
+      var palette = ['#2563EB','#7C3AED','#15803D','#BE185D','#F59E0B','#0D9488'];
+      var bg = palette[Math.floor(Math.random()*palette.length)];
+      var scopeHTML = scopes.map(function(s){
+        if (s === 'Diocese') return '<span class="scope-tag">Diocese</span>';
+        if (s === 'Foundation') return '<span class="scope-tag">Foundation</span>';
+        if (s === 'CC') return '<span class="scope-tag">CC</span>';
+        if (s === 'Scholarship') return '<span class="scope-tag">Schol.</span>';
+        return '<span class="scope-tag">' + s + '</span>';
+      }).join('');
+      if (scopes.length === 4) scopeHTML = '<span class="scope-tag all">All entities</span>';
+
+      var row = document.createElement('div');
+      row.className = 'ut-row iu-just-added';
+      row.innerHTML =
+        '<div class="name">' +
+          '<div class="av" style="background:' + bg + '">' + initials + '</div>' +
+          '<div class="nm-text"><div class="nm">' + first + ' ' + last + '</div><div class="sub">' + email + '</div></div>' +
+        '</div>' +
+        '<div><span class="role-tag ' + roleTag + '">' + role + '</span></div>' +
+        '<div class="scope">' + scopeHTML + '</div>' +
+        '<div class="last-login"><b>Never</b><span>Invite sent ' + new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}) + '</span></div>' +
+        '<div><span class="tag" style="background:#FEF3C7;color:#92400E;font-weight:600;padding:3px 9px;border-radius:11px;font-size:10.5px">Pending</span></div>' +
+        '<div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>';
+      head.parentNode.insertBefore(row, head.nextSibling);
+      setTimeout(function(){ row.classList.remove('iu-just-added'); }, 2500);
+    }
+
+    // 2) Increment Pending invites stat (and tab count)
+    document.querySelectorAll('.us').forEach(function(us){
+      var lbl = us.querySelector('.l');
+      if (lbl && /pending invites/i.test(lbl.textContent)) {
+        var v = us.querySelector('.v');
+        if (v) { var n = parseInt(v.textContent,10)||0; v.textContent = n+1; }
+      }
+      if (lbl && /active users/i.test(lbl.textContent)) {
+        var v2 = us.querySelector('.v');
+        if (v2) { var n2 = parseInt(v2.textContent,10)||0; v2.textContent = n2+1; }
+      }
+    });
+    document.querySelectorAll('.tab').forEach(function(t){
+      if (/pending invites/i.test(t.textContent)) {
+        var ct = t.querySelector('.ct'); if (ct) { var n = parseInt(ct.textContent,10)||0; ct.textContent = n+1; }
+      }
+      if (/^users\s/i.test(t.textContent.trim())) {
+        var ct2 = t.querySelector('.ct'); if (ct2) { var n3 = parseInt(ct2.textContent,10)||0; ct2.textContent = n3+1; }
+      }
+    });
+
+    // 3) Toast
+    toast.querySelector('.msg').textContent = 'Invitation sent to ' + email + ' · expires in 7 days · audit #AU-' + (1840 + Math.floor(Math.random()*60));
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ toast.classList.remove('show'); }, 4500);
+
+    // 4) Close drawer
+    closeInviteDrawer();
+  });
+})();
+</script>
 
 </body>
 </html>
