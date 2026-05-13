@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GiveCentral Atlas — Cathedral Capital 2026</title>
+<title>GiveCentral Atlas — Connect integration</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -276,97 +276,55 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 .drawer-foot .left { margin-right: auto; font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
 
 
-.cmp-hero { background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%); color:white; border-radius:16px; padding:28px 32px; margin-bottom:22px; position:relative; overflow:hidden; }
-.cmp-hero::before { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 90% 20%, rgba(196,151,58,.18), transparent 55%), radial-gradient(circle at 10% 90%, rgba(37,99,235,.15), transparent 60%); }
-.cmp-hero-inner { position:relative; }
-.cmp-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:99px; background:rgba(196,151,58,.18); border:1px solid rgba(196,151,58,.32); color:#FCD34D; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:12px; }
-.cmp-h { font-family:'DM Serif Display',serif; font-size:32px; line-height:1.08; letter-spacing:-.4px; }
-.cmp-d { color:rgba(219,234,254,.75); font-size:13.5px; margin-top:6px; max-width:680px; }
-.cmp-progress { margin-top:22px; max-width:580px; }
-.cmp-bar { background:rgba(255,255,255,.10); border-radius:99px; height:8px; overflow:hidden; }
-.cmp-bar-fill { background:linear-gradient(90deg, #FCD34D, #C4973A); height:100%; border-radius:99px; }
+.cat-strip { display:flex; gap:8px; padding:10px 14px; background:white; border:1px solid var(--border); border-radius:10px; margin-bottom:18px; flex-wrap:wrap; align-items:center; }
+.cat-strip .lbl-strip { font-size:11px; color:var(--text-3); align-self:center; padding:0 4px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; }
+.cat-strip .chip { font-size:12px; padding:5px 11px; border-radius:99px; background:white; border:1px solid var(--border); color:var(--text-2); cursor:pointer; }
+.cat-strip .chip.on { background:var(--blue); border-color:var(--blue); color:white; }
+.cat-strip .chip .ct { background:rgba(0,0,0,.08); padding:1px 6px; border-radius:99px; font-size:10px; margin-left:4px; }
+.cat-strip .chip.on .ct { background:rgba(255,255,255,.2); }
 
-.cmp-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:22px; padding-top:22px; border-top:1px solid rgba(255,255,255,.10); position:relative; }
-.cmp-stat .num { font-family:'DM Serif Display',serif; font-size:30px; line-height:1; margin-bottom:6px; color:white; }
-.cmp-stat .num.gold { color:#FCD34D; }
-.cmp-stat .num.green { color:#86EFAC; }
-.cmp-stat .num.amber { color:#FCD34D; }
-.cmp-stat .lbl { font-size:11px; color:rgba(219,234,254,.65); text-transform:uppercase; letter-spacing:.05em; }
+.int-section { margin-bottom:32px; }
+.int-section h3 { font-family:'DM Serif Display',serif; font-size:20px; color:var(--navy); margin-bottom:4px; }
+.int-section .desc { color:var(--text-3); font-size:13px; margin-bottom:14px; }
 
-.tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:22px; }
-.tab { padding:10px 14px; cursor:pointer; font-size:13px; font-weight:500; color:var(--text-3); border-bottom:2px solid transparent; }
-.tab.on { color:var(--blue); border-color:var(--blue); font-weight:600; }
-.tab .ct { font-size:10.5px; padding:1px 7px; border-radius:99px; background:var(--surface); margin-left:6px; }
-.tab.on .ct { background:var(--blue-pale); color:var(--blue); }
+.int-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
 
-.cd-grid { display:grid; grid-template-columns: 1.6fr 1fr; gap:22px; align-items:start; }
+.int-card { background:white; border:1px solid var(--border); border-radius:12px; padding:18px 20px; transition:border-color .15s, transform .15s; cursor:pointer; position:relative; overflow:hidden; }
+.int-card:hover { border-color:#94A3B8; transform:translateY(-1px); }
+.int-card.connected { border-color:var(--green-light); background:linear-gradient(135deg, #F0FDF4, white); }
+.int-card .head { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.int-card .logo { width:42px; height:42px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-family:'DM Serif Display',serif; font-size:18px; font-weight:700; color:white; flex-shrink:0; }
+.int-card .nm { font-weight:600; font-size:14px; color:var(--navy); }
+.int-card .cat { font-size:11px; color:var(--text-3); margin-top:2px; }
+.int-card .status { margin-left:auto; }
+.int-card .desc-body { font-size:12px; color:var(--text-3); line-height:1.45; margin-bottom:14px; min-height:38px; }
+.int-card .actions { display:flex; gap:6px; align-items:center; }
+.int-card .actions .btn-i { flex:1; padding:7px 12px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; text-align:center; }
+.int-card .actions .btn-i.connect { background:var(--blue); color:white; border:none; }
+.int-card .actions .btn-i.connect:hover { background:#1D4ED8; }
+.int-card .actions .btn-i.configure { background:white; color:var(--text-2); border:1px solid var(--border); }
+.int-card .actions .btn-i.configure:hover { background:var(--surface); }
+.int-card .actions .btn-i.disconnect { color:var(--rose); border:none; background:none; flex:0; padding:7px 10px; font-size:11.5px; }
+.int-card .badge-phase { font-size:9.5px; font-weight:700; padding:2px 7px; border-radius:5px; letter-spacing:.04em; }
+.int-card .badge-phase.p1 { background:var(--green-light); color:var(--green); }
+.int-card .badge-phase.p2 { background:var(--blue-light); color:var(--blue); }
+.int-card .badge-phase.p3 { background:var(--purple-light); color:var(--purple); }
 
-.card { background:white; border:1px solid var(--border); border-radius:14px; overflow:hidden; }
-.card + .card { margin-top:14px; }
-.card-header { padding:16px 22px 4px; display:flex; align-items:center; justify-content:space-between; }
-.card-title { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); }
-.card-action { font-size:11.5px; color:var(--blue); cursor:pointer; }
-.card-body { padding:14px 22px 20px; }
-
-/* Financial summary */
-.fin-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-.fin-card { padding:18px 20px; border-radius:12px; }
-.fin-card.pledged { background:linear-gradient(135deg, var(--blue-pale), white); border:1px solid var(--blue-light); }
-.fin-card.received { background:linear-gradient(135deg, var(--green-light), white); border:1px solid #86EFAC; }
-.fin-card.outstanding { background:linear-gradient(135deg, var(--amber-light), white); border:1px solid #FBBF24; }
-.fin-card .lbl { font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
-.fin-card.pledged .lbl { color:var(--blue); }
-.fin-card.received .lbl { color:var(--green); }
-.fin-card.outstanding .lbl { color:var(--amber); }
-.fin-card .val { font-family:'DM Serif Display',serif; font-size:28px; line-height:1; }
-.fin-card.pledged .val { color:var(--navy); }
-.fin-card.received .val { color:var(--green); }
-.fin-card.outstanding .val { color:var(--amber); }
-.fin-card .sub { font-size:12px; color:var(--text-2); margin-top:6px; }
-.fin-card .sub b { color:var(--text); font-weight:600; }
-
-/* Hierarchy tree */
-.tree-node { display:grid; grid-template-columns:24px 1fr 110px 110px 110px 32px; gap:14px; align-items:center; padding:11px 14px; border-bottom:1px solid var(--border-soft); font-size:13px; cursor:pointer; transition:background .12s; }
-.tree-node:hover { background:var(--blue-pale); }
-.tree-node:last-child { border-bottom:none; }
-.tree-node .ico-sm { width:22px; height:22px; border-radius:5px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:10.5px; font-weight:700; }
-.tree-node .ico-sm.c { background:var(--purple); color:white; }
-.tree-node .ico-sm.a { background:var(--blue); color:white; }
-.tree-node .ico-sm.f { background:var(--green); color:white; }
-.tree-node .body .nm { font-weight:500; color:var(--text); }
-.tree-node .body .meta { font-size:11.5px; color:var(--text-3); margin-top:2px; }
-.tree-node .progress { display:flex; align-items:center; gap:6px; }
-.tree-node .progress .bar { flex:1; height:4px; background:var(--border-soft); border-radius:99px; overflow:hidden; }
-.tree-node .progress .bar-f { height:100%; border-radius:99px; background:var(--green); }
-.tree-node .progress .pct { font-size:11.5px; font-weight:600; color:var(--text-2); width:36px; text-align:right; }
-.tree-node .v { font-weight:500; text-align:right; font-variant-numeric:tabular-nums; font-size:12.5px; }
-
-/* YoY compare */
-.yoy-row { display:grid; grid-template-columns: 80px 1fr 90px; gap:14px; align-items:center; padding:9px 0; border-bottom:1px dashed var(--border-soft); font-size:13px; }
-.yoy-row:last-child { border-bottom:none; }
-.yoy-row .yr { color:var(--text-3); font-size:11.5px; font-weight:600; }
-.yoy-row .yr.cur { color:var(--blue); }
-.yoy-row .yo-bar { height:18px; background:var(--surface); border-radius:4px; overflow:hidden; position:relative; }
-.yoy-row .yo-bar-f { height:100%; border-radius:4px; }
-.yoy-row .yo-bar-f.cur { background:linear-gradient(90deg, var(--blue), var(--blue-mid)); }
-.yoy-row .yo-bar-f.prev { background:linear-gradient(90deg, var(--text-3), #94A3B8); }
-.yoy-row .v { font-weight:600; text-align:right; font-variant-numeric:tabular-nums; }
-
-/* Solicitor leaderboard */
-.sol-row { display:grid; grid-template-columns: 36px 1fr 90px 80px 80px; gap:12px; align-items:center; padding:11px 0; border-bottom:1px solid var(--border-soft); font-size:13px; }
-.sol-row:last-child { border-bottom:none; }
-.sol-row .av { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700; flex-shrink:0; }
-.sol-row .nm-text .nm { font-weight:500; color:var(--text); }
-.sol-row .nm-text .meta { font-size:11.5px; color:var(--text-3); margin-top:2px; }
-.sol-row .v { font-weight:600; text-align:right; font-variant-numeric:tabular-nums; }
-.sol-row .delta { font-size:11.5px; color:var(--text-3); text-align:right; }
-.sol-row .delta.up { color:var(--green); font-weight:600; }
-
-.tag { display:inline-flex; font-size:10.5px; font-weight:600; padding:3px 8px; border-radius:5px; }
+.tag { display:inline-flex; font-size:10.5px; font-weight:600; padding:3px 8px; border-radius:5px; align-items:center; gap:5px; }
 .tag.green { background:var(--green-light); color:var(--green); }
 .tag.amber { background:var(--amber-light); color:var(--amber); }
-.tag.blue { background:var(--blue-light); color:var(--blue); }
-.tag.purple { background:var(--purple-light); color:var(--purple); }
+.tag.grey { background:var(--surface); color:var(--text-3); border:1px solid var(--border); }
+.tag .dot { width:6px; height:6px; border-radius:50%; }
+.tag.green .dot { background:var(--green); }
+.tag.amber .dot { background:var(--amber); }
+
+.activity-card { background:white; border:1px solid var(--border); border-radius:12px; padding:18px 22px; }
+.activity-card h4 { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin-bottom:14px; }
+.activity-row { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--border-soft); font-size:12.5px; align-items:flex-start; }
+.activity-row:last-child { border-bottom:none; }
+.activity-row .ico { width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:11px; font-weight:700; color:white; }
+.activity-row .body .t { color:var(--text); font-weight:500; }
+.activity-row .body .d { font-size:11.5px; color:var(--text-3); margin-top:2px; }
 
 </style>
 
@@ -600,7 +558,7 @@ body {
 <div class="main">
 
 <div class="topbar">
-  <span class="topbar-title">Campaign · Cathedral Capital 2026</span>
+  <span class="topbar-title">Connect integration</span>
   <span class="topbar-date">Monday, May 4, 2026</span>
   <a href="atlas-search.html" class="topbar-search">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
@@ -623,282 +581,467 @@ body {
 
   <div class="page-head">
     <div>
-      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <a href="atlas-campaign-dashboard.html">Campaigns</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Cathedral Capital 2026</span></div>
+      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <a href="atlas-integrations.html">Integrations</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Connect new</span></div>
+      <div class="page-title">Connect an integration</div>
+      <div class="page-sub">28 integrations across 6 categories · 7 already connected. Most install in &lt; 90 seconds via OAuth.</div>
     </div>
     <div class="flex gap-8">
-      <a class="btn btn-ghost" href="atlas-segment-builder.html">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10M4 7h6M6 10h2"/></svg>
-        Build outreach list
-      </a>
-      <a class="btn btn-ghost" href="atlas-report-detail.html">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 12V4M7 12V2M11 12V8"/></svg>
-        Campaign report
-      </a>
-      <a class="btn btn-primary" href="atlas-pledge-create.html">
-        <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg>
-        New pledge
-      </a>
+      <a class="btn btn-ghost" href="atlas-integrations.html">View connected (7)</a>
     </div>
   </div>
 
-  <!-- Hero -->
-  <div class="cmp-hero">
-    <div class="cmp-hero-inner">
-      <span class="cmp-tag">★ Capital campaign · 2026</span>
-      <h1 class="cmp-h">Cathedral Capital Campaign 2026</h1>
-      <p class="cmp-d">Restoring the 1888 cathedral — bell-tower masonry, lead flashing, stained-glass conservation. 1:1 matched gifts up to $250,000 (anonymous family). Public phase: Jan 1 – Jun 30, 2026.</p>
+  <!-- Category filter -->
+  <div class="cat-strip">
+    <span class="lbl-strip">Category</span>
+    <span class="chip on">All <span class="ct">28</span></span>
+    <span class="chip">Accounting / GL <span class="ct">3</span></span>
+    <span class="chip">Email / Marketing <span class="ct">5</span></span>
+    <span class="chip">Wealth screening <span class="ct">4</span></span>
+    <span class="chip">Payment / processing <span class="ct">3</span></span>
+    <span class="chip">Calendar / email <span class="ct">3</span></span>
+    <span class="chip">Forms &amp; signatures <span class="ct">3</span></span>
+    <span class="chip">Compliance &amp; ID <span class="ct">2</span></span>
+    <span class="chip">Volunteer / events <span class="ct">3</span></span>
+    <span class="chip">Other <span class="ct">2</span></span>
+  </div>
 
-      <div class="cmp-progress">
-        <div class="cmp-bar"><div class="cmp-bar-fill" style="width:60%"></div></div>
+  <!-- Accounting -->
+  <div class="int-section">
+    <h3>Accounting / GL</h3>
+    <p class="desc">Daily export of receipted gifts, refunds, and pledge write-offs. Reconciliation report runs nightly.</p>
+    <div class="int-grid">
+
+      <div class="int-card connected">
+        <div class="head">
+          <div class="logo" style="background:#2CA01C">QB</div>
+          <div><div class="nm">QuickBooks Online</div><div class="cat">Accounting</div></div>
+          <span class="tag green status"><span class="dot"></span>Connected</span>
+        </div>
+        <div class="desc-body">Nightly export at 3:00 AM. 142 entries last night, 100% match.</div>
+        <div class="actions">
+          <a class="btn-i configure" href="atlas-sync.html">Configure</a>
+          <button class="btn-i disconnect">Disconnect</button>
+        </div>
       </div>
 
-      <div class="cmp-stats">
-        <div class="cmp-stat"><div class="num gold">$1.20M</div><div class="lbl">Raised · 60% to goal</div></div>
-        <div class="cmp-stat"><div class="num">$2.00M</div><div class="lbl">Public goal</div></div>
-        <div class="cmp-stat"><div class="num green">847</div><div class="lbl">Donors · ↑ 38% vs. last year</div></div>
-        <div class="cmp-stat"><div class="num amber">43d</div><div class="lbl">Remaining in public phase</div></div>
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#000">SI</div>
+          <div><div class="nm">Sage Intacct</div><div class="cat">Accounting · enterprise</div></div>
+          <span class="badge-phase p2 status">Phase 2</span>
+        </div>
+        <div class="desc-body">Enterprise GL for larger dioceses. CSV export available now; native API in Phase 2.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
       </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#003087">PP</div>
+          <div><div class="nm">PowerPlan</div><div class="cat">Accounting · property</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Property accounting for dioceses managing real estate as gifts.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <div class="tab on">Overview</div>
-    <div class="tab">Donors <span class="ct">847</span></div>
-    <div class="tab">Pledges <span class="ct">28</span></div>
-    <div class="tab">Solicitors <span class="ct">5</span></div>
-    <div class="tab">Activity <span class="ct">142</span></div>
-    <div class="tab">Settings</div>
+  <!-- Email / Marketing -->
+  <div class="int-section">
+    <h3>Email / Marketing</h3>
+    <p class="desc">Outbound mass email, audience sync, deliverability reporting.</p>
+    <div class="int-grid">
+
+      <div class="int-card connected">
+        <div class="head">
+          <div class="logo" style="background:#FFE01B;color:#000">MC</div>
+          <div><div class="nm">Mailchimp</div><div class="cat">Mass email</div></div>
+          <span class="tag green status"><span class="dot"></span>Connected</span>
+        </div>
+        <div class="desc-body">Audience "Cathedral campaign" synced 2h ago · 847 contacts.</div>
+        <div class="actions">
+          <a class="btn-i configure" href="atlas-integrations.html">Configure</a>
+          <button class="btn-i disconnect">Disconnect</button>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#1A82E2">CC</div>
+          <div><div class="nm">Constant Contact</div><div class="cat">Mass email</div></div>
+          <span class="badge-phase p1 status">Phase 1</span>
+        </div>
+        <div class="desc-body">Alternative to Mailchimp. Common in dioceses; same OAuth flow.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+      <div class="int-card connected">
+        <div class="head">
+          <div class="logo" style="background:#1E40AF">SG</div>
+          <div><div class="nm">SendGrid</div><div class="cat">Transactional</div></div>
+          <span class="tag green status"><span class="dot"></span>Connected</span>
+        </div>
+        <div class="desc-body">Powers receipts and acknowledgement emails. 30s p95 delivery.</div>
+        <div class="actions">
+          <a class="btn-i configure" href="atlas-integrations.html">Configure</a>
+          <button class="btn-i disconnect">Disconnect</button>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#FF3B00">M</div>
+          <div><div class="nm">Marketo</div><div class="cat">Marketing automation</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Lead-scoring + nurture campaigns. For high-volume campaigns.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#1B7AA1">MS</div>
+          <div><div class="nm">MarketSmart</div><div class="cat">Planned-giving</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Identifies planned-giving prospects; results feed pipeline.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <div class="cd-grid">
+  <!-- Wealth screening -->
+  <div class="int-section">
+    <h3>Wealth screening &amp; intelligence</h3>
+    <p class="desc">Enrichment data feeds the homegrown Wealth Engine ask-amount scoring.</p>
+    <div class="int-grid">
 
-    <main>
-
-      <!-- Financial summary -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Financial summary</span>
-          <span class="card-action">Reconcile to GL →</span>
+      <div class="int-card connected">
+        <div class="head">
+          <div class="logo" style="background:#B45309">iW</div>
+          <div><div class="nm">iWave</div><div class="cat">Wealth screening</div></div>
+          <span class="tag amber status"><span class="dot"></span>Connected · trial</span>
         </div>
-        <div class="card-body">
-          <div class="fin-grid">
-            <div class="fin-card pledged">
-              <div class="lbl">Pledged</div>
-              <div class="val">$2.04M</div>
-              <div class="sub"><b>28 active pledges</b> · $1.84M outstanding</div>
-            </div>
-            <div class="fin-card received">
-              <div class="lbl">Received</div>
-              <div class="val">$1.20M</div>
-              <div class="sub"><b>847 gifts</b> incl. pledge payments and one-time gifts</div>
-            </div>
-            <div class="fin-card outstanding">
-              <div class="lbl">Outstanding</div>
-              <div class="val">$1.84M</div>
-              <div class="sub"><b>Pledged minus paid</b> · $86k due in 30 days</div>
-            </div>
-          </div>
-          <p class="muted" style="font-size:11.5px;margin-top:14px">Reconciles to QuickBooks Fund 4001 (Cathedral Restoration) at <strong style="color:var(--green)">100% match</strong> as of last night's export.</p>
+        <div class="desc-body">Refreshes top 250 prospects monthly. Trial ends Jun 30, 2026.</div>
+        <div class="actions">
+          <a class="btn-i configure" href="atlas-integrations.html">Configure</a>
+          <button class="btn-i disconnect">Disconnect</button>
         </div>
       </div>
 
-      <!-- Hierarchy -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Hierarchy — Campaign → Appeal → Fund</span>
-          <span class="card-action">+ Add appeal</span>
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#1E3A5F">DS</div>
+          <div><div class="nm">DonorSearch</div><div class="cat">Wealth screening</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
         </div>
-        <div class="card-body" style="padding:0 22px 14px">
-
-          <div class="tree-node" style="padding-top:14px">
-            <div class="ico-sm c">C</div>
-            <div class="body"><div class="nm">Cathedral Capital Campaign 2026</div><div class="meta">Goal $2.0M · 6-month public phase</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:60%"></div></div><span class="pct">60%</span></div>
-            <div class="v">$1.20M / $2.00M</div>
-            <div class="v" style="color:var(--text-3)">— ROI</div>
-            <div></div>
-          </div>
-
-          <div class="tree-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="body"><div class="nm">Spring 2026 — major donor cultivation</div><div class="meta">Lead-gift outreach · top 50 prospects</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:75%"></div></div><span class="pct">75%</span></div>
-            <div class="v">$600k / $800k</div>
-            <div class="v" style="color:var(--green)">14:1</div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="body"><div class="nm">Cathedral Restoration · GL 4001</div><div class="meta">Diocese of Albany · matched 1:1</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:75%"></div></div><span class="pct">75%</span></div>
-            <div class="v">$600k / $800k</div>
-            <div></div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="body"><div class="nm">Online giving — public campaign page</div><div class="meta">GiveCentral form: cathedral-2026</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:48%"></div></div><span class="pct">48%</span></div>
-            <div class="v">$480k / $1.00M</div>
-            <div class="v" style="color:var(--green)">22:1</div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="body"><div class="nm">Cathedral Restoration · GL 4001 (shared)</div><div class="meta">Routed via online form</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:50%"></div></div><span class="pct">50%</span></div>
-            <div class="v">$400k / $800k</div>
-            <div></div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="body"><div class="nm">Music Ministry · GL 4002</div><div class="meta">For matched gifts; protected ladder</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:40%;background:var(--amber)"></div></div><span class="pct">40%</span></div>
-            <div class="v">$80k / $200k</div>
-            <div></div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="body"><div class="nm">Bishop's Annual Gala 2026</div><div class="meta">Apr 24 · table sponsorships</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:60%"></div></div><span class="pct">60%</span></div>
-            <div class="v">$120k / $200k</div>
-            <div class="v" style="color:var(--green)">8:1</div>
-            <div style="text-align:right">›</div>
-          </div>
-
+        <div class="desc-body">Alternative to iWave. Batch screen up to 10k constituents.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
         </div>
       </div>
 
-      <!-- YoY -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Year-over-year — same campaign window (Jan – May)</span>
-          <span class="card-action">View 5-year trend →</span>
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#7C3AED">WE</div>
+          <div><div class="nm">WealthEngine</div><div class="cat">Wealth screening</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
         </div>
-        <div class="card-body">
-          <div class="yoy-row">
-            <span class="yr cur">2026 ★</span>
-            <div class="yo-bar"><div class="yo-bar-f cur" style="width:100%"></div></div>
-            <span class="v" style="color:var(--blue)">$1.20M</span>
-          </div>
-          <div class="yoy-row">
-            <span class="yr">2025</span>
-            <div class="yo-bar"><div class="yo-bar-f prev" style="width:71%"></div></div>
-            <span class="v">$854k</span>
-          </div>
-          <div class="yoy-row">
-            <span class="yr">2024</span>
-            <div class="yo-bar"><div class="yo-bar-f prev" style="width:54%"></div></div>
-            <span class="v">$648k</span>
-          </div>
-          <div class="yoy-row">
-            <span class="yr">2023</span>
-            <div class="yo-bar"><div class="yo-bar-f prev" style="width:42%"></div></div>
-            <span class="v">$502k</span>
-          </div>
-          <p class="muted" style="font-size:12px;margin-top:14px;display:flex;align-items:center;gap:8px">
-            <span style="color:var(--green);font-weight:700">↑ +41%</span> vs. same window last year ·
-            <span style="color:var(--green);font-weight:700">↑ +85%</span> vs. 2023
-          </p>
+        <div class="desc-body">SaaS wealth screening with capacity scoring.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
         </div>
       </div>
 
-    </main>
-
-    <!-- Right rail -->
-    <aside>
-
-      <div class="card">
-        <div class="card-header"><span class="card-title">Solicitor leaderboard</span><span class="card-action">All →</span></div>
-        <div class="card-body">
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--rose)">SR</div>
-            <div class="nm-text"><div class="nm">Sarah Reynolds</div><div class="meta">Dev Director · 18 prospects</div></div>
-            <span class="v">$486k</span>
-            <span class="v">12</span>
-            <span class="delta up">↑ 28%</span>
-          </div>
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--purple)">BM</div>
-            <div class="nm-text"><div class="nm">Bridget McCarthy</div><div class="meta">Dev Director · 15 prospects</div></div>
-            <span class="v">$324k</span>
-            <span class="v">9</span>
-            <span class="delta up">↑ 14%</span>
-          </div>
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--green)">JK</div>
-            <div class="nm-text"><div class="nm">Julia Kelleher</div><div class="meta">Officer · 22 prospects</div></div>
-            <span class="v">$198k</span>
-            <span class="v">7</span>
-            <span class="delta up">↑ 8%</span>
-          </div>
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--blue)">DC</div>
-            <div class="nm-text"><div class="nm">Daniel Cho</div><div class="meta">DB Admin · 0 prospects</div></div>
-            <span class="v">$98k</span>
-            <span class="v">— </span>
-            <span class="delta">data entry only</span>
-          </div>
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--text-3)">UK</div>
-            <div class="nm-text"><div class="nm">Unattributed</div><div class="meta">Online + walk-in</div></div>
-            <span class="v">$94k</span>
-            <span class="v">819</span>
-            <span class="delta">smaller gifts</span>
-          </div>
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#15803D">RS</div>
+          <div><div class="nm">RelSci</div><div class="cat">Relationship graph</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Maps board, business, social, philanthropic connections.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header"><span class="card-title">Top recent gifts</span><span class="card-action">All 142 →</span></div>
-        <div class="card-body" style="padding:0 22px 14px">
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
-            <div><div style="font-weight:500">Margaret O'Brien</div><div style="color:var(--text-3);font-size:11px">May 4 · cash · matched</div></div>
-            <div style="font-weight:600;font-variant-numeric:tabular-nums">$10,000</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
-            <div><div style="font-weight:500">Robert &amp; Susan Lin</div><div style="color:var(--text-3);font-size:11px">May 3 · check</div></div>
-            <div style="font-weight:600;font-variant-numeric:tabular-nums">$25,000</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
-            <div><div style="font-weight:500">Schwab Charitable (DAF)</div><div style="color:var(--text-3);font-size:11px">May 2 · soft credit Margaret</div></div>
-            <div style="font-weight:600;font-variant-numeric:tabular-nums">$15,000</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:12.5px">
-            <div><div style="font-weight:500">Anthony Riccardi</div><div style="color:var(--text-3);font-size:11px">Apr 22 · 100 sh AAPL</div></div>
-            <div style="font-weight:600;font-variant-numeric:tabular-nums">$18.4k</div>
-          </div>
+    </div>
+  </div>
+
+  <!-- Payment / processing -->
+  <div class="int-section">
+    <h3>Payment &amp; processing</h3>
+    <p class="desc">Payment rails behind GiveCentral. Card, ACH, Apple Pay, Google Pay, Venmo, DAF.</p>
+    <div class="int-grid">
+
+      <div class="int-card connected">
+        <div class="head">
+          <div class="logo" style="background:#635BFF">St</div>
+          <div><div class="nm">Stripe</div><div class="cat">CC / ACH / wallets</div></div>
+          <span class="tag green status"><span class="dot"></span>Connected · native</span>
+        </div>
+        <div class="desc-body">Powers the GiveCentral payment forms · auto-syncs gifts in &lt; 60s.</div>
+        <div class="actions">
+          <a class="btn-i configure" href="atlas-sync.html">Configure</a>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header"><span class="card-title">Quick actions</span></div>
-        <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
-          <a class="btn btn-ghost" href="atlas-segment-builder.html">Build cultivation list</a>
-          <a class="btn btn-ghost" href="atlas-pipeline.html">Open prospects (pipeline)</a>
-          <a class="btn btn-ghost" href="atlas-email-compose.html">Send campaign update</a>
-          <a class="btn btn-ghost" href="atlas-report-detail.html">Open campaign report</a>
+      <div class="int-card connected">
+        <div class="head">
+          <div class="logo" style="background:#003D8F">Pl</div>
+          <div><div class="nm">Plaid</div><div class="cat">ACH bank linking</div></div>
+          <span class="tag green status"><span class="dot"></span>Connected</span>
+        </div>
+        <div class="desc-body">Bank-account verification for ACH gifts. Powers recurring giving.</div>
+        <div class="actions">
+          <a class="btn-i configure" href="atlas-integrations.html">Configure</a>
         </div>
       </div>
 
-    </aside>
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#FBBF24;color:#000">Ch</div>
+          <div><div class="nm">Chariot</div><div class="cat">DAF connector · external</div></div>
+          <span class="badge-phase p2 status">Phase 2</span>
+        </div>
+        <div class="desc-body">Adds 3rd-party DAF distributors not on GiveCentral's native rails.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
 
+    </div>
+  </div>
+
+  <!-- Calendar / email -->
+  <div class="int-section">
+    <h3>Calendar &amp; inbox</h3>
+    <p class="desc">Two-way sync between donor activities and your work inbox / calendar.</p>
+    <div class="int-grid">
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#0078D4">M3</div>
+          <div><div class="nm">Microsoft 365</div><div class="cat">Outlook + Calendar</div></div>
+          <span class="badge-phase p2 status">Phase 2</span>
+        </div>
+        <div class="desc-body">Read inbox/calendar for activity logging · push tasks back as appointments.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#4285F4">GW</div>
+          <div><div class="nm">Google Workspace</div><div class="cat">Gmail + Calendar</div></div>
+          <span class="badge-phase p2 status">Phase 2</span>
+        </div>
+        <div class="desc-body">Same as M365 but for Google-based dioceses. OAuth flow.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#2E2E2E">A</div>
+          <div><div class="nm">Apple iCal</div><div class="cat">Calendar (read-only)</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Inbound calendar feed for officers on the go.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Forms & signatures -->
+  <div class="int-section">
+    <h3>Forms &amp; signatures</h3>
+    <p class="desc">Gift agreement signing, pledge contracts, parish roster uploads.</p>
+    <div class="int-grid">
+
+      <div class="int-card connected">
+        <div class="head">
+          <div class="logo" style="background:#000">DS</div>
+          <div><div class="nm">DocuSign</div><div class="cat">e-signature</div></div>
+          <span class="tag green status"><span class="dot"></span>Connected</span>
+        </div>
+        <div class="desc-body">Pledge agreements, capital-campaign forms. 3 templates loaded.</div>
+        <div class="actions">
+          <a class="btn-i configure" href="atlas-docusign-agreements.html">Configure</a>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#F97316">Ad</div>
+          <div><div class="nm">Adobe Sign</div><div class="cat">e-signature</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Alternative to DocuSign. Same template + signer-routing model.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#02A1F9">TF</div>
+          <div><div class="nm">Typeform</div><div class="cat">Custom forms</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Parish roster collection, surveys, event RSVPs.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Compliance & ID -->
+  <div class="int-section">
+    <h3>Compliance &amp; identity</h3>
+    <p class="desc">Background checks for volunteers; address verification for receipt accuracy.</p>
+    <div class="int-grid">
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#003366">Vi</div>
+          <div><div class="nm">Virtus</div><div class="cat">Background check</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Diocesan safe-environment compliance. Required before volunteers serve.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#005FA8">Sm</div>
+          <div><div class="nm">Smarty / USPS</div><div class="cat">Address validation</div></div>
+          <span class="badge-phase p2 status">Phase 2</span>
+        </div>
+        <div class="desc-body">Real-time mailing address normalization. Prevents bad receipts.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Volunteer / events -->
+  <div class="int-section">
+    <h3>Volunteer &amp; events</h3>
+    <p class="desc">Volunteer-management and event ticketing integrations.</p>
+    <div class="int-grid">
+
+      <div class="int-card connected">
+        <div class="head">
+          <div class="logo" style="background:#0EA5E9">Sa</div>
+          <div><div class="nm">Samaritan</div><div class="cat">Volunteer ops</div></div>
+          <span class="tag green status"><span class="dot"></span>Connected</span>
+        </div>
+        <div class="desc-body">Volunteer opportunities &amp; hours · feeds the Volunteers screen.</div>
+        <div class="actions">
+          <a class="btn-i configure" href="atlas-volunteer-management.html">Configure</a>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#D63384">EB</div>
+          <div><div class="nm">Eventbrite</div><div class="cat">Event ticketing</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Pull RSVPs and ticket purchases into events &amp; donor records.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+      <div class="int-card">
+        <div class="head">
+          <div class="logo" style="background:#06B6D4">CE</div>
+          <div><div class="nm">Cvent</div><div class="cat">Event management</div></div>
+          <span class="badge-phase p3 status">Phase 3</span>
+        </div>
+        <div class="desc-body">Enterprise event management for the gala &amp; retreats.</div>
+        <div class="actions">
+          <button class="btn-i connect">Connect →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Recent activity -->
+  <div class="activity-card">
+    <h4>Recent integration activity</h4>
+    <div class="activity-row">
+      <div class="ico" style="background:var(--green)">✓</div>
+      <div class="body"><div class="t">QuickBooks nightly export · 142 gift entries posted to Cathedral Fund 4001</div><div class="d">3:00 AM today · 100% match against Atlas totals</div></div>
+    </div>
+    <div class="activity-row">
+      <div class="ico" style="background:var(--blue)">↻</div>
+      <div class="body"><div class="t">Mailchimp audience "Cathedral campaign" synced</div><div class="d">2 hours ago · 847 contacts (+12 new)</div></div>
+    </div>
+    <div class="activity-row">
+      <div class="ico" style="background:var(--amber)">!</div>
+      <div class="body"><div class="t">iWave trial ends in 56 days</div><div class="d">Apr 22 · Reach out to Bridget about converting to paid plan</div></div>
+    </div>
+    <div class="activity-row">
+      <div class="ico" style="background:var(--green)">✓</div>
+      <div class="body"><div class="t">DocuSign envelope #DS-2926 signed by Margaret O'Brien</div><div class="d">5 hours ago · Cathedral 3-year pledge agreement</div></div>
+    </div>
   </div>
 
 </div>
+
+<script>
+  // Category filter
+  document.querySelectorAll('.cat-strip .chip').forEach(function(c){
+    c.addEventListener('click', function(){
+      document.querySelectorAll('.cat-strip .chip').forEach(function(x){ x.classList.remove('on'); });
+      c.classList.add('on');
+    });
+  });
+  // Connect buttons
+  document.querySelectorAll('.btn-i.connect').forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      var nm = b.closest('.int-card').querySelector('.nm').textContent;
+      alert('Opening OAuth window for ' + nm + '…\nIn production this would launch the provider\'s consent screen.');
+    });
+  });
+  document.querySelectorAll('.btn-i.disconnect').forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      var nm = b.closest('.int-card').querySelector('.nm').textContent;
+      if (confirm('Disconnect ' + nm + '? Atlas will stop syncing immediately. Existing data stays.')) {
+        alert(nm + ' disconnected.');
+      }
+    });
+  });
+</script>
 
 </div>
 

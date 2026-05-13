@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral Atlas — Gift type reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#0E1E35; --navy-2:#152844; --navy-3:#1E3A5F;
+  --blue:#2563EB; --blue-mid:#3B82F6; --blue-light:#DBEAFE; --blue-pale:#EFF6FF;
+  --green:#15803D; --green-light:#DCFCE7;
+  --amber:#D97706; --amber-light:#FEF3C7;
+  --rose:#BE185D; --rose-light:#FCE7F3;
+  --purple:#7C3AED; --purple-light:#EDE9FE;
+  --gold:#C4973A; --gold-light:#FBF4E8;
+  --teal:#0D9488; --teal-light:#CCFBF1;
+  --text:#0F172A; --text-2:#334155; --text-3:#64748B;
+  --border:#E2E8F0; --border-soft:#EDF2F7;
+  --surface:#F8FAFC; --white:#FFFFFF;
+}
+html, body { background: var(--surface); color: var(--text); font-family: 'DM Sans', -apple-system, system-ui, sans-serif; font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+.page { max-width: 1280px; margin: 0 auto; padding: 48px 40px 96px; }
+a { color: inherit; text-decoration: none; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  color: white; border-radius: 20px; padding: 48px 56px;
+  position: relative; overflow: hidden; margin-bottom: 32px;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 80% 20%, rgba(59,130,246,.18), transparent 55%),
+                    radial-gradient(circle at 10% 90%, rgba(196,151,58,.10), transparent 60%);
+  pointer-events: none;
+}
+.hero-meta { position: relative; display: flex; gap: 12px; align-items: center; margin-bottom: 18px; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(219,234,254,.85); font-weight: 500; }
+.hero-meta .dot { width: 6px; height: 6px; background: var(--blue-mid); border-radius: 50%; }
+.hero h1 { font-family: 'DM Serif Display', serif; font-size: 40px; line-height: 1.08; letter-spacing: -0.4px; position: relative; margin-bottom: 14px; }
+.hero h1 em { font-style: italic; color: #93C5FD; }
+.hero p { position: relative; font-size: 15px; color: rgba(255,255,255,.78); max-width: 760px; }
+.hero-stats { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.10); }
+.hero-stat .num { font-family:'DM Serif Display',serif; font-size: 30px; line-height: 1; margin-bottom: 4px; }
+.hero-stat .num.green { color: #86EFAC; }
+.hero-stat .num.amber { color: #FCD34D; }
+.hero-stat .num.rose  { color: #F9A8D4; }
+.hero-stat .lbl { font-size: 11px; color: rgba(219,234,254,.7); text-transform: uppercase; letter-spacing: 0.6px; }
+
+/* Section */
+.section { margin-top: 40px; }
+.section h2 { font-family:'DM Serif Display',serif; font-size: 26px; letter-spacing: -0.3px; color: var(--navy); margin-bottom: 6px; }
+.section .sub { color: var(--text-3); font-size: 14px; max-width: 740px; margin-bottom: 22px; }
+
+/* Type cards grid */
+.types { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.tcard {
+  background: white; border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 24px; position: relative; overflow: hidden;
+}
+.tcard::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+}
+.tcard.cash::before     { background: var(--blue); }
+.tcard.check::before    { background: var(--blue); }
+.tcard.cc::before       { background: var(--blue); }
+.tcard.ach::before      { background: var(--blue); }
+.tcard.stock::before    { background: var(--purple); }
+.tcard.inkind::before   { background: var(--teal); }
+.tcard.daf::before      { background: var(--amber); }
+.tcard.matching::before { background: var(--amber); }
+.tcard.foundation::before { background: var(--amber); }
+.tcard.corporate::before { background: var(--amber); }
+.tcard.pledge::before   { background: var(--green); }
+.tcard.qcd::before      { background: var(--gold); }
+
+.tcard-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.tcard-head .ico { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tcard-head .ico svg { width: 18px; height: 18px; }
+.tcard-head .ico.blue { background: var(--blue-light); color: var(--blue); }
+.tcard-head .ico.purple { background: var(--purple-light); color: var(--purple); }
+.tcard-head .ico.teal { background: var(--teal-light); color: var(--teal); }
+.tcard-head .ico.amber { background: var(--amber-light); color: var(--amber); }
+.tcard-head .ico.green { background: var(--green-light); color: var(--green); }
+.tcard-head .ico.gold { background: var(--gold-light); color: var(--gold); }
+.tcard-head .nm { font-family:'DM Serif Display',serif; font-size: 20px; color: var(--navy); }
+.tcard-head .badge { margin-left: auto; }
+
+.row { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--border-soft); font-size: 13px; }
+.row:last-of-type { border-bottom: none; }
+.row .l { width: 130px; color: var(--text-3); flex-shrink: 0; font-weight: 500; }
+.row .v { color: var(--text); flex: 1; }
+.row .v code { background: var(--surface); padding: 1px 7px; border-radius: 5px; font-size: 11.5px; color: var(--navy); border: 1px solid var(--border); }
+.row .v strong { color: var(--text); font-weight: 600; }
+.row .v a { color: var(--blue); font-weight: 500; }
+.row .v a:hover { text-decoration: underline; }
+
+.receipt-line {
+  margin-top: 12px; padding: 10px 14px; border-radius: 9px;
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 12px; line-height: 1.5;
+}
+.receipt-line svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; }
+.receipt-line.ok { background: var(--green-light); color: #14532D; }
+.receipt-line.ok svg { color: var(--green); }
+.receipt-line.block { background: var(--rose-light); color: #831843; }
+.receipt-line.block svg { color: var(--rose); }
+.receipt-line.special { background: var(--amber-light); color: #78350F; }
+.receipt-line.special svg { color: var(--amber); }
+.receipt-line.gold { background: var(--gold-light); color: #78350F; }
+.receipt-line.gold svg { color: var(--gold); }
+.receipt-line b { display: block; margin-bottom: 2px; font-weight: 700; }
+
+.tag {
+  display: inline-flex; align-items: center;
+  font-size: 10.5px; font-weight: 700; padding: 3px 9px;
+  border-radius: 99px; letter-spacing: .04em;
+}
+.tag.receipt    { background: var(--green-light); color: var(--green); }
+.tag.no-receipt { background: var(--rose-light); color: var(--rose); }
+.tag.special    { background: var(--amber-light); color: var(--amber); }
+.tag.dedicated  { background: var(--purple-light); color: var(--purple); }
+.tag.note       { background: var(--gold-light); color: var(--gold); }
+
+/* Flow ladder */
+.flow {
+  display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+}
+.flow .step {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; padding: 4px 9px; border-radius: 99px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-2);
+}
+.flow .step::after { content: '→'; margin-left: 6px; color: var(--text-3); }
+.flow .step:last-child::after { content: ''; }
+
+/* Decision flowchart */
+.flowchart { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; margin-top: 22px; }
+.fc-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.fc-card { padding: 14px 16px; border-radius: 11px; font-size: 12.5px; line-height: 1.5; position: relative; }
+.fc-card .head { font-weight: 700; margin-bottom: 5px; font-size: 13px; }
+.fc-card.q { background: linear-gradient(135deg, var(--blue-pale), white); border: 1px solid var(--blue-light); }
+.fc-card.q .head { color: var(--blue); }
+.fc-card.yes { background: var(--green-light); border: 1px solid #86EFAC; color: #14532D; }
+.fc-card.yes .head { color: var(--green); }
+.fc-card.no { background: var(--rose-light); border: 1px solid #FCA5A5; color: #831843; }
+.fc-card.no .head { color: var(--rose); }
+.fc-card a { color: inherit; font-weight: 600; text-decoration: underline; }
+.fc-arrow { font-size: 20px; color: var(--text-3); display: flex; align-items: center; justify-content: center; padding: 8px 0; }
+
+/* Comparison table */
+.cmp-table { background: white; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 22px; }
+.cmp-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; gap: 14px; padding: 12px 18px; align-items: center; }
+.cmp-row.head { background: var(--surface); border-bottom: 1px solid var(--border); font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.cmp-row + .cmp-row { border-top: 1px solid var(--border-soft); }
+.cmp-row .type-cell { font-size: 13.5px; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+.cmp-row .type-cell .pip { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.cmp-row .cell { font-size: 12.5px; color: var(--text-2); }
+.cmp-row .cell .yes { color: var(--green); font-weight: 600; }
+.cmp-row .cell .no { color: var(--rose); font-weight: 600; }
+.cmp-row .cell .partial { color: var(--amber); font-weight: 600; }
+
+/* Footer */
+.foot { color: var(--text-3); font-size: 12px; margin-top: 36px; text-align: center; padding-top: 22px; border-top: 1px solid var(--border-soft); }
+
+@media (max-width: 920px) {
+  .types { grid-template-columns: 1fr; }
+  .fc-row { grid-template-columns: 1fr; }
+  .cmp-row { grid-template-columns: 1fr; }
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+<style id="atlas-sidebar-fix">
+/* Minimal sidebar fix — keeps the CEO's per-page .main / .content
+   layouts untouched. We ONLY:
+     1. Pin the sidebar to the viewport with position:fixed
+     2. Reserve a 220px gutter on the body via padding-left
+     3. Normalize the sidebar's internal flex layout (logo + search top,
+        nav scrolls middle, user block bottom)
+     4. Force SVG icon sizes in the sidebar (some screens lost them) */
+
+html, body { overflow-x: hidden !important; }
+body {
+  padding-left: 220px !important;
+  box-sizing: border-box !important;
+  min-height: 100vh !important;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+.sidebar {
+  width: 220px !important;
+  background: var(--navy, #0E1E35) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;          /* sidebar itself does NOT scroll */
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Logo + search are direct flex children that never scroll */
+.sidebar > .sidebar-logo,
+.sidebar > a > .sidebar-search,
+.sidebar > .sidebar-search,
+.sidebar-logo,
+.sidebar-search {
+  position: static !important;
+  flex-shrink: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2;
+}
+
+/* Fix oversized search icon — explicit 13×13 wins over any inheriting style */
+.sidebar-search {
+  margin: 12px 12px 6px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.sidebar-search svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
+  color: rgba(255,255,255,.4) !important;
+}
+.sidebar-search input {
+  font-size: 12px !important;
+  height: auto !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+}
+/* Logo mark sizing — same fix prevents the brand SVG from ballooning */
+.sidebar-logo .logo-mark {
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+.sidebar-logo .logo-mark svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* The MIDDLE area is the only scrollable child */
+.sidebar-scroll {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;        /* critical: lets flex item shrink */
+  display: flex !important;
+  flex-direction: column !important;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+
+/* User block sits at the bottom of the sidebar, never scrolls */
+.sidebar-user {
+  position: static !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  background: var(--navy, #0E1E35) !important;
+}
+
+/* .main is intentionally NOT overridden — each page keeps its own layout. */
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-meta">
+      <span>Atlas — gift entry</span>
+      <span class="dot"></span>
+      <span>End-to-end reference</span>
+      <span class="dot"></span>
+      <span>v1 · 4 May 2026</span>
+    </div>
+    <h1>Twelve gift types, <em>one source of truth.</em></h1>
+    <p>Atlas handles every gift type the PRD §5.2 calls out — but each has its own routing, fields, and receipt rule. This page maps every type from where you enter it to what receipt fires, in IRS-Pub-1771-compliant terms.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num green">7</div><div class="lbl">Receipt-eligible</div></div>
+      <div class="hero-stat"><div class="num rose">4</div><div class="lbl">Hard-block (soft credit only)</div></div>
+      <div class="hero-stat"><div class="num">1</div><div class="lbl">Special tax form (QCD)</div></div>
+      <div class="hero-stat"><div class="num amber">2</div><div class="lbl">Dedicated screens</div></div>
+    </div>
+  </section>
+
+  <!-- DECISION FLOWCHART -->
+  <section class="section">
+    <h2>Quick decision flow</h2>
+    <p class="sub">Three questions decide which screen you land on and what happens next.</p>
+
+    <div class="flowchart">
+
+      <!-- Q1 -->
+      <div class="fc-row">
+        <div class="fc-card q"><div class="head">1 · Is the gift in shares of stock?</div>Stock has a separate IRS valuation rule (high+low/2) and dedicated handling.</div>
+        <div class="fc-card yes"><div class="head">YES → <a href="atlas-stock-gift.html">atlas-stock-gift.html</a></div>Captures shares × security · trade date · sale proceeds · gain / loss. Receipt shows shares only — no $.</div>
+        <div class="fc-card no"><div class="head">NO ↓</div>Continue.</div>
+      </div>
+
+      <div class="fc-arrow">▼</div>
+
+      <!-- Q2 -->
+      <div class="fc-row">
+        <div class="fc-card q"><div class="head">2 · Is this an instalment on an existing pledge?</div>Pledge payments auto-decrement balance and link to the pledge schedule.</div>
+        <div class="fc-card yes"><div class="head">YES → <a href="atlas-pledge-payment.html">atlas-pledge-payment.html</a></div>Pick the pledge first · record payment · auto-balance · receipt shows pledge balance.</div>
+        <div class="fc-card no"><div class="head">NO ↓</div>Continue.</div>
+      </div>
+
+      <div class="fc-arrow">▼</div>
+
+      <!-- Q3 -->
+      <div class="fc-row">
+        <div class="fc-card q"><div class="head">3 · Everything else: open <a href="atlas-gift-entry.html">atlas-gift-entry.html</a></div>Pick the type chip — Atlas swaps the form fields per type and surfaces the right receipt rule.</div>
+        <div class="fc-card yes"><div class="head">Receiptable</div>Cash · Check · Credit card · ACH · In-kind · QCD · Pledge — full Pub-1771 receipt fires.</div>
+        <div class="fc-card no"><div class="head">Hard-block</div>DAF · Matching · Foundation · Corporate — receipt blocked; soft-credit acknowledgement letter issued instead.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section class="section">
+    <h2>The 12 types at a glance</h2>
+    <p class="sub">What each type asks for, where it lives, and what fires when you save.</p>
+
+    <div class="cmp-table">
+      <div class="cmp-row head">
+        <div>Type</div>
+        <div>Where to enter</div>
+        <div>Receipt</div>
+        <div>Soft credit</div>
+        <div>Special</div>
+      </div>
+
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--blue)"></span>Cash</div>
+        <div class="cell">atlas-gift-entry · type chip</div>
+        <div class="cell"><span class="yes">✓ Issued</span></div>
+        <div class="cell">Optional</div>
+        <div class="cell">—</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--blue)"></span>Check</div>
+        <div class="cell">atlas-gift-entry · type chip</div>
+        <div class="cell"><span class="yes">✓ Issued</span></div>
+        <div class="cell">Optional</div>
+        <div class="cell">Check # field</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--blue)"></span>Credit card</div>
+        <div class="cell">Auto-synced from GiveCentral · or manual</div>
+        <div class="cell"><span class="yes">✓ Issued</span></div>
+        <div class="cell">Optional</div>
+        <div class="cell">Last 4, processor</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--blue)"></span>ACH</div>
+        <div class="cell">Auto-synced from GiveCentral · or manual</div>
+        <div class="cell"><span class="yes">✓ Issued</span></div>
+        <div class="cell">Optional</div>
+        <div class="cell">Bank last 4</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--purple)"></span>Stock</div>
+        <div class="cell"><strong>atlas-stock-gift</strong> (dedicated)</div>
+        <div class="cell"><span class="yes">✓ Issued · no $</span></div>
+        <div class="cell">Optional</div>
+        <div class="cell">Shares × HL/2 · sale proceeds</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--teal)"></span>In-kind</div>
+        <div class="cell">atlas-gift-entry · type chip</div>
+        <div class="cell"><span class="yes">✓ Issued · description only</span></div>
+        <div class="cell">Optional</div>
+        <div class="cell">No $ · description required</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--amber)"></span>DAF</div>
+        <div class="cell">atlas-gift-entry · type chip (amber)</div>
+        <div class="cell"><span class="no">✗ Blocked</span></div>
+        <div class="cell"><strong>Required</strong></div>
+        <div class="cell">Distributing org + recommender</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--amber)"></span>Matching</div>
+        <div class="cell">atlas-gift-entry · type chip (amber)</div>
+        <div class="cell"><span class="no">✗ Blocked</span></div>
+        <div class="cell"><strong>Required</strong></div>
+        <div class="cell">Employer org · matched-gift link</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--amber)"></span>Foundation</div>
+        <div class="cell">atlas-gift-entry · type chip (amber)</div>
+        <div class="cell"><span class="no">✗ Blocked</span></div>
+        <div class="cell"><strong>Required</strong></div>
+        <div class="cell">Foundation org</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--amber)"></span>Corporate</div>
+        <div class="cell">atlas-gift-entry · type chip (amber)</div>
+        <div class="cell"><span class="no">✗ Blocked</span></div>
+        <div class="cell"><strong>Required</strong></div>
+        <div class="cell">Company org</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--green)"></span>Pledge pmt</div>
+        <div class="cell"><strong>atlas-pledge-payment</strong> (dedicated)</div>
+        <div class="cell"><span class="yes">✓ Issued · shows pledge bal.</span></div>
+        <div class="cell">Inherited from pledge</div>
+        <div class="cell">Auto-decrements balance</div>
+      </div>
+      <div class="cmp-row">
+        <div class="type-cell"><span class="pip" style="background:var(--gold)"></span>QCD</div>
+        <div class="cell">atlas-gift-entry · type chip</div>
+        <div class="cell"><span class="yes">✓ Issued · no IRA tax bill</span></div>
+        <div class="cell">Not applicable</div>
+        <div class="cell"><span class="partial">Donor must be 70½+</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FULL TYPE DETAIL CARDS -->
+  <section class="section">
+    <h2>The receipt-eligible types</h2>
+    <p class="sub">Cash · Check · Credit card · ACH · Stock · In-kind · QCD · Pledge — full Pub-1771 receipt fires automatically.</p>
+
+    <div class="types">
+
+      <!-- Cash -->
+      <div class="tcard cash">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="5" width="14" height="9" rx="1.5"/><circle cx="9" cy="9.5" r="2"/></svg></div>
+          <div class="nm">Cash</div>
+          <span class="tag receipt badge">Receipt</span>
+        </div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → type chip "Cash"</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Donor · amount · gift date · designation (Campaign → Appeal → Fund)</span></div>
+        <div class="row"><span class="l">Optional</span><span class="v">Deposit location · note · soft-credit recipients</span></div>
+        <div class="row"><span class="l">Receipt rule</span><span class="v">Cash receipt template · Pub 1771 §A · "no goods or services"</span></div>
+        <div class="receipt-line ok">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+          <div><b>Auto-issued in &lt; 60s</b>PDF emailed to primary email · attached to donor timeline · GL fund credited tonight via QuickBooks export.</div>
+        </div>
+        <div class="flow">
+          <span class="step">Pick donor</span><span class="step">Type=Cash</span><span class="step">Amount + date</span><span class="step">Designation</span><span class="step">Save</span><span class="step">Receipt fires</span>
+        </div>
+      </div>
+
+      <!-- Check -->
+      <div class="tcard check">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="4" width="14" height="11" rx="1.5"/><path d="M2 8h14M5 12h2"/></svg></div>
+          <div class="nm">Check</div>
+          <span class="tag receipt badge">Receipt</span>
+        </div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → type chip "Check"</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Donor · amount · gift date · <strong>check #</strong> · designation</span></div>
+        <div class="row"><span class="l">Optional</span><span class="v">Memo · payor name (if different from donor) · soft credits</span></div>
+        <div class="row"><span class="l">Receipt rule</span><span class="v">Cash receipt template (checks treated identically to cash for receipt purposes)</span></div>
+        <div class="receipt-line ok">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+          <div><b>Receipt issued · check # on internal record</b>The donor's PDF receipt mirrors the cash template; check # is for your reconciliation only.</div>
+        </div>
+        <div class="flow">
+          <span class="step">Donor</span><span class="step">Type=Check</span><span class="step">Amount + check #</span><span class="step">Designation</span><span class="step">Save</span>
+        </div>
+      </div>
+
+      <!-- Credit card -->
+      <div class="tcard cc">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="4" width="14" height="10" rx="1.5"/><path d="M2 8h14M5 12h2M9 12h2"/></svg></div>
+          <div class="nm">Credit card</div>
+          <span class="tag receipt badge">Receipt · usually auto</span>
+        </div>
+        <div class="row"><span class="l">Open</span><span class="v">Auto-synced from GiveCentral payment forms (60s p95) · or manual <a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → "Credit card"</span></div>
+        <div class="row"><span class="l">Auto-captured</span><span class="v">Card brand · last 4 · processor · transaction ID · receipt routing</span></div>
+        <div class="row"><span class="l">Required (manual)</span><span class="v">Donor · amount · last 4 · processor</span></div>
+        <div class="row"><span class="l">Receipt rule</span><span class="v">Cash receipt template · receipt fires on settlement (~60s after charge)</span></div>
+        <div class="receipt-line ok">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+          <div><b>97% of CC gifts auto-sync</b>Manual entry is reserved for declined-then-paid offline cases. Refunds reverse the GL line; the gift stays on the donor record marked "Refunded."</div>
+        </div>
+      </div>
+
+      <!-- ACH -->
+      <div class="tcard ach">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 16h14M4 14V8M8 14V8M12 14V8M2 8l7-5 7 5"/></svg></div>
+          <div class="nm">ACH bank transfer</div>
+          <span class="tag receipt badge">Receipt · usually auto</span>
+        </div>
+        <div class="row"><span class="l">Open</span><span class="v">Auto-synced from GiveCentral · or manual <a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → "ACH"</span></div>
+        <div class="row"><span class="l">Auto-captured</span><span class="v">Bank account last 4 · routing prefix · processor · settlement date</span></div>
+        <div class="row"><span class="l">Required (manual)</span><span class="v">Donor · amount · bank last 4</span></div>
+        <div class="row"><span class="l">Receipt rule</span><span class="v">Cash receipt template · receipt fires <strong>after settlement</strong> (T+3) — not on initiation</span></div>
+        <div class="receipt-line ok">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+          <div><b>3-day settlement window</b>Atlas marks the gift "Pending settlement" until the ACH clears, then auto-fires the receipt. NSF returns reverse the gift.</div>
+        </div>
+      </div>
+
+      <!-- Stock -->
+      <div class="tcard stock">
+        <div class="tcard-head">
+          <div class="ico purple"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 14l4-5 3 3 6-7"/></svg></div>
+          <div class="nm">Stock</div>
+          <span class="tag dedicated badge">Dedicated screen</span>
+        </div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-stock-gift.html">atlas-stock-gift.html</a> · the only IRS-compliant flow</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Donor · ticker / CUSIP · share count · trade date · high &amp; low of day · designation</span></div>
+        <div class="row"><span class="l">Calculated</span><span class="v">FMV = (high + low) / 2 × shares · stored separately from sale proceeds</span></div>
+        <div class="row"><span class="l">Sale tracking</span><span class="v">Sale date · sale price · fees · net proceeds · realized gain / loss (vs FMV)</span></div>
+        <div class="row"><span class="l">Receipt rule</span><span class="v">Stock-receipt template — <strong>shares + security only · no $</strong> · Pub 561 / 1771 §B</span></div>
+        <div class="receipt-line gold">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v3.5M7 9v.5"/></svg>
+          <div><b>Compliance-critical</b>The donor uses their own FMV calculation for tax purposes — Atlas never prints a $ value on a stock receipt.</div>
+        </div>
+      </div>
+
+      <!-- In-kind -->
+      <div class="tcard inkind">
+        <div class="tcard-head">
+          <div class="ico teal"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="6" width="12" height="9" rx="1"/><path d="M3 9h12M6 6V4h6v2"/></svg></div>
+          <div class="nm">In-kind</div>
+          <span class="tag receipt badge">Receipt · description only</span>
+        </div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → type chip "In-kind"</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Donor · gift date · <strong>description</strong> (e.g. "12-foot scaffolding rental, 2 weeks")</span></div>
+        <div class="row"><span class="l">Optional · internal</span><span class="v">FMV estimate (for GL booking — never on receipt)</span></div>
+        <div class="row"><span class="l">Receipt rule</span><span class="v">In-kind template · description + date only · <strong>no $</strong> · donor self-substantiates value</span></div>
+        <div class="receipt-line ok">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+          <div><b>Pub 1771 §B(2)</b>"For gifts of property, the receipt may not include a $ value." Atlas hard-blocks the receipt template if a $ is entered for an in-kind gift.</div>
+        </div>
+      </div>
+
+      <!-- QCD -->
+      <div class="tcard qcd">
+        <div class="tcard-head">
+          <div class="ico gold"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l2 2"/></svg></div>
+          <div class="nm">QCD (IRA)</div>
+          <span class="tag note badge">Special form</span>
+        </div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → type chip "QCD"</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Donor (must be 70½+) · IRA custodian · check # from IRA · amount · gift date</span></div>
+        <div class="row"><span class="l">Atlas check</span><span class="v">Donor DOB lookup — if &lt; 70½, hard-block with explanation</span></div>
+        <div class="row"><span class="l">Receipt rule</span><span class="v">QCD-receipt template — adds the language "no goods or services… counts toward your RMD"</span></div>
+        <div class="receipt-line gold">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v3.5M7 9v.5"/></svg>
+          <div><b>Tax-coded as $0 to donor</b>QCDs don't enter the donor's AGI — but the gift counts in full on Atlas (no double-count needed). Donor reports on Form 1040 line 4b as "QCD."</div>
+        </div>
+      </div>
+
+      <!-- Pledge pmt -->
+      <div class="tcard pledge">
+        <div class="tcard-head">
+          <div class="ico green"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="12" height="12" rx="1.5"/><path d="M6 3v12M10 3v12"/></svg></div>
+          <div class="nm">Pledge payment</div>
+          <span class="tag dedicated badge">Dedicated screen</span>
+        </div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-pledge-payment.html">atlas-pledge-payment.html</a> · pick the pledge first</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Pledge · amount · payment date · method (check/CC/ACH/stock/DAF distribution)</span></div>
+        <div class="row"><span class="l">Auto-applied</span><span class="v">Donor (from pledge) · designation (from pledge) · soft credits (inherited)</span></div>
+        <div class="row"><span class="l">Receipt rule</span><span class="v">Pledge-payment template · shows new balance after this payment</span></div>
+        <div class="receipt-line ok">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+          <div><b>Auto-decrements pledge balance</b>If this payment fulfils the pledge, status auto-flips to "Fulfilled" and a thank-you cadence triggers. Underpayments roll the schedule.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HARD-BLOCK TYPES -->
+  <section class="section">
+    <h2>The hard-block types — soft credit only</h2>
+    <p class="sub">Per IRS guidance, these gift types come from a third party (DAF sponsor, employer, foundation, corporation) — Atlas <strong style="color:var(--rose)">hard-blocks the tax receipt</strong> and issues a soft-credit acknowledgement letter to the human donor instead.</p>
+
+    <div class="types">
+
+      <!-- DAF -->
+      <div class="tcard daf">
+        <div class="tcard-head">
+          <div class="ico amber"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="12" height="12" rx="1"/><path d="M3 7h12M3 11h12M9 3v12"/></svg></div>
+          <div class="nm">DAF — Donor-Advised Fund</div>
+          <span class="tag no-receipt badge">No receipt</span>
+        </div>
+        <div class="row"><span class="l">Example</span><span class="v">Schwab Charitable, Fidelity Charitable, Vanguard Charitable, parish foundation DAF</span></div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → type chip "DAF" (amber)</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Distributing org (the DAF sponsor) · <strong>recommended-by donor</strong> · amount · designation</span></div>
+        <div class="row"><span class="l">Atlas behaviour</span><span class="v">Receipt button is grayed-out · soft-credit panel auto-populates with the recommender</span></div>
+        <div class="receipt-line block">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 5l4 4M9 5l-4 4"/></svg>
+          <div><b>Why blocked</b>The donor already received their tax deduction when they funded the DAF. A second receipt for the distribution would be double-counting.</div>
+        </div>
+        <div class="receipt-line special">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10v6H2zM2 4l5 4 5-4"/></svg>
+          <div><b>What fires instead</b>Soft-credit acknowledgement letter to the recommender — "Thank you for recommending this gift to St. Mary's…" — with no tax language.</div>
+        </div>
+      </div>
+
+      <!-- Matching -->
+      <div class="tcard matching">
+        <div class="tcard-head">
+          <div class="ico amber"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="9" r="3"/><circle cx="12" cy="9" r="3"/><path d="M9 9v0"/></svg></div>
+          <div class="nm">Matching gift</div>
+          <span class="tag no-receipt badge">No receipt</span>
+        </div>
+        <div class="row"><span class="l">Example</span><span class="v">Acme Construction matches employee Margaret O'Brien's $1k → another $1k arrives</span></div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → type chip "Matching" (amber)</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Employer org · amount · <strong>linked original gift</strong> (the employee's gift Atlas is matching) · designation</span></div>
+        <div class="row"><span class="l">Atlas behaviour</span><span class="v">Both gifts grouped under the original donor on Donor 360 · employer-corporate-credit shown separately</span></div>
+        <div class="receipt-line block">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 5l4 4M9 5l-4 4"/></svg>
+          <div><b>Why blocked</b>The corporation deducts on its own return — not the donor's. Issuing a personal receipt would understate the corporation's deduction and overstate the employee's.</div>
+        </div>
+        <div class="receipt-line special">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10v6H2zM2 4l5 4 5-4"/></svg>
+          <div><b>What fires instead</b>Soft-credit letter to the employee · separate corporate ack to the matching company (no tax language to either).</div>
+        </div>
+      </div>
+
+      <!-- Foundation -->
+      <div class="tcard foundation">
+        <div class="tcard-head">
+          <div class="ico amber"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="3" width="14" height="12" rx="1.5"/><path d="M2 7h14M9 3v12"/></svg></div>
+          <div class="nm">Foundation</div>
+          <span class="tag no-receipt badge">No receipt</span>
+        </div>
+        <div class="row"><span class="l">Example</span><span class="v">Diocesan Foundation, Knights of Columbus, family foundation grant</span></div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → type chip "Foundation" (amber)</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Foundation org (sub-typed = Foundation) · amount · designation · grant award letter (optional upload)</span></div>
+        <div class="row"><span class="l">Atlas behaviour</span><span class="v">Receipt blocked (foundation gets its own internal records) · stewardship workflow triggers a "report-back" reminder per the grant agreement</span></div>
+        <div class="receipt-line block">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 5l4 4M9 5l-4 4"/></svg>
+          <div><b>Why blocked</b>Foundations are themselves §501(c)(3) — they don't need a deductibility receipt. They need a confirmation of receipt with the grant agreement number.</div>
+        </div>
+        <div class="receipt-line special">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10v6H2zM2 4l5 4 5-4"/></svg>
+          <div><b>What fires instead</b>Foundation acknowledgement template — references the grant agreement, lists the funded program, no tax language.</div>
+        </div>
+      </div>
+
+      <!-- Corporate -->
+      <div class="tcard corporate">
+        <div class="tcard-head">
+          <div class="ico amber"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="12" height="12" rx="1"/><path d="M3 7h12M9 3v12"/></svg></div>
+          <div class="nm">Corporate</div>
+          <span class="tag no-receipt badge">No receipt</span>
+        </div>
+        <div class="row"><span class="l">Example</span><span class="v">Direct corporate sponsorship · table buy at the gala · year-end corporate gift</span></div>
+        <div class="row"><span class="l">Open</span><span class="v"><a href="atlas-gift-entry.html">atlas-gift-entry.html</a> → type chip "Corporate" (amber)</span></div>
+        <div class="row"><span class="l">Required</span><span class="v">Company org (sub-typed = Company) · amount · designation</span></div>
+        <div class="row"><span class="l">Atlas behaviour</span><span class="v">Same as Foundation — corporate ack, no personal receipt; soft-credit to the relationship-owner if known</span></div>
+        <div class="receipt-line block">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 5l4 4M9 5l-4 4"/></svg>
+          <div><b>Why blocked</b>Corporations deduct on their own returns — they need a corporate-level acknowledgement, not a personal-deductibility receipt.</div>
+        </div>
+        <div class="receipt-line special">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10v6H2zM2 4l5 4 5-4"/></svg>
+          <div><b>What fires instead</b>Corporate acknowledgement letter · soft-credit to the executive who recommended (if known) · "stewardship event" task auto-created.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHERE EACH ENDS UP -->
+  <section class="section">
+    <h2>Where every gift ends up</h2>
+    <p class="sub">Regardless of type, every successful gift lands in the same five places.</p>
+
+    <div class="types" style="grid-template-columns:repeat(2,1fr)">
+
+      <div class="tcard cash">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="6" r="3"/><path d="M3 16c0-3 3-6 6-6s6 3 6 6"/></svg></div>
+          <div class="nm">1 · Donor 360 timeline</div>
+        </div>
+        <div class="row"><span class="l">Where</span><span class="v"><a href="atlas-donor-360.html">atlas-donor-360.html</a></span></div>
+        <div class="row"><span class="l">What appears</span><span class="v">An entry in the activity timeline · gift card with type, amount, date, designation · receipt link · soft-credit attributions</span></div>
+      </div>
+
+      <div class="tcard cash">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 5h14M2 9h14M2 13h14"/></svg></div>
+          <div class="nm">2 · Gifts &amp; pledges hub</div>
+        </div>
+        <div class="row"><span class="l">Where</span><span class="v"><a href="atlas-gifts-pledges.html">atlas-gifts-pledges.html</a></span></div>
+        <div class="row"><span class="l">What appears</span><span class="v">Recent gifts table · counts in the KPI strip · type tag (Cash / Check / DAF…)</span></div>
+      </div>
+
+      <div class="tcard cash">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="3" width="14" height="11" rx="1"/><path d="M2 7h14M5 3v3M11 3v3"/></svg></div>
+          <div class="nm">3 · Campaign detail</div>
+        </div>
+        <div class="row"><span class="l">Where</span><span class="v"><a href="atlas-campaign-detail.html">atlas-campaign-detail.html</a></span></div>
+        <div class="row"><span class="l">What appears</span><span class="v">Adds to Pledged / Received / Outstanding · rolls up into appeal &amp; fund · counted in YoY</span></div>
+      </div>
+
+      <div class="tcard cash">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 1h8v12l-2-1.5L7 13l-2-1.5L3 13z"/></svg></div>
+          <div class="nm">4 · Receipt or acknowledgement</div>
+        </div>
+        <div class="row"><span class="l">Where</span><span class="v"><a href="atlas-receipt-preview.html">atlas-receipt-preview.html</a> · <a href="atlas-communications.html">atlas-communications.html</a></span></div>
+        <div class="row"><span class="l">What appears</span><span class="v">PDF receipt for receiptable types · acknowledgement letter for hard-block types · per-entity sender identity</span></div>
+      </div>
+
+      <div class="tcard cash">
+        <div class="tcard-head">
+          <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 14l4-3 3 2 5-5"/></svg></div>
+          <div class="nm">5 · GL export &amp; reports</div>
+        </div>
+        <div class="row"><span class="l">Where</span><span class="v"><a href="atlas-sync.html">atlas-sync.html</a> · <a href="atlas-reports.html">atlas-reports.html</a></span></div>
+        <div class="row"><span class="l">What appears</span><span class="v">QuickBooks / Sage entry on next nightly export · counted in Gifts-by-fund report · reconciliation matched against GiveCentral</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="foot">
+    GiveCentral Atlas · gift-type reference · sourced from PRD §5.2, §5.6, IRS Pub 1771, Atlas Data Model v1.1.<br>
+    Open this any time at <a href="atlas-gift-type-guide.html" style="color:var(--blue)">atlas-gift-type-guide.html</a>.
+  </footer>
+
+</div>
+
+
+<style id="atlas-wire-style">
+  /* Make originally-static elements feel clickable when wired */
+  .nav-item, .nav-item *, .sidebar-search, .sidebar-search *,
+  .topbar-search, .topbar-search *, .sidebar-user, .tb-btn, .btn,
+  button { cursor: pointer; }
+</style>
+<script id="atlas-wire">
+(function(){
+  // Map of text → destination (case-insensitive substring match)
+  // Order matters: longer / more specific phrases first.
+  var ROUTES = [
+    // Sidebar nav
+    ['dashboard',                    'atlas-dashboard.html'],
+    ['donors',                       'atlas-donors-list.html'],
+    ['gifts & pledges',              'atlas-batch-entry.html'],
+    ['gifts and pledges',            'atlas-batch-entry.html'],
+    ['gifts &amp; pledges',          'atlas-batch-entry.html'],
+    ['campaigns',                    'atlas-campaign-dashboard.html'],
+    ['prospect pipeline',            'atlas-pipeline.html'],
+    ['tasks & reminders',            'atlas-tasks.html'],
+    ['tasks &amp; reminders',        'atlas-tasks.html'],
+    ['guru ai',                      'atlas-guru-ai.html'],
+    ['communications',               'atlas-communications.html'],
+    ['analytics',                    'atlas-reports.html'],
+    ['reports',                      'atlas-reports.html'],
+    // CTAs
+    ['record gift',                  'atlas-gift-entry.html'],
+    ['record a gift',                'atlas-gift-entry.html'],
+    ['log a gift',                   'atlas-gift-entry.html'],
+    ['log offline gift',             'atlas-gift-entry.html'],
+    ['record a win',                 'atlas-gift-entry.html'],
+    ['log activity',                 'atlas-log-activity.html'],
+    ['add action',                   'atlas-log-activity.html'],
+    ['add task',                     'atlas-task-modal.html'],
+    ['create outreach task',         'atlas-task-modal.html'],
+    ['create cultivation task',      'atlas-task-modal.html'],
+    ['schedule',                     'atlas-task-modal.html'],
+    ['add prospect',                 'atlas-add-constituent.html'],
+    ['add donor',                    'atlas-add-constituent.html'],
+    ['new donor',                    'atlas-add-constituent.html'],
+    ['add household',                'atlas-add-constituent.html'],
+    ['add organization',             'atlas-add-constituent.html'],
+    ['view 47 lybunt donors',        'atlas-donors-list.html'],
+    ['view 23 lapsed donors',        'atlas-donors-list.html'],
+    ['view 163 donors',              'atlas-donors-list.html'],
+    ['view donor record',            'atlas-donor-360.html'],
+    ['view full donor record',       'atlas-donor-360.html'],
+    ['create outreach list',         'atlas-donors-list.html'],
+
+    // ── Sprint 2: donor-facing & comms ──
+    // Donor portal CTAs (existing atlas-donor-portal.html screen)
+    ['set up new recurring gift',    'atlas-donate-recurring.html'],
+    ['set up recurring gift',        'atlas-donate-recurring.html'],
+    ['new recurring',                'atlas-donate-recurring.html'],
+    ['make a one-time gift',         'atlas-donate-onetime.html'],
+    ['donate now',                   'atlas-donate-onetime.html'],
+    ['give now',                     'atlas-donate-onetime.html'],
+    ['give once',                    'atlas-donate-onetime.html'],
+    ['save changes',                 'atlas-donor-profile.html'],
+    ['edit profile',                 'atlas-donor-profile.html'],
+    ['profile & preferences',        'atlas-donor-profile.html'],
+    ['download 2025 summary',        'atlas-donor-profile.html'],
+    ['download 2024 summary',        'atlas-donor-profile.html'],
+    ['recurring gifts',              'atlas-donor-recurring.html'],
+    ['manage recurring',             'atlas-donor-recurring.html'],
+    ['change amount',                'atlas-donor-recurring.html'],
+    ['update card',                  'atlas-donor-recurring.html'],
+    ['claim your account',           'atlas-donor-login.html'],
+    ['claim account',                'atlas-donor-login.html'],
+    ['set up your donor portal',     'atlas-donor-login.html'],
+    ['sign in',                      'atlas-login.html'],
+
+    // Pledge flows
+    ['new pledge',                   'atlas-pledge-create.html'],
+    ['create pledge',                'atlas-pledge-create.html'],
+    ['add pledge',                   'atlas-pledge-create.html'],
+    ['view pledge record',           'atlas-pledge-detail.html'],
+    ['view pledge',                  'atlas-pledge-detail.html'],
+    ['pledge detail',                'atlas-pledge-detail.html'],
+    ['record next instalment',       'atlas-gift-entry.html'],
+
+    // Email / acknowledgement
+    ['compose',                      'atlas-email-compose.html'],
+    ['send acknowledgement',         'atlas-email-compose.html'],
+    ['send thank-you',               'atlas-email-compose.html'],
+    ['email donor',                  'atlas-email-compose.html'],
+    ['send follow-up',               'atlas-email-compose.html'],
+    ['send follow-up emails',        'atlas-email-compose.html'],
+
+    // ── Sprint 3: reports, duplicates, comms, sync, RBAC ──
+    ['view all reports',             'atlas-reports.html'],
+    ['report library',               'atlas-reports.html'],
+    ['build a custom report',        'atlas-reports.html'],
+    ['build report',                 'atlas-reports.html'],
+    ['export pdf',                   'atlas-report-detail.html'],
+    ['export csv',                   'atlas-report-detail.html'],
+    ['export report',                'atlas-report-detail.html'],
+    ['full campaign portal',         'atlas-report-detail.html'],
+
+    // Duplicate / merge
+    ['pending review',               'atlas-duplicates.html'],
+    ['duplicate review',             'atlas-duplicates.html'],
+    ['merge into existing',          'atlas-merge.html'],
+    ['merge records',                'atlas-merge.html'],
+    ['quick-merge',                  'atlas-merge.html'],
+    ['resolve exceptions',           'atlas-duplicates.html'],
+
+    // Receipt / acknowledgement preview
+    ['preview receipt',              'atlas-receipt-preview.html'],
+    ['view receipt',                 'atlas-receipt-preview.html'],
+    ['download pdf',                 'atlas-receipt-preview.html'],
+    ['all receipts pdf',             'atlas-receipt-preview.html'],
+    ['receipt pdf',                  'atlas-receipt-preview.html'],
+
+    // Sync & reconciliation
+    ['sync',                         'atlas-sync.html'],
+    ['sync now',                     'atlas-sync.html'],
+    ['sync all',                     'atlas-sync.html'],
+    ['retry sync',                   'atlas-sync.html'],
+    ['view sync',                    'atlas-sync.html'],
+    ['reconciliation',               'atlas-sync.html'],
+
+    // Campaign creation
+    ['new campaign',                 'atlas-campaign-create.html'],
+    ['create campaign',              'atlas-campaign-create.html'],
+    ['create event',                 'atlas-campaign-create.html'],
+
+    // Notifications
+    ['notifications',                'atlas-notifications.html'],
+
+    // Users & roles
+    ['users & roles',                'atlas-users-roles.html'],
+    ['users &amp; roles',            'atlas-users-roles.html'],
+    ['invite user',                  'atlas-users-roles.html'],
+    ['add integration',              'atlas-integrations.html'],
+
+    // ── Sprint 4 ──
+    ['gifts & pledges',              'atlas-gifts-pledges.html'],
+    ['gifts &amp; pledges',          'atlas-gifts-pledges.html'],
+    ['gifts and pledges',            'atlas-gifts-pledges.html'],
+    ['edit constituent',             'atlas-edit-constituent.html'],
+    ['edit profile',                 'atlas-edit-constituent.html'],
+    ['edit',                         'atlas-edit-constituent.html'],
+    ['view all pledges',             'atlas-pledges-list.html'],
+    ['open pledges',                 'atlas-pledges-list.html'],
+    ['stock gift',                   'atlas-stock-gift.html'],
+    ['record stock',                 'atlas-stock-gift.html'],
+    ['pledge payment',               'atlas-pledge-payment.html'],
+    ['record payment',               'atlas-pledge-payment.html'],
+    ['record next instalment',       'atlas-pledge-payment.html'],
+    ['record installment',           'atlas-pledge-payment.html'],
+    ['view cathedral campaign',      'atlas-campaign-detail.html'],
+    ['campaign detail',              'atlas-campaign-detail.html'],
+    ['view campaign',                'atlas-campaign-detail.html'],
+    ['build outreach list',          'atlas-segment-builder.html'],
+    ['build a segment',              'atlas-segment-builder.html'],
+    ['segment builder',              'atlas-segment-builder.html'],
+    ['solicitor performance',        'atlas-solicitor-performance.html'],
+    ['solicitor leaderboard',        'atlas-solicitor-performance.html'],
+  ];
+
+  function routeFor(text) {
+    if (!text) return null;
+    var t = text.toLowerCase().replace(/\s+/g,' ').trim();
+    for (var i=0; i<ROUTES.length; i++) {
+      if (t.indexOf(ROUTES[i][0]) !== -1) return ROUTES[i][1];
+    }
+    return null;
+  }
+
+  function nearestText(el, depth) {
+    depth = depth || 0;
+    if (!el || depth > 3) return '';
+    return (el.innerText || el.textContent || '').slice(0, 200);
+  }
+
+  // 1) Sidebar nav-item routing
+  document.querySelectorAll('.nav-item').forEach(function(el){
+    var dest = routeFor(nearestText(el));
+    if (dest && dest !== '#') {
+      el.addEventListener('click', function(e){ e.preventDefault(); window.location = dest; });
+    }
+  });
+
+  // 2) Sidebar search → global search
+  var sb = document.querySelector('.sidebar-search');
+  if (sb) sb.addEventListener('click', function(){ window.location = 'atlas-search.html'; });
+  var sbInput = document.querySelector('.sidebar-search input');
+  if (sbInput) { sbInput.readOnly = true; sbInput.style.cursor='pointer'; sbInput.addEventListener('focus', function(){ this.blur(); window.location = 'atlas-search.html'; }); }
+
+  // 3) Topbar search (if present, varies file-to-file)
+  var tbs = document.querySelector('.topbar-search, .topbar input[type="search"], .topbar input[placeholder*="Search"]');
+  if (tbs) tbs.addEventListener('click', function(){ window.location='atlas-search.html'; });
+
+  // 3b) Notification bells → atlas-notifications.html
+  document.querySelectorAll('.tb-notif, .header-notif').forEach(function(el){
+    el.addEventListener('click', function(e){ e.preventDefault(); window.location='atlas-notifications.html'; });
+  });
+
+  // 4) Buttons & links — match by text
+  var SELECTOR = '.tb-btn, .btn, button, a.btn, .card-action, .quick-action, .lane-item';
+  document.querySelectorAll(SELECTOR).forEach(function(el){
+    // skip if already has a real href / inline onclick we shouldn't override
+    if (el.tagName === 'A' && el.getAttribute('href') && el.getAttribute('href') !== '#') return;
+    var dest = routeFor(el.innerText || el.textContent || '');
+    if (!dest || dest === '#') return;
+    var existing = el.onclick;
+    el.addEventListener('click', function(e){
+      // let inline handlers run first; only navigate if they don't preventDefault
+      try { if (existing) existing.call(el, e); } catch(_) {}
+      if (e.defaultPrevented) return;
+      // Don't intercept obvious modal-trigger buttons (those have onclick attr that opens local modal)
+      // Heuristic: if button has 'onclick' attr that already changes state, only follow when routes match strongly
+      window.location = dest;
+    });
+  });
+
+  // 4b) Plain <a href="#"> anchors that aren't policy/footer — try text routing
+  document.querySelectorAll('a[href="#"]').forEach(function(el){
+    // Skip if it already has another routing handler
+    if (el.dataset.atlasWired) return;
+    var txt = (el.innerText || el.textContent || '').toLowerCase().trim();
+    // Skip explicit policy/footer placeholders
+    var policyWords = ['privacy','terms','help','forgot','security','status','refund','contact','help center','english','español','administrator','here','bishop','phase','print','define a custom role','change type','+ saved view','manage seasonal','why we ask'];
+    if (policyWords.some(function(w){ return txt.indexOf(w) !== -1; })) return;
+    var dest = routeFor(txt);
+    if (!dest || dest === '#') return;
+    el.setAttribute('href', dest);
+    el.dataset.atlasWired = '1';
+  });
+
+  // 4c) Kebab menus on donor-list / pledge-list / gift-list rows — open an action dropdown
+  var KEBAB_MENU = [
+    ['View profile',     'atlas-donor-360.html',       'M12 14a3 3 0 100-6 3 3 0 000 6zM2 21c0-5.5 4.5-10 10-10s10 4.5 10 10'],
+    ['Edit',             'atlas-edit-constituent.html','M3 17l8-8 4 4-8 8H3v-4zM12 6l3-3 3 3-3 3-3-3z'],
+    ['Record gift',      'atlas-gift-entry.html',      'M12 5v14M5 12h14'],
+    ['Log activity',     'atlas-log-activity.html',    'M3 13c0-3 2-5 5-5s5 2 5 5M8 5a3 3 0 100-0.01'],
+    ['Add task',         'atlas-task-modal.html',      'M4 6h2l1-3 2 6 1-4h6'],
+    ['Send email',       'atlas-email-compose.html',   'M3 6h18v12H3zM3 6l9 7 9-7'],
+    ['Merge duplicate',  'atlas-merge.html',           'M6 6l4-4M6 6l-4 4M6 6h10'],
+    ['Archive',          '#',                          'M3 6h18M5 6v14h14V6M9 10h6']
+  ];
+  function closeKebabMenus(){ document.querySelectorAll('.atlas-kebab-menu').forEach(function(m){ m.remove(); }); }
+  document.addEventListener('click', closeKebabMenus);
+
+  document.querySelectorAll('.kebab').forEach(function(k){
+    k.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      closeKebabMenus();
+      var menu = document.createElement('div');
+      menu.className = 'atlas-kebab-menu';
+      menu.style.cssText = 'position:absolute;background:white;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;min-width:200px;z-index:100;font-family:DM Sans,sans-serif;font-size:13px;';
+      KEBAB_MENU.forEach(function(item){
+        var a = document.createElement('a');
+        a.href = item[1];
+        a.style.cssText = 'display:flex;align-items:center;gap:9px;padding:8px 10px;color:#334155;text-decoration:none;border-radius:6px;cursor:pointer;';
+        a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#64748B"><path d="'+item[2]+'"/></svg>' + item[0];
+        a.addEventListener('mouseenter', function(){ a.style.background='#EFF6FF'; a.style.color='#2563EB'; });
+        a.addEventListener('mouseleave', function(){ a.style.background='transparent'; a.style.color='#334155'; });
+        if (item[0] === 'Archive') { a.style.color = '#BE185D'; a.style.borderTop='1px solid #EDF2F7'; a.style.marginTop='4px'; a.style.paddingTop='10px'; }
+        menu.appendChild(a);
+      });
+      // Position
+      var rect = k.getBoundingClientRect();
+      menu.style.top  = (window.scrollY + rect.bottom + 4) + 'px';
+      menu.style.left = (window.scrollX + rect.right - 200) + 'px';
+      document.body.appendChild(menu);
+    });
+  });
+
+  // 5) Quick affordances on user avatar block
+  var su = document.querySelector('.sidebar-user');
+  if (su) su.addEventListener('click', function(){
+    if (confirm('Sign out of Atlas?')) window.location = 'atlas-login.html';
+  });
+
+  // 6) Add a footer banner so the wiring is visible to reviewers
+  // (intentionally subtle; designed to be removed easily once the prototype goes to dev)
+})();
+</script>
+
+</body>
+</html>

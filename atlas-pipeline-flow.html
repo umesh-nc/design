@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas — Prospect Pipeline · End-to-end flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#0E1E35; --navy-2:#152844; --navy-3:#1E3A5F;
+  --blue:#2563EB; --blue-mid:#3B82F6; --blue-light:#DBEAFE; --blue-pale:#EFF6FF;
+  --green:#15803D; --green-light:#DCFCE7;
+  --amber:#D97706; --amber-light:#FEF3C7;
+  --rose:#BE185D; --rose-light:#FCE7F3;
+  --purple:#7C3AED; --purple-light:#EDE9FE;
+  --gold:#C4973A; --gold-light:#FBF4E8;
+  --teal:#0D9488; --teal-light:#CCFBF1;
+  --slate:#94A3B8; --slate-light:#F1F5F9;
+  --text:#0F172A; --text-2:#334155; --text-3:#64748B;
+  --border:#E2E8F0; --border-soft:#EDF2F7;
+  --surface:#F8FAFC; --white:#FFFFFF;
+}
+html, body { background: var(--surface); color: var(--text); font-family: 'DM Sans', -apple-system, system-ui, sans-serif; font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+.page { max-width: 1280px; margin: 0 auto; padding: 48px 40px 96px; }
+a { color: inherit; text-decoration: none; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  color: white; border-radius: 20px; padding: 48px 56px;
+  position: relative; overflow: hidden; margin-bottom: 32px;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 80% 20%, rgba(59,130,246,.18), transparent 55%),
+                    radial-gradient(circle at 10% 90%, rgba(124,58,237,.12), transparent 60%);
+  pointer-events: none;
+}
+.hero-meta { position: relative; display: flex; gap: 12px; align-items: center; margin-bottom: 18px; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(219,234,254,.85); font-weight: 500; }
+.hero-meta .dot { width: 6px; height: 6px; background: var(--blue-mid); border-radius: 50%; }
+.hero h1 { font-family: 'DM Serif Display', serif; font-size: 44px; line-height: 1.08; letter-spacing: -0.5px; position: relative; margin-bottom: 14px; }
+.hero h1 em { font-style: italic; color: #93C5FD; }
+.hero p { position: relative; font-size: 16px; color: rgba(255,255,255,.78); max-width: 720px; }
+.hero-stats { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.10); }
+.hero-stat .num { font-family:'DM Serif Display',serif; font-size: 32px; line-height: 1; margin-bottom: 6px; }
+.hero-stat .num.green { color: #86EFAC; }
+.hero-stat .num.amber { color: #FCD34D; }
+.hero-stat .num.purple { color: #C4B5FD; }
+.hero-stat .lbl { font-size: 11px; color: rgba(219,234,254,.7); text-transform: uppercase; letter-spacing: 0.6px; }
+
+/* Section header */
+.section { margin-top: 56px; }
+.section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+.section-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--blue-light); color: var(--blue);
+  font-size: 13px; font-weight: 700;
+}
+.section h2 { font-family:'DM Serif Display',serif; font-size: 30px; letter-spacing: -0.3px; color: var(--navy); }
+.section .sub { color: var(--text-3); font-size: 14px; max-width: 800px; margin-top: 4px; }
+
+/* The 5-stage flow strip */
+.flow-strip {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 4px; margin-top: 28px; position: relative;
+}
+.flow-stage {
+  background: white; border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 20px; position: relative; cursor: pointer;
+  transition: transform .15s, border-color .15s;
+}
+.flow-stage:hover { transform: translateY(-2px); }
+.flow-stage::after {
+  content: '→'; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+  font-size: 18px; color: var(--text-3); font-weight: bold; z-index: 2;
+  background: var(--surface); width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.flow-stage:last-child::after { display: none; }
+.flow-stage .ico {
+  width: 36px; height: 36px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px; color: white;
+}
+.flow-stage.id .ico { background: var(--slate); }
+.flow-stage.qual .ico { background: var(--teal); }
+.flow-stage.cult .ico { background: var(--blue); }
+.flow-stage.solicit .ico { background: var(--amber); }
+.flow-stage.steward .ico { background: var(--purple); }
+.flow-stage.id { border-left: 4px solid var(--slate); }
+.flow-stage.qual { border-left: 4px solid var(--teal); }
+.flow-stage.cult { border-left: 4px solid var(--blue); }
+.flow-stage.solicit { border-left: 4px solid var(--amber); }
+.flow-stage.steward { border-left: 4px solid var(--purple); }
+.flow-stage .ico svg { width: 18px; height: 18px; }
+.flow-stage .num-pill { position: absolute; top: 18px; right: 18px; background: var(--surface); border: 1px solid var(--border); padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 700; color: var(--text-3); font-variant-numeric: tabular-nums; }
+.flow-stage h3 { font-family:'DM Serif Display',serif; font-size: 17px; color: var(--navy); margin-bottom: 4px; }
+.flow-stage .duration { font-size: 11px; color: var(--text-3); margin-bottom: 10px; font-weight: 500; }
+.flow-stage .desc { font-size: 12px; color: var(--text-2); line-height: 1.5; min-height: 60px; }
+.flow-stage .conv { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--text-3); }
+.flow-stage .conv b { color: var(--green); font-weight: 700; }
+
+/* Stage detail card */
+.stage-detail {
+  background: white; border: 1px solid var(--border); border-radius: 16px;
+  margin-bottom: 20px; overflow: hidden;
+}
+.stage-detail-head {
+  padding: 22px 28px; display: flex; align-items: center; gap: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.stage-detail-head .num {
+  width: 44px; height: 44px; border-radius: 50%; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family:'DM Serif Display',serif; font-size: 18px; flex-shrink: 0;
+}
+.stage-detail-head.id .num { background: var(--slate); }
+.stage-detail-head.qual .num { background: var(--teal); }
+.stage-detail-head.cult .num { background: var(--blue); }
+.stage-detail-head.solicit .num { background: var(--amber); }
+.stage-detail-head.steward .num { background: var(--purple); }
+.stage-detail-head .body .t { font-family:'DM Serif Display',serif; font-size: 24px; color: var(--navy); letter-spacing: -0.02em; }
+.stage-detail-head .body .d { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+.stage-detail-head .right { margin-left: auto; display: flex; gap: 10px; }
+.stage-detail-head .right .badge { padding: 5px 11px; border-radius: 99px; background: var(--surface); border: 1px solid var(--border); font-size: 11.5px; color: var(--text-2); font-weight: 600; }
+
+.stage-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.stage-block { padding: 22px 28px; border-right: 1px solid var(--border-soft); }
+.stage-block:last-child { border-right: none; }
+.stage-block:nth-child(n+3) { border-top: 1px solid var(--border-soft); }
+.stage-block h4 { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.stage-block h4 svg { width: 13px; height: 13px; }
+
+.action-list { display: flex; flex-direction: column; gap: 8px; }
+.action-row { display: flex; gap: 10px; padding: 9px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 9px; cursor: pointer; transition: border-color .12s; }
+.action-row:hover { border-color: var(--blue); }
+.action-row .step-num { width: 22px; height: 22px; border-radius: 50%; background: var(--blue); color: white; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 700; flex-shrink: 0; }
+.action-row .body { flex: 1; }
+.action-row .body .a { font-size: 13px; font-weight: 500; color: var(--text); }
+.action-row .body .s { font-size: 11.5px; color: var(--text-3); margin-top: 2px; }
+.action-row .body .s code { background: white; padding: 1px 6px; border-radius: 4px; font-size: 11px; color: var(--blue); border: 1px solid var(--border); }
+
+.criteria-list { display: flex; flex-direction: column; gap: 6px; }
+.criteria-row { display: flex; gap: 9px; align-items: flex-start; font-size: 12.5px; color: var(--text-2); padding: 5px 0; }
+.criteria-row svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; }
+.criteria-row.exit svg { color: var(--green); }
+.criteria-row.warn svg { color: var(--amber); }
+.criteria-row.fail svg { color: var(--rose); }
+
+.who-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.who-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; padding: 4px 10px; border-radius: 99px; background: var(--surface); border: 1px solid var(--border); color: var(--text-2); }
+.who-pill .av { width: 18px; height: 18px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; }
+
+.benchmark-row { display: flex; gap: 18px; padding: 10px 0; border-bottom: 1px dashed var(--border-soft); }
+.benchmark-row:last-child { border-bottom: none; }
+.benchmark-row .l { width: 140px; font-size: 12px; color: var(--text-3); flex-shrink: 0; }
+.benchmark-row .v { font-size: 13px; color: var(--text); font-weight: 600; }
+.benchmark-row .v small { display: block; color: var(--text-3); font-weight: 400; font-size: 11.5px; margin-top: 2px; }
+
+/* Decision tree */
+.decision { background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border: 1px solid #FBBF24; border-radius: 11px; padding: 16px 20px; margin: 18px 28px; }
+.decision .head { font-weight: 700; color: #78350F; margin-bottom: 8px; font-size: 12.5px; }
+.decision .options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.decision .opt { background: white; border: 1px solid #FBBF24; border-radius: 8px; padding: 10px 12px; font-size: 12px; }
+.decision .opt .label { font-weight: 700; color: var(--amber); margin-bottom: 3px; }
+.decision .opt .body { color: var(--text-2); line-height: 1.45; }
+
+/* Cadence section */
+.cadence-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.cadence-card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; }
+.cadence-card .when { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+.cadence-card h4 { font-family:'DM Serif Display',serif; font-size: 16px; color: var(--navy); margin-bottom: 10px; }
+.cadence-card ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.cadence-card ul li { display: flex; gap: 8px; font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+.cadence-card ul li svg { width: 13px; height: 13px; flex-shrink: 0; margin-top: 3px; color: var(--green); }
+
+/* Personas + portfolio */
+.personas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.persona-card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; }
+.persona-card .head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.persona-card .head .av { width: 40px; height: 40px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-family:'DM Serif Display',serif; font-size: 14px; }
+.persona-card .head .t { font-weight: 600; font-size: 15px; color: var(--navy); }
+.persona-card .head .role { font-size: 11.5px; color: var(--text-3); }
+.persona-card p { font-size: 13px; color: var(--text-2); line-height: 1.55; margin-bottom: 12px; }
+.persona-card .does { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+
+/* Industry comparison */
+.compare { background: white; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 18px; }
+.compare-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 14px; padding: 14px 22px; align-items: center; }
+.compare-row.head { background: var(--surface); border-bottom: 1px solid var(--border); font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.compare-row + .compare-row { border-top: 1px solid var(--border-soft); }
+.compare-row .topic { font-size: 13.5px; color: var(--navy); font-weight: 500; }
+.compare-row .cell { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+.compare-row .cell.atlas { color: var(--blue); font-weight: 500; }
+.compare-row .cell.gap { color: var(--amber); font-weight: 500; }
+
+/* Footer call-out */
+.callout {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+  color: white; border-radius: 16px; padding: 32px 36px; margin-top: 40px;
+}
+.callout h3 { font-family:'DM Serif Display',serif; font-size: 24px; margin-bottom: 8px; }
+.callout p { color: rgba(219,234,254,.85); margin-bottom: 22px; max-width: 760px; }
+.callout .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.callout button, .callout a {
+  font-family:'DM Sans'; font-size: 13.5px; font-weight: 500;
+  padding: 11px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06); color: white; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+}
+.callout button.primary, .callout a.primary { background: var(--blue); border-color: var(--blue); font-weight: 600; }
+.callout button:hover, .callout a:hover { background: rgba(255,255,255,.14); }
+.callout a.primary:hover { background: var(--blue-mid); }
+
+footer.tag-line { color: var(--text-3); font-size: 12px; margin-top: 30px; text-align: center; }
+
+@media (max-width: 980px) {
+  .flow-strip { grid-template-columns: 1fr; }
+  .flow-stage::after { display: none; }
+  .stage-detail-grid { grid-template-columns: 1fr; }
+  .decision .options { grid-template-columns: 1fr; }
+  .cadence-grid { grid-template-columns: 1fr 1fr; }
+  .personas-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+
+
+<style id="atlas-sidebar-fix">
+/* Minimal sidebar fix — keeps the CEO's per-page .main / .content
+   layouts untouched. We ONLY:
+     1. Pin the sidebar to the viewport with position:fixed
+     2. Reserve a 220px gutter on the body via padding-left
+     3. Normalize the sidebar's internal flex layout (logo + search top,
+        nav scrolls middle, user block bottom)
+     4. Force SVG icon sizes in the sidebar (some screens lost them) */
+
+html, body { overflow-x: hidden !important; }
+body {
+  padding-left: 220px !important;
+  box-sizing: border-box !important;
+  min-height: 100vh !important;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+.sidebar {
+  width: 220px !important;
+  background: var(--navy, #0E1E35) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;          /* sidebar itself does NOT scroll */
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Logo + search are direct flex children that never scroll */
+.sidebar > .sidebar-logo,
+.sidebar > a > .sidebar-search,
+.sidebar > .sidebar-search,
+.sidebar-logo,
+.sidebar-search {
+  position: static !important;
+  flex-shrink: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2;
+}
+
+/* Fix oversized search icon — explicit 13×13 wins over any inheriting style */
+.sidebar-search {
+  margin: 12px 12px 6px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.sidebar-search svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
+  color: rgba(255,255,255,.4) !important;
+}
+.sidebar-search input {
+  font-size: 12px !important;
+  height: auto !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+}
+/* Logo mark sizing — same fix prevents the brand SVG from ballooning */
+.sidebar-logo .logo-mark {
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+.sidebar-logo .logo-mark svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* The MIDDLE area is the only scrollable child */
+.sidebar-scroll {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;        /* critical: lets flex item shrink */
+  display: flex !important;
+  flex-direction: column !important;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+
+/* User block sits at the bottom of the sidebar, never scrolls */
+.sidebar-user {
+  position: static !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  background: var(--navy, #0E1E35) !important;
+}
+
+/* .main is intentionally NOT overridden — each page keeps its own layout. */
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-meta">
+      <span>Atlas Prospect Pipeline</span>
+      <span class="dot"></span>
+      <span>End-to-end user flow</span>
+      <span class="dot"></span>
+      <span>Phase 3 primary feature</span>
+    </div>
+    <h1>From <em>"who's that?"</em> to a $1M check.</h1>
+    <p>Five stages, three roles, twelve months, a hundred touchpoints — moves management is a 50-year-old discipline and Atlas's pipeline is built to industry standard. Here's the full flow with every screen, decision point, cadence, and benchmark.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">5</div><div class="lbl">Stages</div></div>
+      <div class="hero-stat"><div class="num purple">100–150</div><div class="lbl">Prospects per officer</div></div>
+      <div class="hero-stat"><div class="num green">12–24 mo</div><div class="lbl">Cycle time · major gifts</div></div>
+      <div class="hero-stat"><div class="num amber">8–12%</div><div class="lbl">Of identified → donate</div></div>
+    </div>
+  </section>
+
+  <!-- 5-STAGE FLOW STRIP -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">1</div>
+      <div>
+        <h2>The 5 stages at a glance</h2>
+        <div class="sub">Industry-standard moves management. Each card → click for full detail below.</div>
+      </div>
+    </div>
+
+    <div class="flow-strip">
+      <a href="#stage-id" class="flow-stage id">
+        <div class="num-pill">~ 4 wks</div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M21 21l-5-5"/></svg></div>
+        <h3>1 · Identification</h3>
+        <div class="duration">weeks to months</div>
+        <div class="desc">Find people with capacity + affinity. Wealth screening, peer referrals, gift-history analysis.</div>
+        <div class="conv">→ <b>~50%</b> qualify for next stage</div>
+      </a>
+
+      <a href="#stage-qual" class="flow-stage qual">
+        <div class="num-pill">1–2 wks</div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>2 · Qualification</h3>
+        <div class="duration">1–2 visits</div>
+        <div class="desc">A discovery call/visit to confirm interest, capacity, and connection. Weed out wrong-fit prospects.</div>
+        <div class="conv">→ <b>~70%</b> advance to cultivation</div>
+      </a>
+
+      <a href="#stage-cult" class="flow-stage cult">
+        <div class="num-pill">6–18 mo</div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 10c0-3 2-5 5-5s5 2 5 5"/><circle cx="8" cy="6" r="3"/><path d="M13 16c0-3 2-5 5-5s5 2 5 5"/><circle cx="18" cy="12" r="3"/></svg></div>
+        <h3>3 · Cultivation</h3>
+        <div class="duration">6–18 months · 12–18 touches</div>
+        <div class="desc">Build the relationship. Visits, calls, notes, events, content shares. Monthly cadence minimum.</div>
+        <div class="conv">→ <b>~40%</b> reach solicitation</div>
+      </a>
+
+      <a href="#stage-solicit" class="flow-stage solicit">
+        <div class="num-pill">days to wks</div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M7 11l5-5 5 5M12 6v12"/></svg></div>
+        <h3>4 · Solicitation</h3>
+        <div class="duration">days to a few weeks</div>
+        <div class="desc">The actual ask — specific $, specific project. Face-to-face for major gifts. Sometimes co-solicited by board.</div>
+        <div class="conv">→ <b>~60%</b> close</div>
+      </a>
+
+      <a href="#stage-steward" class="flow-stage steward">
+        <div class="num-pill">years</div>
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 4l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg></div>
+        <h3>5 · Stewardship</h3>
+        <div class="duration">ongoing · multi-year</div>
+        <div class="desc">Care after the gift. Reports on impact, recognition, anniversaries. Sets up the next ask.</div>
+        <div class="conv">→ <b>3–4×</b> lifetime giving multiplier</div>
+      </a>
+    </div>
+
+    <p style="font-size:12.5px;color:var(--text-3);margin-top:18px;text-align:center;font-style:italic">Out of 100 identified prospects, roughly 8–12 ever become donors — and that's industry standard, not a failure mode.</p>
+  </section>
+
+  <!-- STAGE 1: IDENTIFICATION -->
+  <section class="section" id="stage-id">
+    <div class="section-head">
+      <div class="section-num" style="background:#F1F5F9;color:var(--slate)">2.1</div>
+      <div>
+        <h2>Stage 1 · Identification</h2>
+        <div class="sub">Goal: build a "raw prospect pool" 3–5× larger than your portfolio target. Most will be filtered out at Qualification.</div>
+      </div>
+    </div>
+
+    <div class="stage-detail">
+      <div class="stage-detail-head id">
+        <div class="num">1</div>
+        <div class="body">
+          <div class="t">Identification — finding people with capacity AND affinity</div>
+          <div class="d">Weeks to months · researcher-led · officer reviews and accepts</div>
+        </div>
+        <div class="right">
+          <span class="badge">Owner: Prospect Researcher</span>
+          <span class="badge" style="background:var(--blue-pale);color:var(--blue);border-color:var(--blue-light)">3–5× portfolio</span>
+        </div>
+      </div>
+
+      <div class="stage-detail-grid">
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8l3-3 3 3 3-3"/></svg> Actions in Atlas</h4>
+          <div class="action-list">
+            <div class="action-row">
+              <div class="step-num">1</div>
+              <div class="body">
+                <div class="a">Add a new constituent manually</div>
+                <div class="s"><code>atlas-add-constituent.html</code> → Step 4 set code to "Major prospect"</div>
+              </div>
+            </div>
+            <div class="action-row">
+              <div class="step-num">2</div>
+              <div class="body">
+                <div class="a">Bulk-import from a wealth-screening run</div>
+                <div class="s"><code>atlas-add-integration.html</code> · iWave / DonorSearch / WealthEngine</div>
+              </div>
+            </div>
+            <div class="action-row">
+              <div class="step-num">3</div>
+              <div class="body">
+                <div class="a">Auto-promote from large incoming gifts</div>
+                <div class="s">GiveCentral sync → Wealth Engine v1 → flag if ask range &gt; $500</div>
+              </div>
+            </div>
+            <div class="action-row">
+              <div class="step-num">4</div>
+              <div class="body">
+                <div class="a">Build a segment from existing donors</div>
+                <div class="s"><code>atlas-segment-builder.html</code> · "Gave ≥ $1k in 2 of last 3 years"</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="5" r="2.8"/><path d="M2 13c0-2.7 2.3-5 5-5s5 2.3 5 5"/></svg> Who does this work</h4>
+          <div class="who-list">
+            <span class="who-pill"><span class="av" style="background:var(--blue)">PR</span>Prospect Researcher</span>
+            <span class="who-pill"><span class="av" style="background:var(--purple)">DD</span>Dev Director (reviews)</span>
+            <span class="who-pill"><span class="av" style="background:var(--rose)">MGO</span>Gift Officer (accepts portfolio)</span>
+          </div>
+          <h4 style="margin-top:18px"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg> Exit criteria</h4>
+          <div class="criteria-list">
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Confirmed major-gift potential (Wealth Engine ask range ≥ $1k)</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Assigned to a specific gift officer (portfolio)</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Officer accepts the prospect ("yes, I'll work this one")</div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/></svg> Industry benchmarks</h4>
+          <div class="benchmark-row"><span class="l">Capacity rating</span><span class="v">$1,000+ Wealth Engine ask range<small>LAI score: any "A" or "B" rating</small></span></div>
+          <div class="benchmark-row"><span class="l">Time in stage</span><span class="v">2–4 weeks<small>longer = the prospect is stuck pre-qualification</small></span></div>
+          <div class="benchmark-row"><span class="l">Sources</span><span class="v">Wealth screen · Peer screen · Board referral · Self-identified<small>(by responding to an appeal)</small></span></div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10M4 7h6M6 10h2"/></svg> Atlas screens involved</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-add-constituent.html" style="color:var(--blue)">atlas-add-constituent.html</a></div><div class="s">Manual entry · 5-step wizard</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-wealth-screening.html" style="color:var(--blue)">atlas-wealth-screening.html</a></div><div class="s">LAI scores · capacity rating · RelSci connections</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-segment-builder.html" style="color:var(--blue)">atlas-segment-builder.html</a></div><div class="s">Pull candidates from existing donor base</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-pipeline.html" style="color:var(--blue)">atlas-pipeline.html</a></div><div class="s">First column · cards appear with grey border</div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 2: QUALIFICATION -->
+  <section class="section" id="stage-qual">
+    <div class="section-head">
+      <div class="section-num" style="background:var(--teal-light);color:var(--teal)">2.2</div>
+      <div>
+        <h2>Stage 2 · Qualification</h2>
+        <div class="sub">A focused 1–2 visit / call sequence to confirm the prospect is real. Most attrition happens here.</div>
+      </div>
+    </div>
+
+    <div class="stage-detail">
+      <div class="stage-detail-head qual">
+        <div class="num">2</div>
+        <div class="body">
+          <div class="t">Qualification — a discovery visit</div>
+          <div class="d">1–2 weeks · officer-led · 70% confirm and advance, 30% drop or recycle</div>
+        </div>
+        <div class="right">
+          <span class="badge">Owner: Gift Officer</span>
+        </div>
+      </div>
+
+      <div class="stage-detail-grid">
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8l3-3 3 3 3-3"/></svg> Actions in Atlas</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="step-num">1</div><div class="body"><div class="a">Read the Guru AI pre-meeting brief</div><div class="s"><code>atlas-meeting-brief.html</code> · giving trend, ask range, recommended ask</div></div></div>
+            <div class="action-row"><div class="step-num">2</div><div class="body"><div class="a">Plan the visit geographically</div><div class="s"><code>atlas-visit-map.html</code> · route 2–3 prospects in a half-day</div></div></div>
+            <div class="action-row"><div class="step-num">3</div><div class="body"><div class="a">Conduct the discovery call/visit</div><div class="s">Ask: <em>What matters most to you about our work?</em></div></div></div>
+            <div class="action-row"><div class="step-num">4</div><div class="body"><div class="a">Log the outcome immediately (within 24h)</div><div class="s"><code>atlas-log-activity.html</code> · outcome = qualified / not qualified / recycle</div></div></div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg> Exit criteria — advance to Cultivation</h4>
+          <div class="criteria-list">
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Prospect agreed to a follow-up conversation</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Specific interest area surfaced (capital · scholarship · mission · ministry)</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Capacity verified (a wrong wealth-screen result gets caught here)</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Next move scheduled in Atlas</div>
+            <div class="criteria-row fail"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg><strong style="color:var(--rose)">Disqualifier:</strong>&nbsp;Wrong-fit (e.g., they don't care about the cause)</div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/></svg> Industry benchmarks</h4>
+          <div class="benchmark-row"><span class="l">Visits per qualification</span><span class="v">1.4 average<small>Best officers do it in 1; complex prospects take 2</small></span></div>
+          <div class="benchmark-row"><span class="l">Pass rate</span><span class="v">~70%<small>Lower means wealth-screening is wrong; higher means too lenient</small></span></div>
+          <div class="benchmark-row"><span class="l">Time in stage</span><span class="v">1–2 weeks · max 30 days<small>Older = re-evaluate or drop</small></span></div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10M4 7h6M6 10h2"/></svg> Atlas screens involved</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-meeting-brief.html" style="color:var(--blue)">atlas-meeting-brief.html</a></div><div class="s">Pre-meeting Guru AI summary</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-visit-map.html" style="color:var(--blue)">atlas-visit-map.html</a></div><div class="s">Visit routing</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-log-activity.html" style="color:var(--blue)">atlas-log-activity.html</a></div><div class="s">Post-visit contact report</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-donor-360.html" style="color:var(--blue)">atlas-donor-360.html</a></div><div class="s">Full prospect record · stage history</div></div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="decision">
+        <div class="head">DECISION POINT after the discovery visit</div>
+        <div class="options">
+          <div class="opt"><div class="label">✓ Qualified</div><div class="body">Move to Cultivation · plan first relationship-building move within 14 days</div></div>
+          <div class="opt"><div class="label">↺ Recycle</div><div class="body">Right capacity but wrong moment (life event, family change). Pause and re-engage in 6–12 months</div></div>
+          <div class="opt"><div class="label">✗ Disqualify</div><div class="body">Wrong-fit. Return to general pool. Don't waste cycles on prospects who'll never give majorly</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 3: CULTIVATION -->
+  <section class="section" id="stage-cult">
+    <div class="section-head">
+      <div class="section-num" style="background:var(--blue-light);color:var(--blue)">2.3</div>
+      <div>
+        <h2>Stage 3 · Cultivation</h2>
+        <div class="sub">The longest stage. 6–18 months for $25k+; 2–5 years for $1M+. Where relationships are built and asks are earned.</div>
+      </div>
+    </div>
+
+    <div class="stage-detail">
+      <div class="stage-detail-head cult">
+        <div class="num">3</div>
+        <div class="body">
+          <div class="t">Cultivation — earning the ask</div>
+          <div class="d">12–18 substantive moves per year · monthly cadence · officer + Dev Director check-ins</div>
+        </div>
+        <div class="right">
+          <span class="badge">Owner: Gift Officer</span>
+          <span class="badge" style="background:var(--blue-pale);color:var(--blue);border-color:var(--blue-light)">Atlas's biggest leverage area</span>
+        </div>
+      </div>
+
+      <div class="stage-detail-grid">
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8l3-3 3 3 3-3"/></svg> Standard moves in cultivation</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="step-num">1</div><div class="body"><div class="a">Cultivation visit</div><div class="s">In-home or office · 60–90 min · agenda but conversational</div></div></div>
+            <div class="action-row"><div class="step-num">2</div><div class="body"><div class="a">Hand-written note</div><div class="s">Reference something specific from your last conversation</div></div></div>
+            <div class="action-row"><div class="step-num">3</div><div class="body"><div class="a">Curated content share</div><div class="s">Annual report · case study · press article on their area of interest</div></div></div>
+            <div class="action-row"><div class="step-num">4</div><div class="body"><div class="a">Event invite</div><div class="s">Behind-the-scenes tour · donor recognition event · gala</div></div></div>
+            <div class="action-row"><div class="step-num">5</div><div class="body"><div class="a">Pastor / leader meeting</div><div class="s">Bring in the Bishop / president / executive for a peer-altitude conversation</div></div></div>
+            <div class="action-row"><div class="step-num">6</div><div class="body"><div class="a">Site visit / mission tour</div><div class="s">See the work · meet beneficiaries · highest-impact move</div></div></div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg> Exit criteria — ready to ask</h4>
+          <div class="criteria-list">
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Prospect has expressed verbal interest in a specific project</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>A target ask amount + project have been identified</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>The right asker has been identified (officer · Dev Director · Bishop · board peer)</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>The ask conversation is scheduled</div>
+            <div class="criteria-row warn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v3.5M7 9v.5"/></svg><strong style="color:var(--amber)">Stall flag:</strong>&nbsp;&gt; 18 months in cultivation with no progress = consider closing</div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/></svg> Industry benchmarks</h4>
+          <div class="benchmark-row"><span class="l">Moves per year</span><span class="v">12–18 substantive moves<small>Less = relationship fades</small></span></div>
+          <div class="benchmark-row"><span class="l">Visit-to-other ratio</span><span class="v">~1 : 3<small>1 visit per 3 other moves (notes, calls, events)</small></span></div>
+          <div class="benchmark-row"><span class="l">Cycle time</span><span class="v">6–18 months · median 12 months<small>Capital campaigns can be 2–3 years</small></span></div>
+          <div class="benchmark-row"><span class="l">Conversion to solicitation</span><span class="v">~40%<small>Higher means you're cherry-picking; lower means cultivating wrong people</small></span></div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10M4 7h6M6 10h2"/></svg> Atlas screens involved</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-meeting-brief.html" style="color:var(--blue)">atlas-meeting-brief.html</a></div><div class="s">Before every move · Guru AI prep</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-log-activity.html" style="color:var(--blue)">atlas-log-activity.html</a></div><div class="s">After every move · within 24 hours · auto-creates next task</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-task-modal.html" style="color:var(--blue)">atlas-task-modal.html</a></div><div class="s">Plan the next move · Guru AI suggests priority</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-email-compose.html" style="color:var(--blue)">atlas-email-compose.html</a></div><div class="s">Personalized content shares · curated by officer</div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 4: SOLICITATION -->
+  <section class="section" id="stage-solicit">
+    <div class="section-head">
+      <div class="section-num" style="background:var(--amber-light);color:var(--amber)">2.4</div>
+      <div>
+        <h2>Stage 4 · Solicitation</h2>
+        <div class="sub">The ask itself. Specific amount, specific project. Usually face-to-face. The shortest stage but the highest stakes.</div>
+      </div>
+    </div>
+
+    <div class="stage-detail">
+      <div class="stage-detail-head solicit">
+        <div class="num">4</div>
+        <div class="body">
+          <div class="t">Solicitation — the actual ask</div>
+          <div class="d">Days to a few weeks · officer or Bishop · paperwork ready</div>
+        </div>
+        <div class="right">
+          <span class="badge">Owner: Gift Officer + co-solicitor</span>
+        </div>
+      </div>
+
+      <div class="stage-detail-grid">
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8l3-3 3 3 3-3"/></svg> Actions in Atlas</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="step-num">1</div><div class="body"><div class="a">Final ask-amount calibration</div><div class="s">Wealth Engine v1 · ask range · officer-pinned override</div></div></div>
+            <div class="action-row"><div class="step-num">2</div><div class="body"><div class="a">Prep the gift agreement template in DocuSign</div><div class="s"><code>atlas-docusign-agreements.html</code> · auto-fills name/address/total</div></div></div>
+            <div class="action-row"><div class="step-num">3</div><div class="body"><div class="a">Conduct the ask meeting</div><div class="s">Sometimes co-solicited by Bishop / board peer for high-altitude asks</div></div></div>
+            <div class="action-row"><div class="step-num">4</div><div class="body"><div class="a">Send the DocuSign envelope same day</div><div class="s">Conversion drops 28% if you wait 5+ days post-visit</div></div></div>
+            <div class="action-row"><div class="step-num">5</div><div class="body"><div class="a">Log the ask conversation</div><div class="s"><code>atlas-log-activity.html</code> · outcome = yes / no / defer · pledge link if yes</div></div></div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg> Three outcomes</h4>
+          <div class="criteria-list">
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg><strong style="color:var(--green)">YES</strong>&nbsp;— full ask: pledge created · DocuSign sent · move to Stewardship</div>
+            <div class="criteria-row warn"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg><strong style="color:var(--amber)">PARTIAL</strong>&nbsp;— smaller amount than asked: take the gift · keep cultivating for upgrade</div>
+            <div class="criteria-row fail"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg><strong style="color:var(--rose)">NO / DEFER</strong>&nbsp;— either truly declined (move to Closed-Lost with reason) or "not yet" (back to Cultivation with new timing)</div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/></svg> Industry benchmarks</h4>
+          <div class="benchmark-row"><span class="l">Yes-rate</span><span class="v">~60% close to some amount<small>~40% give the full asked amount</small></span></div>
+          <div class="benchmark-row"><span class="l">Best officers</span><span class="v">75%+ close rate<small>Driven by cultivation quality, not closing skill</small></span></div>
+          <div class="benchmark-row"><span class="l">Time-to-paperwork</span><span class="v">Same-day to 5 days<small>Beyond that, conversion drops materially</small></span></div>
+          <div class="benchmark-row"><span class="l">Co-solicitation lift</span><span class="v">+18% close rate<small>When Bishop / board peer joins the officer</small></span></div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10M4 7h6M6 10h2"/></svg> Atlas screens involved</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-pledge-create.html" style="color:var(--blue)">atlas-pledge-create.html</a></div><div class="s">5-step wizard · auto-schedule instalments · attach to campaign</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-docusign-agreements.html" style="color:var(--blue)">atlas-docusign-agreements.html</a></div><div class="s">Send same-day · auto-filled from pledge</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-gift-entry.html" style="color:var(--blue)">atlas-gift-entry.html</a></div><div class="s">If first payment comes in immediately (check at the meeting)</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-pledge-detail.html" style="color:var(--blue)">atlas-pledge-detail.html</a></div><div class="s">Track the schedule · reminders fire 14 days before each instalment</div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 5: STEWARDSHIP -->
+  <section class="section" id="stage-steward">
+    <div class="section-head">
+      <div class="section-num" style="background:var(--purple-light);color:var(--purple)">2.5</div>
+      <div>
+        <h2>Stage 5 · Stewardship</h2>
+        <div class="sub">Often skipped or under-resourced — yet drives 3–4× lifetime giving multiplier. The next gift is closed in this stage.</div>
+      </div>
+    </div>
+
+    <div class="stage-detail">
+      <div class="stage-detail-head steward">
+        <div class="num">5</div>
+        <div class="body">
+          <div class="t">Stewardship — caring for the gift</div>
+          <div class="d">Multi-year · stewardship officer + gift officer collaborate · sets up the next ask</div>
+        </div>
+        <div class="right">
+          <span class="badge">Owner: Stewardship Officer (or MGO)</span>
+        </div>
+      </div>
+
+      <div class="stage-detail-grid">
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8l3-3 3 3 3-3"/></svg> Atlas stewardship moves</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="step-num">1</div><div class="body"><div class="a">Personalized thank-you within 48 hours</div><div class="s"><code>atlas-email-compose.html</code> · Cathedral major-donor thank-you template</div></div></div>
+            <div class="action-row"><div class="step-num">2</div><div class="body"><div class="a">Tax receipt automatically sent</div><div class="s"><code>atlas-receipt-preview.html</code> · Pub-1771 compliant</div></div></div>
+            <div class="action-row"><div class="step-num">3</div><div class="body"><div class="a">Quarterly impact report</div><div class="s">"Your gift funded X · here's what changed"</div></div></div>
+            <div class="action-row"><div class="step-num">4</div><div class="body"><div class="a">Annual recognition event invite</div><div class="s"><code>atlas-events-dashboard.html</code> · Bishop's Annual Gala</div></div></div>
+            <div class="action-row"><div class="step-num">5</div><div class="body"><div class="a">Anniversary acknowledgement</div><div class="s">Year-mark of the gift · "Thank you again"</div></div></div>
+            <div class="action-row"><div class="step-num">6</div><div class="body"><div class="a">Pledge payment confirmations</div><div class="s">Each instalment fires a thank-you · shows new balance</div></div></div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg> When to re-enter the pipeline</h4>
+          <div class="criteria-list">
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Pledge fully paid → consider next ask within 6–12 months</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Capacity rating increased (new wealth-screen data)</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Life event (sale of business, retirement) — major-gift trigger</div>
+            <div class="criteria-row exit"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>New campaign launches in their interest area</div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/></svg> Industry benchmarks</h4>
+          <div class="benchmark-row"><span class="l">Retention rate</span><span class="v">~75% donor retention<small>First-gift retention is much lower (~45%) — stewardship lifts this dramatically</small></span></div>
+          <div class="benchmark-row"><span class="l">Lifetime multiplier</span><span class="v">3–4× of first gift<small>With good stewardship</small></span></div>
+          <div class="benchmark-row"><span class="l">Touches per year</span><span class="v">Quarterly · 4 substantive<small>Plus auto-receipts and event invites</small></span></div>
+          <div class="benchmark-row"><span class="l">Time-to-next-ask</span><span class="v">6–18 months from prior gift<small>For multi-year campaigns; longer for capital</small></span></div>
+        </div>
+
+        <div class="stage-block">
+          <h4><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10M4 7h6M6 10h2"/></svg> Atlas screens involved</h4>
+          <div class="action-list">
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-pledge-detail.html" style="color:var(--blue)">atlas-pledge-detail.html</a></div><div class="s">Track instalments · auto-reminders</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-communications.html" style="color:var(--blue)">atlas-communications.html</a></div><div class="s">Schedule recurring stewardship sends</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-receipt-preview.html" style="color:var(--blue)">atlas-receipt-preview.html</a></div><div class="s">Tax receipts · year-end summaries</div></div></div>
+            <div class="action-row"><div class="body"><div class="a"><a href="atlas-events-dashboard.html" style="color:var(--blue)">atlas-events-dashboard.html</a></div><div class="s">Recognition events</div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CADENCE -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">3</div>
+      <div>
+        <h2>The operational cadence</h2>
+        <div class="sub">Good major-gift programs are predictable, not heroic. Here's the rhythm officers actually run.</div>
+      </div>
+    </div>
+
+    <div class="cadence-grid">
+
+      <div class="cadence-card">
+        <div class="when">Monday morning</div>
+        <h4>Week planning</h4>
+        <ul>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Open <a href="atlas-tasks.html" style="color:var(--blue)">Tasks</a> · review overdue + due-this-week</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Open <a href="atlas-pipeline.html" style="color:var(--blue)">Pipeline</a> · check days-in-stage badges</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Pre-read 3 Guru AI <a href="atlas-meeting-brief.html" style="color:var(--blue)">meeting briefs</a> for the week</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Plan 2-day visit route on <a href="atlas-visit-map.html" style="color:var(--blue)">Visit map</a></li>
+        </ul>
+      </div>
+
+      <div class="cadence-card">
+        <div class="when">Daily</div>
+        <h4>Log everything · 24h rule</h4>
+        <ul>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Log every contact within 24h via <a href="atlas-log-activity.html" style="color:var(--blue)">Log activity</a></li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Always create the follow-up task before closing</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>If not in the system, it didn't happen</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Check <a href="atlas-notifications.html" style="color:var(--blue)">Notifications</a> for major-gift alerts</li>
+        </ul>
+      </div>
+
+      <div class="cadence-card">
+        <div class="when">Friday</div>
+        <h4>Wrap &amp; plan ahead</h4>
+        <ul>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Update pipeline stages (drag cards)</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Write contact reports for the week</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Plan moves for next 2 weeks (add tasks)</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Send weekly recap to Dev Director (<a href="atlas-email-compose.html" style="color:var(--blue)">Compose</a>)</li>
+        </ul>
+      </div>
+
+      <div class="cadence-card">
+        <div class="when">Monthly + Quarterly</div>
+        <h4>Strategic review</h4>
+        <ul>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>1:1 between officer and Dev Director</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Review stalls (&gt;18 mo in cultivation)</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>Quarterly pipeline forecast meeting</li>
+          <li><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg><a href="atlas-solicitor-performance.html" style="color:var(--blue)">Solicitor performance</a> review</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PERSONAS -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">4</div>
+      <div>
+        <h2>Who works the pipeline</h2>
+        <div class="sub">Major-gift work is a team sport. Four roles, clear handoffs.</div>
+      </div>
+    </div>
+
+    <div class="personas-grid">
+
+      <div class="persona-card">
+        <div class="head">
+          <div class="av" style="background:var(--rose)">MGO</div>
+          <div>
+            <div class="t">Gift Officer (MGO)</div>
+            <div class="role">e.g. Sarah Reynolds in Atlas</div>
+          </div>
+        </div>
+        <p>Owns a portfolio of 100–150 active prospects. Runs the moves. Schedules the visits. Writes the contact reports. Identifies the ask. Brings in the Bishop or board peer when needed.</p>
+        <div class="does">Lives on these screens</div>
+        <div class="who-list">
+          <span class="who-pill"><a href="atlas-pipeline.html">Pipeline</a></span>
+          <span class="who-pill"><a href="atlas-donor-360.html">Donor 360</a></span>
+          <span class="who-pill"><a href="atlas-meeting-brief.html">Meeting brief</a></span>
+          <span class="who-pill"><a href="atlas-log-activity.html">Log activity</a></span>
+          <span class="who-pill"><a href="atlas-visit-map.html">Visit map</a></span>
+        </div>
+      </div>
+
+      <div class="persona-card">
+        <div class="head">
+          <div class="av" style="background:var(--purple)">DD</div>
+          <div>
+            <div class="t">Dev Director / VP Advancement</div>
+            <div class="role">e.g. Bridget McCarthy</div>
+          </div>
+        </div>
+        <p>Owns conversion. Watches stage transitions and intervenes on stalls. Approves portfolio assignments. Runs the quarterly forecast meeting. Reports to the Bishop or board.</p>
+        <div class="does">Lives on these screens</div>
+        <div class="who-list">
+          <span class="who-pill"><a href="atlas-solicitor-performance.html">Solicitor perf.</a></span>
+          <span class="who-pill"><a href="atlas-campaign-detail.html">Campaign detail</a></span>
+          <span class="who-pill"><a href="atlas-reports.html">Reports</a></span>
+        </div>
+      </div>
+
+      <div class="persona-card">
+        <div class="head">
+          <div class="av" style="background:var(--blue)">PR</div>
+          <div>
+            <div class="t">Prospect Researcher</div>
+            <div class="role">e.g. Daniel Cho · part-time</div>
+          </div>
+        </div>
+        <p>Finds new prospects. Refreshes wealth data. Scores capacity. Feeds the Identification stage. Builds segments for officers to qualify.</p>
+        <div class="does">Lives on these screens</div>
+        <div class="who-list">
+          <span class="who-pill"><a href="atlas-wealth-screening.html">Wealth screening</a></span>
+          <span class="who-pill"><a href="atlas-segment-builder.html">Segment builder</a></span>
+          <span class="who-pill"><a href="atlas-duplicates.html">Duplicates</a></span>
+        </div>
+      </div>
+
+      <div class="persona-card">
+        <div class="head">
+          <div class="av" style="background:var(--teal)">SO</div>
+          <div>
+            <div class="t">Stewardship Officer</div>
+            <div class="role">e.g. Julia Kelleher</div>
+          </div>
+        </div>
+        <p>Owns post-gift care. Writes the thank-yous. Designs the recognition events. Builds the quarterly impact reports. Frees the MGO to focus on cultivation.</p>
+        <div class="does">Lives on these screens</div>
+        <div class="who-list">
+          <span class="who-pill"><a href="atlas-communications.html">Communications</a></span>
+          <span class="who-pill"><a href="atlas-events-dashboard.html">Events</a></span>
+          <span class="who-pill"><a href="atlas-receipt-preview.html">Receipts</a></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHERE ATLAS WINS -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">5</div>
+      <div>
+        <h2>How Atlas differs from legacy CRMs</h2>
+        <div class="sub">Pipeline mechanics are industry-standard. What's different is the AI layer + the auto-task-on-activity workflow.</div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-row head">
+        <div>Industry pain point</div>
+        <div>Raiser's Edge / Bloomerang / DonorPerfect</div>
+        <div>Atlas approach</div>
+      </div>
+      <div class="compare-row">
+        <div class="topic">Stage hygiene · prospects rot in cultivation</div>
+        <div class="cell">Officer-only alerts; Dev Director doesn't see stalls</div>
+        <div class="cell atlas">Days-in-stage badges fire alerts to BOTH officer and Dev Director after 90/180/365 days</div>
+      </div>
+      <div class="compare-row">
+        <div class="topic">"What's the next move?"</div>
+        <div class="cell">Officer must figure it out from notes</div>
+        <div class="cell atlas">Guru AI suggests proactively on every card AND in meeting briefs</div>
+      </div>
+      <div class="compare-row">
+        <div class="topic">Logging visits but forgetting to plan next</div>
+        <div class="cell">Two separate flows · 38% of logged visits have no follow-up</div>
+        <div class="cell atlas">Auto-task offered by default after every "positive outcome" activity log</div>
+      </div>
+      <div class="compare-row">
+        <div class="topic">Capacity scoring on every card</div>
+        <div class="cell">Hidden behind 3 clicks · researchers maintain it</div>
+        <div class="cell atlas">Wealth Engine v1 ask range surfaced inline · refreshes monthly</div>
+      </div>
+      <div class="compare-row">
+        <div class="topic">DAF / soft-credit attribution</div>
+        <div class="cell">Manual reconciliation · Schwab Charitable pollutes the prospect list</div>
+        <div class="cell atlas">Native handling · recommender gets soft credit · sponsor org never enters pipeline</div>
+      </div>
+      <div class="compare-row">
+        <div class="topic">Portfolio rebalancing</div>
+        <div class="cell">No tool · one-by-one reassignment</div>
+        <div class="cell atlas"><a href="atlas-portfolio-assign.html" style="color:var(--blue);font-weight:600">atlas-portfolio-assign.html</a> · Guru AI suggests assignments based on capacity, geography, officer match. Bulk-assign 42 unassigned in one screen.</div>
+      </div>
+      <div class="compare-row">
+        <div class="topic">Probability-weighted forecast</div>
+        <div class="cell">Most show raw pipeline value ($1.84M) which is meaningless</div>
+        <div class="cell atlas"><a href="atlas-pipeline-forecast.html" style="color:var(--blue);font-weight:600">atlas-pipeline-forecast.html</a> · expected-to-close = sum(pipeline × stage conversion). 12-month trend vs. actual · top stalls dragging the forecast.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALL TO ACTION -->
+  <section class="callout">
+    <h3>Walk the flow live</h3>
+    <p>Open the Pipeline Kanban and follow a real prospect — Margaret O'Brien — through Identification → Cultivation → Solicitation → Stewardship. Every screen in this document is clickable.</p>
+    <div class="actions">
+      <a class="primary" href="atlas-pipeline.html">Open Pipeline →</a>
+      <a href="atlas-portfolio-assign.html">Rebalance portfolios</a>
+      <a href="atlas-pipeline-forecast.html">Pipeline forecast</a>
+      <a href="atlas-donor-360.html">Margaret's Donor 360</a>
+      <a href="atlas-meeting-brief.html">Pre-meeting brief</a>
+      <a href="atlas-guided-tour.html">Gift Officer tour</a>
+    </div>
+  </section>
+
+  <footer class="tag-line">
+    Atlas Prospect Pipeline · end-to-end flow · moves management 101 · sources: AFP, CASE, GiveCentral Atlas v1.1 Data Model
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral Atlas — Add prospect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:        #0E1E35;
+  --navy-2:      #152844;
+  --navy-3:      #1E3A5F;
+  --blue:        #2563EB;
+  --blue-mid:    #3B82F6;
+  --blue-light:  #DBEAFE;
+  --blue-pale:   #EFF6FF;
+  --teal:        #0D9488;
+  --teal-light:  #CCFBF1;
+  --green:       #15803D;
+  --green-light: #DCFCE7;
+  --amber:       #D97706;
+  --amber-light: #FEF3C7;
+  --rose:        #BE185D;
+  --rose-light:  #FCE7F3;
+  --purple:      #7C3AED;
+  --purple-light:#EDE9FE;
+  --gold:        #B45309;
+  --text:        #0F172A;
+  --text-2:      #334155;
+  --text-3:      #64748B;
+  --border:      #E2E8F0;
+  --border-soft: #EDF2F7;
+  --surface:     #F8FAFC;
+  --white:       #FFFFFF;
+  --sidebar-w:   220px;
+  --shadow-sm:   0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.05);
+  --shadow-md:   0 4px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+}
+
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--text); min-height: 100vh; display: flex; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  width: var(--sidebar-w); background: var(--navy);
+  min-height: 100vh; display: flex; flex-direction: column;
+  flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 18px 18px 14px; display: flex; align-items: center; gap: 9px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.logo-mark {
+  width: 30px; height: 30px; background: var(--blue); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 15px; height: 15px; }
+.logo-text-wrap { display: flex; flex-direction: column; }
+.logo-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: white; line-height: 1; }
+.logo-sub  { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 3px; }
+
+.sidebar-search {
+  margin: 12px 12px 6px; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  cursor: pointer;
+}
+.sidebar-search svg { width: 13px; height: 13px; color: rgba(255,255,255,.3); flex-shrink: 0; }
+.sidebar-search input {
+  background: none; border: none; outline: none; width: 100%;
+  font-size: 12px; color: rgba(255,255,255,.6); font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+.sidebar-search input::placeholder { color: rgba(255,255,255,.3); }
+
+.nav-group { padding: 8px 8px 0; }
+.nav-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.28); padding: 0 10px; margin-bottom: 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+  border-radius: 7px; font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,.55); cursor: pointer; transition: all .15s; margin-bottom: 1px;
+}
+.nav-item:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.85); }
+.nav-item.active { background: var(--blue); color: white; }
+.nav-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: rgba(255,255,255,.12); color: rgba(255,255,255,.6);
+  border-radius: 10px; padding: 1px 7px; font-size: 10px; font-weight: 600;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,.2); color: white; }
+.nav-badge.alert { background: #EF4444; color: white; }
+
+.sidebar-user {
+  margin-top: auto; padding: 12px; border-top: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; transition: background .15s;
+}
+.sidebar-user:hover { background: rgba(255,255,255,.04); }
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.user-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.75); }
+.user-role { font-size: 10px; color: rgba(255,255,255,.35); margin-top: 1px; }
+
+/* ══ MAIN ══ */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 52px;
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.topbar-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.topbar-date { font-size: 12px; color: var(--text-3); }
+.topbar-search {
+  flex: 1;
+  max-width: 460px; margin: 0 18px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+  cursor: text;
+}
+.topbar-search svg { width: 13px; height: 13px; color: var(--text-3); }
+.topbar-search input { background: none; border: none; outline: none; width: 100%; font-size: 12.5px; color: var(--text); font-family: 'DM Sans', sans-serif; }
+.topbar-search input::placeholder { color: var(--text-3); }
+.topbar-search kbd {
+  margin-left: auto; font-size: 10.5px; font-family: 'DM Sans';
+  background: white; border: 1px solid var(--border); border-radius: 4px;
+  padding: 1px 6px; color: var(--text-3);
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.tb-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 7px 13px; border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.tb-btn svg { width: 12px; height: 12px; }
+.tb-ghost   { background: none; border: 1px solid var(--border); color: var(--text-2); }
+.tb-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.tb-primary { background: var(--blue); border: none; color: white; box-shadow: 0 1px 4px rgba(37,99,235,.3); }
+.tb-primary:hover { background: #1D4ED8; }
+.tb-notif {
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+  background: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; transition: background .15s;
+}
+.tb-notif:hover { background: var(--surface); }
+.tb-notif svg { width: 15px; height: 15px; color: var(--text-2); }
+.notif-dot {
+  position: absolute; top: 7px; right: 7px;
+  width: 7px; height: 7px; background: #EF4444; border-radius: 50%;
+  border: 2px solid white;
+}
+
+.dash { padding: 24px; overflow-y: auto; }
+
+/* ══ Common Cards & helpers (used across screens) ══ */
+.card {
+  background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.card-header {
+  padding: 14px 18px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.card-title { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.card-action { font-size: 11px; font-weight: 500; color: var(--blue); cursor: pointer; display: flex; align-items: center; gap: 3px; }
+.card-action:hover { color: #1D4ED8; }
+.card-action svg { width: 10px; height: 10px; }
+.card-body { padding: 14px 18px 18px; }
+
+/* ══ Page header (titles + crumb + actions) ══ */
+.page-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  margin-bottom: 20px;
+}
+.crumb { font-size: 12px; color: var(--text-3); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.crumb a { color: var(--blue); }
+.crumb a:hover { text-decoration: underline; }
+.crumb svg { width: 10px; height: 10px; }
+.page-title {
+  font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: -.02em;
+  color: var(--text); line-height: 1.1;
+}
+.page-sub { color: var(--text-3); font-size: 13px; margin-top: 4px; }
+
+/* ══ Tags & badges (shared) ══ */
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.tag.blue  { background: var(--blue-light);  color: var(--blue); }
+.tag.green { background: var(--green-light); color: var(--green); }
+.tag.amber { background: var(--amber-light); color: var(--amber); }
+.tag.rose  { background: var(--rose-light);  color: var(--rose); }
+.tag.purple{ background: var(--purple-light);color: var(--purple); }
+.tag.grey  { background: var(--surface);     color: var(--text-3); border: 1px solid var(--border); }
+.tag.gold  { background: #FEF3C7;            color: var(--gold); }
+
+/* ══ Inputs ══ */
+.lbl { display: block; font-size: 11px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.lbl .req { color: var(--rose); margin-left: 2px; }
+.fld {
+  width: 100%; font-size: 13px; font-family: 'DM Sans', sans-serif;
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+  background: white; color: var(--text); transition: border-color .15s, box-shadow .15s;
+}
+.fld:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+.fld[disabled] { background: var(--surface); color: var(--text-3); }
+.fld::placeholder { color: #94A3B8; }
+textarea.fld { min-height: 90px; resize: vertical; line-height: 1.5; }
+select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 5l3 3 3-3z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
+
+.btn {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 9px 16px; border-radius: 8px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid transparent; transition: background .15s, border-color .15s, color .15s;
+}
+.btn svg { width: 13px; height: 13px; }
+.btn-primary { background: var(--blue); color: white; box-shadow: 0 1px 4px rgba(37,99,235,.25); }
+.btn-primary:hover { background: #1D4ED8; }
+.btn-ghost   { background: white; border-color: var(--border); color: var(--text-2); }
+.btn-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.btn-rose    { background: var(--rose); color: white; }
+.btn-rose:hover { background: #9D174D; }
+.btn-link    { background: none; color: var(--blue); padding: 6px 8px; }
+.btn-link:hover { color: #1D4ED8; }
+
+/* helpful utilities */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-10 { gap: 10px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; } .gap-20 { gap: 20px; }
+.grow { flex: 1; }
+.muted { color: var(--text-3); }
+.mono  { font-variant-numeric: tabular-nums; }
+.mt-4 { margin-top: 4px; } .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+.mb-4 { margin-bottom: 4px; } .mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
+
+/* Slide-over drawer (used on log-activity, task-modal screens) */
+.scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 30; }
+.drawer {
+  position: fixed; right: 0; top: 0; bottom: 0; width: 560px; max-width: 100vw;
+  background: white; box-shadow: -16px 0 40px rgba(15,23,42,.10); z-index: 31;
+  display: flex; flex-direction: column;
+}
+.drawer-head {
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  flex-shrink: 0;
+}
+.drawer-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); letter-spacing: -.01em; }
+.drawer-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.drawer-x {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); background: white; cursor: pointer;
+}
+.drawer-x:hover { background: var(--surface); }
+.drawer-x svg { width: 13px; height: 13px; color: var(--text-2); }
+.drawer-body { flex: 1; overflow-y: auto; padding: 22px; }
+.drawer-foot {
+  padding: 14px 22px; border-top: 1px solid var(--border);
+  background: var(--surface); display: flex; align-items: center; gap: 8px; justify-content: flex-end;
+  flex-shrink: 0;
+}
+.drawer-foot .left { margin-right: auto; font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
+
+
+.wiz-shell { display:grid; grid-template-columns: 240px 1fr; gap:24px; align-items:start; max-width:1080px; }
+.wiz-stepper { background:white; border:1px solid var(--border); border-radius:14px; padding:22px 18px; position:sticky; top:78px; }
+.wiz-stepper .ttl { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); margin-bottom:14px; }
+.wiz-step { display:flex; align-items:flex-start; gap:12px; padding:10px 0; position:relative; cursor:pointer; transition:opacity .15s; }
+.wiz-step + .wiz-step::before { content:''; position:absolute; left:13px; top:-4px; width:2px; height:14px; background:var(--border); }
+.wiz-step.done + .wiz-step::before { background:var(--green); }
+.wiz-step .dot { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--surface); border:1.5px solid var(--border); color:var(--text-3); font-size:11px; font-weight:700; flex-shrink:0; }
+.wiz-step.done .dot { background:var(--green); border-color:var(--green); color:white; }
+.wiz-step.cur  .dot { background:var(--blue); border-color:var(--blue); color:white; }
+.wiz-step.disabled { opacity:.5; cursor:not-allowed; }
+.wiz-step .nm { font-size:13px; font-weight:500; color:var(--text); }
+.wiz-step.cur .nm { color:var(--blue); }
+.wiz-step .sub { font-size:11.5px; color:var(--text-3); margin-top:2px; }
+
+.wiz-content { background:white; border:1px solid var(--border); border-radius:14px; padding:28px 32px; }
+.wiz-h { font-family:'DM Serif Display',serif; font-size:24px; letter-spacing:-.02em; margin-bottom:6px; }
+.wiz-sub { color:var(--text-3); font-size:13px; margin-bottom:24px; }
+
+.wiz-panel { display:none; }
+.wiz-panel.active { display:block; }
+
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+.section-h { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin:22px 0 12px; padding-top:18px; border-top:1px solid var(--border); }
+.section-h:first-of-type { padding-top:0; border-top:none; margin-top:0; }
+
+/* Source / entry-mode cards */
+.entry-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.entry-card { border:2px solid var(--border); border-radius:13px; padding:18px 20px; cursor:pointer; transition:all .12s; background:white; }
+.entry-card:hover { border-color:#94A3B8; }
+.entry-card.on { border-color:var(--blue); background:var(--blue-pale); }
+.entry-card .ico { width:38px; height:38px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
+.entry-card .ico.blue { background:var(--blue-light); color:var(--blue); }
+.entry-card .ico.purple { background:var(--purple-light); color:var(--purple); }
+.entry-card .ico.green { background:var(--green-light); color:var(--green); }
+.entry-card .ico.amber { background:var(--amber-light); color:var(--amber); }
+.entry-card .ico svg { width:18px; height:18px; }
+.entry-card .t { font-weight:600; font-size:14px; color:var(--navy); margin-bottom:4px; }
+.entry-card .d { font-size:12px; color:var(--text-3); line-height:1.45; }
+
+/* Donor lookup result */
+.donor-result {
+  margin-top:12px; padding:14px 16px; background:var(--blue-pale); border:1px solid var(--blue-light); border-radius:11px;
+  display:flex; align-items:center; gap:14px;
+}
+.donor-result .av { width:42px; height:42px; border-radius:50%; background:var(--rose); color:white; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; }
+.donor-result .nm { font-weight:600; color:var(--navy); font-size:14px; }
+.donor-result .meta { font-size:11.5px; color:var(--text-3); margin-top:3px; display:flex; gap:10px; }
+.donor-result .right { margin-left:auto; text-align:right; font-size:11.5px; color:var(--text-3); }
+.donor-result .right b { display:block; font-size:13px; color:var(--text); font-weight:600; }
+
+/* LAI scorer */
+.lai-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.lai-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+.lai-card .ttl { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.lai-card .ttl .letter { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; color:white; font-family:'DM Serif Display',serif; font-size:14px; font-weight:700; flex-shrink:0; }
+.lai-card .ttl .letter.L { background:var(--blue); }
+.lai-card .ttl .letter.A { background:var(--green); }
+.lai-card .ttl .letter.I { background:var(--purple); }
+.lai-card .ttl .t { font-weight:600; font-size:13.5px; color:var(--navy); }
+.lai-card .desc { font-size:11.5px; color:var(--text-3); line-height:1.45; margin-bottom:14px; }
+.lai-card .grades { display:grid; grid-template-columns:repeat(5,1fr); gap:5px; }
+.lai-card .grade {
+  padding:7px 4px; border:1.5px solid var(--border); border-radius:7px; cursor:pointer;
+  background:white; font-size:12px; font-weight:700; text-align:center; color:var(--text-3);
+}
+.lai-card .grade:hover { border-color:#94A3B8; color:var(--text-2); }
+.lai-card .grade.on.A { background:var(--green); border-color:var(--green); color:white; }
+.lai-card .grade.on.B { background:#22C55E; border-color:#22C55E; color:white; }
+.lai-card .grade.on.C { background:var(--amber); border-color:var(--amber); color:white; }
+.lai-card .grade.on.D { background:#F97316; border-color:#F97316; color:white; }
+.lai-card .grade.on.F { background:var(--rose); border-color:var(--rose); color:white; }
+
+.ask-band { background:linear-gradient(135deg, var(--gold-light), white); border:1px solid #F1D78F; border-radius:11px; padding:16px 18px; margin-top:14px; }
+.ask-band .lbl { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+.ask-band .val { font-family:'DM Serif Display',serif; font-size:24px; color:var(--navy); }
+.ask-band .desc { font-size:11.5px; color:var(--text-2); margin-top:4px; line-height:1.5; }
+
+/* Stage picker */
+.stage-pick { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+.stage-pick .pill { padding:10px 6px; border:1.5px solid var(--border); border-radius:8px; cursor:pointer; background:white; text-align:center; font-size:11.5px; font-weight:600; color:var(--text-2); }
+.stage-pick .pill .dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; vertical-align:middle; }
+.stage-pick .pill.id .dot { background:#94A3B8; }
+.stage-pick .pill.qual .dot { background:var(--teal); }
+.stage-pick .pill.cult .dot { background:var(--blue); }
+.stage-pick .pill.solicit .dot { background:var(--amber); }
+.stage-pick .pill.steward .dot { background:var(--purple); }
+.stage-pick .pill:hover { border-color:#94A3B8; }
+.stage-pick .pill.on { background:var(--blue-pale); border-color:var(--blue); color:var(--blue); }
+
+/* Officer suggestion */
+.sol-suggestion { background:linear-gradient(135deg,#EDE9FE,#FAF5FF); border:1px solid var(--purple-light); border-radius:11px; padding:14px 16px; margin-top:10px; display:flex; gap:11px; align-items:flex-start; }
+.sol-suggestion .ico { width:30px; height:30px; border-radius:8px; background:var(--purple); color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; }
+.sol-suggestion .body { flex:1; font-size:12.5px; color:var(--purple); line-height:1.5; }
+.sol-suggestion .body b { color:#4C1D95; }
+.sol-suggestion .accept { font-size:11.5px; color:var(--blue); font-weight:600; cursor:pointer; margin-left:auto; }
+
+/* Source chips */
+.src-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.src-chips .chip { padding:6px 11px; border-radius:99px; border:1.5px solid var(--border); cursor:pointer; font-size:12px; background:white; color:var(--text-2); }
+.src-chips .chip:hover { border-color:#94A3B8; }
+.src-chips .chip.on { background:var(--blue); border-color:var(--blue); color:white; font-weight:600; }
+
+/* First-move card */
+.first-move-card { background:linear-gradient(135deg, var(--blue-pale), white); border:1px solid var(--blue-light); border-radius:11px; padding:16px 18px; }
+.first-move-card .head { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.first-move-card .ico { width:34px; height:34px; border-radius:9px; background:var(--blue); color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.first-move-card .ico svg { width:16px; height:16px; }
+.first-move-card .t { font-family:'DM Serif Display',serif; font-size:16px; color:var(--navy); }
+.first-move-card .toggle { margin-left:auto; }
+
+.toggle { display:inline-flex; align-items:center; cursor:pointer; }
+.tog-track { width:34px; height:20px; border-radius:99px; background:var(--blue); position:relative; transition:.15s; }
+.tog-knob { position:absolute; top:2px; right:2px; width:16px; height:16px; background:white; border-radius:50%; transition:.15s; }
+.toggle.off .tog-track { background:var(--border); }
+.toggle.off .tog-knob { transform:translateX(-14px); }
+
+/* Review */
+.review-block { background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:18px 22px; margin-bottom:14px; }
+.review-block h4 { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.review-block h4 a { color:var(--blue); font-size:11px; font-weight:500; text-transform:none; letter-spacing:0; margin-left:auto; cursor:pointer; }
+.review-row { display:flex; gap:14px; padding:6px 0; font-size:13px; border-bottom:1px dashed var(--border-soft); }
+.review-row:last-child { border-bottom:none; }
+.review-row .l { width:160px; color:var(--text-3); flex-shrink:0; }
+.review-row .v { color:var(--text); font-weight:500; }
+.review-row .v small { display:block; color:var(--text-3); font-weight:400; font-size:11.5px; margin-top:2px; }
+
+.tag { display:inline-flex; align-items:center; font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:5px; margin-right:4px; }
+.tag.green { background:var(--green-light); color:var(--green); }
+.tag.blue { background:var(--blue-light); color:var(--blue); }
+.tag.amber { background:var(--amber-light); color:var(--amber); }
+.tag.purple { background:var(--purple-light); color:var(--purple); }
+.tag.gold { background:var(--gold-light); color:var(--gold); }
+
+.wiz-foot {
+  margin-top:24px; padding-top:20px; border-top:1px solid var(--border);
+  display:flex; align-items:center; gap:8px;
+}
+.wiz-foot .left { margin-right:auto; font-size:12px; color:var(--text-3); display:flex; gap:6px; align-items:center; }
+.wiz-foot .left svg { width:14px; height:14px; }
+
+</style>
+
+
+<style id="atlas-sidebar-fix">
+/* Minimal sidebar fix — keeps the CEO's per-page .main / .content
+   layouts untouched. We ONLY:
+     1. Pin the sidebar to the viewport with position:fixed
+     2. Reserve a 220px gutter on the body via padding-left
+     3. Normalize the sidebar's internal flex layout (logo + search top,
+        nav scrolls middle, user block bottom)
+     4. Force SVG icon sizes in the sidebar (some screens lost them) */
+
+html, body { overflow-x: hidden !important; }
+body {
+  padding-left: 220px !important;
+  box-sizing: border-box !important;
+  min-height: 100vh !important;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+.sidebar {
+  width: 220px !important;
+  background: var(--navy, #0E1E35) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;          /* sidebar itself does NOT scroll */
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Logo + search are direct flex children that never scroll */
+.sidebar > .sidebar-logo,
+.sidebar > a > .sidebar-search,
+.sidebar > .sidebar-search,
+.sidebar-logo,
+.sidebar-search {
+  position: static !important;
+  flex-shrink: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2;
+}
+
+/* Fix oversized search icon — explicit 13×13 wins over any inheriting style */
+.sidebar-search {
+  margin: 12px 12px 6px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.sidebar-search svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
+  color: rgba(255,255,255,.4) !important;
+}
+.sidebar-search input {
+  font-size: 12px !important;
+  height: auto !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+}
+/* Logo mark sizing — same fix prevents the brand SVG from ballooning */
+.sidebar-logo .logo-mark {
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+.sidebar-logo .logo-mark svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* The MIDDLE area is the only scrollable child */
+.sidebar-scroll {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;        /* critical: lets flex item shrink */
+  display: flex !important;
+  flex-direction: column !important;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+
+/* User block sits at the bottom of the sidebar, never scrolls */
+.sidebar-user {
+  position: static !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  background: var(--navy, #0E1E35) !important;
+}
+
+/* .main is intentionally NOT overridden — each page keeps its own layout. */
+</style>
+</head>
+<body>
+
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">GiveCentral</span>
+        <span class="logo-sub">Atlas CRM</span>
+      </div>
+    </div>
+
+    <a href="atlas-search.html" style="display:block;text-decoration:none">
+      <div class="sidebar-search">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+        <input type="text" placeholder="Search donors, gifts…" readonly>
+      </div>
+    </a>
+
+    <div class="sidebar-scroll">
+
+    <div class="nav-group">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="atlas-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="atlas-donors-list.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+        Donors
+        <span class="nav-badge">3,847</span>
+      </a>
+      <a class="nav-item" href="atlas-gifts-pledges.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+        Gifts &amp; pledges
+        <span class="nav-badge">142</span>
+      </a>
+      <a class="nav-item" href="atlas-campaign-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+        Reports
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Fundraising</div>
+      <a class="nav-item" href="atlas-pipeline.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+        Prospect pipeline
+        <span class="nav-badge">28</span>
+      </a>
+      <a class="nav-item" href="atlas-tasks.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+        Tasks &amp; reminders
+        <span class="nav-badge alert">7</span>
+      </a>
+      <a class="nav-item" href="atlas-communications.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+        Communications
+      </a>
+      <a class="nav-item" href="atlas-events-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 2v2M9 2v2"/></svg>
+        Events
+      </a>
+      <a class="nav-item" href="atlas-volunteer-management.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Volunteers
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Intelligence</div>
+      <a class="nav-item" href="atlas-guru-ai.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+        Guru AI
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+        Analytics
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item" href="atlas-users-roles.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Users &amp; roles
+      </a>
+      <a class="nav-item" href="atlas-integrations.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="4" cy="7" r="2.5"/><circle cx="10" cy="7" r="2.5"/><path d="M6.5 7h1"/></svg>
+        Integrations
+      </a>
+      <a class="nav-item" href="atlas-sync.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+        Sync
+      </a>
+      <a class="nav-item" href="atlas-location-manage.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Location portal
+      </a>
+    </div>
+
+    </div><!-- /.sidebar-scroll -->
+
+    <div class="sidebar-user">
+      <div class="user-avatar">SR</div>
+      <div>
+        <div class="user-name">Sarah Reynolds</div>
+        <div class="user-role">Development Director</div>
+      </div>
+    </div>
+  </aside>
+
+<div class="main">
+
+<div class="topbar">
+  <span class="topbar-title">Add prospect</span>
+  <span class="topbar-date">Monday, May 4, 2026</span>
+  <a href="atlas-search.html" class="topbar-search">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+    <input type="text" placeholder="Search donors, gifts, campaigns…" readonly style="cursor:pointer">
+    <kbd>⌘K</kbd>
+  </a>
+  <div class="topbar-right">
+    
+    <a href="atlas-guided-tour.html" class="tb-notif" title="Take the tour" style="position:relative">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7.5" cy="7.5" r="5.5"/><path d="M7.5 4v.5M6.5 7c0-1 .5-1.5 1-1.5s1 .5 1 1-.5 1-1 1.5v.5M7.5 11v.5"/></svg>
+    </a>
+    <a href="atlas-notifications.html" class="tb-notif" title="Notifications">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
+      <div class="notif-dot"></div>
+    </a>
+  </div>
+</div>
+
+<div class="dash">
+
+  <div class="page-head">
+    <div>
+      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <a href="atlas-pipeline.html">Pipeline</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Add prospect</span></div>
+      <div class="page-title">Add a prospect</div>
+      <div class="page-sub">4 steps. Identify, score, strategize, and queue the first move. Atlas auto-saves as you go.</div>
+    </div>
+    <div class="flex gap-8">
+      <a class="btn btn-ghost" href="atlas-add-constituent.html">Need a non-prospect constituent? →</a>
+    </div>
+  </div>
+
+  <div class="wiz-shell">
+
+    <aside class="wiz-stepper">
+      <div class="ttl">Steps</div>
+      <div class="wiz-step cur" data-step="1"><div class="dot">1</div><div><div class="nm">Identify</div><div class="sub">Existing donor or new</div></div></div>
+      <div class="wiz-step disabled" data-step="2"><div class="dot">2</div><div><div class="nm">Score (LAI)</div><div class="sub">Capacity &amp; interest</div></div></div>
+      <div class="wiz-step disabled" data-step="3"><div class="dot">3</div><div><div class="nm">Strategy</div><div class="sub">Solicitor · stage · source</div></div></div>
+      <div class="wiz-step disabled" data-step="4"><div class="dot">4</div><div><div class="nm">First move</div><div class="sub">Discovery visit · queue tasks</div></div></div>
+    </aside>
+
+    <main class="wiz-content">
+
+      <!-- ── STEP 1: Identify ─────────────────────────────────── -->
+      <section class="wiz-panel active" data-panel="1">
+        <h2 class="wiz-h">Who are you adding?</h2>
+        <p class="wiz-sub">Most major-gift prospects come from your existing donor pool. Start there — Atlas pulls the giving history automatically.</p>
+
+        <div class="entry-grid">
+          <div class="entry-card on" data-entry="existing">
+            <div class="ico blue"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="6" r="3"/><path d="M2 16c0-3.3 2.7-6 6-6h2c1.1 0 2.1.3 3 .8"/><path d="M11 14h6M14 11l3 3-3 3"/></svg></div>
+            <div class="t">Promote an existing donor (recommended)</div>
+            <div class="d">Pick from your current donor pool. Atlas brings their lifetime giving, parish affiliation, and last contact automatically.</div>
+          </div>
+          <div class="entry-card" data-entry="new">
+            <div class="ico green"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="6" r="3"/><path d="M2 16c0-3.3 2.7-6 6-6h2"/><path d="M14 12v6M11 15h6"/></svg></div>
+            <div class="t">Add a brand-new constituent</div>
+            <div class="d">No record exists yet. Atlas opens the 5-step Add Constituent wizard with "Major prospect" pre-selected.</div>
+          </div>
+        </div>
+
+        <div class="section-h">Pick the donor</div>
+        <span class="lbl">Search by name, email or phone</span>
+        <input class="fld" value="Margaret O'Brien" style="margin-bottom:10px">
+
+        <div class="donor-result">
+          <div class="av">M</div>
+          <div style="flex:1">
+            <div class="nm">Margaret O'Brien</div>
+            <div class="meta">
+              <span>margaret.obrien@email.com</span>
+              <span>•</span>
+              <span>St. Mary's Cathedral</span>
+              <span>•</span>
+              <span>Board member</span>
+            </div>
+          </div>
+          <div class="right">
+            <b>$84,250 lifetime</b>
+            Last gift Apr 2 · $10k
+          </div>
+        </div>
+
+        <div class="section-h">Why is this person on your radar?</div>
+        <div class="src-chips">
+          <div class="chip on">★ Recent large gift</div>
+          <div class="chip">Wealth screen flagged</div>
+          <div class="chip">Board referral</div>
+          <div class="chip">Peer screen</div>
+          <div class="chip">Event attendance</div>
+          <div class="chip">Estate / planned-giving inquiry</div>
+          <div class="chip">Cold outreach</div>
+          <div class="chip">Capital campaign lead</div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Identified: <strong style="color:var(--text-2)">Margaret O'Brien</strong> — source: Recent large gift
+          </div>
+          <a class="btn btn-ghost" href="atlas-pipeline.html">Cancel</a>
+          <button class="btn btn-primary" data-go="2">Next: LAI score →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 2: Score (LAI) ──────────────────────────────── -->
+      <section class="wiz-panel" data-panel="2">
+        <h2 class="wiz-h">Score the prospect — LAI framework</h2>
+        <p class="wiz-sub">Three axes, A–F grades each. The lowest score is the ceiling. Industry standard since the 1970s.</p>
+
+        <div class="lai-grid">
+
+          <div class="lai-card">
+            <div class="ttl"><div class="letter L">L</div><div class="t">Linkage</div></div>
+            <div class="desc">Who knows them and how well. Board, peer donors, staff relationships, parish ties.</div>
+            <div class="grades">
+              <div class="grade A">A</div>
+              <div class="grade B on B">B</div>
+              <div class="grade C">C</div>
+              <div class="grade D">D</div>
+              <div class="grade F">F</div>
+            </div>
+            <p class="muted" style="font-size:11px;margin-top:8px"><strong>B:</strong> Strong parish + board connections. Bishop has met her twice.</p>
+          </div>
+
+          <div class="lai-card">
+            <div class="ttl"><div class="letter A">A</div><div class="t">Ability</div></div>
+            <div class="desc">Wealth Engine capacity rating. Real estate, business interests, prior giving level.</div>
+            <div class="grades">
+              <div class="grade A on A">A</div>
+              <div class="grade B">B</div>
+              <div class="grade C">C</div>
+              <div class="grade D">D</div>
+              <div class="grade F">F</div>
+            </div>
+            <p class="muted" style="font-size:11px;margin-top:8px"><strong>A:</strong> Wealth Engine ask range $8k–$12k. Estate &gt; $5M.</p>
+          </div>
+
+          <div class="lai-card">
+            <div class="ttl"><div class="letter I">I</div><div class="t">Interest</div></div>
+            <div class="desc">Affinity for this specific cause / project. Past giving pattern, expressed enthusiasm.</div>
+            <div class="grades">
+              <div class="grade A on A">A</div>
+              <div class="grade B">B</div>
+              <div class="grade C">C</div>
+              <div class="grade D">D</div>
+              <div class="grade F">F</div>
+            </div>
+            <p class="muted" style="font-size:11px;margin-top:8px"><strong>A:</strong> Mentioned Cathedral interest. Up 18% YoY giving.</p>
+          </div>
+
+        </div>
+
+        <div class="section-h">Suggested ask range — Wealth Engine v1</div>
+        <div class="ask-band">
+          <div class="lbl">Recommended ask</div>
+          <div class="val">$8,000 – $12,000</div>
+          <div class="desc">Computed from: largest single gift × 3 (RFM-adjusted) · 5-year cumulative · capacity rating × 1.15 upward-trend signal. Officer can pin a different amount.</div>
+        </div>
+
+        <div class="row2 mt-12" style="margin-top:14px">
+          <div>
+            <span class="lbl">Officer-pinned ask amount (optional)</span>
+            <input class="fld" placeholder="Override Wealth Engine">
+          </div>
+          <div>
+            <span class="lbl">Project / fund of interest</span>
+            <select class="fld">
+              <option selected>Cathedral Restoration (matched 1:1)</option>
+              <option>General Operating</option>
+              <option>Music Ministry</option>
+              <option>Outreach &amp; Charity</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            LAI: <strong style="color:var(--text-2)">B/A/A</strong> · ask range <strong style="color:var(--text-2)">$8k–$12k</strong>
+          </div>
+          <button class="btn btn-ghost" data-go="1">← Back</button>
+          <button class="btn btn-primary" data-go="3">Next: Strategy →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 3: Strategy ─────────────────────────────────── -->
+      <section class="wiz-panel" data-panel="3">
+        <h2 class="wiz-h">Strategy — who works it, where it starts</h2>
+        <p class="wiz-sub">Where the prospect enters the pipeline and who owns the moves. Atlas auto-suggests based on capacity match + officer load + geography.</p>
+
+        <div class="section-h">Initial pipeline stage</div>
+        <div class="stage-pick">
+          <div class="pill id"><span class="dot"></span>Identification</div>
+          <div class="pill qual on cult"><span class="dot"></span>Qualification</div>
+          <div class="pill cult"><span class="dot"></span>Cultivation</div>
+          <div class="pill solicit"><span class="dot"></span>Solicitation</div>
+          <div class="pill steward"><span class="dot"></span>Stewardship</div>
+        </div>
+        <p class="muted" style="font-size:11.5px;margin-top:8px">Margaret is an existing donor with strong linkage — start at <strong>Qualification</strong> (skip Identification). A discovery call confirms interest within 14 days.</p>
+
+        <div class="section-h">Assign solicitor</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Primary solicitor</span>
+            <select class="fld">
+              <option selected>Sarah Reynolds · Dev Director (recommended)</option>
+              <option>Bridget McCarthy · Dev Director</option>
+              <option>Julia Kelleher · Officer · Foundation</option>
+              <option>Daniel Cho · DB Admin (data-entry only)</option>
+            </select>
+          </div>
+          <div>
+            <span class="lbl">Co-solicitor (optional)</span>
+            <select class="fld">
+              <option selected>None for now</option>
+              <option>Bishop Edward H. Quinn (peer-altitude)</option>
+              <option>Bridget McCarthy</option>
+              <option>Board member: Mike Donovan</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sol-suggestion">
+          <div class="ico">G</div>
+          <div class="body">
+            <b>Guru AI suggests:</b> Sarah is your best match — 81% conversion rate on $10k+ Cathedral prospects, average cycle time 71 days, currently at 18 of 130 portfolio slots. Geography match (Albany).
+            <a class="accept">Already accepted →</a>
+          </div>
+        </div>
+
+        <div class="section-h">Source &amp; campaign</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Source</span>
+            <select class="fld">
+              <option selected>Existing donor · large recent gift</option>
+              <option>Wealth screen — iWave</option>
+              <option>Board referral</option>
+              <option>Peer screen</option>
+              <option>Event attendance</option>
+              <option>Cold outreach</option>
+            </select>
+          </div>
+          <div>
+            <span class="lbl">Related campaign</span>
+            <select class="fld">
+              <option selected>Cathedral Capital Campaign 2026</option>
+              <option>Annual Appeal 2026</option>
+              <option>Bishop's Annual Gala</option>
+              <option>(none)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row2 mt-12" style="margin-top:12px">
+          <div>
+            <span class="lbl">Target close date</span>
+            <select class="fld">
+              <option>Within 30 days (urgent)</option>
+              <option>Q3 2026</option>
+              <option selected>Q4 2026</option>
+              <option>2027</option>
+              <option>Multi-year capital pledge</option>
+            </select>
+          </div>
+          <div>
+            <span class="lbl">Cultivation theme</span>
+            <select class="fld">
+              <option selected>Capital · matched 1:1 framing</option>
+              <option>Legacy / planned-giving</option>
+              <option>Programmatic impact</option>
+              <option>Recognition / naming</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Sarah Reynolds · Qualification stage · Cathedral Capital
+          </div>
+          <button class="btn btn-ghost" data-go="2">← Back</button>
+          <button class="btn btn-primary" data-go="4">Next: First move →</button>
+        </div>
+      </section>
+
+      <!-- ── STEP 4: First move ───────────────────────────────── -->
+      <section class="wiz-panel" data-panel="4">
+        <h2 class="wiz-h">Queue the first move</h2>
+        <p class="wiz-sub">Adding a prospect without scheduling the first move is the #1 reason prospects rot. Atlas creates the task and meeting brief automatically.</p>
+
+        <!-- Auto-task -->
+        <div class="first-move-card">
+          <div class="head">
+            <div class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 13c0-3 2-5 5-5s5 2 5 5"/><circle cx="8" cy="5" r="3"/></svg></div>
+            <div class="t">Discovery visit · within 14 days</div>
+            <span class="toggle"><span class="tog-track"><span class="tog-knob"></span></span></span>
+          </div>
+          <div class="row2">
+            <div>
+              <span class="lbl">Task title</span>
+              <input class="fld" value="Discovery visit · Margaret O'Brien · confirm Cathedral interest">
+            </div>
+            <div>
+              <span class="lbl">Due</span>
+              <input class="fld" value="May 18, 2026 (Mon)">
+            </div>
+          </div>
+          <div class="row2 mt-12" style="margin-top:12px">
+            <div>
+              <span class="lbl">Owner</span>
+              <select class="fld"><option selected>Sarah Reynolds (you)</option></select>
+            </div>
+            <div>
+              <span class="lbl">Priority</span>
+              <select class="fld"><option>Low</option><option>Medium</option><option selected>High</option><option>Critical</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-h">Auto-generate a Guru AI meeting brief</div>
+        <div class="first-move-card" style="background:linear-gradient(135deg,#EDE9FE,#FAF5FF);border-color:var(--purple-light)">
+          <div class="head">
+            <div class="ico" style="background:var(--purple)"><svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="6" r="3"/><path d="M5 12c0 2 4 2 4 0M4 10c-2 1-2.5 3-2.5 4M12 10c2 1 2.5 3 2.5 4"/></svg></div>
+            <div class="t" style="color:var(--purple)">Pre-meeting brief — ready when you open the activity</div>
+            <span class="toggle"><span class="tog-track"><span class="tog-knob"></span></span></span>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-2);line-height:1.55">Guru AI compiles giving trend · ask range · overdue tasks · related campaign progress · recommended ask · talking points. Updated daily until you open the meeting.</p>
+        </div>
+
+        <div class="section-h">Initial note (becomes first Action on her timeline)</div>
+        <textarea class="fld" placeholder="Anything important to remember for the discovery visit?">Margaret gave $10k cash to Cathedral on Apr 2 — first gift at that level. Mentioned restoration interest twice at the spring gala. Husband Peter is a board member.
+
+Discovery framing: validate her enthusiasm, confirm capacity, ask about preferred giving vehicle (cash vs. DAF — she has Schwab Charitable). Probable upgrade to $30k+ multi-year capital pledge if conversation lands.</textarea>
+
+        <div class="section-h">Optional: add to cultivation list</div>
+        <div class="row2">
+          <div>
+            <span class="lbl">Add to outreach segment</span>
+            <select class="fld">
+              <option>(none)</option>
+              <option selected>Cathedral major-donor cultivation (12 prospects)</option>
+              <option>Q3 Capital pledge prospects (8 prospects)</option>
+              <option>Build new segment…</option>
+            </select>
+          </div>
+          <div>
+            <span class="lbl">Send launch email to Sarah?</span>
+            <select class="fld">
+              <option selected>Yes — tomorrow 8 AM</option>
+              <option>Yes — send now</option>
+              <option>No, I'll tell her myself</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-h">Final review</div>
+        <div class="review-block">
+          <h4>Identity &amp; source <a data-go="1">Edit</a></h4>
+          <div class="review-row"><span class="l">Prospect</span><span class="v">Margaret O'Brien <small>Indiv. · St. Mary's Cathedral · existing donor since 2020</small></span></div>
+          <div class="review-row"><span class="l">Source</span><span class="v"><span class="tag blue">Recent large gift</span></span></div>
+          <div class="review-row"><span class="l">Existing lifetime giving</span><span class="v">$84,250 · 28 gifts · last Apr 2, 2026 ($10k)</span></div>
+        </div>
+
+        <div class="review-block">
+          <h4>LAI score <a data-go="2">Edit</a></h4>
+          <div class="review-row"><span class="l">Linkage</span><span class="v"><span class="tag green">B</span> Strong parish + board ties</span></div>
+          <div class="review-row"><span class="l">Ability</span><span class="v"><span class="tag green">A</span> Wealth Engine ask range $8k–$12k</span></div>
+          <div class="review-row"><span class="l">Interest</span><span class="v"><span class="tag green">A</span> Cathedral interest expressed; 18% YoY giving</span></div>
+          <div class="review-row"><span class="l">Recommended ask</span><span class="v" style="color:var(--gold);font-weight:700">$8,000 – $12,000</span></div>
+        </div>
+
+        <div class="review-block">
+          <h4>Strategy <a data-go="3">Edit</a></h4>
+          <div class="review-row"><span class="l">Initial stage</span><span class="v"><span class="tag" style="background:var(--teal-light);color:var(--teal)">Qualification</span> (skip Identification — known donor)</span></div>
+          <div class="review-row"><span class="l">Primary solicitor</span><span class="v">Sarah Reynolds <small>Dev Director · 81% close rate on $10k+ Cathedral prospects</small></span></div>
+          <div class="review-row"><span class="l">Co-solicitor</span><span class="v" style="color:var(--text-3)">None for now</span></div>
+          <div class="review-row"><span class="l">Campaign</span><span class="v">Cathedral Capital Campaign 2026 · matched 1:1</span></div>
+          <div class="review-row"><span class="l">Target close</span><span class="v">Q4 2026</span></div>
+        </div>
+
+        <div class="review-block">
+          <h4>First move queued <a data-go="4">Edit</a></h4>
+          <div class="review-row"><span class="l">Discovery visit</span><span class="v">Due May 18, 2026 · High priority · task created for Sarah</span></div>
+          <div class="review-row"><span class="l">Meeting brief</span><span class="v" style="color:var(--purple)">Auto-generated · ready when she opens the visit</span></div>
+          <div class="review-row"><span class="l">Cultivation segment</span><span class="v">Added to "Cathedral major-donor cultivation" (12 → 13 prospects)</span></div>
+          <div class="review-row"><span class="l">Launch email</span><span class="v">Tomorrow 8 AM to Sarah</span></div>
+        </div>
+
+        <div style="background:var(--green-light);border:1px solid #86EFAC;border-radius:11px;padding:14px 16px;display:flex;gap:11px;align-items:flex-start">
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--green);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700">✓</div>
+          <div style="flex:1;font-size:12.5px;color:#14532D;line-height:1.5">
+            <strong>All checks passed.</strong> Sarah has capacity (112 slots). Margaret's LAI score is qualifying. Discovery visit task created. Audit log entry will fire on save.
+          </div>
+        </div>
+
+        <div class="wiz-foot">
+          <div class="left">
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="color:var(--green)"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>
+            Ready to add to pipeline
+          </div>
+          <button class="btn btn-ghost" data-go="3">← Back</button>
+          <button class="btn btn-ghost" onclick="alert('Saved as draft')">Save draft</button>
+          <button class="btn btn-primary" onclick="alert('Prospect added · Margaret O\'Brien in Qualification · Sarah notified · task due May 18 · meeting brief queued · audit #AU-2026-1902 created'); window.location='atlas-pipeline.html'">
+            <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M3 7l3 3 5-6"/></svg>
+            Add to pipeline
+          </button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+(function(){
+  var steps  = document.querySelectorAll('.wiz-step');
+  var panels = document.querySelectorAll('.wiz-panel');
+  var buttons = document.querySelectorAll('[data-go]');
+  var entryCards = document.querySelectorAll('.entry-card');
+  var srcChips = document.querySelectorAll('.src-chips .chip');
+  var stagePills = document.querySelectorAll('.stage-pick .pill');
+  var grades = document.querySelectorAll('.lai-card .grade');
+  var toggles = document.querySelectorAll('.toggle');
+  var maxReached = 1;
+
+  function show(n){
+    n = parseInt(n, 10);
+    panels.forEach(function(p){ p.classList.toggle('active', p.dataset.panel == n); });
+    steps.forEach(function(s){
+      var sn = parseInt(s.dataset.step, 10);
+      s.classList.remove('cur');
+      if (sn === n) s.classList.add('cur');
+      if (sn < n)   s.classList.add('done');
+      if (sn > maxReached) s.classList.add('disabled');
+      else s.classList.remove('disabled');
+    });
+    if (n > maxReached) maxReached = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  buttons.forEach(function(b){
+    b.addEventListener('click', function(e){ e.preventDefault(); show(b.dataset.go); });
+  });
+  steps.forEach(function(s){
+    s.addEventListener('click', function(){
+      if (s.classList.contains('disabled')) return;
+      show(s.dataset.step);
+    });
+  });
+  entryCards.forEach(function(c){
+    c.addEventListener('click', function(){
+      entryCards.forEach(function(x){ x.classList.remove('on'); });
+      c.classList.add('on');
+      if (c.dataset.entry === 'new') window.location = 'atlas-add-constituent.html';
+    });
+  });
+  srcChips.forEach(function(c){
+    c.addEventListener('click', function(){
+      srcChips.forEach(function(x){ x.classList.remove('on'); });
+      c.classList.add('on');
+    });
+  });
+  stagePills.forEach(function(p){
+    p.addEventListener('click', function(){
+      stagePills.forEach(function(x){ x.classList.remove('on'); });
+      p.classList.add('on');
+    });
+  });
+  grades.forEach(function(g){
+    g.addEventListener('click', function(){
+      var siblings = g.parentElement.querySelectorAll('.grade');
+      siblings.forEach(function(x){ x.classList.remove('on'); });
+      g.classList.add('on');
+    });
+  });
+  toggles.forEach(function(t){
+    t.addEventListener('click', function(){ t.classList.toggle('off'); });
+  });
+})();
+</script>
+
+</div>
+
+</body>
+</html>

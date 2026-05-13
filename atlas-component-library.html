@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiveCentral Atlas — Component library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:        #0E1E35;
+  --navy-2:      #152844;
+  --navy-3:      #1E3A5F;
+  --blue:        #2563EB;
+  --blue-mid:    #3B82F6;
+  --blue-light:  #DBEAFE;
+  --blue-pale:   #EFF6FF;
+  --teal:        #0D9488;
+  --teal-light:  #CCFBF1;
+  --green:       #15803D;
+  --green-light: #DCFCE7;
+  --amber:       #D97706;
+  --amber-light: #FEF3C7;
+  --rose:        #BE185D;
+  --rose-light:  #FCE7F3;
+  --purple:      #7C3AED;
+  --purple-light:#EDE9FE;
+  --gold:        #B45309;
+  --text:        #0F172A;
+  --text-2:      #334155;
+  --text-3:      #64748B;
+  --border:      #E2E8F0;
+  --border-soft: #EDF2F7;
+  --surface:     #F8FAFC;
+  --white:       #FFFFFF;
+  --sidebar-w:   220px;
+  --shadow-sm:   0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.05);
+  --shadow-md:   0 4px 16px rgba(15,23,42,.06), 0 2px 4px rgba(15,23,42,.04);
+}
+
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+body { font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--text); min-height: 100vh; display: flex; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  width: var(--sidebar-w); background: var(--navy);
+  min-height: 100vh; display: flex; flex-direction: column;
+  flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 18px 18px 14px; display: flex; align-items: center; gap: 9px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.logo-mark {
+  width: 30px; height: 30px; background: var(--blue); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 15px; height: 15px; }
+.logo-text-wrap { display: flex; flex-direction: column; }
+.logo-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: white; line-height: 1; }
+.logo-sub  { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 3px; }
+
+.sidebar-search {
+  margin: 12px 12px 6px; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  cursor: pointer;
+}
+.sidebar-search svg { width: 13px; height: 13px; color: rgba(255,255,255,.3); flex-shrink: 0; }
+.sidebar-search input {
+  background: none; border: none; outline: none; width: 100%;
+  font-size: 12px; color: rgba(255,255,255,.6); font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+.sidebar-search input::placeholder { color: rgba(255,255,255,.3); }
+
+.nav-group { padding: 8px 8px 0; }
+.nav-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.28); padding: 0 10px; margin-bottom: 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+  border-radius: 7px; font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,.55); cursor: pointer; transition: all .15s; margin-bottom: 1px;
+}
+.nav-item:hover { background: rgba(255,255,255,.07); color: rgba(255,255,255,.85); }
+.nav-item.active { background: var(--blue); color: white; }
+.nav-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: rgba(255,255,255,.12); color: rgba(255,255,255,.6);
+  border-radius: 10px; padding: 1px 7px; font-size: 10px; font-weight: 600;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,.2); color: white; }
+.nav-badge.alert { background: #EF4444; color: white; }
+
+.sidebar-user {
+  margin-top: auto; padding: 12px; border-top: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center; gap: 9px;
+  cursor: pointer; transition: background .15s;
+}
+.sidebar-user:hover { background: rgba(255,255,255,.04); }
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%; background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.user-name { font-size: 12px; font-weight: 500; color: rgba(255,255,255,.75); }
+.user-role { font-size: 10px; color: rgba(255,255,255,.35); margin-top: 1px; }
+
+/* ══ MAIN ══ */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 52px;
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+}
+.topbar-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.topbar-date { font-size: 12px; color: var(--text-3); }
+.topbar-search {
+  flex: 1;
+  max-width: 460px; margin: 0 18px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; gap: 8px; padding: 7px 12px;
+  cursor: text;
+}
+.topbar-search svg { width: 13px; height: 13px; color: var(--text-3); }
+.topbar-search input { background: none; border: none; outline: none; width: 100%; font-size: 12.5px; color: var(--text); font-family: 'DM Sans', sans-serif; }
+.topbar-search input::placeholder { color: var(--text-3); }
+.topbar-search kbd {
+  margin-left: auto; font-size: 10.5px; font-family: 'DM Sans';
+  background: white; border: 1px solid var(--border); border-radius: 4px;
+  padding: 1px 6px; color: var(--text-3);
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.tb-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  padding: 7px 13px; border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.tb-btn svg { width: 12px; height: 12px; }
+.tb-ghost   { background: none; border: 1px solid var(--border); color: var(--text-2); }
+.tb-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.tb-primary { background: var(--blue); border: none; color: white; box-shadow: 0 1px 4px rgba(37,99,235,.3); }
+.tb-primary:hover { background: #1D4ED8; }
+.tb-notif {
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+  background: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; transition: background .15s;
+}
+.tb-notif:hover { background: var(--surface); }
+.tb-notif svg { width: 15px; height: 15px; color: var(--text-2); }
+.notif-dot {
+  position: absolute; top: 7px; right: 7px;
+  width: 7px; height: 7px; background: #EF4444; border-radius: 50%;
+  border: 2px solid white;
+}
+
+.dash { padding: 24px; overflow-y: auto; }
+
+/* ══ Common Cards & helpers (used across screens) ══ */
+.card {
+  background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.card-header {
+  padding: 14px 18px 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.card-title { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.card-action { font-size: 11px; font-weight: 500; color: var(--blue); cursor: pointer; display: flex; align-items: center; gap: 3px; }
+.card-action:hover { color: #1D4ED8; }
+.card-action svg { width: 10px; height: 10px; }
+.card-body { padding: 14px 18px 18px; }
+
+/* ══ Page header (titles + crumb + actions) ══ */
+.page-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  margin-bottom: 20px;
+}
+.crumb { font-size: 12px; color: var(--text-3); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.crumb a { color: var(--blue); }
+.crumb a:hover { text-decoration: underline; }
+.crumb svg { width: 10px; height: 10px; }
+.page-title {
+  font-family: 'DM Serif Display', serif; font-size: 28px; letter-spacing: -.02em;
+  color: var(--text); line-height: 1.1;
+}
+.page-sub { color: var(--text-3); font-size: 13px; margin-top: 4px; }
+
+/* ══ Tags & badges (shared) ══ */
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.tag.blue  { background: var(--blue-light);  color: var(--blue); }
+.tag.green { background: var(--green-light); color: var(--green); }
+.tag.amber { background: var(--amber-light); color: var(--amber); }
+.tag.rose  { background: var(--rose-light);  color: var(--rose); }
+.tag.purple{ background: var(--purple-light);color: var(--purple); }
+.tag.grey  { background: var(--surface);     color: var(--text-3); border: 1px solid var(--border); }
+.tag.gold  { background: #FEF3C7;            color: var(--gold); }
+
+/* ══ Inputs ══ */
+.lbl { display: block; font-size: 11px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.lbl .req { color: var(--rose); margin-left: 2px; }
+.fld {
+  width: 100%; font-size: 13px; font-family: 'DM Sans', sans-serif;
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+  background: white; color: var(--text); transition: border-color .15s, box-shadow .15s;
+}
+.fld:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+.fld[disabled] { background: var(--surface); color: var(--text-3); }
+.fld::placeholder { color: #94A3B8; }
+textarea.fld { min-height: 90px; resize: vertical; line-height: 1.5; }
+select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M3 5l3 3 3-3z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px; }
+
+.btn {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  padding: 9px 16px; border-radius: 8px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid transparent; transition: background .15s, border-color .15s, color .15s;
+}
+.btn svg { width: 13px; height: 13px; }
+.btn-primary { background: var(--blue); color: white; box-shadow: 0 1px 4px rgba(37,99,235,.25); }
+.btn-primary:hover { background: #1D4ED8; }
+.btn-ghost   { background: white; border-color: var(--border); color: var(--text-2); }
+.btn-ghost:hover { background: var(--surface); border-color: #94A3B8; }
+.btn-rose    { background: var(--rose); color: white; }
+.btn-rose:hover { background: #9D174D; }
+.btn-link    { background: none; color: var(--blue); padding: 6px 8px; }
+.btn-link:hover { color: #1D4ED8; }
+
+/* helpful utilities */
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-4 { gap: 4px; } .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-10 { gap: 10px; } .gap-12 { gap: 12px; } .gap-16 { gap: 16px; } .gap-20 { gap: 20px; }
+.grow { flex: 1; }
+.muted { color: var(--text-3); }
+.mono  { font-variant-numeric: tabular-nums; }
+.mt-4 { margin-top: 4px; } .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-24 { margin-top: 24px; }
+.mb-4 { margin-bottom: 4px; } .mb-8 { margin-bottom: 8px; } .mb-12 { margin-bottom: 12px; } .mb-16 { margin-bottom: 16px; } .mb-24 { margin-bottom: 24px; }
+
+/* Slide-over drawer (used on log-activity, task-modal screens) */
+.scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 30; }
+.drawer {
+  position: fixed; right: 0; top: 0; bottom: 0; width: 560px; max-width: 100vw;
+  background: white; box-shadow: -16px 0 40px rgba(15,23,42,.10); z-index: 31;
+  display: flex; flex-direction: column;
+}
+.drawer-head {
+  padding: 18px 22px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  flex-shrink: 0;
+}
+.drawer-title { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); letter-spacing: -.01em; }
+.drawer-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.drawer-x {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); background: white; cursor: pointer;
+}
+.drawer-x:hover { background: var(--surface); }
+.drawer-x svg { width: 13px; height: 13px; color: var(--text-2); }
+.drawer-body { flex: 1; overflow-y: auto; padding: 22px; }
+.drawer-foot {
+  padding: 14px 22px; border-top: 1px solid var(--border);
+  background: var(--surface); display: flex; align-items: center; gap: 8px; justify-content: flex-end;
+  flex-shrink: 0;
+}
+.drawer-foot .left { margin-right: auto; font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
+
+
+.lib-grid { display:grid; grid-template-columns: 200px 1fr; gap:24px; align-items:start; }
+.lib-side { background:white; border:1px solid var(--border); border-radius:14px; padding:8px; position:sticky; top:78px; }
+.lib-link { padding:9px 12px; border-radius:8px; cursor:pointer; font-size:13px; color:var(--text-2); display:block; }
+.lib-link:hover { background:var(--surface); }
+.lib-link.on { background:var(--blue-pale); color:var(--blue); font-weight:600; }
+
+.lib-section { background:white; border:1px solid var(--border); border-radius:14px; padding:24px 28px; margin-bottom:18px; scroll-margin-top:80px; }
+.lib-section h2 { font-family:'DM Serif Display',serif; font-size:22px; color:var(--navy); margin-bottom:4px; }
+.lib-section .sub { color:var(--text-3); font-size:13px; margin-bottom:18px; }
+.lib-section h3 { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin:18px 0 10px; padding-top:14px; border-top:1px solid var(--border-soft); }
+.lib-section h3:first-of-type { margin-top:0; padding-top:0; border-top:none; }
+
+.demo { padding:18px; background:var(--surface); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; }
+.demo-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.code-hint { font-size:11.5px; color:var(--text-3); margin-top:6px; font-family:monospace; }
+.code-hint code { background:var(--surface); padding:1px 5px; border-radius:3px; color:var(--navy); font-size:11px; }
+
+/* === ALERTS === */
+.alert { padding:12px 14px; border-radius:10px; display:flex; gap:12px; align-items:flex-start; }
+.alert .ico { width:30px; height:30px; border-radius:8px; color:white; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; }
+.alert .body { flex:1; font-size:12.5px; line-height:1.55; }
+.alert .body b { display:block; font-weight:700; margin-bottom:2px; }
+.alert.info { background:var(--blue-pale); border:1px solid var(--blue-light); color:var(--navy); }
+.alert.info .ico { background:var(--blue); }
+.alert.info b { color:var(--blue); }
+.alert.success { background:var(--green-light); border:1px solid #86EFAC; color:#14532D; }
+.alert.success .ico { background:var(--green); }
+.alert.success b { color:var(--green); }
+.alert.warn { background:#FFFBEB; border:1px solid #FBBF24; color:#78350F; }
+.alert.warn .ico { background:var(--amber); }
+.alert.warn b { color:var(--amber); }
+.alert.danger { background:var(--rose-light); border:1px solid #FCA5A5; color:#831843; }
+.alert.danger .ico { background:var(--rose); }
+.alert.danger b { color:var(--rose); }
+.alert.ai { background:linear-gradient(135deg,#EDE9FE,#FAF5FF); border:1px solid var(--purple-light); color:var(--purple); }
+.alert.ai .ico { background:var(--purple); }
+.alert.ai b { color:#4C1D95; }
+
+/* === CHIPS === */
+.chip { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:99px; }
+.chip.blue { background:var(--blue-light); color:var(--blue); }
+.chip.green { background:var(--green-light); color:var(--green); }
+.chip.amber { background:var(--amber-light); color:var(--amber); }
+.chip.rose { background:var(--rose-light); color:var(--rose); }
+.chip.purple { background:var(--purple-light); color:var(--purple); }
+.chip.gold { background:var(--gold-light); color:var(--gold); }
+.chip.grey { background:var(--surface); color:var(--text-3); border:1px solid var(--border); }
+.chip.solid-blue { background:var(--blue); color:white; }
+.chip .dot { width:6px; height:6px; border-radius:50%; }
+.chip.green .dot { background:var(--green); }
+.chip.amber .dot { background:var(--amber); }
+.chip.rose .dot { background:var(--rose); }
+
+/* === BADGES === */
+.badge { display:inline-flex; font-size:9.5px; font-weight:700; padding:2px 7px; border-radius:5px; letter-spacing:.04em; text-transform:uppercase; }
+.badge.p1 { background:var(--green-light); color:var(--green); }
+.badge.p2 { background:var(--blue-light); color:var(--blue); }
+.badge.p3 { background:var(--purple-light); color:var(--purple); }
+.badge.new { background:var(--rose); color:white; }
+.badge.beta { background:var(--gold); color:white; }
+
+/* === BUTTONS === */
+.demo-btn { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; padding:9px 16px; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; border:1px solid transparent; }
+.demo-btn.primary { background:var(--blue); color:white; box-shadow:0 1px 4px rgba(37,99,235,.25); }
+.demo-btn.primary:hover { background:#1D4ED8; }
+.demo-btn.ghost { background:white; border-color:var(--border); color:var(--text-2); }
+.demo-btn.ghost:hover { background:var(--surface); border-color:#94A3B8; }
+.demo-btn.rose { background:var(--rose); color:white; }
+.demo-btn.success { background:var(--green); color:white; }
+.demo-btn.icon-only { padding:9px; }
+.demo-btn[disabled] { opacity:.5; cursor:not-allowed; }
+
+/* === MODALS / DIALOGS === */
+.mock-modal { background:white; border:1px solid var(--border); border-radius:14px; box-shadow:0 12px 40px rgba(15,23,42,.12); max-width:480px; }
+.mock-modal-head { padding:20px 24px 12px; }
+.mock-modal-head h4 { font-family:'DM Serif Display',serif; font-size:20px; color:var(--navy); margin-bottom:4px; }
+.mock-modal-head p { font-size:13px; color:var(--text-3); line-height:1.55; }
+.mock-modal-body { padding:0 24px 16px; font-size:13px; color:var(--text-2); line-height:1.55; }
+.mock-modal-foot { padding:14px 24px; background:var(--surface); border-top:1px solid var(--border); display:flex; gap:8px; justify-content:flex-end; border-radius:0 0 14px 14px; }
+.mock-modal.danger .mock-modal-head h4 { color:var(--rose); }
+
+/* === TOASTS === */
+.toast { display:flex; align-items:center; gap:10px; padding:12px 16px; background:white; border:1px solid var(--border); border-radius:10px; box-shadow:0 4px 16px rgba(15,23,42,.10); max-width:380px; font-size:13px; }
+.toast .ico { width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; color:white; flex-shrink:0; font-weight:700; }
+.toast.success .ico { background:var(--green); }
+.toast.error .ico { background:var(--rose); }
+.toast.info .ico { background:var(--blue); }
+.toast .body strong { color:var(--text); display:block; }
+.toast .body small { color:var(--text-3); font-size:11.5px; }
+.toast .undo { margin-left:auto; color:var(--blue); font-weight:600; font-size:12px; cursor:pointer; }
+
+/* === EMPTY STATES === */
+.empty-state { text-align:center; padding:40px 24px; background:var(--surface); border:1px dashed var(--border); border-radius:12px; }
+.empty-state .ico { width:48px; height:48px; border-radius:12px; background:var(--blue-pale); color:var(--blue); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; }
+.empty-state h4 { font-family:'DM Serif Display',serif; font-size:18px; color:var(--navy); margin-bottom:6px; }
+.empty-state p { font-size:13px; color:var(--text-3); margin-bottom:14px; max-width:380px; margin-left:auto; margin-right:auto; line-height:1.55; }
+
+/* === LOADING / SKELETON === */
+@keyframes pulse-bg { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+.skel { background:linear-gradient(90deg, var(--border-soft) 0%, #F8FAFC 50%, var(--border-soft) 100%); background-size:200% 100%; animation:pulse-bg 1.5s ease-in-out infinite; border-radius:6px; height:16px; }
+.skel.short { width:120px; }
+.skel.med { width:240px; }
+.skel.long { width:100%; }
+.skel.tall { height:60px; }
+.skel.circle { width:36px; height:36px; border-radius:50%; }
+.spinner { width:24px; height:24px; border:3px solid var(--border); border-top-color:var(--blue); border-radius:50%; animation:spin 0.8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* === FORM INPUTS === */
+.demo .lbl-demo { font-size:11px; font-weight:600; color:var(--text-2); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; display:block; }
+.demo input.fld-demo, .demo select.fld-demo, .demo textarea.fld-demo { width:100%; font-size:13px; padding:9px 12px; border:1px solid var(--border); border-radius:8px; font-family:'DM Sans',sans-serif; background:white; }
+.demo input.fld-demo:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.10); }
+.demo input.fld-demo.error { border-color:var(--rose); }
+.demo .err-msg { font-size:11.5px; color:var(--rose); margin-top:4px; display:flex; align-items:center; gap:4px; }
+.demo .help-msg { font-size:11.5px; color:var(--text-3); margin-top:4px; }
+
+/* === AVATARS === */
+.av-demo { border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:white; font-weight:700; }
+.av-demo.xs { width:20px; height:20px; font-size:9px; }
+.av-demo.sm { width:28px; height:28px; font-size:10.5px; }
+.av-demo.md { width:36px; height:36px; font-size:12px; }
+.av-demo.lg { width:56px; height:56px; font-size:18px; font-family:'DM Serif Display',serif; }
+
+/* === COLOR SWATCHES === */
+.swatch-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; }
+.swatch { padding:14px; border-radius:10px; color:white; font-size:11px; font-weight:600; }
+.swatch .name { display:block; font-weight:700; margin-bottom:2px; }
+.swatch .hex { font-family:monospace; opacity:.8; font-size:10px; }
+.swatch.light { color:var(--text); border:1px solid var(--border); }
+
+</style>
+
+
+<style id="atlas-sidebar-fix">
+/* Minimal sidebar fix — keeps the CEO's per-page .main / .content
+   layouts untouched. We ONLY:
+     1. Pin the sidebar to the viewport with position:fixed
+     2. Reserve a 220px gutter on the body via padding-left
+     3. Normalize the sidebar's internal flex layout (logo + search top,
+        nav scrolls middle, user block bottom)
+     4. Force SVG icon sizes in the sidebar (some screens lost them) */
+
+html, body { overflow-x: hidden !important; }
+body {
+  padding-left: 220px !important;
+  box-sizing: border-box !important;
+  min-height: 100vh !important;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+.sidebar {
+  width: 220px !important;
+  background: var(--navy, #0E1E35) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;          /* sidebar itself does NOT scroll */
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Logo + search are direct flex children that never scroll */
+.sidebar > .sidebar-logo,
+.sidebar > a > .sidebar-search,
+.sidebar > .sidebar-search,
+.sidebar-logo,
+.sidebar-search {
+  position: static !important;
+  flex-shrink: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2;
+}
+
+/* Fix oversized search icon — explicit 13×13 wins over any inheriting style */
+.sidebar-search {
+  margin: 12px 12px 6px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.sidebar-search svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
+  color: rgba(255,255,255,.4) !important;
+}
+.sidebar-search input {
+  font-size: 12px !important;
+  height: auto !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+}
+/* Logo mark sizing — same fix prevents the brand SVG from ballooning */
+.sidebar-logo .logo-mark {
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+.sidebar-logo .logo-mark svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* The MIDDLE area is the only scrollable child */
+.sidebar-scroll {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;        /* critical: lets flex item shrink */
+  display: flex !important;
+  flex-direction: column !important;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+
+/* User block sits at the bottom of the sidebar, never scrolls */
+.sidebar-user {
+  position: static !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  background: var(--navy, #0E1E35) !important;
+}
+
+/* .main is intentionally NOT overridden — each page keeps its own layout. */
+</style>
+</head>
+<body>
+
+
+<aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">GiveCentral</span>
+        <span class="logo-sub">Atlas CRM</span>
+      </div>
+    </div>
+
+    <a href="atlas-search.html" style="display:block;text-decoration:none">
+      <div class="sidebar-search">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+        <input type="text" placeholder="Search donors, gifts…" readonly>
+      </div>
+    </a>
+
+    <div class="sidebar-scroll">
+
+    <div class="nav-group">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="atlas-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="atlas-donors-list.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+        Donors
+        <span class="nav-badge">3,847</span>
+      </a>
+      <a class="nav-item" href="atlas-gifts-pledges.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+        Gifts &amp; pledges
+        <span class="nav-badge">142</span>
+      </a>
+      <a class="nav-item" href="atlas-campaign-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+        Reports
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Fundraising</div>
+      <a class="nav-item" href="atlas-pipeline.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+        Prospect pipeline
+        <span class="nav-badge">28</span>
+      </a>
+      <a class="nav-item" href="atlas-tasks.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+        Tasks &amp; reminders
+        <span class="nav-badge alert">7</span>
+      </a>
+      <a class="nav-item" href="atlas-communications.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+        Communications
+      </a>
+      <a class="nav-item" href="atlas-events-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 2v2M9 2v2"/></svg>
+        Events
+      </a>
+      <a class="nav-item" href="atlas-volunteer-management.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Volunteers
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Intelligence</div>
+      <a class="nav-item" href="atlas-guru-ai.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+        Guru AI
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+        Analytics
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item" href="atlas-users-roles.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Users &amp; roles
+      </a>
+      <a class="nav-item" href="atlas-integrations.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="4" cy="7" r="2.5"/><circle cx="10" cy="7" r="2.5"/><path d="M6.5 7h1"/></svg>
+        Integrations
+      </a>
+      <a class="nav-item" href="atlas-sync.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+        Sync
+      </a>
+      <a class="nav-item" href="atlas-location-manage.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Location portal
+      </a>
+    </div>
+
+    </div><!-- /.sidebar-scroll -->
+
+    <div class="sidebar-user">
+      <div class="user-avatar">SR</div>
+      <div>
+        <div class="user-name">Sarah Reynolds</div>
+        <div class="user-role">Development Director</div>
+      </div>
+    </div>
+  </aside>
+
+<div class="main">
+
+<div class="topbar">
+  <span class="topbar-title">Design system</span>
+  <span class="topbar-date">Monday, May 4, 2026</span>
+  <a href="atlas-search.html" class="topbar-search">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+    <input type="text" placeholder="Search donors, gifts, campaigns…" readonly style="cursor:pointer">
+    <kbd>⌘K</kbd>
+  </a>
+  <div class="topbar-right">
+    
+    <a href="atlas-guided-tour.html" class="tb-notif" title="Take the tour" style="position:relative">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7.5" cy="7.5" r="5.5"/><path d="M7.5 4v.5M6.5 7c0-1 .5-1.5 1-1.5s1 .5 1 1-.5 1-1 1.5v.5M7.5 11v.5"/></svg>
+    </a>
+    <a href="atlas-notifications.html" class="tb-notif" title="Notifications">
+      <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7.5 2a5 5 0 015 5v3l1 2H2l1-2V7a5 5 0 015-5zM6 13a1.5 1.5 0 003 0"/></svg>
+      <div class="notif-dot"></div>
+    </a>
+  </div>
+</div>
+
+<div class="dash">
+
+  <div class="page-head">
+    <div>
+      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Component library</span></div>
+      <div class="page-title">Design system</div>
+      <div class="page-sub">Every reusable component in Atlas — colors, typography, buttons, chips, alerts, modals, toasts, empty &amp; loading states. Source of truth for engineering handoff.</div>
+    </div>
+  </div>
+
+  <div class="lib-grid">
+
+    <aside class="lib-side">
+      <a class="lib-link on" href="#colors">Colors</a>
+      <a class="lib-link" href="#typography">Typography</a>
+      <a class="lib-link" href="#buttons">Buttons</a>
+      <a class="lib-link" href="#inputs">Form inputs</a>
+      <a class="lib-link" href="#chips">Chips &amp; tags</a>
+      <a class="lib-link" href="#badges">Badges</a>
+      <a class="lib-link" href="#avatars">Avatars</a>
+      <a class="lib-link" href="#alerts">Alerts &amp; banners</a>
+      <a class="lib-link" href="#modals">Modals &amp; dialogs</a>
+      <a class="lib-link" href="#toasts">Toasts</a>
+      <a class="lib-link" href="#empty">Empty states</a>
+      <a class="lib-link" href="#loading">Loading states</a>
+    </aside>
+
+    <main>
+
+      <!-- COLORS -->
+      <section class="lib-section" id="colors">
+        <h2>Colors</h2>
+        <p class="sub">All tokens come from a single CSS-variables block defined in the shell. Use semantic names (--green for success, --rose for error) not raw hex.</p>
+
+        <h3>Brand</h3>
+        <div class="swatch-grid">
+          <div class="swatch" style="background:#0E1E35"><span class="name">Navy</span><span class="hex">#0E1E35</span></div>
+          <div class="swatch" style="background:#152844"><span class="name">Navy-2</span><span class="hex">#152844</span></div>
+          <div class="swatch" style="background:#1E3A5F"><span class="name">Navy-3</span><span class="hex">#1E3A5F</span></div>
+          <div class="swatch" style="background:#2563EB"><span class="name">Blue</span><span class="hex">#2563EB</span></div>
+          <div class="swatch" style="background:#3B82F6"><span class="name">Blue-mid</span><span class="hex">#3B82F6</span></div>
+          <div class="swatch light" style="background:#DBEAFE"><span class="name">Blue-light</span><span class="hex">#DBEAFE</span></div>
+        </div>
+
+        <h3>Semantic</h3>
+        <div class="swatch-grid">
+          <div class="swatch" style="background:#15803D"><span class="name">Green</span><span class="hex">success</span></div>
+          <div class="swatch" style="background:#D97706"><span class="name">Amber</span><span class="hex">warning</span></div>
+          <div class="swatch" style="background:#BE185D"><span class="name">Rose</span><span class="hex">danger</span></div>
+          <div class="swatch" style="background:#7C3AED"><span class="name">Purple</span><span class="hex">AI / Guru</span></div>
+          <div class="swatch" style="background:#C4973A"><span class="name">Gold</span><span class="hex">prestige</span></div>
+          <div class="swatch" style="background:#0D9488"><span class="name">Teal</span><span class="hex">stewardship</span></div>
+        </div>
+
+        <h3>Neutrals</h3>
+        <div class="swatch-grid">
+          <div class="swatch" style="background:#0F172A"><span class="name">Text</span><span class="hex">#0F172A</span></div>
+          <div class="swatch" style="background:#334155"><span class="name">Text-2</span><span class="hex">#334155</span></div>
+          <div class="swatch" style="background:#64748B"><span class="name">Text-3</span><span class="hex">#64748B</span></div>
+          <div class="swatch light" style="background:#E2E8F0"><span class="name">Border</span><span class="hex">#E2E8F0</span></div>
+          <div class="swatch light" style="background:#F8FAFC"><span class="name">Surface</span><span class="hex">#F8FAFC</span></div>
+          <div class="swatch light" style="background:#FFFFFF"><span class="name">White</span><span class="hex">#FFFFFF</span></div>
+        </div>
+      </section>
+
+      <!-- TYPOGRAPHY -->
+      <section class="lib-section" id="typography">
+        <h2>Typography</h2>
+        <p class="sub">DM Serif Display for hero headlines and donor-portal accents · DM Sans for everything else · Lora for the donor-facing portal logo.</p>
+
+        <div class="demo">
+          <div style="font-family:'DM Serif Display',serif;font-size:40px;letter-spacing:-.4px;color:var(--navy);margin-bottom:8px">Hero headline (DM Serif Display 40)</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy);margin-bottom:8px">Section title (DM Serif Display 28)</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);margin-bottom:8px">Body text (DM Sans 14) · base size 14px / line-height 1.55 / Atlas runs on this</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3)">UPPERCASE LABEL (DM Sans 11/700)</div>
+        </div>
+      </section>
+
+      <!-- BUTTONS -->
+      <section class="lib-section" id="buttons">
+        <h2>Buttons</h2>
+        <p class="sub">Primary for the one most-important action per surface · ghost for secondary · rose for destructive · success for confirm.</p>
+
+        <div class="demo">
+          <div class="demo-row">
+            <button class="demo-btn primary">Primary action</button>
+            <button class="demo-btn ghost">Secondary</button>
+            <button class="demo-btn rose">Destructive</button>
+            <button class="demo-btn success">Confirm</button>
+            <button class="demo-btn primary" disabled>Disabled</button>
+            <button class="demo-btn ghost icon-only" title="Filter">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:14px;height:14px"><path d="M2 4h10M4 7h6M6 10h2"/></svg>
+            </button>
+          </div>
+          <p class="code-hint"><code>.btn .btn-primary</code> · <code>.btn .btn-ghost</code> · <code>.btn .btn-rose</code></p>
+        </div>
+      </section>
+
+      <!-- FORM INPUTS -->
+      <section class="lib-section" id="inputs">
+        <h2>Form inputs</h2>
+        <p class="sub">All form fields share the same border-radius and focus halo. Always pair with an UPPERCASE label above and an optional help message below.</p>
+
+        <div class="demo">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div>
+              <span class="lbl-demo">Donor email</span>
+              <input class="fld-demo" placeholder="email@example.com" value="margaret.obrien@email.com">
+              <div class="help-msg">We'll send the tax receipt to this address.</div>
+            </div>
+            <div>
+              <span class="lbl-demo">Amount with error</span>
+              <input class="fld-demo error" value="-100.00">
+              <div class="err-msg">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="width:12px;height:12px"><circle cx="6" cy="6" r="5"/><path d="M6 3.5v3M6 8v.5"/></svg>
+                Amount must be greater than $0.
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px">
+            <div>
+              <span class="lbl-demo">Gift type</span>
+              <select class="fld-demo"><option>Cash</option><option selected>Check</option><option>Credit card</option><option>ACH</option></select>
+            </div>
+            <div>
+              <span class="lbl-demo">Disabled field</span>
+              <input class="fld-demo" value="auto-populated" disabled>
+            </div>
+          </div>
+          <p class="code-hint" style="margin-top:14px"><code>.lbl .fld</code> · <code>.fld:focus</code> · <code>.fld.error</code></p>
+        </div>
+      </section>
+
+      <!-- CHIPS -->
+      <section class="lib-section" id="chips">
+        <h2>Chips &amp; tags</h2>
+        <p class="sub">Use to label state (Active / Lapsed), gift type (Cash / DAF), or filter selections. Always semantic — green = good, amber = caution, rose = bad, blue = info, purple = AI.</p>
+
+        <h3>Status chips</h3>
+        <div class="demo">
+          <div class="demo-row">
+            <span class="chip green"><span class="dot"></span>Active</span>
+            <span class="chip amber"><span class="dot"></span>Lapsed</span>
+            <span class="chip rose"><span class="dot"></span>Overdue</span>
+            <span class="chip blue">New</span>
+            <span class="chip purple">Hot</span>
+            <span class="chip gold">VIP</span>
+            <span class="chip grey">Archived</span>
+            <span class="chip solid-blue">Pinned</span>
+          </div>
+          <p class="code-hint"><code>.tag.green</code> · <code>.tag.amber</code> · <code>.tag.rose</code> · etc.</p>
+        </div>
+
+        <h3>Gift type chips</h3>
+        <div class="demo">
+          <div class="demo-row">
+            <span class="chip blue">Cash</span>
+            <span class="chip blue">Check</span>
+            <span class="chip blue">Credit card</span>
+            <span class="chip blue">ACH</span>
+            <span class="chip purple">Stock</span>
+            <span class="chip amber">DAF</span>
+            <span class="chip amber">Matching</span>
+            <span class="chip green">Pledge pmt</span>
+            <span class="chip gold">QCD</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- BADGES -->
+      <section class="lib-section" id="badges">
+        <h2>Badges</h2>
+        <p class="sub">Smaller than chips, all caps, for phase indicators and feature flags.</p>
+
+        <div class="demo">
+          <div class="demo-row">
+            <span class="badge p1">Phase 1</span>
+            <span class="badge p2">Phase 2</span>
+            <span class="badge p3">Phase 3</span>
+            <span class="badge new">New</span>
+            <span class="badge beta">Beta</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- AVATARS -->
+      <section class="lib-section" id="avatars">
+        <h2>Avatars</h2>
+        <p class="sub">Initial-based circles · color derived from constituent type or hashed from name. 4 sizes: xs (20) · sm (28) · md (36) · lg (56).</p>
+
+        <div class="demo">
+          <div class="demo-row" style="align-items:center">
+            <span class="av-demo xs" style="background:#BE185D">M</span>
+            <span class="av-demo sm" style="background:#BE185D">MO</span>
+            <span class="av-demo md" style="background:#BE185D">MO</span>
+            <span class="av-demo lg" style="background:#BE185D">M</span>
+            <span style="margin-left:12px;color:var(--text-3);font-size:12px">xs · sm · md · lg</span>
+          </div>
+          <div class="demo-row" style="margin-top:12px">
+            <span class="av-demo md" style="background:var(--rose)">M</span>
+            <span class="av-demo md" style="background:var(--blue)">P</span>
+            <span class="av-demo md" style="background:var(--purple)">RL</span>
+            <span class="av-demo md" style="background:var(--green)">A</span>
+            <span class="av-demo md" style="background:var(--amber)">B</span>
+            <span class="av-demo md" style="background:var(--navy)">SR</span>
+            <span class="av-demo md" style="background:var(--teal)">JK</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALERTS -->
+      <section class="lib-section" id="alerts">
+        <h2>Alerts &amp; banners</h2>
+        <p class="sub">Inline messages with a leading icon, bold title, and supporting text. 5 variants: info · success · warn · danger · ai.</p>
+
+        <div class="demo" style="display:flex;flex-direction:column;gap:10px;background:white;border:none;padding:0">
+          <div class="alert info">
+            <div class="ico">i</div>
+            <div class="body"><b>No duplicates detected so far.</b>Atlas checks for matches on name, email and address as you type. If a match is found, you'll see a side-by-side merge prompt before saving.</div>
+          </div>
+
+          <div class="alert success">
+            <div class="ico">✓</div>
+            <div class="body"><b>Gift posted · receipt R-2026-0148 emailed</b>Margaret O'Brien's $10,000 gift is now on her Donor 360 timeline. GL entry will export to QuickBooks tonight.</div>
+          </div>
+
+          <div class="alert warn">
+            <div class="ico">!</div>
+            <div class="body"><b>iWave trial ends in 56 days</b>Reach out to Bridget about converting to a paid plan, or wealth-screening will pause on Jun 30.</div>
+          </div>
+
+          <div class="alert danger">
+            <div class="ico">✗</div>
+            <div class="body"><b>Receipt blocked · DAF gift cannot issue a tax receipt</b>The donor already received their deduction when they funded the DAF. Atlas will send a soft-credit acknowledgement letter instead.</div>
+          </div>
+
+          <div class="alert ai">
+            <div class="ico">G</div>
+            <div class="body"><b>Guru AI suggests · mark this as high priority</b>Donors who receive a cultivation visit and don't get a follow-up artifact within 5 days convert to a gift 28% less often.</div>
+          </div>
+        </div>
+        <p class="code-hint" style="margin-top:10px"><code>.alert.info</code> · <code>.alert.success</code> · <code>.alert.warn</code> · <code>.alert.danger</code> · <code>.alert.ai</code></p>
+      </section>
+
+      <!-- MODALS -->
+      <section class="lib-section" id="modals">
+        <h2>Modals &amp; dialogs</h2>
+        <p class="sub">Atlas uses three modal patterns: <strong>confirmation dialog</strong> (centered, short), <strong>info modal</strong> (centered, scrollable), and <strong>slide-over drawer</strong> (right edge, full task flows like Log activity / Add task / Invite user).</p>
+
+        <h3>Confirmation dialog</h3>
+        <div class="demo" style="background:linear-gradient(135deg, rgba(15,23,42,.20), rgba(15,23,42,.06));padding:32px;display:flex;justify-content:center">
+          <div class="mock-modal danger">
+            <div class="mock-modal-head">
+              <h4>Disconnect QuickBooks?</h4>
+              <p>Atlas will stop syncing immediately and the nightly export will not run tonight. Existing data stays.</p>
+            </div>
+            <div class="mock-modal-body">
+              You can reconnect anytime by re-authorizing. Past exports are preserved in <strong>atlas-sync.html</strong>.
+            </div>
+            <div class="mock-modal-foot">
+              <button class="demo-btn ghost">Cancel</button>
+              <button class="demo-btn rose">Disconnect</button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Info modal · used for documentation pop-ups</h3>
+        <div class="demo" style="background:linear-gradient(135deg, rgba(15,23,42,.20), rgba(15,23,42,.06));padding:32px;display:flex;justify-content:center">
+          <div class="mock-modal">
+            <div class="mock-modal-head">
+              <h4>Why we ask for your address</h4>
+              <p>The IRS requires your name and mailing address on every tax receipt over $250.</p>
+            </div>
+            <div class="mock-modal-body">
+              We never share your address with anyone outside the Diocese, and we'll never sell it. Atlas encrypts addresses at rest and you can update yours anytime in your <a href="atlas-donor-profile.html" style="color:var(--blue)">donor profile</a>.
+            </div>
+            <div class="mock-modal-foot">
+              <button class="demo-btn primary">Got it</button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Slide-over drawer · already used across 6 screens</h3>
+        <div class="demo">
+          <div class="demo-row">
+            <a class="demo-btn ghost" href="atlas-log-activity.html">Open Log activity drawer →</a>
+            <a class="demo-btn ghost" href="atlas-task-modal.html">Open Add task drawer →</a>
+            <a class="demo-btn ghost" href="atlas-edit-constituent.html">Open Edit constituent drawer →</a>
+            <a class="demo-btn ghost" href="atlas-invite-user.html">Open Invite user drawer →</a>
+          </div>
+          <p class="code-hint"><code>.scrim + .drawer + .drawer-head + .drawer-body + .drawer-foot</code></p>
+        </div>
+      </section>
+
+      <!-- TOASTS -->
+      <section class="lib-section" id="toasts">
+        <h2>Toasts</h2>
+        <p class="sub">Bottom-right corner notification. Auto-dismiss after 5 seconds. Use for "you've done something" feedback (gift saved, email sent, audit-log fired).</p>
+
+        <div class="demo" style="display:flex;flex-direction:column;gap:10px">
+          <div class="toast success">
+            <div class="ico">✓</div>
+            <div class="body"><strong>Gift saved · receipt sent</strong><small>R-2026-0148 emailed to margaret.obrien@email.com</small></div>
+            <span class="undo">Undo</span>
+          </div>
+          <div class="toast info">
+            <div class="ico">i</div>
+            <div class="body"><strong>Sync completed</strong><small>142 gifts posted · reconciled with GL</small></div>
+          </div>
+          <div class="toast error">
+            <div class="ico">!</div>
+            <div class="body"><strong>Couldn't send email</strong><small>SendGrid returned 503. We'll retry in 30s.</small></div>
+            <span class="undo">Retry now</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMPTY STATES -->
+      <section class="lib-section" id="empty">
+        <h2>Empty states</h2>
+        <p class="sub">When a list is empty by design (no tasks today, no pending duplicates). Always explain why, and what the user can do.</p>
+
+        <div class="demo" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;background:none;border:none;padding:0">
+
+          <div class="empty-state">
+            <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="width:24px;height:24px"><path d="M5 12l4 4 10-12"/></svg></div>
+            <h4>You're all caught up!</h4>
+            <p>No tasks due today. Take a moment to log activities from yesterday or plan tomorrow.</p>
+            <a class="demo-btn primary" href="atlas-task-modal.html">+ Plan a task</a>
+          </div>
+
+          <div class="empty-state">
+            <div class="ico" style="background:var(--green-light);color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" style="width:24px;height:24px"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h4>No pending duplicates</h4>
+            <p>Atlas hasn't flagged any matches above 75% confidence. Last scan was 14 minutes ago — runs every time a new constituent is created.</p>
+            <a class="demo-btn ghost" href="atlas-duplicates.html">View resolved (42)</a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- LOADING -->
+      <section class="lib-section" id="loading">
+        <h2>Loading states</h2>
+        <p class="sub">Use skeleton blocks for predictable content (lists, tables, cards), and the centered spinner only for unpredictable async (sync to GiveCentral, sending email).</p>
+
+        <h3>Skeleton</h3>
+        <div class="demo">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <div class="skel circle"></div>
+            <div style="flex:1">
+              <div class="skel short" style="margin-bottom:6px"></div>
+              <div class="skel med"></div>
+            </div>
+          </div>
+          <div class="skel long" style="margin-bottom:6px"></div>
+          <div class="skel long" style="margin-bottom:6px;width:80%"></div>
+          <div class="skel tall" style="margin-top:14px"></div>
+          <p class="code-hint" style="margin-top:10px"><code>.skel.circle</code> · <code>.skel.short</code> · <code>.skel.med</code> · <code>.skel.long</code> · <code>.skel.tall</code></p>
+        </div>
+
+        <h3>Spinner</h3>
+        <div class="demo" style="display:flex;align-items:center;gap:14px">
+          <div class="spinner"></div>
+          <div style="font-size:13px;color:var(--text-2)">Posting to GiveCentral · syncing to Atlas… <span style="color:var(--text-3);font-size:11.5px;display:block;margin-top:2px">avg 23s · don't refresh the page</span></div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</div>
+
+<script>
+  // Side-nav highlight on scroll
+  var links = document.querySelectorAll('.lib-link');
+  var sections = document.querySelectorAll('.lib-section');
+  window.addEventListener('scroll', function(){
+    var pos = window.scrollY + 100;
+    sections.forEach(function(s){
+      if (s.offsetTop <= pos && s.offsetTop + s.offsetHeight > pos) {
+        links.forEach(function(l){ l.classList.remove('on'); });
+        var match = document.querySelector('.lib-link[href="#'+s.id+'"]');
+        if (match) match.classList.add('on');
+      }
+    });
+  });
+</script>
+
+</div>
+
+</body>
+</html>

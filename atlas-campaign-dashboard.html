@@ -269,39 +269,232 @@
     .detail-drawer:not(.closed) { animation: slideIn .25s ease forwards; }
     @keyframes slideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
   </style>
+
+<style id="atlas-sidebar-fix">
+/* Minimal sidebar fix — keeps the CEO's per-page .main / .content
+   layouts untouched. We ONLY:
+     1. Pin the sidebar to the viewport with position:fixed
+     2. Reserve a 220px gutter on the body via padding-left
+     3. Normalize the sidebar's internal flex layout (logo + search top,
+        nav scrolls middle, user block bottom)
+     4. Force SVG icon sizes in the sidebar (some screens lost them) */
+
+html, body { overflow-x: hidden !important; }
+body {
+  padding-left: 220px !important;
+  box-sizing: border-box !important;
+  min-height: 100vh !important;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+.sidebar {
+  width: 220px !important;
+  background: var(--navy, #0E1E35) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;          /* sidebar itself does NOT scroll */
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  z-index: 9999 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Logo + search are direct flex children that never scroll */
+.sidebar > .sidebar-logo,
+.sidebar > a > .sidebar-search,
+.sidebar > .sidebar-search,
+.sidebar-logo,
+.sidebar-search {
+  position: static !important;
+  flex-shrink: 0 !important;
+  background: var(--navy, #0E1E35) !important;
+  z-index: 2;
+}
+
+/* Fix oversized search icon — explicit 13×13 wins over any inheriting style */
+.sidebar-search {
+  margin: 12px 12px 6px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.sidebar-search svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
+  color: rgba(255,255,255,.4) !important;
+}
+.sidebar-search input {
+  font-size: 12px !important;
+  height: auto !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+}
+/* Logo mark sizing — same fix prevents the brand SVG from ballooning */
+.sidebar-logo .logo-mark {
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+.sidebar-logo .logo-mark svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* The MIDDLE area is the only scrollable child */
+.sidebar-scroll {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;        /* critical: lets flex item shrink */
+  display: flex !important;
+  flex-direction: column !important;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+
+/* User block sits at the bottom of the sidebar, never scrolls */
+.sidebar-user {
+  position: static !important;
+  flex-shrink: 0 !important;
+  margin-top: auto !important;
+  background: var(--navy, #0E1E35) !important;
+}
+
+/* .main is intentionally NOT overridden — each page keeps its own layout. */
+</style>
 </head>
 <body>
 
 <!-- ── SIDEBAR ── -->
 <aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/><path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/></svg>
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+          <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+        </svg>
+      </div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">GiveCentral</span>
+        <span class="logo-sub">Atlas CRM</span>
+      </div>
     </div>
-    <div><div class="logo-name">GiveCentral</div><div class="logo-sub">Atlas CRM</div></div>
-  </div>
-  <div class="nav-group">
-    <div class="nav-label">Main</div>
-    <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>Dashboard</div>
-    <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>Donors<span class="nav-badge">3,847</span></div>
-    <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>Gifts &amp; pledges</div>
-    <div class="nav-item active"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>Campaigns<span class="nav-badge">9</span></div>
-    <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>Reports</div>
-  </div>
-  <div class="nav-group" style="margin-top:8px">
-    <div class="nav-label">Fundraising</div>
-    <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>Prospect pipeline<span class="nav-badge">28</span></div>
-    <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>Tasks<span class="nav-badge">7</span></div>
-  </div>
-  <div class="nav-group" style="margin-top:8px">
-    <div class="nav-label">Intelligence</div>
-    <div class="nav-item"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>Guru AI</div>
-  </div>
-  <div class="sidebar-user">
-    <div class="user-avatar">SR</div>
-    <div><div class="user-name">Sarah Reynolds</div><div class="user-role">Development Director</div></div>
-  </div>
-</aside>
+
+    <a href="atlas-search.html" style="display:block;text-decoration:none">
+      <div class="sidebar-search">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+        <input type="text" placeholder="Search donors, gifts…" readonly>
+      </div>
+    </a>
+
+    <div class="sidebar-scroll">
+
+    <div class="nav-group">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="atlas-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="atlas-donors-list.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+        Donors
+        <span class="nav-badge">3,847</span>
+      </a>
+      <a class="nav-item" href="atlas-gifts-pledges.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+        Gifts &amp; pledges
+        <span class="nav-badge">142</span>
+      </a>
+      <a class="nav-item active" href="atlas-campaign-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+        Reports
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Fundraising</div>
+      <a class="nav-item" href="atlas-pipeline.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+        Prospect pipeline
+        <span class="nav-badge">28</span>
+      </a>
+      <a class="nav-item" href="atlas-tasks.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+        Tasks &amp; reminders
+        <span class="nav-badge alert">7</span>
+      </a>
+      <a class="nav-item" href="atlas-communications.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+        Communications
+      </a>
+      <a class="nav-item" href="atlas-events-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 2v2M9 2v2"/></svg>
+        Events
+      </a>
+      <a class="nav-item" href="atlas-volunteer-management.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Volunteers
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Intelligence</div>
+      <a class="nav-item" href="atlas-guru-ai.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+        Guru AI
+      </a>
+      <a class="nav-item" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
+        Analytics
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item" href="atlas-users-roles.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Users &amp; roles
+      </a>
+      <a class="nav-item" href="atlas-integrations.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="4" cy="7" r="2.5"/><circle cx="10" cy="7" r="2.5"/><path d="M6.5 7h1"/></svg>
+        Integrations
+      </a>
+      <a class="nav-item" href="atlas-sync.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+        Sync
+      </a>
+      <a class="nav-item" href="atlas-location-manage.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Location portal
+      </a>
+    </div>
+
+    </div><!-- /.sidebar-scroll -->
+
+    <div class="sidebar-user">
+      <div class="user-avatar">SR</div>
+      <div>
+        <div class="user-name">Sarah Reynolds</div>
+        <div class="user-role">Development Director</div>
+      </div>
+    </div>
+  </aside>
 
 <!-- ── MAIN ── -->
 <div class="main" id="main-area">
@@ -841,8 +1034,87 @@ setTimeout(() => openDrawer(1), 600);
     // Users & roles
     ['users & roles',                'atlas-users-roles.html'],
     ['users &amp; roles',            'atlas-users-roles.html'],
-    ['invite user',                  'atlas-users-roles.html'],
-    ['add integration',              'atlas-integrations.html'],
+    ['invite user',                  'atlas-invite-user.html'],
+    ['add user',                     'atlas-invite-user.html'],
+    ['new user',                     'atlas-invite-user.html'],
+    ['invite a new user',            'atlas-invite-user.html'],
+    ['define a custom role',         'atlas-role-builder.html'],
+    ['+ define a custom role',       'atlas-role-builder.html'],
+    ['define custom role',           'atlas-role-builder.html'],
+    ['new role',                     'atlas-role-builder.html'],
+    ['edit role',                    'atlas-role-builder.html'],
+    ['add integration',              'atlas-add-integration.html'],
+    ['connect integration',          'atlas-add-integration.html'],
+    ['new integration',              'atlas-add-integration.html'],
+    ['add another integration',      'atlas-add-integration.html'],
+    ['locations',                    'atlas-location-manage.html'],
+    ['locations & parishes',         'atlas-location-manage.html'],
+    ['locations &amp; parishes',     'atlas-location-manage.html'],
+    ['manage locations',             'atlas-location-manage.html'],
+    ['manage parishes',              'atlas-location-manage.html'],
+    ['add location',                 'atlas-location-manage.html'],
+    ['component library',            'atlas-component-library.html'],
+    ['design system',                'atlas-component-library.html'],
+    ['guided tour',                  'atlas-guided-tour.html'],
+    ['take a tour',                  'atlas-guided-tour.html'],
+    ['product tour',                 'atlas-guided-tour.html'],
+    ['onboarding tour',              'atlas-guided-tour.html'],
+
+    // Event sub-screens
+    ["bishop's annual gala",         'atlas-gala-management.html'],
+    ['annual gala',                  'atlas-gala-management.html'],
+    ['gala management',              'atlas-gala-management.html'],
+    ['ignatian retreat',             'atlas-retreat.html'],
+    ["men's retreat",                'atlas-retreat.html'],
+    ['retreat',                      'atlas-retreat.html'],
+    ['check-in',                     'atlas-checkin.html'],
+    ['day-of check-in',              'atlas-checkin.html'],
+    ['event check-in',               'atlas-checkin.html'],
+    ['check in guest',               'atlas-checkin.html'],
+
+    // Wealth screening sub-page
+    ['wealth screening',             'atlas-wealth-screening.html'],
+    ['refresh screening',            'atlas-wealth-screening.html'],
+    ['lai scores',                   'atlas-wealth-screening.html'],
+    ['capacity rating',              'atlas-wealth-screening.html'],
+
+    // ── Sprint 4 ──
+    ['gifts & pledges',              'atlas-gifts-pledges.html'],
+    ['gifts &amp; pledges',          'atlas-gifts-pledges.html'],
+    ['gifts and pledges',            'atlas-gifts-pledges.html'],
+    ['edit constituent',             'atlas-edit-constituent.html'],
+    ['edit profile',                 'atlas-edit-constituent.html'],
+    ['edit',                         'atlas-edit-constituent.html'],
+    ['view all pledges',             'atlas-pledges-list.html'],
+    ['open pledges',                 'atlas-pledges-list.html'],
+    ['stock gift',                   'atlas-stock-gift.html'],
+    ['record stock',                 'atlas-stock-gift.html'],
+    ['pledge payment',               'atlas-pledge-payment.html'],
+    ['record payment',               'atlas-pledge-payment.html'],
+    ['record next instalment',       'atlas-pledge-payment.html'],
+    ['record installment',           'atlas-pledge-payment.html'],
+    ['view cathedral campaign',      'atlas-campaign-detail.html'],
+    ['campaign detail',              'atlas-campaign-detail.html'],
+    ['view campaign',                'atlas-campaign-detail.html'],
+    ['build outreach list',          'atlas-segment-builder.html'],
+    ['build a segment',              'atlas-segment-builder.html'],
+    ['segment builder',              'atlas-segment-builder.html'],
+    ['solicitor performance',        'atlas-solicitor-performance.html'],
+    ['solicitor leaderboard',        'atlas-solicitor-performance.html'],
+
+    // ── Pipeline final flow ──
+    ['portfolio rebalance',          'atlas-portfolio-assign.html'],
+    ['rebalance portfolios',         'atlas-portfolio-assign.html'],
+    ['add prospect',                 'atlas-add-prospect.html'],
+    ['new prospect',                 'atlas-add-prospect.html'],
+    ['identify prospect',            'atlas-add-prospect.html'],
+    ['promote to prospect',          'atlas-add-prospect.html'],
+    ['portfolio assign',             'atlas-portfolio-assign.html'],
+    ['bulk assign',                  'atlas-portfolio-assign.html'],
+    ['pipeline forecast',            'atlas-pipeline-forecast.html'],
+    ['forecast',                     'atlas-pipeline-forecast.html'],
+    ['expected to close',            'atlas-pipeline-forecast.html'],
+    ['pipeline flow',                'atlas-pipeline-flow.html'],
   ];
 
   function routeFor(text) {
@@ -898,6 +1170,59 @@ setTimeout(() => openDrawer(1), 600);
       // Don't intercept obvious modal-trigger buttons (those have onclick attr that opens local modal)
       // Heuristic: if button has 'onclick' attr that already changes state, only follow when routes match strongly
       window.location = dest;
+    });
+  });
+
+  // 4b) Plain <a href="#"> anchors that aren't policy/footer — try text routing
+  document.querySelectorAll('a[href="#"]').forEach(function(el){
+    // Skip if it already has another routing handler
+    if (el.dataset.atlasWired) return;
+    var txt = (el.innerText || el.textContent || '').toLowerCase().trim();
+    // Skip explicit policy/footer placeholders
+    var policyWords = ['privacy','terms','help','forgot','security','status','refund','contact','help center','english','español','administrator','here','bishop','phase','print','define a custom role','change type','+ saved view','manage seasonal','why we ask'];
+    if (policyWords.some(function(w){ return txt.indexOf(w) !== -1; })) return;
+    var dest = routeFor(txt);
+    if (!dest || dest === '#') return;
+    el.setAttribute('href', dest);
+    el.dataset.atlasWired = '1';
+  });
+
+  // 4c) Kebab menus on donor-list / pledge-list / gift-list rows — open an action dropdown
+  var KEBAB_MENU = [
+    ['View profile',     'atlas-donor-360.html',       'M12 14a3 3 0 100-6 3 3 0 000 6zM2 21c0-5.5 4.5-10 10-10s10 4.5 10 10'],
+    ['Edit',             'atlas-edit-constituent.html','M3 17l8-8 4 4-8 8H3v-4zM12 6l3-3 3 3-3 3-3-3z'],
+    ['Record gift',      'atlas-gift-entry.html',      'M12 5v14M5 12h14'],
+    ['Log activity',     'atlas-log-activity.html',    'M3 13c0-3 2-5 5-5s5 2 5 5M8 5a3 3 0 100-0.01'],
+    ['Add task',         'atlas-task-modal.html',      'M4 6h2l1-3 2 6 1-4h6'],
+    ['Send email',       'atlas-email-compose.html',   'M3 6h18v12H3zM3 6l9 7 9-7'],
+    ['Merge duplicate',  'atlas-merge.html',           'M6 6l4-4M6 6l-4 4M6 6h10'],
+    ['Archive',          '#',                          'M3 6h18M5 6v14h14V6M9 10h6']
+  ];
+  function closeKebabMenus(){ document.querySelectorAll('.atlas-kebab-menu').forEach(function(m){ m.remove(); }); }
+  document.addEventListener('click', closeKebabMenus);
+
+  document.querySelectorAll('.kebab').forEach(function(k){
+    k.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      closeKebabMenus();
+      var menu = document.createElement('div');
+      menu.className = 'atlas-kebab-menu';
+      menu.style.cssText = 'position:absolute;background:white;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;min-width:200px;z-index:100;font-family:DM Sans,sans-serif;font-size:13px;';
+      KEBAB_MENU.forEach(function(item){
+        var a = document.createElement('a');
+        a.href = item[1];
+        a.style.cssText = 'display:flex;align-items:center;gap:9px;padding:8px 10px;color:#334155;text-decoration:none;border-radius:6px;cursor:pointer;';
+        a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#64748B"><path d="'+item[2]+'"/></svg>' + item[0];
+        a.addEventListener('mouseenter', function(){ a.style.background='#EFF6FF'; a.style.color='#2563EB'; });
+        a.addEventListener('mouseleave', function(){ a.style.background='transparent'; a.style.color='#334155'; });
+        if (item[0] === 'Archive') { a.style.color = '#BE185D'; a.style.borderTop='1px solid #EDF2F7'; a.style.marginTop='4px'; a.style.paddingTop='10px'; }
+        menu.appendChild(a);
+      });
+      // Position
+      var rect = k.getBoundingClientRect();
+      menu.style.top  = (window.scrollY + rect.bottom + 4) + 'px';
+      menu.style.left = (window.scrollX + rect.right - 200) + 'px';
+      document.body.appendChild(menu);
     });
   });
 

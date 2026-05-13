@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GiveCentral Atlas — Cathedral Capital 2026</title>
+<title>GiveCentral Atlas — Locations & parishes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -276,96 +276,46 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 .drawer-foot .left { margin-right: auto; font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 6px; }
 
 
-.cmp-hero { background:linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%); color:white; border-radius:16px; padding:28px 32px; margin-bottom:22px; position:relative; overflow:hidden; }
-.cmp-hero::before { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 90% 20%, rgba(196,151,58,.18), transparent 55%), radial-gradient(circle at 10% 90%, rgba(37,99,235,.15), transparent 60%); }
-.cmp-hero-inner { position:relative; }
-.cmp-tag { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:99px; background:rgba(196,151,58,.18); border:1px solid rgba(196,151,58,.32); color:#FCD34D; font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:12px; }
-.cmp-h { font-family:'DM Serif Display',serif; font-size:32px; line-height:1.08; letter-spacing:-.4px; }
-.cmp-d { color:rgba(219,234,254,.75); font-size:13.5px; margin-top:6px; max-width:680px; }
-.cmp-progress { margin-top:22px; max-width:580px; }
-.cmp-bar { background:rgba(255,255,255,.10); border-radius:99px; height:8px; overflow:hidden; }
-.cmp-bar-fill { background:linear-gradient(90deg, #FCD34D, #C4973A); height:100%; border-radius:99px; }
+.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+.kpi { background:white; border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+.kpi .l { font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--text-3); margin-bottom:8px; }
+.kpi .v { font-family:'DM Serif Display',serif; font-size:24px; line-height:1; color:var(--navy); }
+.kpi .v.green { color:var(--green); }
+.kpi .v.amber { color:var(--amber); }
+.kpi .d { font-size:11.5px; color:var(--text-3); margin-top:6px; }
 
-.cmp-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:22px; padding-top:22px; border-top:1px solid rgba(255,255,255,.10); position:relative; }
-.cmp-stat .num { font-family:'DM Serif Display',serif; font-size:30px; line-height:1; margin-bottom:6px; color:white; }
-.cmp-stat .num.gold { color:#FCD34D; }
-.cmp-stat .num.green { color:#86EFAC; }
-.cmp-stat .num.amber { color:#FCD34D; }
-.cmp-stat .lbl { font-size:11px; color:rgba(219,234,254,.65); text-transform:uppercase; letter-spacing:.05em; }
-
-.tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:22px; }
+.tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); margin-bottom:18px; }
 .tab { padding:10px 14px; cursor:pointer; font-size:13px; font-weight:500; color:var(--text-3); border-bottom:2px solid transparent; }
 .tab.on { color:var(--blue); border-color:var(--blue); font-weight:600; }
 .tab .ct { font-size:10.5px; padding:1px 7px; border-radius:99px; background:var(--surface); margin-left:6px; }
 .tab.on .ct { background:var(--blue-pale); color:var(--blue); }
 
-.cd-grid { display:grid; grid-template-columns: 1.6fr 1fr; gap:22px; align-items:start; }
+.filter-bar { display:flex; gap:10px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+.filter-chip { font-size:12px; padding:6px 11px; border-radius:8px; cursor:pointer; background:white; border:1px dashed var(--border); color:var(--text-2); display:inline-flex; align-items:center; gap:6px; }
+.filter-chip.applied { background:var(--blue-pale); border:1px solid var(--blue-light); color:var(--blue); font-weight:600; }
+.filter-bar .right { margin-left:auto; font-size:12px; color:var(--text-3); }
 
-.card { background:white; border:1px solid var(--border); border-radius:14px; overflow:hidden; }
-.card + .card { margin-top:14px; }
-.card-header { padding:16px 22px 4px; display:flex; align-items:center; justify-content:space-between; }
-.card-title { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); }
-.card-action { font-size:11.5px; color:var(--blue); cursor:pointer; }
-.card-body { padding:14px 22px 20px; }
-
-/* Financial summary */
-.fin-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
-.fin-card { padding:18px 20px; border-radius:12px; }
-.fin-card.pledged { background:linear-gradient(135deg, var(--blue-pale), white); border:1px solid var(--blue-light); }
-.fin-card.received { background:linear-gradient(135deg, var(--green-light), white); border:1px solid #86EFAC; }
-.fin-card.outstanding { background:linear-gradient(135deg, var(--amber-light), white); border:1px solid #FBBF24; }
-.fin-card .lbl { font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
-.fin-card.pledged .lbl { color:var(--blue); }
-.fin-card.received .lbl { color:var(--green); }
-.fin-card.outstanding .lbl { color:var(--amber); }
-.fin-card .val { font-family:'DM Serif Display',serif; font-size:28px; line-height:1; }
-.fin-card.pledged .val { color:var(--navy); }
-.fin-card.received .val { color:var(--green); }
-.fin-card.outstanding .val { color:var(--amber); }
-.fin-card .sub { font-size:12px; color:var(--text-2); margin-top:6px; }
-.fin-card .sub b { color:var(--text); font-weight:600; }
-
-/* Hierarchy tree */
-.tree-node { display:grid; grid-template-columns:24px 1fr 110px 110px 110px 32px; gap:14px; align-items:center; padding:11px 14px; border-bottom:1px solid var(--border-soft); font-size:13px; cursor:pointer; transition:background .12s; }
-.tree-node:hover { background:var(--blue-pale); }
-.tree-node:last-child { border-bottom:none; }
-.tree-node .ico-sm { width:22px; height:22px; border-radius:5px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:10.5px; font-weight:700; }
-.tree-node .ico-sm.c { background:var(--purple); color:white; }
-.tree-node .ico-sm.a { background:var(--blue); color:white; }
-.tree-node .ico-sm.f { background:var(--green); color:white; }
-.tree-node .body .nm { font-weight:500; color:var(--text); }
-.tree-node .body .meta { font-size:11.5px; color:var(--text-3); margin-top:2px; }
-.tree-node .progress { display:flex; align-items:center; gap:6px; }
-.tree-node .progress .bar { flex:1; height:4px; background:var(--border-soft); border-radius:99px; overflow:hidden; }
-.tree-node .progress .bar-f { height:100%; border-radius:99px; background:var(--green); }
-.tree-node .progress .pct { font-size:11.5px; font-weight:600; color:var(--text-2); width:36px; text-align:right; }
-.tree-node .v { font-weight:500; text-align:right; font-variant-numeric:tabular-nums; font-size:12.5px; }
-
-/* YoY compare */
-.yoy-row { display:grid; grid-template-columns: 80px 1fr 90px; gap:14px; align-items:center; padding:9px 0; border-bottom:1px dashed var(--border-soft); font-size:13px; }
-.yoy-row:last-child { border-bottom:none; }
-.yoy-row .yr { color:var(--text-3); font-size:11.5px; font-weight:600; }
-.yoy-row .yr.cur { color:var(--blue); }
-.yoy-row .yo-bar { height:18px; background:var(--surface); border-radius:4px; overflow:hidden; position:relative; }
-.yoy-row .yo-bar-f { height:100%; border-radius:4px; }
-.yoy-row .yo-bar-f.cur { background:linear-gradient(90deg, var(--blue), var(--blue-mid)); }
-.yoy-row .yo-bar-f.prev { background:linear-gradient(90deg, var(--text-3), #94A3B8); }
-.yoy-row .v { font-weight:600; text-align:right; font-variant-numeric:tabular-nums; }
-
-/* Solicitor leaderboard */
-.sol-row { display:grid; grid-template-columns: 36px 1fr 90px 80px 80px; gap:12px; align-items:center; padding:11px 0; border-bottom:1px solid var(--border-soft); font-size:13px; }
-.sol-row:last-child { border-bottom:none; }
-.sol-row .av { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700; flex-shrink:0; }
-.sol-row .nm-text .nm { font-weight:500; color:var(--text); }
-.sol-row .nm-text .meta { font-size:11.5px; color:var(--text-3); margin-top:2px; }
-.sol-row .v { font-weight:600; text-align:right; font-variant-numeric:tabular-nums; }
-.sol-row .delta { font-size:11.5px; color:var(--text-3); text-align:right; }
-.sol-row .delta.up { color:var(--green); font-weight:600; }
+.loc-table { background:white; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.loc-head, .loc-row { display:grid; grid-template-columns: 1.6fr 140px 1.2fr 100px 110px 100px 36px; gap:14px; align-items:center; padding:12px 18px; }
+.loc-head { background:var(--surface); border-bottom:1px solid var(--border); font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); }
+.loc-row { border-bottom:1px solid var(--border-soft); cursor:pointer; font-size:13px; transition:background .12s; }
+.loc-row:hover { background:var(--blue-pale); }
+.loc-row .name { display:flex; align-items:center; gap:10px; }
+.loc-row .av { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700; flex-shrink:0; font-family:'DM Serif Display',serif; }
+.loc-row .nm-text .nm { font-weight:500; color:var(--text); }
+.loc-row .nm-text .sub { font-size:11px; color:var(--text-3); margin-top:2px; }
+.loc-row .admin { display:flex; align-items:center; gap:8px; }
+.loc-row .admin .av-sm { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:white; flex-shrink:0; }
+.loc-row .admin .nm-sm { font-size:12px; color:var(--text); font-weight:500; }
+.loc-row .admin.unassigned { color:var(--amber); font-style:italic; font-size:11.5px; }
+.loc-row .v { font-weight:600; font-variant-numeric:tabular-nums; text-align:right; }
+.kebab { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:6px; cursor:pointer; color:var(--text-3); }
 
 .tag { display:inline-flex; font-size:10.5px; font-weight:600; padding:3px 8px; border-radius:5px; }
 .tag.green { background:var(--green-light); color:var(--green); }
-.tag.amber { background:var(--amber-light); color:var(--amber); }
 .tag.blue { background:var(--blue-light); color:var(--blue); }
+.tag.amber { background:var(--amber-light); color:var(--amber); }
+.tag.grey { background:var(--surface); color:var(--text-3); border:1px solid var(--border); }
 .tag.purple { background:var(--purple-light); color:var(--purple); }
 
 </style>
@@ -600,7 +550,7 @@ body {
 <div class="main">
 
 <div class="topbar">
-  <span class="topbar-title">Campaign · Cathedral Capital 2026</span>
+  <span class="topbar-title">Locations & parishes</span>
   <span class="topbar-date">Monday, May 4, 2026</span>
   <a href="atlas-search.html" class="topbar-search">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
@@ -623,279 +573,196 @@ body {
 
   <div class="page-head">
     <div>
-      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <a href="atlas-campaign-dashboard.html">Campaigns</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Cathedral Capital 2026</span></div>
+      <div class="crumb"><a href="atlas-dashboard.html">Atlas</a> <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 2l3 3-3 3"/></svg> <span>Location portal</span></div>
+      <div class="page-title">Locations &amp; parishes</div>
+      <div class="page-sub">Manage the parishes, schools, and Catholic-Charities offices that show up in the Location Portal. 48 active locations, 23 with a parish admin assigned.</div>
     </div>
     <div class="flex gap-8">
-      <a class="btn btn-ghost" href="atlas-segment-builder.html">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 4h10M4 7h6M6 10h2"/></svg>
-        Build outreach list
-      </a>
-      <a class="btn btn-ghost" href="atlas-report-detail.html">
-        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 12V4M7 12V2M11 12V8"/></svg>
-        Campaign report
-      </a>
-      <a class="btn btn-primary" href="atlas-pledge-create.html">
+      <a class="btn btn-ghost" href="atlas-location-portal.html">Open parish view (preview)</a>
+      <button class="btn btn-primary">
         <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg>
-        New pledge
-      </a>
+        Add location
+      </button>
     </div>
   </div>
 
-  <!-- Hero -->
-  <div class="cmp-hero">
-    <div class="cmp-hero-inner">
-      <span class="cmp-tag">★ Capital campaign · 2026</span>
-      <h1 class="cmp-h">Cathedral Capital Campaign 2026</h1>
-      <p class="cmp-d">Restoring the 1888 cathedral — bell-tower masonry, lead flashing, stained-glass conservation. 1:1 matched gifts up to $250,000 (anonymous family). Public phase: Jan 1 – Jun 30, 2026.</p>
-
-      <div class="cmp-progress">
-        <div class="cmp-bar"><div class="cmp-bar-fill" style="width:60%"></div></div>
-      </div>
-
-      <div class="cmp-stats">
-        <div class="cmp-stat"><div class="num gold">$1.20M</div><div class="lbl">Raised · 60% to goal</div></div>
-        <div class="cmp-stat"><div class="num">$2.00M</div><div class="lbl">Public goal</div></div>
-        <div class="cmp-stat"><div class="num green">847</div><div class="lbl">Donors · ↑ 38% vs. last year</div></div>
-        <div class="cmp-stat"><div class="num amber">43d</div><div class="lbl">Remaining in public phase</div></div>
-      </div>
-    </div>
+  <div class="kpi-row">
+    <div class="kpi"><div class="l">Total locations</div><div class="v">48</div><div class="d">38 parishes · 6 schools · 4 CC offices</div></div>
+    <div class="kpi"><div class="l">With parish admin</div><div class="v green">23</div><div class="d">48% coverage · target 100% by July</div></div>
+    <div class="kpi"><div class="l">Unassigned</div><div class="v amber">25</div><div class="d">No parish admin · staff handles centrally</div></div>
+    <div class="kpi"><div class="l">Active campaigns scoped</div><div class="v">8</div><div class="d">Cathedral Capital · Annual Appeal · 6 others</div></div>
   </div>
 
-  <!-- Tabs -->
   <div class="tabs">
-    <div class="tab on">Overview</div>
-    <div class="tab">Donors <span class="ct">847</span></div>
-    <div class="tab">Pledges <span class="ct">28</span></div>
-    <div class="tab">Solicitors <span class="ct">5</span></div>
-    <div class="tab">Activity <span class="ct">142</span></div>
-    <div class="tab">Settings</div>
+    <div class="tab on">All locations <span class="ct">48</span></div>
+    <div class="tab">Parishes <span class="ct">38</span></div>
+    <div class="tab">Schools <span class="ct">6</span></div>
+    <div class="tab">Catholic Charities <span class="ct">4</span></div>
+    <div class="tab">Unassigned <span class="ct" style="background:var(--amber-light);color:var(--amber)">25</span></div>
   </div>
 
-  <div class="cd-grid">
+  <div class="filter-bar">
+    <div class="filter-chip applied">Entity: All <span style="margin-left:4px">×</span></div>
+    <div class="filter-chip">Region</div>
+    <div class="filter-chip">Roster size</div>
+    <div class="filter-chip">Has parish admin</div>
+    <div class="filter-chip">Active campaign</div>
+    <div class="right">Showing 12 of 48 · sort by Lifetime giving ↓</div>
+  </div>
 
-    <main>
+  <div class="loc-table">
 
-      <!-- Financial summary -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Financial summary</span>
-          <span class="card-action">Reconcile to GL →</span>
-        </div>
-        <div class="card-body">
-          <div class="fin-grid">
-            <div class="fin-card pledged">
-              <div class="lbl">Pledged</div>
-              <div class="val">$2.04M</div>
-              <div class="sub"><b>28 active pledges</b> · $1.84M outstanding</div>
-            </div>
-            <div class="fin-card received">
-              <div class="lbl">Received</div>
-              <div class="val">$1.20M</div>
-              <div class="sub"><b>847 gifts</b> incl. pledge payments and one-time gifts</div>
-            </div>
-            <div class="fin-card outstanding">
-              <div class="lbl">Outstanding</div>
-              <div class="val">$1.84M</div>
-              <div class="sub"><b>Pledged minus paid</b> · $86k due in 30 days</div>
-            </div>
-          </div>
-          <p class="muted" style="font-size:11.5px;margin-top:14px">Reconciles to QuickBooks Fund 4001 (Cathedral Restoration) at <strong style="color:var(--green)">100% match</strong> as of last night's export.</p>
-        </div>
+    <div class="loc-head">
+      <div>Location</div>
+      <div>Type / entity</div>
+      <div>Parish admin</div>
+      <div>Members</div>
+      <div>Lifetime giving</div>
+      <div>Status</div>
+      <div></div>
+    </div>
+
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:var(--navy)">SM</div>
+        <div class="nm-text"><div class="nm">St. Mary's Cathedral</div><div class="sub">40 N. Main Ave, Albany NY · primary cathedral</div></div>
       </div>
+      <div><span class="tag blue">Parish</span> Diocese</div>
+      <div class="admin"><div class="av-sm" style="background:var(--teal)">FR</div><div class="nm-sm">Fr. Michael Reilly</div></div>
+      <div class="v">1,240</div>
+      <div class="v">$2.84M</div>
+      <div><span class="tag green">Active</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
 
-      <!-- Hierarchy -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Hierarchy — Campaign → Appeal → Fund</span>
-          <span class="card-action">+ Add appeal</span>
-        </div>
-        <div class="card-body" style="padding:0 22px 14px">
-
-          <div class="tree-node" style="padding-top:14px">
-            <div class="ico-sm c">C</div>
-            <div class="body"><div class="nm">Cathedral Capital Campaign 2026</div><div class="meta">Goal $2.0M · 6-month public phase</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:60%"></div></div><span class="pct">60%</span></div>
-            <div class="v">$1.20M / $2.00M</div>
-            <div class="v" style="color:var(--text-3)">— ROI</div>
-            <div></div>
-          </div>
-
-          <div class="tree-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="body"><div class="nm">Spring 2026 — major donor cultivation</div><div class="meta">Lead-gift outreach · top 50 prospects</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:75%"></div></div><span class="pct">75%</span></div>
-            <div class="v">$600k / $800k</div>
-            <div class="v" style="color:var(--green)">14:1</div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="body"><div class="nm">Cathedral Restoration · GL 4001</div><div class="meta">Diocese of Albany · matched 1:1</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:75%"></div></div><span class="pct">75%</span></div>
-            <div class="v">$600k / $800k</div>
-            <div></div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="body"><div class="nm">Online giving — public campaign page</div><div class="meta">GiveCentral form: cathedral-2026</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:48%"></div></div><span class="pct">48%</span></div>
-            <div class="v">$480k / $1.00M</div>
-            <div class="v" style="color:var(--green)">22:1</div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="body"><div class="nm">Cathedral Restoration · GL 4001 (shared)</div><div class="meta">Routed via online form</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:50%"></div></div><span class="pct">50%</span></div>
-            <div class="v">$400k / $800k</div>
-            <div></div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:64px">
-            <div class="ico-sm f">F</div>
-            <div class="body"><div class="nm">Music Ministry · GL 4002</div><div class="meta">For matched gifts; protected ladder</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:40%;background:var(--amber)"></div></div><span class="pct">40%</span></div>
-            <div class="v">$80k / $200k</div>
-            <div></div>
-            <div style="text-align:right">›</div>
-          </div>
-
-          <div class="tree-node" style="padding-left:32px">
-            <div class="ico-sm a">A</div>
-            <div class="body"><div class="nm">Bishop's Annual Gala 2026</div><div class="meta">Apr 24 · table sponsorships</div></div>
-            <div class="progress"><div class="bar"><div class="bar-f" style="width:60%"></div></div><span class="pct">60%</span></div>
-            <div class="v">$120k / $200k</div>
-            <div class="v" style="color:var(--green)">8:1</div>
-            <div style="text-align:right">›</div>
-          </div>
-
-        </div>
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:var(--blue)">SC</div>
+        <div class="nm-text"><div class="nm">St. Catherine of Siena</div><div class="sub">182 Western Ave, Albany NY</div></div>
       </div>
+      <div><span class="tag blue">Parish</span> Diocese</div>
+      <div class="admin"><div class="av-sm" style="background:var(--purple)">SO</div><div class="nm-sm">Sr. Olivia Cardenas</div></div>
+      <div class="v">892</div>
+      <div class="v">$1.41M</div>
+      <div><span class="tag green">Active</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
 
-      <!-- YoY -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-title">Year-over-year — same campaign window (Jan – May)</span>
-          <span class="card-action">View 5-year trend →</span>
-        </div>
-        <div class="card-body">
-          <div class="yoy-row">
-            <span class="yr cur">2026 ★</span>
-            <div class="yo-bar"><div class="yo-bar-f cur" style="width:100%"></div></div>
-            <span class="v" style="color:var(--blue)">$1.20M</span>
-          </div>
-          <div class="yoy-row">
-            <span class="yr">2025</span>
-            <div class="yo-bar"><div class="yo-bar-f prev" style="width:71%"></div></div>
-            <span class="v">$854k</span>
-          </div>
-          <div class="yoy-row">
-            <span class="yr">2024</span>
-            <div class="yo-bar"><div class="yo-bar-f prev" style="width:54%"></div></div>
-            <span class="v">$648k</span>
-          </div>
-          <div class="yoy-row">
-            <span class="yr">2023</span>
-            <div class="yo-bar"><div class="yo-bar-f prev" style="width:42%"></div></div>
-            <span class="v">$502k</span>
-          </div>
-          <p class="muted" style="font-size:12px;margin-top:14px;display:flex;align-items:center;gap:8px">
-            <span style="color:var(--green);font-weight:700">↑ +41%</span> vs. same window last year ·
-            <span style="color:var(--green);font-weight:700">↑ +85%</span> vs. 2023
-          </p>
-        </div>
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:var(--green)">SJ</div>
+        <div class="nm-text"><div class="nm">St. Joseph's</div><div class="sub">920 Albany Shaker Rd, Loudonville NY</div></div>
       </div>
+      <div><span class="tag blue">Parish</span> Diocese</div>
+      <div class="admin"><div class="av-sm" style="background:var(--rose)">DT</div><div class="nm-sm">Deacon Thomas Burke</div></div>
+      <div class="v">1,074</div>
+      <div class="v">$1.92M</div>
+      <div><span class="tag green">Active</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
 
-    </main>
-
-    <!-- Right rail -->
-    <aside>
-
-      <div class="card">
-        <div class="card-header"><span class="card-title">Solicitor leaderboard</span><span class="card-action">All →</span></div>
-        <div class="card-body">
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--rose)">SR</div>
-            <div class="nm-text"><div class="nm">Sarah Reynolds</div><div class="meta">Dev Director · 18 prospects</div></div>
-            <span class="v">$486k</span>
-            <span class="v">12</span>
-            <span class="delta up">↑ 28%</span>
-          </div>
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--purple)">BM</div>
-            <div class="nm-text"><div class="nm">Bridget McCarthy</div><div class="meta">Dev Director · 15 prospects</div></div>
-            <span class="v">$324k</span>
-            <span class="v">9</span>
-            <span class="delta up">↑ 14%</span>
-          </div>
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--green)">JK</div>
-            <div class="nm-text"><div class="nm">Julia Kelleher</div><div class="meta">Officer · 22 prospects</div></div>
-            <span class="v">$198k</span>
-            <span class="v">7</span>
-            <span class="delta up">↑ 8%</span>
-          </div>
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--blue)">DC</div>
-            <div class="nm-text"><div class="nm">Daniel Cho</div><div class="meta">DB Admin · 0 prospects</div></div>
-            <span class="v">$98k</span>
-            <span class="v">— </span>
-            <span class="delta">data entry only</span>
-          </div>
-
-          <div class="sol-row">
-            <div class="av" style="background:var(--text-3)">UK</div>
-            <div class="nm-text"><div class="nm">Unattributed</div><div class="meta">Online + walk-in</div></div>
-            <span class="v">$94k</span>
-            <span class="v">819</span>
-            <span class="delta">smaller gifts</span>
-          </div>
-        </div>
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:var(--amber)">SA</div>
+        <div class="nm-text"><div class="nm">St. Anthony of Padua</div><div class="sub">94 Grand St, Schenectady NY</div></div>
       </div>
+      <div><span class="tag blue">Parish</span> Diocese</div>
+      <div class="admin unassigned">No admin assigned · invite</div>
+      <div class="v">628</div>
+      <div class="v">$724k</div>
+      <div><span class="tag amber">Onboarding</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
 
-      <div class="card">
-        <div class="card-header"><span class="card-title">Top recent gifts</span><span class="card-action">All 142 →</span></div>
-        <div class="card-body" style="padding:0 22px 14px">
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
-            <div><div style="font-weight:500">Margaret O'Brien</div><div style="color:var(--text-3);font-size:11px">May 4 · cash · matched</div></div>
-            <div style="font-weight:600;font-variant-numeric:tabular-nums">$10,000</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
-            <div><div style="font-weight:500">Robert &amp; Susan Lin</div><div style="color:var(--text-3);font-size:11px">May 3 · check</div></div>
-            <div style="font-weight:600;font-variant-numeric:tabular-nums">$25,000</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
-            <div><div style="font-weight:500">Schwab Charitable (DAF)</div><div style="color:var(--text-3);font-size:11px">May 2 · soft credit Margaret</div></div>
-            <div style="font-weight:600;font-variant-numeric:tabular-nums">$15,000</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:12.5px">
-            <div><div style="font-weight:500">Anthony Riccardi</div><div style="color:var(--text-3);font-size:11px">Apr 22 · 100 sh AAPL</div></div>
-            <div style="font-weight:600;font-variant-numeric:tabular-nums">$18.4k</div>
-          </div>
-        </div>
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:var(--purple)">CN</div>
+        <div class="nm-text"><div class="nm">Cathedral of the Nativity</div><div class="sub">312 State St, Albany NY</div></div>
       </div>
+      <div><span class="tag blue">Parish</span> Diocese</div>
+      <div class="admin"><div class="av-sm" style="background:var(--blue)">FW</div><div class="nm-sm">Fr. William O'Neil</div></div>
+      <div class="v">844</div>
+      <div class="v">$1.18M</div>
+      <div><span class="tag green">Active</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
 
-      <div class="card">
-        <div class="card-header"><span class="card-title">Quick actions</span></div>
-        <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
-          <a class="btn btn-ghost" href="atlas-segment-builder.html">Build cultivation list</a>
-          <a class="btn btn-ghost" href="atlas-pipeline.html">Open prospects (pipeline)</a>
-          <a class="btn btn-ghost" href="atlas-email-compose.html">Send campaign update</a>
-          <a class="btn btn-ghost" href="atlas-report-detail.html">Open campaign report</a>
-        </div>
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:var(--rose)">CA</div>
+        <div class="nm-text"><div class="nm">Catholic Academy of Albany</div><div class="sub">36 St. Mary's Pl · K-8 school</div></div>
       </div>
+      <div><span class="tag purple">School</span> Diocese</div>
+      <div class="admin"><div class="av-sm" style="background:var(--green)">JD</div><div class="nm-sm">Joanne Driscoll</div></div>
+      <div class="v">280 students</div>
+      <div class="v">$486k</div>
+      <div><span class="tag green">Active</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
 
-    </aside>
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:var(--teal)">CC</div>
+        <div class="nm-text"><div class="nm">Catholic Charities — Albany</div><div class="sub">40 N. Main Ave · refugee aid, soup kitchen</div></div>
+      </div>
+      <div><span class="tag amber">CC office</span> Catholic Charities</div>
+      <div class="admin"><div class="av-sm" style="background:var(--amber)">PS</div><div class="nm-sm">Patricia Souza</div></div>
+      <div class="v">— (staff)</div>
+      <div class="v">$1.04M</div>
+      <div><span class="tag green">Active</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
 
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:var(--gold)">CC</div>
+        <div class="nm-text"><div class="nm">Catholic Charities — Troy</div><div class="sub">285 4th Ave, Troy NY · food pantry</div></div>
+      </div>
+      <div><span class="tag amber">CC office</span> Catholic Charities</div>
+      <div class="admin unassigned">No admin assigned · invite</div>
+      <div class="v">— (staff)</div>
+      <div class="v">$284k</div>
+      <div><span class="tag amber">Onboarding</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
+
+    <a class="loc-row" href="atlas-location-portal.html">
+      <div class="name">
+        <div class="av" style="background:#475569">SR</div>
+        <div class="nm-text"><div class="nm">St. Rose of Lima</div><div class="sub">120 Park Pl, Schenectady NY</div></div>
+      </div>
+      <div><span class="tag blue">Parish</span> Diocese</div>
+      <div class="admin unassigned">No admin assigned · invite</div>
+      <div class="v">410</div>
+      <div class="v">$348k</div>
+      <div><span class="tag grey">Inactive</span></div>
+      <div class="kebab"><svg viewBox="0 0 14 14" fill="currentColor"><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="11" cy="7" r="1.2"/></svg></div>
+    </a>
+
+  </div>
+
+  <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:18px 22px">
+      <h4 style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px">What parish admins can do</h4>
+      <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--text-2)">
+        <li style="display:flex;gap:8px;align-items:flex-start"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:14px;height:14px;color:var(--green);flex-shrink:0;margin-top:2px"><path d="M3 7l3 3 5-6"/></svg>View their parish's slice of any campaign · open <a href="atlas-location-portal.html" style="color:var(--blue)">Location Portal</a></li>
+        <li style="display:flex;gap:8px;align-items:flex-start"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:14px;height:14px;color:var(--green);flex-shrink:0;margin-top:2px"><path d="M3 7l3 3 5-6"/></svg>Log offline gifts that come in at the parish</li>
+        <li style="display:flex;gap:8px;align-items:flex-start"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:14px;height:14px;color:var(--green);flex-shrink:0;margin-top:2px"><path d="M3 7l3 3 5-6"/></svg>Download parish-level reports</li>
+        <li style="display:flex;gap:8px;align-items:flex-start"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:14px;height:14px;color:var(--green);flex-shrink:0;margin-top:2px"><path d="M3 7l3 3 5-6"/></svg>Send reminders to lapsed parishioners</li>
+        <li style="display:flex;gap:8px;align-items:flex-start"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:14px;height:14px;color:var(--rose);flex-shrink:0;margin-top:2px"><path d="M3 3l8 8M11 3l-8 8"/></svg>Cannot see other parishes' donors or financials</li>
+        <li style="display:flex;gap:8px;align-items:flex-start"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:14px;height:14px;color:var(--rose);flex-shrink:0;margin-top:2px"><path d="M3 3l8 8M11 3l-8 8"/></svg>Cannot edit diocese-level campaigns or post batches</li>
+      </ul>
+    </div>
+    <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:18px 22px">
+      <h4 style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px">Quick actions</h4>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <a class="btn btn-ghost" style="justify-content:flex-start" href="atlas-invite-user.html">Invite a parish admin →</a>
+        <a class="btn btn-ghost" style="justify-content:flex-start" href="atlas-add-integration.html">Upload parish roster (CSV) →</a>
+        <a class="btn btn-ghost" style="justify-content:flex-start" href="atlas-segment-builder.html">Build segment by parish →</a>
+        <a class="btn btn-ghost" style="justify-content:flex-start" href="atlas-campaign-detail.html">Scope a campaign to specific parishes →</a>
+        <a class="btn btn-ghost" style="justify-content:flex-start" href="atlas-reports.html">Download parish-by-parish report →</a>
+      </div>
+    </div>
   </div>
 
 </div>

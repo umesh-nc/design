@@ -1070,8 +1070,87 @@
     // Users & roles
     ['users & roles',                'atlas-users-roles.html'],
     ['users &amp; roles',            'atlas-users-roles.html'],
-    ['invite user',                  'atlas-users-roles.html'],
-    ['add integration',              'atlas-integrations.html'],
+    ['invite user',                  'atlas-invite-user.html'],
+    ['add user',                     'atlas-invite-user.html'],
+    ['new user',                     'atlas-invite-user.html'],
+    ['invite a new user',            'atlas-invite-user.html'],
+    ['define a custom role',         'atlas-role-builder.html'],
+    ['+ define a custom role',       'atlas-role-builder.html'],
+    ['define custom role',           'atlas-role-builder.html'],
+    ['new role',                     'atlas-role-builder.html'],
+    ['edit role',                    'atlas-role-builder.html'],
+    ['add integration',              'atlas-add-integration.html'],
+    ['connect integration',          'atlas-add-integration.html'],
+    ['new integration',              'atlas-add-integration.html'],
+    ['add another integration',      'atlas-add-integration.html'],
+    ['locations',                    'atlas-location-manage.html'],
+    ['locations & parishes',         'atlas-location-manage.html'],
+    ['locations &amp; parishes',     'atlas-location-manage.html'],
+    ['manage locations',             'atlas-location-manage.html'],
+    ['manage parishes',              'atlas-location-manage.html'],
+    ['add location',                 'atlas-location-manage.html'],
+    ['component library',            'atlas-component-library.html'],
+    ['design system',                'atlas-component-library.html'],
+    ['guided tour',                  'atlas-guided-tour.html'],
+    ['take a tour',                  'atlas-guided-tour.html'],
+    ['product tour',                 'atlas-guided-tour.html'],
+    ['onboarding tour',              'atlas-guided-tour.html'],
+
+    // Event sub-screens
+    ["bishop's annual gala",         'atlas-gala-management.html'],
+    ['annual gala',                  'atlas-gala-management.html'],
+    ['gala management',              'atlas-gala-management.html'],
+    ['ignatian retreat',             'atlas-retreat.html'],
+    ["men's retreat",                'atlas-retreat.html'],
+    ['retreat',                      'atlas-retreat.html'],
+    ['check-in',                     'atlas-checkin.html'],
+    ['day-of check-in',              'atlas-checkin.html'],
+    ['event check-in',               'atlas-checkin.html'],
+    ['check in guest',               'atlas-checkin.html'],
+
+    // Wealth screening sub-page
+    ['wealth screening',             'atlas-wealth-screening.html'],
+    ['refresh screening',            'atlas-wealth-screening.html'],
+    ['lai scores',                   'atlas-wealth-screening.html'],
+    ['capacity rating',              'atlas-wealth-screening.html'],
+
+    // ── Sprint 4 ──
+    ['gifts & pledges',              'atlas-gifts-pledges.html'],
+    ['gifts &amp; pledges',          'atlas-gifts-pledges.html'],
+    ['gifts and pledges',            'atlas-gifts-pledges.html'],
+    ['edit constituent',             'atlas-edit-constituent.html'],
+    ['edit profile',                 'atlas-edit-constituent.html'],
+    ['edit',                         'atlas-edit-constituent.html'],
+    ['view all pledges',             'atlas-pledges-list.html'],
+    ['open pledges',                 'atlas-pledges-list.html'],
+    ['stock gift',                   'atlas-stock-gift.html'],
+    ['record stock',                 'atlas-stock-gift.html'],
+    ['pledge payment',               'atlas-pledge-payment.html'],
+    ['record payment',               'atlas-pledge-payment.html'],
+    ['record next instalment',       'atlas-pledge-payment.html'],
+    ['record installment',           'atlas-pledge-payment.html'],
+    ['view cathedral campaign',      'atlas-campaign-detail.html'],
+    ['campaign detail',              'atlas-campaign-detail.html'],
+    ['view campaign',                'atlas-campaign-detail.html'],
+    ['build outreach list',          'atlas-segment-builder.html'],
+    ['build a segment',              'atlas-segment-builder.html'],
+    ['segment builder',              'atlas-segment-builder.html'],
+    ['solicitor performance',        'atlas-solicitor-performance.html'],
+    ['solicitor leaderboard',        'atlas-solicitor-performance.html'],
+
+    // ── Pipeline final flow ──
+    ['portfolio rebalance',          'atlas-portfolio-assign.html'],
+    ['rebalance portfolios',         'atlas-portfolio-assign.html'],
+    ['add prospect',                 'atlas-add-prospect.html'],
+    ['new prospect',                 'atlas-add-prospect.html'],
+    ['identify prospect',            'atlas-add-prospect.html'],
+    ['promote to prospect',          'atlas-add-prospect.html'],
+    ['portfolio assign',             'atlas-portfolio-assign.html'],
+    ['bulk assign',                  'atlas-portfolio-assign.html'],
+    ['pipeline forecast',            'atlas-pipeline-forecast.html'],
+    ['forecast',                     'atlas-pipeline-forecast.html'],
+    ['expected to close',            'atlas-pipeline-forecast.html'],
+    ['pipeline flow',                'atlas-pipeline-flow.html'],
   ];
 
   function routeFor(text) {
@@ -1127,6 +1206,59 @@
       // Don't intercept obvious modal-trigger buttons (those have onclick attr that opens local modal)
       // Heuristic: if button has 'onclick' attr that already changes state, only follow when routes match strongly
       window.location = dest;
+    });
+  });
+
+  // 4b) Plain <a href="#"> anchors that aren't policy/footer — try text routing
+  document.querySelectorAll('a[href="#"]').forEach(function(el){
+    // Skip if it already has another routing handler
+    if (el.dataset.atlasWired) return;
+    var txt = (el.innerText || el.textContent || '').toLowerCase().trim();
+    // Skip explicit policy/footer placeholders
+    var policyWords = ['privacy','terms','help','forgot','security','status','refund','contact','help center','english','español','administrator','here','bishop','phase','print','define a custom role','change type','+ saved view','manage seasonal','why we ask'];
+    if (policyWords.some(function(w){ return txt.indexOf(w) !== -1; })) return;
+    var dest = routeFor(txt);
+    if (!dest || dest === '#') return;
+    el.setAttribute('href', dest);
+    el.dataset.atlasWired = '1';
+  });
+
+  // 4c) Kebab menus on donor-list / pledge-list / gift-list rows — open an action dropdown
+  var KEBAB_MENU = [
+    ['View profile',     'atlas-donor-360.html',       'M12 14a3 3 0 100-6 3 3 0 000 6zM2 21c0-5.5 4.5-10 10-10s10 4.5 10 10'],
+    ['Edit',             'atlas-edit-constituent.html','M3 17l8-8 4 4-8 8H3v-4zM12 6l3-3 3 3-3 3-3-3z'],
+    ['Record gift',      'atlas-gift-entry.html',      'M12 5v14M5 12h14'],
+    ['Log activity',     'atlas-log-activity.html',    'M3 13c0-3 2-5 5-5s5 2 5 5M8 5a3 3 0 100-0.01'],
+    ['Add task',         'atlas-task-modal.html',      'M4 6h2l1-3 2 6 1-4h6'],
+    ['Send email',       'atlas-email-compose.html',   'M3 6h18v12H3zM3 6l9 7 9-7'],
+    ['Merge duplicate',  'atlas-merge.html',           'M6 6l4-4M6 6l-4 4M6 6h10'],
+    ['Archive',          '#',                          'M3 6h18M5 6v14h14V6M9 10h6']
+  ];
+  function closeKebabMenus(){ document.querySelectorAll('.atlas-kebab-menu').forEach(function(m){ m.remove(); }); }
+  document.addEventListener('click', closeKebabMenus);
+
+  document.querySelectorAll('.kebab').forEach(function(k){
+    k.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      closeKebabMenus();
+      var menu = document.createElement('div');
+      menu.className = 'atlas-kebab-menu';
+      menu.style.cssText = 'position:absolute;background:white;border:1px solid #E2E8F0;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.12);padding:6px;min-width:200px;z-index:100;font-family:DM Sans,sans-serif;font-size:13px;';
+      KEBAB_MENU.forEach(function(item){
+        var a = document.createElement('a');
+        a.href = item[1];
+        a.style.cssText = 'display:flex;align-items:center;gap:9px;padding:8px 10px;color:#334155;text-decoration:none;border-radius:6px;cursor:pointer;';
+        a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#64748B"><path d="'+item[2]+'"/></svg>' + item[0];
+        a.addEventListener('mouseenter', function(){ a.style.background='#EFF6FF'; a.style.color='#2563EB'; });
+        a.addEventListener('mouseleave', function(){ a.style.background='transparent'; a.style.color='#334155'; });
+        if (item[0] === 'Archive') { a.style.color = '#BE185D'; a.style.borderTop='1px solid #EDF2F7'; a.style.marginTop='4px'; a.style.paddingTop='10px'; }
+        menu.appendChild(a);
+      });
+      // Position
+      var rect = k.getBoundingClientRect();
+      menu.style.top  = (window.scrollY + rect.bottom + 4) + 'px';
+      menu.style.left = (window.scrollX + rect.right - 200) + 'px';
+      document.body.appendChild(menu);
     });
   });
 
