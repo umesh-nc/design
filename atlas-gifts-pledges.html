@@ -293,7 +293,9 @@ select.fld { appearance: none; background-image: url("data:image/svg+xml,%3Csvg 
 .tab .ct { font-size:10.5px; padding:1px 7px; border-radius:99px; background:var(--surface); margin-left:6px; }
 .tab.on .ct { background:var(--blue-pale); color:var(--blue); }
 
-.quick-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:22px; }
+.quick-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:22px; }
+@media (max-width: 1100px) { .quick-row { grid-template-columns:repeat(3,1fr); } }
+@media (max-width: 720px)  { .quick-row { grid-template-columns:repeat(2,1fr); } }
 .qa-card { display:flex; align-items:center; gap:12px; padding:14px 16px; background:white; border:1px solid var(--border); border-radius:12px; cursor:pointer; transition:border-color .15s, transform .15s; text-decoration:none; color:inherit; }
 .qa-card:hover { border-color:var(--blue); transform:translateY(-1px); }
 .qa-card .ico { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -596,6 +598,10 @@ body {
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h10v8H2zM5 3v8M9 3v8"/></svg>
         View pledges
       </a>
+      <a class="btn btn-ghost" href="atlas-batch-entry.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h10M2 7h10M2 11h10"/></svg>
+        New batch
+      </a>
       <a class="btn btn-primary" href="atlas-gift-entry.html">
         <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg>
         Record gift
@@ -616,6 +622,10 @@ body {
     <a class="qa-card" href="atlas-pledge-create.html">
       <div class="ico amber"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 3v10M9 3v10"/></svg></div>
       <div><div class="nm">New pledge</div><div class="desc">Multi-payment commitment</div></div>
+    </a>
+    <a class="qa-card" href="atlas-batch-entry.html">
+      <div class="ico" style="background:#FEF3C7;color:#92400E"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="12" height="12" rx="1.5"/><path d="M2 5h12M2 9h12M5 5v9M9 5v9"/></svg></div>
+      <div><div class="nm">Batch entry</div><div class="desc">Spreadsheet-style for 5+ gifts</div></div>
     </a>
     <a class="qa-card" href="atlas-pledge-payment.html">
       <div class="ico purple"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8l4 4 8-9"/></svg></div>

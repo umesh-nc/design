@@ -586,6 +586,7 @@ body {
       <div class="page-sub">Pre-built standard reports and saved views your team uses every week.</div>
     </div>
     <div class="flex gap-8">
+      <a class="btn btn-ghost" href="atlas-report-queue-scheduler.html"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 8.5h5"/></svg> Queue &amp; schedule</a>
       <button class="btn btn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v3.5M7 9v.5"/></svg> Schedule a recurring report</button>
       <button class="btn btn-primary"><svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M7 2v10M2 7h10"/></svg> Build a custom report</button>
     </div>
@@ -597,11 +598,16 @@ body {
       <h4>Categories</h4>
       <div class="cat-row on">
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 11l3-3 2 2 3-3 2 2"/><rect x="2" y="2" width="10" height="10" rx="1.5"/></svg>
-        All reports <span class="ct">26</span>
+        All reports <span class="ct">29</span>
+      </div>
+      <div class="cat-row">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 11l4-4 2 2 4-4"/><path d="M9 5h3v3"/></svg>
+        <span style="display:flex;align-items:center;gap:6px">Just added <span style="background:linear-gradient(135deg,#C8A04A,#B7892E);color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px;letter-spacing:.05em;text-transform:uppercase">NEW</span></span>
+        <span class="ct" style="color:#C8A04A;font-weight:700">3</span>
       </div>
       <div class="cat-row">
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
-        Gifts <span class="ct">8</span>
+        Gifts <span class="ct">9</span>
       </div>
       <div class="cat-row">
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
@@ -609,7 +615,7 @@ body {
       </div>
       <div class="cat-row">
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="10" height="8" rx="1.5"/><path d="M5 3v8M9 3v8"/></svg>
-        Pledges <span class="ct">4</span>
+        Pledges <span class="ct">5</span>
       </div>
       <div class="cat-row">
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 1.5h8v11l-2-1.5L7 12.5l-2-1.5-2 1.5z"/></svg>
@@ -636,6 +642,141 @@ body {
     </aside>
 
     <main>
+
+      <!-- ════ JUST ADDED · featured new reports ════ -->
+      <style>
+        .new-section { margin-bottom: 26px; }
+        .new-section .nh { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+        .new-section .nh h3 { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--text); letter-spacing: -.01em; }
+        .new-section .nh .badge {
+          font-size: 9.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+          background: linear-gradient(135deg, #C8A04A, #B7892E); color: white;
+          padding: 3px 9px; border-radius: 99px;
+        }
+        .new-section .nh .nl { font-size: 12.5px; color: var(--text-3); margin-left: auto; }
+        .new-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 14px; }
+        .new-card {
+          position: relative; overflow: hidden; border-radius: 14px;
+          padding: 22px 24px 20px; color: white;
+          text-decoration: none; display: flex; flex-direction: column;
+          min-height: 200px; transition: all .18s;
+          box-shadow: 0 6px 20px rgba(15,23,42,.08);
+        }
+        .new-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(15,23,42,.16); }
+        .new-card::before {
+          content: ''; position: absolute; top: -40px; right: -40px;
+          width: 160px; height: 160px; border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,255,255,.10), transparent 70%);
+          pointer-events: none;
+        }
+        .new-card .new-tag {
+          font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+          background: rgba(255,255,255,.18); padding: 3px 8px; border-radius: 99px;
+          align-self: flex-start; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .new-card .new-tag .pulse {
+          width: 6px; height: 6px; border-radius: 50%; background: #FCD34D;
+          box-shadow: 0 0 0 0 rgba(252,211,77,.6); animation: pulse 1.6s infinite;
+        }
+        @keyframes pulse {
+          0% { box-shadow: 0 0 0 0 rgba(252,211,77,.6); }
+          70% { box-shadow: 0 0 0 8px rgba(252,211,77,0); }
+          100% { box-shadow: 0 0 0 0 rgba(252,211,77,0); }
+        }
+        .new-card .ico-big {
+          width: 44px; height: 44px; border-radius: 11px; background: rgba(255,255,255,.16);
+          display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
+        }
+        .new-card .ico-big svg { width: 22px; height: 22px; }
+        .new-card .nc-title {
+          font-family: 'DM Serif Display', serif; font-size: 20px; line-height: 1.18;
+          margin-bottom: 6px; letter-spacing: -.01em;
+        }
+        .new-card .nc-desc { font-size: 12.5px; line-height: 1.5; opacity: .85; margin-bottom: 14px; flex: 1; }
+        .new-card .nc-stats { display: flex; gap: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.18); }
+        .new-card .nc-stat .v { font-family: 'DM Serif Display', serif; font-size: 15px; line-height: 1; }
+        .new-card .nc-stat .l { font-size: 9.5px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; opacity: .72; margin-top: 3px; }
+        .new-card .nc-cta {
+          font-size: 11.5px; font-weight: 600; margin-top: 14px;
+          display: inline-flex; align-items: center; gap: 5px; opacity: .95;
+        }
+        .nc-tribute { background: linear-gradient(135deg, #4C1D95 0%, #7C3AED 100%); }
+        .nc-pledge  { background: linear-gradient(135deg, #78350F 0%, #C8A04A 100%); }
+        .nc-queue   { background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%); }
+      </style>
+      <div class="r-section new-section">
+        <div class="nh">
+          <h3>Just added</h3>
+          <span class="badge">3 new</span>
+          <span class="nl">Live reports your team can run today — designed for diocese workflows.</span>
+        </div>
+        <div class="new-grid">
+
+          <!-- Tribute Report — flagship card (wider) -->
+          <a class="new-card nc-tribute" href="atlas-tribute-report.html">
+            <span class="new-tag"><span class="pulse"></span>New report</span>
+            <div class="ico-big">
+              <svg viewBox="0 0 22 22" fill="none" stroke="#C4B5FD" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4C11 4 8 1.5 5.5 4c-2 2-1.5 5 0 7L11 17l5.5-6c1.5-2 2-5 0-7C14 1.5 11 4 11 4z"/>
+              </svg>
+            </div>
+            <div class="nc-title">Tribute &amp; In Honor Of</div>
+            <div class="nc-desc">Memorial, honor, birthday, and special-occasion gifts grouped by honoree. Pending notifications, total raised per type, and a one-click notification queue.</div>
+            <div class="nc-stats">
+              <div class="nc-stat"><div class="v" style="color:#C4B5FD">47</div><div class="l">Honorees</div></div>
+              <div class="nc-stat"><div class="v">124</div><div class="l">Gifts</div></div>
+              <div class="nc-stat"><div class="v" style="color:#5EEAD4">$89,450</div><div class="l">Raised</div></div>
+              <div class="nc-stat"><div class="v" style="color:#FCD34D">38</div><div class="l">Pending notifs</div></div>
+            </div>
+            <span class="nc-cta">Open report
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h6M7 4l2 2-2 2"/></svg>
+            </span>
+          </a>
+
+          <!-- Pledge Reports -->
+          <a class="new-card nc-pledge" href="atlas-pledge-reports.html">
+            <span class="new-tag"><span class="pulse"></span>New report</span>
+            <div class="ico-big">
+              <svg viewBox="0 0 22 22" fill="none" stroke="#FCD34D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="16" height="14" rx="1.6"/>
+                <path d="M7 4v14M15 4v14M3 9h16"/>
+              </svg>
+            </div>
+            <div class="nc-title">Capital Campaign Pledge</div>
+            <div class="nc-desc">Multi-year campaign pledge status — pledged vs. received vs. balance vs. overdue, with installment schedules and lapse risk.</div>
+            <div class="nc-stats">
+              <div class="nc-stat"><div class="v" style="color:#FCD34D">$8.74M</div><div class="l">Pledged</div></div>
+              <div class="nc-stat"><div class="v" style="color:#86EFAC">$5.12M</div><div class="l">Received</div></div>
+              <div class="nc-stat"><div class="v">148</div><div class="l">Active</div></div>
+            </div>
+            <span class="nc-cta">Open report
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h6M7 4l2 2-2 2"/></svg>
+            </span>
+          </a>
+
+          <!-- Report Queue &amp; Scheduler -->
+          <a class="new-card nc-queue" href="atlas-report-queue-scheduler.html">
+            <span class="new-tag"><span class="pulse"></span>New tool</span>
+            <div class="ico-big">
+              <svg viewBox="0 0 22 22" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="16" height="16" rx="1.6"/>
+                <path d="M3 8h16M7 12h8M7 15h5"/>
+              </svg>
+            </div>
+            <div class="nc-title">Report queue &amp; scheduler</div>
+            <div class="nc-desc">Chain reports into a sequence, save to folders, schedule recurring sends, and email packages to stakeholders.</div>
+            <div class="nc-stats">
+              <div class="nc-stat"><div class="v" style="color:#93C5FD">12</div><div class="l">Queues</div></div>
+              <div class="nc-stat"><div class="v">38</div><div class="l">Scheduled</div></div>
+              <div class="nc-stat"><div class="v" style="color:#86EFAC">94%</div><div class="l">On time</div></div>
+            </div>
+            <span class="nc-cta">Open scheduler
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h6M7 4l2 2-2 2"/></svg>
+            </span>
+          </a>
+
+        </div>
+      </div>
 
       <!-- Standard reports -->
       <div class="r-section">
@@ -730,6 +871,34 @@ body {
         <span>Last run: <strong style="color:var(--text-2)">Today, 8:14 AM</strong></span>
         <span class="dot"></span>
         <span>On-demand</span>
+      </div>
+    </a>
+
+    <a class="r-card" href="atlas-tribute-report.html">
+      <div class="head">
+        <div class="ico purple"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C7 3 5 1.5 3.5 3C2 4.5 2.5 6.5 3.5 7.5L7 11l3.5-3.5C11.5 6.5 12 4.5 10.5 3C9 1.5 7 3 7 3z"/></svg></div>
+        <div class="nm">Tribute &amp; In Honor Of</div>
+        <div class="right"><span class="tag" style="background:linear-gradient(135deg,#C8A04A,#B7892E);color:white;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase">NEW</span></div>
+      </div>
+      <div class="desc">Memorial, honor, birthday, and occasion gifts grouped by honoree. Includes pending notification queue.</div>
+      <div class="meta">
+        <span>Last run: <strong style="color:var(--text-2)">Today, 7:30 AM</strong></span>
+        <span class="dot"></span>
+        <span>On-demand</span>
+      </div>
+    </a>
+
+    <a class="r-card" href="atlas-pledge-reports.html">
+      <div class="head">
+        <div class="ico amber"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="10" height="8" rx="1.3"/><path d="M5 3v8M9 3v8M2 6h10"/></svg></div>
+        <div class="nm">Capital Campaign Pledge Report</div>
+        <div class="right"><span class="tag" style="background:linear-gradient(135deg,#C8A04A,#B7892E);color:white;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:.04em;text-transform:uppercase">NEW</span></div>
+      </div>
+      <div class="desc">Multi-year campaign pledge status — pledged vs. received vs. balance, installment schedules, lapse risk.</div>
+      <div class="meta">
+        <span>Last run: <strong style="color:var(--text-2)">Today, 6:00 AM</strong></span>
+        <span class="dot"></span>
+        <span>Daily 6 AM</span>
       </div>
     </a>
 

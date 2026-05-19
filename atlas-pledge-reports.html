@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas — Capital Campaign Pledge Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #0E1E35; --navy2: #152844; --navy3: #1E3A5F;
+      --blue:   #2563EB; --bluel: #DBEAFE; --bluep: #EFF6FF;
+      --green:  #15803D; --greenl:#DCFCE7; --greend:#14532D;
+      --amber:  #D97706; --amberl:#FEF3C7; --amberd:#78350F;
+      --rose:   #BE185D; --rosel: #FCE7F3; --rosed: #881337;
+      --teal:   #0D9488; --teall: #CCFBF1;
+      --purp:   #7C3AED; --purpl: #EDE9FE;
+      --gold:   #B45309; --goldl: #FEF9E7;
+      --text:   #0F172A; --text2: #334155; --text3: #64748B; --text4: #94A3B8;
+      --border: #E2E8F0; --border2:#CBD5E1; --surf: #F8FAFC;
+    }
+    html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'DM Sans', sans-serif; background: #EEF2F7; color: var(--text); }
+
+    /* ── TOP CHROME ── */
+    .page-chrome { background: var(--navy); padding: 0 28px; height: 52px; display: flex; align-items: center; gap: 14px; }
+    .chrome-mark { width: 28px; height: 28px; background: var(--blue); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .chrome-mark svg { width: 13px; height: 13px; }
+    .chrome-title { font-family: 'DM Serif Display', serif; font-size: 15px; color: white; }
+    .chrome-sep { width: 1px; height: 18px; background: rgba(255,255,255,.12); }
+    .chrome-trail { font-size: 12px; color: rgba(255,255,255,.45); display: flex; align-items: center; gap: 5px; }
+    .chrome-trail b { color: rgba(255,255,255,.75); font-weight: 500; }
+    .chrome-right { margin-left: auto; display: flex; gap: 8px; }
+    .c-btn { padding: 5px 13px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .12s; display: flex; align-items: center; gap: 5px; }
+    .c-btn svg { width: 11px; height: 11px; }
+    .c-btn-ghost { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.7); }
+    .c-btn-ghost:hover { background: rgba(255,255,255,.14); }
+    .c-btn-primary { background: var(--blue); color: white; border: none; }
+    .c-btn-primary:hover { background: #1D4ED8; }
+
+    /* ── CAMPAIGN BANNER ── */
+    .campaign-banner { background: var(--navy2); border-bottom: 1px solid rgba(255,255,255,.06); padding: 14px 28px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .cb-title { font-family: 'DM Serif Display', serif; font-size: 19px; color: white; }
+    .cb-sub   { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 2px; }
+    .cb-stats { display: flex; gap: 0; margin-left: auto; background: rgba(0,0,0,.2); border-radius: 9px; overflow: hidden; flex-shrink: 0; }
+    .cbs { padding: 9px 16px; border-right: 1px solid rgba(255,255,255,.07); text-align: center; }
+    .cbs:last-child { border-right: none; }
+    .cbs-val { font-family: 'DM Serif Display', serif; font-size: 18px; color: white; line-height: 1; }
+    .cbs-val.gold  { color: #FCD34D; }
+    .cbs-val.green { color: #86EFAC; }
+    .cbs-val.rose  { color: #FDA4AF; }
+    .cbs-val.amber { color: #FDE68A; }
+    .cbs-lbl { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.38); margin-top: 2px; }
+    /* Campaign progress bar */
+    .campaign-progress { background: rgba(0,0,0,.2); padding: 8px 28px; display: flex; align-items: center; gap: 12px; }
+    .cp-label { font-size: 11px; color: rgba(255,255,255,.4); white-space: nowrap; }
+    .cp-track { flex: 1; height: 5px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
+    .cp-fill-pledged { height: 100%; border-radius: 3px 0 0 3px; background: #FCD34D; display: inline-block; }
+    .cp-fill-paid    { height: 100%; position: absolute; left: 0; top: 0; border-radius: 3px; background: #86EFAC; }
+    .cp-track-inner  { position: relative; width: 100%; height: 100%; }
+    .cp-pct   { font-size: 11px; font-weight: 700; color: #FCD34D; white-space: nowrap; }
+
+    /* ── MAIN CONTENT ── */
+    .main { padding: 20px 28px 60px; display: flex; flex-direction: column; gap: 20px; }
+
+    /* ── REPORT SWITCHER ── */
+    .report-tabs { display: flex; gap: 4px; }
+    .rt { padding: 8px 18px; border-radius: 8px 8px 0 0; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); border-bottom: none; background: var(--surf); color: var(--text3); font-family: 'DM Sans', sans-serif; transition: all .12s; }
+    .rt.active { background: white; color: var(--text); font-weight: 600; border-color: var(--border); }
+    .rt.delinq.active { background: #FFF5F5; color: var(--rose); border-color: #FBCFE8; }
+    .report-tab-body { background: white; border: 1px solid var(--border); border-radius: 0 12px 12px 12px; overflow: hidden; }
+    .delinq-active .report-tab-body { background: #FFF5F5; border-color: #FBCFE8; }
+
+    /* ── REPORT TOOLBAR ── */
+    .report-toolbar { padding: 12px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .delinq-active .report-toolbar { border-bottom-color: #FBCFE8; }
+    .rt-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .rt-sub   { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .rt-right { margin-left: auto; display: flex; gap: 7px; }
+    .btn { padding: 5px 12px; border-radius: 7px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; border: 1px solid var(--border); background: white; color: var(--text2); display: flex; align-items: center; gap: 5px; transition: all .12s; }
+    .btn:hover { background: var(--surf); }
+    .btn svg { width: 11px; height: 11px; }
+    .btn-navy { background: var(--navy); color: white; border-color: var(--navy); }
+    .btn-navy:hover { background: var(--navy2); }
+    .btn-rose { background: var(--rose); color: white; border-color: var(--rose); }
+    .btn-rose:hover { background: #9D174D; }
+    .btn-amber { background: var(--amber); color: white; border-color: var(--amber); }
+    .btn-amber:hover { background: #b45309; }
+
+    /* Filter row */
+    .filter-row { padding: 9px 18px; background: var(--surf); border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .delinq-active .filter-row { background: #FFF5F5; border-bottom-color: #FBCFE8; }
+    .filter-pill { padding: 4px 11px; border-radius: 20px; font-size: 11px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: white; color: var(--text3); font-family: 'DM Sans', sans-serif; transition: all .12s; }
+    .filter-pill.active { background: var(--navy); color: white; border-color: var(--navy); }
+    .filter-pill.rose   { }
+    .filter-pill.rose.active { background: var(--rose); border-color: var(--rose); color: white; }
+    .filter-search { padding: 5px 10px; border: 1px solid var(--border); border-radius: 7px; font-size: 12px; font-family: 'DM Sans', sans-serif; outline: none; background: white; color: var(--text); }
+    .filter-search:focus { border-color: var(--blue); }
+    .filter-select { padding: 5px 10px; border: 1px solid var(--border); border-radius: 7px; font-size: 12px; font-family: 'DM Sans', sans-serif; outline: none; background: white; color: var(--text); cursor: pointer; }
+
+    /* ── PLEDGE BALANCE TABLE ── */
+    .pledge-table-wrap { overflow-x: auto; }
+    .pledge-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .pledge-table th { position: sticky; top: 0; padding: 9px 14px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text3); background: var(--navy); color: rgba(255,255,255,.6); border-right: 1px solid rgba(255,255,255,.07); white-space: nowrap; cursor: pointer; user-select: none; }
+    .pledge-table th:last-child { border-right: none; }
+    .pledge-table th:hover { color: white; }
+    .pledge-table th .sort-arrow { display: inline-block; margin-left: 4px; opacity: .4; }
+    .pledge-table th.sorted .sort-arrow { opacity: 1; }
+    .pledge-table td { padding: 10px 14px; border-bottom: .5px solid var(--border); vertical-align: top; }
+    .pledge-table tr:last-child td { border-bottom: none; }
+    .pledge-table tr:hover td { background: var(--surf); }
+
+    /* Pledge row states */
+    .pledge-table tr.row-current td { }
+    .pledge-table tr.row-behind td  { background: #FFFBEB; }
+    .pledge-table tr.row-behind:hover td { background: #FEF3C7; }
+    .pledge-table tr.row-delinq td  { background: #FFF5F5; }
+    .pledge-table tr.row-delinq:hover td { background: #FFE8F0; }
+    .pledge-table tr.row-complete td { opacity: .65; }
+
+    /* Donor name cell */
+    .donor-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .donor-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .donor-parish { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; color: var(--text3); margin-top: 3px; }
+
+    /* Amount cells */
+    .amt { font-family: 'DM Mono', monospace; font-size: 12px; text-align: right; }
+    .amt-pledge   { color: var(--text); font-weight: 500; }
+    .amt-paid     { color: var(--green); }
+    .amt-balance  { color: var(--text); font-weight: 600; }
+    .amt-overdue  { color: var(--rose); font-weight: 700; }
+    .amt-zero     { color: var(--text4); }
+
+    /* Status badge */
+    .pledge-status { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .ps-current  { background: var(--greenl); color: var(--greend); }
+    .ps-behind   { background: var(--amberl); color: var(--amberd); }
+    .ps-delinq   { background: var(--rosel); color: var(--rosed); }
+    .ps-complete { background: var(--bluep); color: var(--blue); }
+    .ps-nostart  { background: var(--surf); color: var(--text3); border: 1px solid var(--border); }
+
+    /* Progress micro-bar */
+    .pledge-progress { display: flex; align-items: center; gap: 6px; }
+    .pp-track { width: 80px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+    .pp-fill  { height: 100%; border-radius: 2px; }
+    .pp-pct   { font-size: 11px; font-weight: 600; min-width: 30px; text-align: right; }
+
+    /* Next payment cell */
+    .next-pay { font-size: 12px; color: var(--text2); }
+    .next-pay.overdue { color: var(--rose); font-weight: 600; }
+    .next-pay.soon    { color: var(--amber); font-weight: 600; }
+    .np-date   { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+    /* Installment schedule mini */
+    .install-row { display: flex; gap: 3px; margin-top: 5px; flex-wrap: wrap; }
+    .inst-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .id-paid    { background: var(--green); }
+    .id-due     { background: var(--rose); }
+    .id-upcoming{ background: var(--border); }
+    .id-future  { background: var(--border); opacity: .4; }
+
+    /* ── DELINQUENCY SECTION ── */
+    .delinq-header { padding: 14px 18px; background: var(--rosed); display: flex; align-items: center; gap: 12px; }
+    .dh-icon { width: 32px; height: 32px; background: rgba(255,255,255,.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .dh-icon svg { width: 14px; height: 14px; color: white; }
+    .dh-title { font-family: 'DM Serif Display', serif; font-size: 17px; color: white; flex: 1; }
+    .dh-sub   { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 2px; }
+    .dh-count { font-family: 'DM Serif Display', serif; font-size: 28px; color: white; line-height: 1; }
+    .dh-count-lbl { font-size: 10px; color: rgba(255,255,255,.55); margin-top: 2px; text-align: center; }
+    .dh-amount { font-family: 'DM Serif Display', serif; font-size: 28px; color: #FDA4AF; line-height: 1; }
+
+    /* Delinquency severity bands */
+    .severity-band { display: flex; gap: 10px; padding: 10px 18px; border-bottom: 1px solid #FBCFE8; flex-wrap: wrap; }
+    .sb-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; flex: 1; min-width: 160px; }
+    .sb-item.critical { background: #FFF0F3; border: 1px solid #FBCFE8; }
+    .sb-item.high     { background: #FFFBEB; border: 1px solid #FDE68A; }
+    .sb-item.moderate { background: #EFF6FF; border: 1px solid var(--bluel); }
+    .sbi-val { font-family: 'DM Serif Display', serif; font-size: 22px; line-height: 1; }
+    .sbi-val.critical { color: var(--rosed); }
+    .sbi-val.high     { color: var(--amberd); }
+    .sbi-val.moderate { color: var(--blue); }
+    .sbi-label { font-size: 11px; font-weight: 600; margin-bottom: 1px; }
+    .sbi-label.critical { color: var(--rosed); }
+    .sbi-label.high     { color: var(--amberd); }
+    .sbi-label.moderate { color: var(--blue); }
+    .sbi-sub { font-size: 10px; color: var(--text3); }
+
+    /* Delinquency table specifics */
+    .days-overdue { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; }
+    .do-critical { color: var(--rosed); }
+    .do-high     { color: var(--amberd); }
+    .do-moderate { color: var(--blue); }
+    .last-contact { font-size: 11px; color: var(--text3); }
+    .action-btn { padding: 3px 9px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; border: none; transition: all .12s; white-space: nowrap; }
+    .ab-call   { background: var(--navy); color: white; }
+    .ab-call:hover { background: var(--navy2); }
+    .ab-letter { background: var(--amberl); color: var(--amberd); }
+    .ab-letter:hover { background: #FDE68A; }
+    .ab-final  { background: var(--rosel); color: var(--rosed); }
+    .ab-final:hover  { background: #FBCFE8; }
+    .ab-done   { background: var(--greenl); color: var(--greend); }
+    .priority-flag { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+    .pf-urgent { background: var(--rosel); color: var(--rosed); }
+    .pf-high   { background: var(--amberl); color: var(--amberd); }
+    .pf-watch  { background: var(--bluep); color: var(--blue); }
+
+    /* Row action bar (shown on hover in delinquency) */
+    .row-actions { display: flex; gap: 5px; }
+
+    /* Summary footer */
+    .report-footer { padding: 12px 18px; background: var(--navy); display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .rf-stat { text-align: center; }
+    .rf-val  { font-family: 'DM Serif Display', serif; font-size: 18px; color: white; line-height: 1; }
+    .rf-lbl  { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 2px; }
+    .rf-sep  { width: 1px; height: 30px; background: rgba(255,255,255,.1); }
+    .rf-note { flex: 1; font-size: 11px; color: rgba(255,255,255,.4); line-height: 1.6; text-align: right; }
+
+    /* Highlight row on select */
+    .pledge-table tr.selected td { background: var(--bluep) !important; }
+
+    /* ── GIFT OFFICER ALERT BOX ── */
+    .alert-box { background: var(--amberl); border: 1px solid #FDE68A; border-radius: 10px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px; margin: 14px 18px 0; }
+    .ab-icon { width: 28px; height: 28px; background: var(--amber); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ab-icon svg { width: 12px; height: 12px; color: white; }
+    .ab-text { flex: 1; font-size: 12px; color: var(--amberd); line-height: 1.65; }
+    .ab-action { padding: 5px 12px; background: var(--amber); color: white; border: none; border-radius: 7px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+
+    /* ── TABS ── */
+    .report-tabs-wrap { position: relative; }
+    .report-body-pledge { display: block; }
+    .report-body-delinq { display: none; }
+    .showing-delinq .report-body-pledge { display: none; }
+    .showing-delinq .report-body-delinq { display: block; }
+  </style>
+
+<style id="atlas-canon-sidebar-css">
+  /* Hide ONLY the top-level bespoke nav sidebar (direct-body child).
+     Inner feature sidebars (queue-lists, batch-folder rails) stay — they're
+     content, not navigation. */
+  body > aside.sidebar:not(.atlas-canon):not([id]) { display: none !important; }
+  /* Edge case: the original bespoke sidebar might exist deeper but be a system-
+     nav clone. Catch those too if they sit directly under <body>. */
+  body > aside.sidebar.atlas-canon ~ aside.sidebar { display: none !important; }
+
+  /* Shift page content to the right of the fixed sidebar */
+  body { padding-left: 220px !important; }
+
+  /* ── The canonical sidebar itself ── */
+  #atlas-canonical-sidebar.sidebar {
+    width: 220px !important;
+    background: #0E1E35 !important;
+    position: fixed !important;
+    top: 0 !important; left: 0 !important; bottom: 0 !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    z-index: 9999 !important;
+    margin: 0 !important; padding: 0 !important;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Logo */
+  #atlas-canonical-sidebar .sidebar-logo {
+    padding: 18px 18px 14px !important;
+    display: flex !important; align-items: center !important; gap: 9px !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    background: #0E1E35 !important;
+    flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .logo-mark {
+    width: 30px !important; height: 30px !important;
+    background: #2563EB !important; border-radius: 8px !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .logo-mark svg { width: 15px !important; height: 15px !important; }
+  #atlas-canonical-sidebar .logo-text-wrap { display: flex !important; flex-direction: column !important; }
+  #atlas-canonical-sidebar .logo-name { font-family: 'DM Serif Display', serif !important; font-size: 15px !important; color: white !important; line-height: 1 !important; }
+  #atlas-canonical-sidebar .logo-sub  { font-size: 9px !important; font-weight: 600 !important; letter-spacing: .1em !important; text-transform: uppercase !important; color: rgba(255,255,255,.3) !important; margin-top: 3px !important; }
+
+  /* Search */
+  #atlas-canonical-sidebar .sidebar-search {
+    margin: 12px 12px 6px !important;
+    background: rgba(255,255,255,.07) !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    display: flex !important; align-items: center !important; gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .sidebar-search svg {
+    width: 13px !important; height: 13px !important;
+    color: rgba(255,255,255,.3) !important; flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .sidebar-search input {
+    background: none !important; border: none !important; outline: none !important;
+    width: 100% !important; font-size: 12px !important;
+    color: rgba(255,255,255,.6) !important; font-family: 'DM Sans', sans-serif !important;
+    cursor: pointer !important;
+  }
+  #atlas-canonical-sidebar .sidebar-search input::placeholder { color: rgba(255,255,255,.3) !important; }
+
+  /* Scrollable middle */
+  #atlas-canonical-sidebar .sidebar-scroll {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  #atlas-canonical-sidebar .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+  #atlas-canonical-sidebar .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+  #atlas-canonical-sidebar .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+
+  /* Nav */
+  #atlas-canonical-sidebar .nav-group { padding: 8px 8px 0 !important; }
+  #atlas-canonical-sidebar .nav-label {
+    font-size: 9px !important; font-weight: 700 !important; letter-spacing: .1em !important;
+    text-transform: uppercase !important; color: rgba(255,255,255,.28) !important;
+    padding: 0 10px !important; margin-bottom: 4px !important;
+  }
+  #atlas-canonical-sidebar .nav-item {
+    display: flex !important; align-items: center !important; gap: 9px !important;
+    padding: 8px 10px !important; border-radius: 7px !important;
+    font-size: 12px !important; font-weight: 500 !important;
+    color: rgba(255,255,255,.55) !important; cursor: pointer !important;
+    transition: all .15s !important; margin-bottom: 1px !important;
+    text-decoration: none !important;
+  }
+  #atlas-canonical-sidebar .nav-item:hover { background: rgba(255,255,255,.07) !important; color: rgba(255,255,255,.85) !important; }
+  #atlas-canonical-sidebar .nav-item.active { background: #2563EB !important; color: white !important; }
+  #atlas-canonical-sidebar .nav-item svg { width: 14px !important; height: 14px !important; flex-shrink: 0 !important; }
+  #atlas-canonical-sidebar .nav-badge {
+    margin-left: auto !important; background: rgba(255,255,255,.12) !important;
+    color: rgba(255,255,255,.6) !important; border-radius: 10px !important;
+    padding: 1px 7px !important; font-size: 10px !important; font-weight: 600 !important;
+  }
+  #atlas-canonical-sidebar .nav-item.active .nav-badge { background: rgba(255,255,255,.2) !important; color: white !important; }
+  #atlas-canonical-sidebar .nav-badge.alert { background: #EF4444 !important; color: white !important; }
+
+  /* User block */
+  #atlas-canonical-sidebar .sidebar-user {
+    margin-top: auto !important; padding: 12px !important;
+    border-top: 1px solid rgba(255,255,255,.08) !important;
+    display: flex !important; align-items: center !important; gap: 9px !important;
+    background: #0E1E35 !important; flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .user-avatar {
+    width: 30px !important; height: 30px !important; border-radius: 50% !important;
+    background: #2563EB !important; display: flex !important;
+    align-items: center !important; justify-content: center !important;
+    font-size: 11px !important; font-weight: 700 !important; color: white !important;
+    flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .user-name { font-size: 12px !important; font-weight: 500 !important; color: rgba(255,255,255,.75) !important; }
+  #atlas-canonical-sidebar .user-role { font-size: 10px !important; color: rgba(255,255,255,.35) !important; margin-top: 1px !important; }
+
+  /* Remove duplicate "GiveCentral Atlas" brand mark from chrome bar — kept only in sidebar */
+  .chrome > .chrome-mark, .chrome > .chrome-name, .chrome > .chrome-sep:first-of-type,
+  .page-chrome > .chrome-mark, .page-chrome > .chrome-title, .page-chrome > .chrome-sep:first-of-type {
+    display: none !important;
+  }
+</style>
+
+</head>
+<body>
+
+<!-- ════ Atlas canonical sidebar (auto-injected) ════ -->
+<aside class="sidebar atlas-canon" id="atlas-canonical-sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+      </svg>
+    </div>
+    <div class="logo-text-wrap">
+      <span class="logo-name">GiveCentral</span>
+      <span class="logo-sub">Atlas CRM</span>
+    </div>
+  </div>
+
+  <a href="atlas-search.html" style="display:block;text-decoration:none">
+    <div class="sidebar-search">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+      <input type="text" placeholder="Search donors, gifts…" readonly>
+    </div>
+  </a>
+
+  <div class="sidebar-scroll">
+
+    <div class="nav-group">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="atlas-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="atlas-donors-list.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+        Donors
+        <span class="nav-badge">3,847</span>
+      </a>
+      <a class="nav-item" href="atlas-gifts-pledges.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+        Gifts &amp; pledges
+        <span class="nav-badge">142</span>
+      </a>
+      <a class="nav-item" href="atlas-campaign-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item active" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+        Reports
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Fundraising</div>
+      <a class="nav-item" href="atlas-pipeline.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+        Prospect pipeline
+        <span class="nav-badge">28</span>
+      </a>
+      <a class="nav-item" href="atlas-tasks.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+        Tasks &amp; reminders
+        <span class="nav-badge alert">7</span>
+      </a>
+      <a class="nav-item" href="atlas-communications.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+        Communications
+      </a>
+      <a class="nav-item" href="atlas-events-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 2v2M9 2v2"/></svg>
+        Events
+      </a>
+      <a class="nav-item" href="atlas-volunteer-management.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Volunteers
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Intelligence</div>
+      <a class="nav-item" href="atlas-guru-ai.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+        Guru AI
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item" href="atlas-users-roles.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Users &amp; roles
+      </a>
+      <a class="nav-item" href="atlas-integrations.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="4" cy="7" r="2.5"/><circle cx="10" cy="7" r="2.5"/><path d="M6.5 7h1"/></svg>
+        Integrations
+      </a>
+      <a class="nav-item" href="atlas-sync.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+        Sync
+      </a>
+      <a class="nav-item" href="atlas-location-manage.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Location portal
+      </a>
+    </div>
+
+  </div><!-- /.sidebar-scroll -->
+
+  <div class="sidebar-user">
+    <div class="user-avatar">SR</div>
+    <div>
+      <div class="user-name">Sarah Reynolds</div>
+      <div class="user-role">Development Director</div>
+    </div>
+  </div>
+</aside>
+
+
+<!-- TOP CHROME -->
+<div class="page-chrome">
+  <div class="chrome-mark"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/><path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/></svg></div>
+  <div class="chrome-title">GiveCentral Atlas</div>
+  <div class="chrome-sep"></div>
+  <div class="chrome-trail">Reports → Campaigns → <b>Cathedral Restoration Capital Campaign</b></div>
+  <div class="chrome-right">
+    <button class="c-btn c-btn-ghost">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 1v7M3 5.5l3 3 3-3"/><path d="M1.5 10.5h9"/></svg>
+      Export
+    </button>
+    <button class="c-btn c-btn-ghost">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1.5 3h9a.7.7 0 01.7.7v6a.7.7 0 01-.7.7h-9a.7.7 0 01-.7-.7V3.7a.7.7 0 01.7-.7z"/><path d="M1.5 3.5l4.5 3 4.5-3"/></svg>
+      Email report
+    </button>
+    <button class="c-btn c-btn-primary">Schedule queue</button>
+  </div>
+</div>
+
+<!-- CAMPAIGN BANNER -->
+<div class="campaign-banner">
+  <div>
+    <div class="cb-title">Cathedral Restoration Capital Campaign</div>
+    <div class="cb-sub">Diocese of St. Petersburg · Campaign window: Jan 2024 – Dec 2027 · Goal: $12,000,000</div>
+  </div>
+  <div class="cb-stats">
+    <div class="cbs"><div class="cbs-val gold">$8.74M</div><div class="cbs-lbl">Total pledged</div></div>
+    <div class="cbs"><div class="cbs-val green">$5.12M</div><div class="cbs-lbl">Cash received</div></div>
+    <div class="cbs"><div class="cbs-val amber">$3.62M</div><div class="cbs-lbl">Pledge balance</div></div>
+    <div class="cbs"><div class="cbs-val rose">$284K</div><div class="cbs-lbl">Overdue</div></div>
+    <div class="cbs"><div class="cbs-val">148</div><div class="cbs-lbl">Active pledges</div></div>
+  </div>
+</div>
+<div class="campaign-progress" style="background:var(--navy2);border-bottom:1px solid rgba(255,255,255,.06)">
+  <span class="cp-label">Cash received vs. pledged</span>
+  <div class="cp-track">
+    <div class="cp-track-inner">
+      <div style="position:absolute;top:0;left:0;width:72.8%;height:100%;background:#FCD34D;border-radius:3px;opacity:.4"></div>
+      <div style="position:absolute;top:0;left:0;width:42.7%;height:100%;background:#86EFAC;border-radius:3px"></div>
+    </div>
+  </div>
+  <span class="cp-pct">$5.12M / $8.74M pledged (58.6%) · <span style="color:#86EFAC">42.7% of goal paid in cash</span></span>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <div class="report-tabs-wrap" id="tabs-wrap">
+    <div class="report-tabs">
+      <button class="rt active" id="tab-balance" onclick="showTab('balance')">Pledge balance report</button>
+      <button class="rt delinq" id="tab-delinq" onclick="showTab('delinq')">Delinquency report <span id="delinq-count" style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:var(--rose);color:white;border-radius:50%;font-size:10px;font-weight:700;margin-left:4px">12</span></button>
+    </div>
+
+    <div class="report-tab-body">
+
+      <!-- ── PLEDGE BALANCE REPORT ── -->
+      <div class="report-body-pledge">
+        <div class="report-toolbar">
+          <div>
+            <div class="rt-title">Pledge balance report</div>
+            <div class="rt-sub">148 active pledges · as of May 12, 2026 · sorted by outstanding balance</div>
+          </div>
+          <div class="rt-right">
+            <button class="btn">
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 1v7M3 5.5l3 3 3-3"/><path d="M1.5 10.5h9"/></svg>
+              CSV
+            </button>
+            <button class="btn btn-navy">
+              <svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M3.5 5h5M3.5 7h3"/></svg>
+              PDF report
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <button class="filter-pill active" onclick="filterBalance('all',this)">All (148)</button>
+          <button class="filter-pill" onclick="filterBalance('current',this)">Current (118)</button>
+          <button class="filter-pill" onclick="filterBalance('behind',this)">Behind schedule (18)</button>
+          <button class="filter-pill" onclick="filterBalance('delinq',this)">Delinquent (12)</button>
+          <button class="filter-pill" onclick="filterBalance('complete',this)">Fulfilled (0)</button>
+          <div style="flex:1"></div>
+          <input type="text" class="filter-search" placeholder="Search donor…" style="width:180px">
+          <select class="filter-select">
+            <option>All gift officers</option>
+            <option>Mike Donovan</option>
+            <option>Sarah Reynolds</option>
+            <option>Janet Williams</option>
+          </select>
+          <select class="filter-select">
+            <option>All parishes</option>
+            <option>St. Michael's</option>
+            <option>Holy Cross</option>
+            <option>Cathedral</option>
+          </select>
+        </div>
+
+        <div class="pledge-table-wrap">
+          <table class="pledge-table" id="pledge-table">
+            <thead>
+              <tr>
+                <th style="width:200px">Donor <span class="sort-arrow">↕</span></th>
+                <th style="width:110px;text-align:right">Pledge total <span class="sort-arrow">↑</span></th>
+                <th style="width:105px;text-align:right">Paid to date <span class="sort-arrow">↕</span></th>
+                <th style="width:110px;text-align:right">Balance <span class="sort-arrow">↕</span></th>
+                <th style="width:95px;text-align:right">Overdue <span class="sort-arrow">↕</span></th>
+                <th style="width:130px">Progress</th>
+                <th style="width:80px">Status</th>
+                <th style="width:120px">Next payment</th>
+                <th style="width:130px">Installments</th>
+                <th style="width:110px">Gift officer</th>
+                <th style="width:90px">Parish</th>
+              </tr>
+            </thead>
+            <tbody id="pledge-tbody">
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-footer">
+          <div class="rf-stat"><div class="rf-val">148</div><div class="rf-lbl">Active pledges</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val">$8.74M</div><div class="rf-lbl">Total pledged</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val" style="color:#86EFAC">$5.12M</div><div class="rf-lbl">Cash received</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val" style="color:#FDE68A">$3.62M</div><div class="rf-lbl">Outstanding</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val" style="color:#FDA4AF">$284K</div><div class="rf-lbl">Overdue</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val">58.6%</div><div class="rf-lbl">Fulfilment rate</div></div>
+          <div class="rf-note">Generated May 12, 2026 · Atlas CRM · Confidential — development office use only</div>
+        </div>
+      </div>
+
+      <!-- ── DELINQUENCY REPORT ── -->
+      <div class="report-body-delinq">
+        <div class="delinq-header">
+          <div class="dh-icon"><svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M7 2v4M7 9v.5"/><path d="M1.5 12.5L7 1.5l5.5 11H1.5z"/></svg></div>
+          <div style="flex:1">
+            <div class="dh-title">Pledge delinquency report</div>
+            <div class="dh-sub">Cathedral Restoration Capital Campaign · as of May 12, 2026 · pledges with missed payments</div>
+          </div>
+          <div style="text-align:center;padding:0 16px">
+            <div class="dh-count">12</div>
+            <div class="dh-count-lbl">Delinquent pledges</div>
+          </div>
+          <div style="text-align:center;padding:0 16px;border-left:1px solid rgba(255,255,255,.12)">
+            <div class="dh-amount">$284,200</div>
+            <div class="dh-count-lbl">Total overdue amount</div>
+          </div>
+          <div style="margin-left:12px;display:flex;gap:7px">
+            <button class="btn btn-rose">
+              <svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round"><path d="M1.5 3h9a.7.7 0 01.7.7v6a.7.7 0 01-.7.7h-9a.7.7 0 01-.7-.7V3.7a.7.7 0 01.7-.7z"/><path d="M1.5 3.5l4.5 3 4.5-3"/></svg>
+              Email all officers
+            </button>
+            <button class="btn btn-navy">PDF</button>
+          </div>
+        </div>
+
+        <!-- Severity bands -->
+        <div class="severity-band">
+          <div class="sb-item critical">
+            <div><div class="sbi-val critical">4</div></div>
+            <div>
+              <div class="sbi-label critical">Critical — 90+ days</div>
+              <div class="sbi-sub">$142,500 overdue · immediate attention</div>
+            </div>
+          </div>
+          <div class="sb-item high">
+            <div><div class="sbi-val high">5</div></div>
+            <div>
+              <div class="sbi-label high">High — 30–89 days</div>
+              <div class="sbi-sub">$98,700 overdue · officer outreach needed</div>
+            </div>
+          </div>
+          <div class="sb-item moderate">
+            <div><div class="sbi-val moderate">3</div></div>
+            <div>
+              <div class="sbi-label moderate">Moderate — 1–29 days</div>
+              <div class="sbi-sub">$43,000 overdue · courtesy reminder</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert-box">
+          <div class="ab-icon"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M6 2v3.5M6 8v.5"/><path d="M1 11L6 1l5 10H1z"/></svg></div>
+          <div class="ab-text"><strong>4 pledges are over 90 days past due</strong> totalling $142,500. The O'Brien and Harrington pledges have had no contact in 60+ days. Recommend the development director personally reach out before the next board meeting (Jun 15). Legal review may be required for the Walsh estate pledge ($50,000 — executor change).</div>
+          <button class="ab-action">Create officer tasks</button>
+        </div>
+
+        <!-- Delinquency filter row -->
+        <div class="filter-row" style="background:white;border-bottom:1px solid #FBCFE8">
+          <button class="filter-pill rose active" onclick="filterDelinq('all',this)">All (12)</button>
+          <button class="filter-pill rose" onclick="filterDelinq('critical',this)">Critical 90+ days (4)</button>
+          <button class="filter-pill rose" onclick="filterDelinq('high',this)">30–89 days (5)</button>
+          <button class="filter-pill rose" onclick="filterDelinq('moderate',this)">1–29 days (3)</button>
+          <div style="flex:1"></div>
+          <select class="filter-select">
+            <option>All gift officers</option>
+            <option>Mike Donovan</option>
+            <option>Sarah Reynolds</option>
+          </select>
+          <select class="filter-select">
+            <option>Sort by: days overdue</option>
+            <option>Sort by: amount overdue</option>
+            <option>Sort by: pledge total</option>
+          </select>
+        </div>
+
+        <div class="pledge-table-wrap">
+          <table class="pledge-table" id="delinq-table">
+            <thead>
+              <tr>
+                <th style="width:30px"></th>
+                <th style="width:190px">Donor</th>
+                <th style="width:105px;text-align:right">Pledge total</th>
+                <th style="width:105px;text-align:right">Paid to date</th>
+                <th style="width:110px;text-align:right">Overdue amount</th>
+                <th style="width:80px;text-align:center">Days overdue</th>
+                <th style="width:100px">Installment</th>
+                <th style="width:120px">Last contact</th>
+                <th style="width:100px">Officer</th>
+                <th style="width:130px">Recommended action</th>
+                <th style="width:70px"></th>
+              </tr>
+            </thead>
+            <tbody id="delinq-tbody">
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-footer">
+          <div class="rf-stat"><div class="rf-val" style="color:#FDA4AF">12</div><div class="rf-lbl">Delinquent</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val" style="color:#FDA4AF">$284,200</div><div class="rf-lbl">Total overdue</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val">7.8%</div><div class="rf-lbl">% of active pledges</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val" style="color:#FDE68A">$3.34M</div><div class="rf-lbl">Current balance (ex. delinq)</div></div>
+          <div class="rf-sep"></div>
+          <div class="rf-stat"><div class="rf-val">48 days</div><div class="rf-lbl">Avg days overdue</div></div>
+          <div class="rf-note">Delinquency report · Atlas CRM · Confidential — restricted to development director and gift officers</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const PLEDGES = [
+  { id:1,  donor:"O'Brien, James & Patricia",  parish:"Cathedral",      officer:"Mike D.", pledge:500000, paid:250000, overdue:25000,  status:"delinq",  nextAmt:25000,  nextDate:"Mar 1, 2026", installments:[1,1,1,1,1,0,0,0,0,0], notes:"Major donor — personal call req." },
+  { id:2,  donor:"Harrington, David & Susan",  parish:"Cathedral",      officer:"Mike D.", pledge:250000, paid:100000, overdue:25000,  status:"delinq",  nextAmt:25000,  nextDate:"Mar 1, 2026", installments:[1,1,1,1,0,0,0,0,0,0], notes:"No contact in 60 days" },
+  { id:3,  donor:"Sullivan Family Foundation", parish:"All parishes",   officer:"Mike D.", pledge:200000, paid:160000, overdue:0,      status:"current", nextAmt:20000,  nextDate:"Jun 1, 2026",  installments:[1,1,1,1,1,1,1,1,0,0] },
+  { id:4,  donor:"Walsh Estate",               parish:"St. Michael's",  officer:"Sarah R.",pledge:150000, paid:50000,  overdue:50000,  status:"delinq",  nextAmt:50000,  nextDate:"Jan 1, 2026",  installments:[1,1,0,0,0,0,0,0,0,0], notes:"Executor change — legal review" },
+  { id:5,  donor:"Catholic Community Foundation",parish:"Diocese",      officer:"Mike D.", pledge:125000, paid:75000,  overdue:0,      status:"current", nextAmt:12500,  nextDate:"Jul 1, 2026",  installments:[1,1,1,1,1,1,0,0,0,0] },
+  { id:6,  donor:"First Catholic Bank",        parish:"All parishes",   officer:"Sarah R.",pledge:100000, paid:100000, overdue:0,      status:"current", nextAmt:0,      nextDate:"—",            installments:[1,1,1,1,1,1,1,1,1,1] },
+  { id:7,  donor:"Kim, Dr. Patricia",          parish:"Holy Cross",     officer:"Janet W.",pledge:75000,  paid:30000,  overdue:7500,   status:"behind",  nextAmt:7500,   nextDate:"Apr 1, 2026",  installments:[1,1,1,1,0,0,0,0,0,0] },
+  { id:8,  donor:"Morrison, Peter & Clare",    parish:"St. Catherine's",officer:"Sarah R.",pledge:50000,  paid:40000,  overdue:0,      status:"current", nextAmt:5000,   nextDate:"Jun 1, 2026",  installments:[1,1,1,1,1,1,1,1,0,0] },
+  { id:9,  donor:"Ramirez, Elena & Carlos",    parish:"St. Michael's",  officer:"Sarah R.",pledge:50000,  paid:20000,  overdue:10000,  status:"delinq",  nextAmt:10000,  nextDate:"Feb 1, 2026",  installments:[1,1,0,0,0,0,0,0,0,0] },
+  { id:10, donor:"Grant, Michael",             parish:"Cathedral",      officer:"Mike D.", pledge:40000,  paid:32000,  overdue:0,      status:"current", nextAmt:4000,   nextDate:"Jul 1, 2026",  installments:[1,1,1,1,1,1,1,1,0,0] },
+  { id:11, donor:"Costello, Barbara & Frank",  parish:"Holy Cross",     officer:"Janet W.",pledge:25000,  paid:10000,  overdue:5000,   status:"behind",  nextAmt:5000,   nextDate:"Apr 15, 2026", installments:[1,1,0,0,0,0,0,0,0,0] },
+  { id:12, donor:"Walsh, Thomas & Anne",       parish:"St. Michael's",  officer:"Sarah R.",pledge:20000,  paid:12000,  overdue:2000,   status:"behind",  nextAmt:2000,   nextDate:"May 1, 2026",  installments:[1,1,1,1,1,1,0,0,0,0] },
+  { id:13, donor:"Fitzgerald, Anne",           parish:"Holy Cross",     officer:"Janet W.",pledge:15000,  paid:15000,  overdue:0,      status:"current", nextAmt:0,      nextDate:"—",            installments:[1,1,1,1,1,1,1,1,1,1] },
+  { id:14, donor:"Mendez, Carlos & Maria",     parish:"Cathedral",      officer:"Mike D.", pledge:10000,  paid:6000,   overdue:0,      status:"current", nextAmt:2000,   nextDate:"Jun 15, 2026", installments:[1,1,1,0,0,0,0,0,0,0] },
+  { id:15, donor:"Nguyen, Thomas",             parish:"St. Catherine's",officer:"Sarah R.",pledge:10000,  paid:4000,   overdue:2000,   status:"delinq",  nextAmt:2000,   nextDate:"Mar 1, 2026",  installments:[1,1,0,0,0,0,0,0,0,0] },
+];
+
+const DELINQ_DATA = [
+  { id:1,  donor:"O'Brien, James & Patricia",  pledge:500000, paid:250000, overdue:25000,  days:92,  freq:"Quarterly $25K",    lastContact:"Feb 10, 2026", officer:"Mike D.", action:"call",   priority:"critical", note:"Major donor — personal outreach from development director" },
+  { id:4,  donor:"Walsh Estate",               pledge:150000, paid:50000,  overdue:50000,  days:131, freq:"Annual $50K",       lastContact:"Nov 8, 2025",  officer:"Sarah R.",action:"legal",  priority:"critical", note:"Executor change — legal review required" },
+  { id:2,  donor:"Harrington, David & Susan",  pledge:250000, paid:100000, overdue:25000,  days:91,  freq:"Quarterly $25K",    lastContact:"Nov 22, 2025", officer:"Mike D.", action:"call",   priority:"critical", note:"No contact in 60+ days" },
+  { id:16, donor:"Andrews, William & Grace",   pledge:80000,  paid:20000,  overdue:20000,  days:107, freq:"Semi-annual $20K",  lastContact:"Jan 5, 2026",  officer:"Sarah R.",action:"letter", priority:"critical", note:"Letter sent Feb 2025 — no response" },
+  { id:9,  donor:"Ramirez, Elena & Carlos",    pledge:50000,  paid:20000,  overdue:10000,  days:70,  freq:"Semi-annual $10K",  lastContact:"Mar 15, 2026", officer:"Sarah R.",action:"call",   priority:"high",     note:"" },
+  { id:7,  donor:"Kim, Dr. Patricia",          pledge:75000,  paid:30000,  overdue:7500,   days:41,  freq:"Quarterly $7,500",  lastContact:"Apr 1, 2026",  officer:"Janet W.",action:"call",   priority:"high",     note:"Left voicemail" },
+  { id:17, donor:"Murphy, Robert & Helen",     pledge:45000,  paid:18000,  overdue:9000,   days:55,  freq:"Quarterly $4,500",  lastContact:"Mar 28, 2026", officer:"Mike D.", action:"letter", priority:"high",     note:"Email bounced" },
+  { id:18, donor:"Collins, Brian & Marie",     pledge:30000,  paid:12000,  overdue:6000,   days:38,  freq:"Quarterly $3,000",  lastContact:"Apr 5, 2026",  officer:"Janet W.",action:"reminder",priority:"high",    note:"" },
+  { id:19, donor:"Doyle, Michael",             pledge:20000,  paid:8000,   overdue:4000,   days:32,  freq:"Annual $4,000",     lastContact:"Apr 10, 2026", officer:"Sarah R.",action:"reminder",priority:"high",    note:"" },
+  { id:11, donor:"Costello, Barbara & Frank",  pledge:25000,  paid:10000,  overdue:5000,   days:27,  freq:"Semi-annual $5K",   lastContact:"Apr 15, 2026", officer:"Janet W.",action:"reminder",priority:"moderate", note:"" },
+  { id:15, donor:"Nguyen, Thomas",             pledge:10000,  paid:4000,   overdue:2000,   days:14,  freq:"Annual $2,000",     lastContact:"Apr 28, 2026", officer:"Sarah R.",action:"reminder",priority:"moderate", note:"" },
+  { id:20, donor:"Sullivan, Catherine",        pledge:12000,  paid:6000,   overdue:2000,   days:8,   freq:"Semi-annual $2K",   lastContact:"May 3, 2026",  officer:"Mike D.", action:"reminder",priority:"moderate", note:"Payment likely in transit" },
+];
+
+// ── RENDER PLEDGE TABLE ───────────────────────────────────────────────────────
+function renderPledge(filter) {
+  const rows = filter === 'all' ? PLEDGES : PLEDGES.filter(p => p.status === filter);
+  document.getElementById('pledge-tbody').innerHTML = rows.map(p => {
+    const pct = Math.round((p.paid / p.pledge) * 100);
+    const balance = p.pledge - p.paid;
+    const fillColor = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : '#94A3B8';
+    const rowClass = p.status === 'delinq' ? 'row-delinq' : p.status === 'behind' ? 'row-behind' : p.status === 'current' && p.paid === p.pledge ? 'row-complete' : 'row-current';
+    const spClass = p.status === 'delinq' ? 'ps-delinq' : p.status === 'behind' ? 'ps-behind' : p.paid === p.pledge ? 'ps-complete' : 'ps-current';
+    const spLabel = p.status === 'delinq' ? 'Delinquent' : p.status === 'behind' ? 'Behind' : p.paid === p.pledge ? 'Fulfilled' : 'Current';
+    const instDots = p.installments.map(i => {
+      const cls = i === 1 ? 'id-paid' : (p.status==='delinq' && p.installments.indexOf(i,p.installments.lastIndexOf(1)+1) === p.installments.indexOf(i)) ? 'id-due' : 'id-upcoming';
+      return `<div class="inst-dot ${cls}"></div>`;
+    }).join('');
+    const nextClass = p.status === 'delinq' ? 'overdue' : p.status === 'behind' ? 'soon' : '';
+    return `<tr class="${rowClass}">
+      <td>
+        <div class="donor-name">${p.donor}</div>
+        <div class="donor-parish">
+          <svg viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" width="9" height="9"><path d="M4.5 1C3 1 2.5 2 2.5 3c0 2 2 5 2 5s2-3 2-5c0-1-.5-2-2-2z"/></svg>
+          ${p.parish}
+        </div>
+      </td>
+      <td class="amt amt-pledge">$${p.pledge.toLocaleString()}</td>
+      <td class="amt amt-paid">$${p.paid.toLocaleString()}</td>
+      <td class="amt amt-balance">$${balance.toLocaleString()}</td>
+      <td class="amt ${p.overdue > 0 ? 'amt-overdue' : 'amt-zero'}">${p.overdue > 0 ? '$'+p.overdue.toLocaleString() : '—'}</td>
+      <td>
+        <div class="pledge-progress">
+          <div class="pp-track"><div class="pp-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+          <span class="pp-pct" style="color:${fillColor}">${pct}%</span>
+        </div>
+      </td>
+      <td><span class="pledge-status ${spClass}">${spLabel}</span></td>
+      <td>
+        <div class="next-pay ${nextClass}">${p.nextAmt > 0 ? '$'+p.nextAmt.toLocaleString() : 'Fulfilled'}</div>
+        <div class="np-date">${p.nextDate}</div>
+      </td>
+      <td>
+        <div class="install-row">${instDots}</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">${p.installments.filter(i=>i===1).length} of ${p.installments.length} paid</div>
+      </td>
+      <td style="font-size:11px;color:var(--text2)">${p.officer}</td>
+      <td style="font-size:11px;color:var(--text3)">${p.parish}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── RENDER DELINQUENCY TABLE ──────────────────────────────────────────────────
+function renderDelinq(filter) {
+  const rows = filter === 'all' ? DELINQ_DATA :
+    filter === 'critical' ? DELINQ_DATA.filter(d => d.days >= 90) :
+    filter === 'high'     ? DELINQ_DATA.filter(d => d.days >= 30 && d.days < 90) :
+    DELINQ_DATA.filter(d => d.days < 30);
+
+  const actionMap = {
+    call:    { label:'Personal call', cls:'ab-call' },
+    legal:   { label:'Legal review',  cls:'ab-final' },
+    letter:  { label:'Formal letter', cls:'ab-letter' },
+    reminder:{ label:'Send reminder', cls:'ab-letter' },
+  };
+  const priorityMap = {
+    critical:{ label:'Critical', cls:'pf-urgent' },
+    high:    { label:'High',     cls:'pf-high' },
+    moderate:{ label:'Watch',    cls:'pf-watch' },
+  };
+
+  document.getElementById('delinq-tbody').innerHTML = rows.map(d => {
+    const dayClass = d.days >= 90 ? 'do-critical' : d.days >= 30 ? 'do-high' : 'do-moderate';
+    const pf = priorityMap[d.priority];
+    const ac = actionMap[d.action];
+    const pct = Math.round((d.paid / d.pledge) * 100);
+    return `<tr class="row-delinq">
+      <td style="padding:8px 10px 8px 14px"><span class="priority-flag ${pf.cls}">${pf.label}</span></td>
+      <td>
+        <div class="donor-name">${d.donor}</div>
+        ${d.note ? `<div style="font-size:10px;color:var(--rose);margin-top:2px;font-style:italic">${d.note}</div>` : ''}
+      </td>
+      <td class="amt amt-pledge">$${d.pledge.toLocaleString()}</td>
+      <td class="amt amt-paid">$${d.paid.toLocaleString()} <span style="font-size:10px;color:var(--text3)">(${pct}%)</span></td>
+      <td class="amt amt-overdue">$${d.overdue.toLocaleString()}</td>
+      <td style="text-align:center"><span class="days-overdue ${dayClass}">${d.days}d</span></td>
+      <td style="font-size:11px;color:var(--text2)">${d.freq}</td>
+      <td>
+        <div class="last-contact">${d.lastContact}</div>
+      </td>
+      <td style="font-size:11px;color:var(--text2)">${d.officer}</td>
+      <td>
+        <div class="row-actions">
+          <button class="action-btn ${ac.cls}">${ac.label}</button>
+        </div>
+      </td>
+      <td style="padding-right:14px">
+        <button class="action-btn ab-done" title="Mark contacted">✓ Done</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────────
+function showTab(tab) {
+  const wrap = document.getElementById('tabs-wrap');
+  const isDelinq = tab === 'delinq';
+  wrap.className = 'report-tabs-wrap' + (isDelinq ? ' showing-delinq delinq-active' : '');
+  document.getElementById('tab-balance').className = 'rt' + (!isDelinq ? ' active' : '');
+  document.getElementById('tab-delinq').className  = 'rt delinq' + (isDelinq ? ' active' : '');
+}
+
+// ── FILTER HANDLERS ───────────────────────────────────────────────────────────
+function filterBalance(f, btn) {
+  document.querySelectorAll('.filter-row .filter-pill:not(.rose)').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPledge(f);
+}
+function filterDelinq(f, btn) {
+  document.querySelectorAll('.filter-pill.rose').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDelinq(f);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+renderPledge('all');
+renderDelinq('all');
+</script>
+<!-- ════════════════════════════════════════════════════════
+     Atlas Dead-CTA Rescue · v1
+     Single click-delegation script that catches button/anchor
+     clicks whose text matches an entry in ACTIONS. Fires a toast,
+     navigates, opens a modal, or toggles a state as appropriate.
+     Safe to load on every page — no-ops when the text isn't in
+     ACTIONS, leaving page-native handlers and the wire-script alone.
+     ════════════════════════════════════════════════════════ -->
+<style id="atlas-rescue-css">
+  #atlas-rescue-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background:#0F172A; color:white; padding:12px 18px; border-radius:10px; box-shadow:0 8px 24px rgba(15,23,42,.20); font-size:13px; font-family:'DM Sans',sans-serif; z-index:100010; display:flex; align-items:center; gap:10px; opacity:0; transition:opacity .2s,transform .2s; pointer-events:none; max-width: 480px; }
+  #atlas-rescue-toast.show { opacity:1; transform:translateX(-50%); pointer-events:auto; }
+  #atlas-rescue-toast .ico { width:22px; height:22px; border-radius:50%; background:#15803D; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0; }
+  #atlas-rescue-toast .msg { line-height:1.4; }
+</style>
+<div id="atlas-rescue-toast"><span class="ico">✓</span><span class="msg"></span></div>
+<script id="atlas-rescue">
+(function(){
+  if (window.__atlasRescue) return; window.__atlasRescue = true;
+
+  // ── Text → Action lookup table ──
+  // Match is case-insensitive, EXACT trimmed text equality (to avoid false positives like "Export" matching "Export forecast")
+  var ACTIONS = {
+    'email all officers':             { type:'toast', msg:'Email drafted to 6 officers · review before send' },
+    'create officer tasks':           { type:'toast', msg:'47 follow-up tasks created · one per overdue pledge' },
+    'pdf':                            { type:'toast', msg:'PDF downloaded' },
+
+    'import csv':                  { type:'toast', msg:'CSV import started · drop or pick a file in the next step' },
+    'save draft':                  { type:'toast', msg:'Draft saved · resume anytime from Batches → Drafts' },
+    'csv file':                    { type:'toast', msg:'CSV import selected · choose file…' },
+    'excel':                       { type:'toast', msg:'Excel import selected · choose .xlsx file…' },
+    'pdf scan':                    { type:'toast', msg:'PDF OCR scan · drop a check image or pledge form' },
+    'gifts & pledges':             { type:'route', dest:'atlas-gifts-pledges.html' },
+    'tribute report':              { type:'route', dest:'atlas-tribute-report.html' },
+    'tribute & in honor of':       { type:'route', dest:'atlas-tribute-report.html' },
+    'pledge report':               { type:'route', dest:'atlas-pledge-reports.html' },
+    'pledge reports':              { type:'route', dest:'atlas-pledge-reports.html' },
+    'capital campaign pledge report': { type:'route', dest:'atlas-pledge-reports.html' },
+    'report queue':                { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'queue & schedule':            { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'queue scheduler':             { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'schedule queue':              { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'schedule delivery':           { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'send notifications':          { type:'toast', msg:'Tribute notifications queued · 38 recipients' },
+    'export':                      { type:'toast', msg:'Export ready · CSV downloaded' },
+    'email report':                { type:'toast', msg:'Report emailed · delivered to recipients' },
+    'new queue':                   { type:'route', dest:'atlas-report-queue-scheduler.html' },
+
+    // Generic exports / downloads → simulated toast
+    'export':                      { type:'toast', msg:'Export ready · CSV downloaded to your device' },
+    'export csv':                  { type:'toast', msg:'CSV exported · check your downloads' },
+    'export pdf':                  { type:'toast', msg:'PDF generated · downloading now' },
+    'export all':                  { type:'toast', msg:'Bulk export queued · ready in ~60 seconds' },
+    'export list':                 { type:'toast', msg:'List exported as CSV · check downloads' },
+    'export roster':               { type:'toast', msg:'Roster exported · CSV ready' },
+    'export forecast':             { type:'toast', msg:'Forecast exported · CSV downloaded' },
+    'export profile':              { type:'toast', msg:'Profile export queued · ready in 30 seconds' },
+    'export exception report':     { type:'toast', msg:'Exception report exported · CSV ready' },
+    'download csv':                { type:'toast', msg:'CSV downloaded' },
+    'download pdf':                { type:'toast', msg:'PDF downloaded' },
+    'download report':             { type:'toast', msg:'Report downloaded · PDF ready' },
+    'pdf report':                  { type:'toast', msg:'PDF report generated · downloading now' },
+
+    // Email / send actions
+    'email to donor':              { type:'toast', msg:'Receipt emailed · delivered to donor inbox' },
+    'email statement':             { type:'toast', msg:'Statement emailed · donor will receive shortly' },
+    'email':                       { type:'route', dest:'atlas-email-compose.html' },
+    'schedule send':               { type:'toast', msg:'Scheduled · will send tomorrow at 9 AM' },
+    'schedule a recurring report': { type:'toast', msg:'Recurring report set up · weekly Monday 8 AM' },
+    'promote':                     { type:'toast', msg:'Promotion drafted · review before scheduling send' },
+
+    // Sync & duplicate management
+    'force re-sync now':           { type:'toast', msg:'Sync started · this may take 60 seconds' },
+    're-scan now':                 { type:'toast', msg:'Duplicate scan started · ETA 30 seconds' },
+    'mark not duplicate':          { type:'toast', msg:'Marked as separate records · removed from queue' },
+    'keep both as separate':       { type:'toast', msg:'Records kept separate · removed from queue' },
+    'apply recommendations':       { type:'toast', msg:'Recommendations applied · 3 fields merged' },
+    "save as decision (don't merge yet)": { type:'toast', msg:'Decision saved · Atlas will re-surface in 14 days' },
+    'snooze':                      { type:'toast', msg:'Snoozed 7 days · we\'ll re-surface next week' },
+
+    // Notifications
+    'mark all as read':            { type:'special', fn:'markAllRead' },
+    'clear cleared':               { type:'toast', msg:'Cleared notifications removed' },
+
+    // Bulk actions
+    'add to outreach list':        { type:'toast', msg:'23 donors added to outreach list' },
+    'add task':                    { type:'route', dest:'atlas-task-modal.html' },
+    'tag':                         { type:'toast', msg:'Tag "Q2 outreach" applied to 23 donors' },
+    'dismiss':                     { type:'toast', msg:'Dismissed' },
+
+    // Direct routes to existing pages
+    'record payment':              { type:'route', dest:'atlas-pledge-payment.html' },
+    'add custom payment':          { type:'route', dest:'atlas-pledge-payment.html' },
+    'sign in to atlas →':          { type:'route', dest:'atlas-dashboard.html' },
+    'sign in to atlas':            { type:'route', dest:'atlas-dashboard.html' },
+    'sign in with password':       { type:'route', dest:'atlas-dashboard.html' },
+    'email me a sign-in link':     { type:'toast', msg:'Magic-link emailed · check your inbox' },
+    'new event':                   { type:'special', fn:'newEvent' },
+    'event page':                  { type:'route', dest:'atlas-gala-management.html' },
+    'view audit log':              { type:'special', fn:'auditLog' },
+    'view configuration':          { type:'route', dest:'atlas-sync.html' },
+    'edit configuration':          { type:'route', dest:'atlas-sync.html' },
+    'view full donor profile':     { type:'route', dest:'atlas-donor-360.html' },
+    'log a note after the call':   { type:'route', dest:'atlas-log-activity.html' },
+    'flag an issue with this brief': { type:'toast', msg:'Issue flagged · DBA team will review' },
+    'brief history':               { type:'toast', msg:'Showing last 12 briefs for this donor' },
+    'review overdue pledges →':    { type:'route', dest:'atlas-pledges-list.html' },
+    'review mapping →':            { type:'route', dest:'atlas-sync.html' },
+    'view in docusign':            { type:'toast', msg:'Opening DocuSign · external app' },
+    'view envelope':               { type:'toast', msg:'Envelope detail · opening in DocuSign' },
+    'view voided':                 { type:'toast', msg:'Voided envelopes · 2 records' },
+    'view posted batch':           { type:'route', dest:'atlas-gifts-pledges.html' },
+    'fix errors inline':           { type:'toast', msg:'Error-fix mode · click any flagged row to correct it' },
+    'post all 14 (including warnings)': { type:'toast', msg:'14 gifts posted · receipts queued' },
+    'assign to supervisor':        { type:'toast', msg:'Batch reassigned to supervisor for review' },
+
+    // Donor-portal recurring-gift actions
+    'pause':                       { type:'special', fn:'togglePause' },
+    'resume':                      { type:'special', fn:'togglePause' },
+    'resume now':                  { type:'special', fn:'togglePause' },
+    'extend pause':                { type:'toast', msg:'Pause extended · resumes in 60 days' },
+    'cancel this gift':            { type:'toast', msg:'Recurring gift cancelled · final receipt will be sent' },
+    'cancel permanently':          { type:'toast', msg:'Cancelled permanently · thank you for your support' },
+    'change amount':               { type:'toast', msg:'Opening amount editor · current: $50/month' },
+    'update card':                 { type:'toast', msg:'Card update form · current: Visa ending 4242' },
+    'change designation':          { type:'toast', msg:'Designation picker · current: Annual Fund' },
+    'pay now':                     { type:'route', dest:'atlas-donate-onetime.html' },
+    'receipt':                     { type:'route', dest:'atlas-receipt-preview.html' },
+
+    // Reports
+    'build a custom report':       { type:'special', fn:'buildReport' },
+    'save as view':                { type:'toast', msg:'Saved as view · access from Reports → Saved' },
+
+    // Add / config
+    'add location':                { type:'route', dest:'atlas-location-manage.html' },
+    'add another seat':            { type:'toast', msg:'Seat added · capacity now 32' },
+    'connect →':                   { type:'toast', msg:'OAuth flow starting · approve in popup' },
+    'disconnect':                  { type:'toast', msg:'Integration disconnected · sync paused' },
+    'screening history':           { type:'toast', msg:'Showing last 90 days of screenings' },
+
+    // Editor / filter / paginate
+    'filter':                      { type:'toast', msg:'Filter panel · pick fields below' },
+    'filter view':                 { type:'toast', msg:'Filter view · pick fields below' },
+    'set targets':                 { type:'toast', msg:'Target editor · set per-officer goals' },
+    'settings':                    { type:'toast', msg:'Settings panel' },
+    'discard changes':             { type:'toast', msg:'Changes discarded · restored from saved' },
+    'add another seat':            { type:'toast', msg:'Seat row added · fill in attendee details' },
+
+    // Donate confirmation share buttons
+    'share on x':                  { type:'toast', msg:'Sharing to X · opening compose window' },
+    'share on facebook':           { type:'toast', msg:'Sharing to Facebook · opening dialog' },
+    'share on linkedin':           { type:'toast', msg:'Sharing to LinkedIn · opening dialog' },
+    'copy link':                   { type:'special', fn:'copyLink' },
+
+    // Guru AI
+    'query history':               { type:'toast', msg:'Showing last 30 queries' },
+    'saved queries':               { type:'toast', msg:'Showing saved queries · 8 saved' },
+
+    // Component library — keep dead (intentional demos)
+  };
+
+  // ── Toast helper ──
+  var toast = document.getElementById('atlas-rescue-toast');
+  function showToast(msg){
+    if (!toast) return;
+    toast.querySelector('.msg').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
+  }
+  window.atlasToast = showToast;
+
+  // ── Click handler ──
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('button, a');
+    if (!el) return;
+    // Skip if it has an existing href/onclick that isn't '#' or empty
+    var href = el.getAttribute('href');
+    if (href && href !== '#' && !el.dataset.atlasRescue) return;
+    var onc = el.getAttribute('onclick');
+    if (onc && onc.trim()) return;
+    // Skip if the click already had its default prevented by something earlier
+    if (e.defaultPrevented) return;
+
+    var txt = (el.textContent || '').trim().toLowerCase().replace(/\s+/g,' ');
+    if (!txt || txt.length > 80) return;
+
+    var act = ACTIONS[txt];
+    if (!act) {
+      // Try fuzzy: strip trailing arrows / counts / parens
+      var stripped = txt.replace(/\s*[→←]\s*$/,'').replace(/\s+\d+(\.\d+)?$/,'').replace(/\s*\(.*\)\s*$/,'').trim();
+      act = ACTIONS[stripped];
+    }
+    if (!act) return;
+
+    // Skip if a more specific page handler is going to fire (heuristic: button has an id that's referenced by scripts)
+    if (el.id) { /* not used currently */ }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (act.type === 'toast') {
+      showToast(act.msg);
+    } else if (act.type === 'route') {
+      showToast('Opening · ' + act.dest.replace('atlas-','').replace('.html','').replace(/-/g,' '));
+      setTimeout(function(){ window.location = act.dest; }, 250);
+    } else if (act.type === 'special') {
+      try { (RESCUE_SPECIALS[act.fn] || function(){})(el, e); }
+      catch(err){ console.error('rescue special failed', err); }
+    }
+  });
+
+  // ── Special handlers ──
+  var RESCUE_SPECIALS = {
+    markAllRead: function(){
+      // Find unread notification items and clear their unread state
+      var marks = document.querySelectorAll('.unread, .nf-row.unread, .notif-unread, [data-unread="true"]');
+      marks.forEach(function(n){ n.classList.remove('unread'); });
+      // Update badge counts
+      document.querySelectorAll('.unread-count, .nav-badge, .nf-count').forEach(function(b){ b.textContent = '0'; });
+      showToast('All notifications marked as read · 14 cleared');
+    },
+
+    togglePause: function(btn){
+      // Find the closest card-like ancestor and toggle paused state
+      var card = btn.closest('.gift-card, .rec-row, .recurring-card, .rg-row, [data-recurring], article, .card');
+      if (card) {
+        var paused = card.classList.toggle('paused');
+        if (paused) card.classList.remove('active');
+        else card.classList.add('active');
+        showToast(paused ? 'Recurring gift paused · resume anytime' : 'Recurring gift resumed · charges resume on next cycle');
+        // Update the button label if it says Pause/Resume
+        var curText = btn.textContent.trim().toLowerCase();
+        if (/pause/i.test(curText)) btn.textContent = 'Resume';
+        else if (/resume/i.test(curText)) btn.textContent = 'Pause';
+      } else {
+        showToast(btn.textContent.trim() + ' · status toggled');
+      }
+    },
+
+    copyLink: function(){
+      try { navigator.clipboard.writeText(window.location.href); } catch(_){}
+      showToast('Link copied to clipboard');
+    },
+
+    newEvent: function(){
+      // Open a slim event-creation modal
+      openSimpleModal({
+        title: 'Create new event',
+        sub: 'Quick-start · fill the basics, refine in the gala module',
+        fields: [
+          { id:'ne-name',  label:'Event name *',  type:'text',   placeholder:'e.g. Bishop\'s Annual Gala 2026' },
+          { id:'ne-type',  label:'Type',          type:'select', options:['Gala / dinner','Retreat','Cultivation lunch','Donor reception','Volunteer drive','Capital tour'] },
+          { id:'ne-date',  label:'Event date *',  type:'date',   value: new Date().toISOString().slice(0,10) },
+          { id:'ne-goal',  label:'Fundraising goal', type:'text', placeholder:'$50,000' },
+          { id:'ne-venue', label:'Venue',         type:'text',   placeholder:'e.g. Albany Capital Center' }
+        ],
+        cta: 'Create event →',
+        onSave: function(vals){
+          if (!vals['ne-name']) { alert('Name the event before saving.'); return false; }
+          showToast('Event created · "' + vals['ne-name'] + '" · opening gala management');
+          setTimeout(function(){ window.location = 'atlas-gala-management.html'; }, 600);
+          return true;
+        }
+      });
+    },
+
+    auditLog: function(){
+      // Open a slim audit-log modal showing the last 6 entries
+      var entries = [
+        { who:'Sarah Reynolds', what:'Created role "Custom · Region Coordinator"',     when:'12 min ago', tag:'role' },
+        { who:'Sarah Reynolds', what:'Invited jamie.morrison@diocese.org as Gift Officer', when:'Today, 9:14 AM', tag:'invite' },
+        { who:'Daniel Cho',     what:'Updated donor preferences for 24 records',         when:'Yesterday, 4:22 PM', tag:'data' },
+        { who:'System',         what:'Daily duplicate scan · 3 candidates surfaced',     when:'Yesterday, 6:00 AM', tag:'system' },
+        { who:'Bridget McCarthy', what:'Resigned consent for 1 donor (do-not-contact)',  when:'2 days ago',         tag:'consent' },
+        { who:'Sarah Reynolds', what:'Posted batch BX-2026-014 · 23 gifts · $87,400',    when:'3 days ago',         tag:'gift' }
+      ];
+      var html = '<div style="max-height:420px;overflow:auto">';
+      html += entries.map(function(e){
+        var col = {role:'#7C3AED', invite:'#2563EB', data:'#0D9488', system:'#64748B', consent:'#BE185D', gift:'#15803D'}[e.tag] || '#64748B';
+        return '<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #F1F5F9">' +
+                 '<div style="width:8px;height:8px;border-radius:50%;background:' + col + ';margin-top:6px;flex-shrink:0"></div>' +
+                 '<div style="flex:1">' +
+                   '<div style="font-size:13px;color:#0F172A">' + e.what + '</div>' +
+                   '<div style="font-size:11.5px;color:#64748B;margin-top:2px"><strong>' + e.who + '</strong> · ' + e.when + '</div>' +
+                 '</div>' +
+               '</div>';
+      }).join('');
+      html += '</div>';
+      openSimpleModal({
+        title: 'Audit log',
+        sub: 'Immutable 7-year record · all data + access changes',
+        rawBody: html,
+        cta: 'Export full log →',
+        onSave: function(){
+          showToast('Audit log export queued · CSV ready in 60s');
+          return true;
+        }
+      });
+    },
+
+    buildReport: function(){
+      // Open the Build-a-Custom-Report 4-step slide-over drawer
+      var existing = document.getElementById('rpt-drawer');
+      if (existing) { existing.remove(); document.getElementById('rpt-scrim').remove(); }
+      var scrim = document.createElement('div');
+      scrim.id = 'rpt-scrim';
+      scrim.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:100020;opacity:0;transition:opacity .18s';
+      document.body.appendChild(scrim);
+      var drawer = document.createElement('aside');
+      drawer.id = 'rpt-drawer';
+      drawer.style.cssText = 'position:fixed;top:0;right:0;height:100vh;width:min(580px,94vw);background:white;z-index:100021;box-shadow:-16px 0 40px rgba(15,23,42,.18);transform:translateX(100%);transition:transform .22s cubic-bezier(.22,.61,.36,1);display:flex;flex-direction:column;font-family:DM Sans,sans-serif';
+      drawer.innerHTML =
+        '<style>' +
+          '#rpt-drawer .rh{padding:18px 22px 14px;background:linear-gradient(135deg,#0F172A,#2563EB);color:white;display:flex;align-items:flex-start;gap:12px}' +
+          '#rpt-drawer .rh h3{margin:0;font-family:DM Serif Display,serif;font-size:20px;font-weight:400}' +
+          '#rpt-drawer .rh .sub{font-size:12px;opacity:.86;margin-top:3px}' +
+          '#rpt-drawer .rx{margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer}' +
+          '#rpt-drawer .stepper{padding:14px 22px;display:flex;gap:10px;border-bottom:1px solid #F1F5F9;background:#FAFAFA}' +
+          '#rpt-drawer .stepper .st{flex:1;font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:6px}' +
+          '#rpt-drawer .stepper .st .dot{width:22px;height:22px;border-radius:50%;background:#E2E8F0;color:#64748B;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700}' +
+          '#rpt-drawer .stepper .st.cur .dot{background:#2563EB;color:white}' +
+          '#rpt-drawer .stepper .st.done .dot{background:#15803D;color:white}' +
+          '#rpt-drawer .body{padding:20px 22px;overflow:auto;flex:1}' +
+          '#rpt-drawer .sec{margin-bottom:16px}' +
+          '#rpt-drawer .lbl{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#475569;margin-bottom:8px}' +
+          '#rpt-drawer .fld{width:100%;padding:9px 11px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;font-family:DM Sans,sans-serif;color:#0F172A;box-sizing:border-box;outline:none}' +
+          '#rpt-drawer .fld:focus{border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.10)}' +
+          '#rpt-drawer .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}' +
+          '#rpt-drawer .ds{padding:14px 16px;border:1.5px solid #E2E8F0;border-radius:10px;cursor:pointer;transition:all .15s;background:white}' +
+          '#rpt-drawer .ds:hover{border-color:#93C5FD;background:#F0F9FF}' +
+          '#rpt-drawer .ds.sel{border-color:#2563EB;background:#EFF6FF;box-shadow:0 0 0 2px rgba(37,99,235,.10)}' +
+          '#rpt-drawer .ds .ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;margin-bottom:7px}' +
+          '#rpt-drawer .ds .nm{font-size:13.5px;font-weight:600;color:#0F172A;margin-bottom:3px}' +
+          '#rpt-drawer .ds .dz{font-size:11px;color:#64748B;line-height:1.45}' +
+          '#rpt-drawer .cols{display:flex;flex-wrap:wrap;gap:6px}' +
+          '#rpt-drawer .col-chip{padding:6px 11px;border:1.5px solid #E2E8F0;border-radius:99px;font-size:12px;color:#475569;cursor:pointer;background:white;transition:all .12s;user-select:none}' +
+          '#rpt-drawer .col-chip:hover{border-color:#93C5FD}' +
+          '#rpt-drawer .col-chip.on{background:#2563EB;border-color:#2563EB;color:white;font-weight:600}' +
+          '#rpt-drawer .viz{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}' +
+          '#rpt-drawer .viz .vz{padding:14px 8px;border:1.5px solid #E2E8F0;border-radius:9px;text-align:center;cursor:pointer;font-size:11px;font-weight:600;color:#475569;transition:all .12s;background:white}' +
+          '#rpt-drawer .viz .vz:hover{border-color:#93C5FD}' +
+          '#rpt-drawer .viz .vz.sel{border-color:#2563EB;background:#EFF6FF;color:#2563EB}' +
+          '#rpt-drawer .viz .vz svg{width:26px;height:26px;margin-bottom:6px}' +
+          '#rpt-drawer .foot{padding:14px 22px;border-top:1px solid #F1F5F9;display:flex;gap:10px;background:#FAFAFA;align-items:center}' +
+          '#rpt-drawer .foot .l{font-size:11.5px;color:#64748B;display:flex;gap:6px;align-items:center}' +
+          '#rpt-drawer .btn-back{padding:8px 14px;background:white;border:1.5px solid #E2E8F0;border-radius:8px;font-size:12.5px;color:#475569;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:500}' +
+          '#rpt-drawer .btn-next{padding:8px 16px;background:linear-gradient(135deg,#2563EB,#1E40AF);color:white;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;margin-left:auto;box-shadow:0 4px 12px rgba(37,99,235,.25)}' +
+          '#rpt-drawer .pane{display:none}' +
+          '#rpt-drawer .pane.on{display:block;animation:fadeUp .22s ease}' +
+          '@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}' +
+        '</style>' +
+        '<div class="rh">' +
+          '<div style="width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.20);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l3-4 3 2 5-7"/><rect x="2" y="2" width="14" height="14" rx="1.5"/></svg></div>' +
+          '<div><h3>Build a custom report</h3><div class="sub">4 steps · save, schedule, or export as CSV / PDF</div></div>' +
+          '<div class="rx" id="rpt-x"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg></div>' +
+        '</div>' +
+        '<div class="stepper">' +
+          '<div class="st cur" data-i="1"><div class="dot">1</div>Dataset</div>' +
+          '<div class="st" data-i="2"><div class="dot">2</div>Columns</div>' +
+          '<div class="st" data-i="3"><div class="dot">3</div>Filters</div>' +
+          '<div class="st" data-i="4"><div class="dot">4</div>Save</div>' +
+        '</div>' +
+        '<div class="body">' +
+          '<div class="pane on" data-i="1">' +
+            '<div class="lbl">Pick a dataset</div>' +
+            '<div class="grid">' +
+              '<div class="ds sel" data-ds="gifts"><div class="ico" style="background:#2563EB">$</div><div class="nm">Gifts</div><div class="dz">All gifts, including pledge payments and recurring · 142,830 records</div></div>' +
+              '<div class="ds" data-ds="donors"><div class="ico" style="background:#7C3AED">P</div><div class="nm">Constituents</div><div class="dz">Individuals, households, organizations · 3,847 records</div></div>' +
+              '<div class="ds" data-ds="pledges"><div class="ico" style="background:#15803D">✓</div><div class="nm">Pledges</div><div class="dz">Pledge schedules + payment status · 218 active</div></div>' +
+              '<div class="ds" data-ds="campaigns"><div class="ico" style="background:#F59E0B">C</div><div class="nm">Campaigns</div><div class="dz">Goal vs. actual · appeal mix · 8 active</div></div>' +
+              '<div class="ds" data-ds="events"><div class="ico" style="background:#BE185D">E</div><div class="nm">Events</div><div class="dz">Galas, retreats · attendance + revenue · 14 records</div></div>' +
+              '<div class="ds" data-ds="custom"><div class="ico" style="background:#0D9488">✕</div><div class="nm">SQL · custom</div><div class="dz">Write your own query · advanced users only</div></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="pane" data-i="2">' +
+            '<div class="lbl">Pick columns <span style="font-weight:400;text-transform:none;color:#64748B;font-size:11px;margin-left:6px">click to toggle · drag in Phase 2 to reorder</span></div>' +
+            '<div class="cols" id="rpt-cols">' +
+              '<div class="col-chip on">Gift ID</div>' +
+              '<div class="col-chip on">Donor name</div>' +
+              '<div class="col-chip on">Amount</div>' +
+              '<div class="col-chip on">Gift date</div>' +
+              '<div class="col-chip">Campaign</div>' +
+              '<div class="col-chip">Appeal</div>' +
+              '<div class="col-chip">Fund / GL code</div>' +
+              '<div class="col-chip">Payment method</div>' +
+              '<div class="col-chip">Designation</div>' +
+              '<div class="col-chip">Soft credits</div>' +
+              '<div class="col-chip">Receipt #</div>' +
+              '<div class="col-chip">Officer</div>' +
+              '<div class="col-chip">Donor email</div>' +
+              '<div class="col-chip">Lifetime giving</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="pane" data-i="3">' +
+            '<div class="lbl">Date range</div>' +
+            '<div class="grid"><select class="fld"><option>This fiscal year (Jul 2025 – Jun 2026)</option><option>Last fiscal year</option><option>Last 30 days</option><option>Custom range</option></select><input class="fld" type="date" value="2025-07-01"></div>' +
+            '<div class="lbl" style="margin-top:14px">Filter by</div>' +
+            '<div class="grid">' +
+              '<div><select class="fld"><option>Campaign: All campaigns</option><option>Cathedral Capital 2026</option><option>Annual Appeal</option><option>Bishop\'s Gala</option></select></div>' +
+              '<div><select class="fld"><option>Fund: All funds</option><option>Cathedral Restoration</option><option>General Operating</option><option>Scholarship</option></select></div>' +
+              '<div><select class="fld"><option>Amount: Any</option><option>$1,000+</option><option>$10,000+</option><option>$50,000+</option></select></div>' +
+              '<div><select class="fld"><option>Status: All</option><option>Posted only</option><option>Pending</option><option>Voided excluded</option></select></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="pane" data-i="4">' +
+            '<div class="lbl">Visualization</div>' +
+            '<div class="viz">' +
+              '<div class="vz sel"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 10h18M9 5v14"/></svg>Table</div>' +
+              '<div class="vz"><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.6" stroke-linejoin="round"><path d="M3 19l5-7 4 3 6-9 3 5" stroke-linecap="round"/></svg>Line</div>' +
+              '<div class="vz"><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="14" width="3" height="6"/><rect x="9" y="9" width="3" height="11"/><rect x="15" y="5" width="3" height="15"/></svg>Bar</div>' +
+              '<div class="vz"><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.6" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l7 4" stroke-linecap="round"/></svg>Pie</div>' +
+            '</div>' +
+            '<div class="lbl" style="margin-top:18px">Report name <span style="color:#BE185D">*</span></div>' +
+            '<input class="fld" id="rpt-name" placeholder="e.g. Q2 Gift Officer performance">' +
+            '<div class="lbl" style="margin-top:14px">Schedule <span style="font-weight:400;text-transform:none;color:#64748B;font-size:11px;margin-left:6px">optional</span></div>' +
+            '<select class="fld" id="rpt-sched"><option>Don\'t schedule — run on demand</option><option>Daily · 7 AM</option><option>Weekly · Monday 8 AM</option><option>Monthly · 1st of month</option></select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="foot">' +
+          '<div class="l"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#15803D" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>Auto-saved</div>' +
+          '<button class="btn-back" id="rpt-back" style="display:none">← Back</button>' +
+          '<button class="btn-next" id="rpt-next">Next: Columns →</button>' +
+        '</div>';
+      document.body.appendChild(drawer);
+
+      // Animate in
+      requestAnimationFrame(function(){ scrim.style.opacity = 1; drawer.style.transform = 'none'; });
+
+      // Step machine
+      var step = 1;
+      function show(n){
+        step = n;
+        drawer.querySelectorAll('.pane').forEach(function(p){ p.classList.toggle('on', +p.dataset.i === n); });
+        drawer.querySelectorAll('.st').forEach(function(s){
+          s.classList.remove('cur','done');
+          var i = +s.dataset.i;
+          if (i === n) s.classList.add('cur');
+          else if (i < n) s.classList.add('done');
+        });
+        drawer.querySelector('#rpt-back').style.display = n > 1 ? '' : 'none';
+        var next = drawer.querySelector('#rpt-next');
+        if (n === 1) next.textContent = 'Next: Columns →';
+        else if (n === 2) next.textContent = 'Next: Filters →';
+        else if (n === 3) next.textContent = 'Next: Save →';
+        else if (n === 4) next.textContent = 'Save report ✓';
+      }
+      drawer.querySelectorAll('.ds').forEach(function(d){
+        d.addEventListener('click', function(){
+          drawer.querySelectorAll('.ds').forEach(function(x){ x.classList.remove('sel'); });
+          d.classList.add('sel');
+        });
+      });
+      drawer.querySelectorAll('.col-chip').forEach(function(c){
+        c.addEventListener('click', function(){ c.classList.toggle('on'); });
+      });
+      drawer.querySelectorAll('.vz').forEach(function(v){
+        v.addEventListener('click', function(){
+          drawer.querySelectorAll('.vz').forEach(function(x){ x.classList.remove('sel'); });
+          v.classList.add('sel');
+        });
+      });
+      drawer.querySelector('#rpt-next').addEventListener('click', function(){
+        if (step < 4) show(step + 1);
+        else {
+          var nameFld = drawer.querySelector('#rpt-name');
+          var name = nameFld ? nameFld.value.trim() : '';
+          if (!name) { alert('Name your report before saving.'); nameFld && nameFld.focus(); return; }
+          closeDrawer();
+          showToast('Saved · "' + name + '" appears in Reports → Saved views');
+        }
+      });
+      drawer.querySelector('#rpt-back').addEventListener('click', function(){ if (step > 1) show(step - 1); });
+      function closeDrawer(){
+        scrim.style.opacity = 0;
+        drawer.style.transform = 'translateX(100%)';
+        setTimeout(function(){ scrim.remove(); drawer.remove(); }, 240);
+      }
+      drawer.querySelector('#rpt-x').addEventListener('click', closeDrawer);
+      scrim.addEventListener('click', closeDrawer);
+    }
+  };
+
+  // ── Simple modal builder (used by newEvent, auditLog) ──
+  function openSimpleModal(opts){
+    var sc = document.createElement('div');
+    sc.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:100022;opacity:0;transition:opacity .15s';
+    var md = document.createElement('div');
+    md.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.97);width:min(520px,92vw);max-height:88vh;background:white;border-radius:14px;box-shadow:0 24px 64px rgba(15,23,42,.30);z-index:100023;opacity:0;transition:opacity .15s,transform .15s;font-family:DM Sans,sans-serif;overflow:hidden;display:flex;flex-direction:column';
+    var fldsHtml = '';
+    if (opts.fields) {
+      fldsHtml = opts.fields.map(function(f){
+        if (f.type === 'select') return '<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#475569;margin-bottom:6px">' + f.label + '</div><select id="' + f.id + '" style="width:100%;padding:9px 11px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;font-family:DM Sans,sans-serif;color:#0F172A;outline:none;box-sizing:border-box">' + f.options.map(function(o){ return '<option>' + o + '</option>'; }).join('') + '</select></div>';
+        return '<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#475569;margin-bottom:6px">' + f.label + '</div><input id="' + f.id + '" type="' + (f.type || 'text') + '" ' + (f.value ? 'value="' + f.value + '"' : '') + ' placeholder="' + (f.placeholder || '') + '" style="width:100%;padding:9px 11px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;font-family:DM Sans,sans-serif;color:#0F172A;outline:none;box-sizing:border-box"></div>';
+      }).join('');
+    }
+    md.innerHTML =
+      '<div style="padding:18px 22px 14px;background:linear-gradient(135deg,#1E3A8A,#2563EB);color:white;display:flex;align-items:flex-start;gap:12px">' +
+        '<div><div style="font-family:DM Serif Display,serif;font-size:20px">' + opts.title + '</div><div style="font-size:12px;opacity:.86;margin-top:3px">' + (opts.sub || '') + '</div></div>' +
+        '<div id="sm-x" style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer">×</div>' +
+      '</div>' +
+      '<div style="padding:18px 22px;overflow:auto;flex:1">' + (opts.rawBody || fldsHtml) + '</div>' +
+      '<div style="padding:14px 22px;border-top:1px solid #F1F5F9;display:flex;gap:10px;background:#FAFAFA">' +
+        '<button id="sm-cancel" style="padding:8px 14px;background:white;border:1.5px solid #E2E8F0;border-radius:8px;font-size:12.5px;color:#475569;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:500">Cancel</button>' +
+        '<button id="sm-save" style="padding:8px 16px;background:linear-gradient(135deg,#2563EB,#1E40AF);color:white;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;margin-left:auto">' + (opts.cta || 'Save') + '</button>' +
+      '</div>';
+    document.body.appendChild(sc);
+    document.body.appendChild(md);
+    requestAnimationFrame(function(){ sc.style.opacity = 1; md.style.opacity = 1; md.style.transform = 'translate(-50%,-50%) scale(1)'; });
+    function close(){ sc.style.opacity = 0; md.style.opacity = 0; md.style.transform = 'translate(-50%,-50%) scale(.97)'; setTimeout(function(){ sc.remove(); md.remove(); }, 180); }
+    md.querySelector('#sm-x').addEventListener('click', close);
+    md.querySelector('#sm-cancel').addEventListener('click', close);
+    sc.addEventListener('click', close);
+    md.querySelector('#sm-save').addEventListener('click', function(){
+      var vals = {};
+      if (opts.fields) opts.fields.forEach(function(f){ var el = md.querySelector('#' + f.id); if (el) vals[f.id] = el.value.trim(); });
+      var ok = opts.onSave ? opts.onSave(vals) : true;
+      if (ok !== false) close();
+    });
+  }
+  window.atlasOpenModal = openSimpleModal;
+})();
+</script>
+<!-- end Atlas Dead-CTA Rescue -->
+
+</body>
+</html>

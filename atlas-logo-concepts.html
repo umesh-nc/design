@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ATLAS · Logo concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0F172A;
+    --navy-soft: #1E3A8A;
+    --blue: #2563EB;
+    --blue-pale: #EFF6FF;
+    --gold: #C8A04A;
+    --gold-light: #F1D78F;
+    --ink: #0F172A;
+    --text: #1E293B;
+    --text-2: #475569;
+    --text-3: #94A3B8;
+    --border: #E2E8F0;
+    --surface: #F8FAFC;
+    --green: #15803D;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif; color: var(--text); background: #FAFAFA;
+    -webkit-font-smoothing: antialiased; line-height: 1.55;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 32px 80px; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 60%, #2563EB 100%);
+    color: white; padding: 56px 48px; border-radius: 18px; margin-bottom: 40px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,160,74,.16) 0%, transparent 70%);
+  }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .65; margin-bottom: 14px; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: 48px; letter-spacing: -.015em; line-height: 1.05; margin-bottom: 16px; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero p { font-size: 16.5px; line-height: 1.55; opacity: .82; max-width: 640px; }
+
+  /* SECTION HEADINGS */
+  .section-h { display: flex; align-items: baseline; gap: 14px; margin: 56px 0 22px; }
+  .section-h .num {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: 18px; color: var(--gold); width: 28px; line-height: 1;
+  }
+  .section-h h2 { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--ink); letter-spacing: -.01em; }
+  .section-h p { color: var(--text-3); font-size: 13px; margin-left: 14px; flex: 1; }
+
+  /* BRAND BRIEF CARDS */
+  .brief-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 12px; }
+  .brief {
+    background: white; border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px;
+  }
+  .brief .l { font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+  .brief .v { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--ink); line-height: 1.25; }
+  .brief .d { font-size: 12px; color: var(--text-2); margin-top: 6px; }
+
+  /* CONCEPT CARD */
+  .concept {
+    background: white; border: 1px solid var(--border); border-radius: 16px; padding: 36px 36px 28px;
+    margin-bottom: 26px; box-shadow: 0 1px 3px rgba(15,23,42,.04);
+  }
+  .concept-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 28px; }
+  .concept-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #B7892E);
+    color: white; font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-family: 'DM Serif Display', serif;
+  }
+  .concept-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--ink); line-height: 1.15; margin-bottom: 5px; }
+  .concept-tag { font-size: 12px; color: var(--gold); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 8px; }
+  .concept-why { font-size: 14px; color: var(--text-2); max-width: 720px; line-height: 1.6; }
+
+  /* MARK GRID inside concept */
+  .marks {
+    display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: 14px; margin-bottom: 22px;
+  }
+  .mark-box {
+    border: 1px solid var(--border); border-radius: 12px; padding: 28px;
+    display: flex; align-items: center; justify-content: center; min-height: 180px;
+    position: relative;
+  }
+  .mark-box.dark { background: var(--navy); }
+  .mark-box.gold-bg { background: linear-gradient(135deg, #FAF5E8, #F1D78F); }
+  .mark-box.light { background: white; }
+  .mark-box.mono { background: var(--surface); }
+  .mark-box .caption {
+    position: absolute; bottom: 10px; left: 12px;
+    font-size: 9.5px; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text-3);
+  }
+  .mark-box.dark .caption { color: rgba(255,255,255,.40); }
+
+  /* WORDMARK row */
+  .wordmark-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;
+  }
+  .wm-box {
+    border: 1px solid var(--border); border-radius: 12px; padding: 32px 36px;
+    display: flex; align-items: center; gap: 16px; min-height: 120px;
+  }
+  .wm-box.dark { background: var(--navy); color: white; }
+
+  /* APPLICATION strip */
+  .apps {
+    display: flex; gap: 20px; padding-top: 18px; border-top: 1px solid var(--border);
+    align-items: center;
+  }
+  .app-tile {
+    width: 64px; height: 64px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(15,23,42,.10);
+  }
+  .app-favicon {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .app-sig {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--text-2);
+    border-left: 1px solid var(--border); padding-left: 18px;
+  }
+  .app-sig strong { display: block; font-family: 'DM Serif Display', serif; font-size: 14px; color: var(--ink); margin-bottom: 1px; }
+  .app-label { font-size: 11px; color: var(--text-3); font-weight: 500; }
+
+  /* WORDMARK styles per concept */
+  .word {
+    font-family: 'DM Serif Display', serif; font-size: 36px; letter-spacing: -.01em;
+    color: var(--ink); line-height: 1; display: flex; align-items: baseline; gap: 12px;
+  }
+  .word.white { color: white; }
+  .word .tld {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+    align-self: center; padding-left: 12px; border-left: 1px solid rgba(200,160,74,.4);
+  }
+  .word.white .tld { color: var(--gold-light); border-left-color: rgba(241,215,143,.40); }
+
+  /* RECOMMENDATION block */
+  .recommend {
+    background: linear-gradient(135deg, #FAF5E8 0%, #F1D78F 100%);
+    border-radius: 16px; padding: 36px 40px; margin-top: 48px;
+    border: 1px solid #E0BE5A;
+  }
+  .recommend .badge { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #8B6914; margin-bottom: 10px; }
+  .recommend h3 { font-family: 'DM Serif Display', serif; font-size: 28px; color: #4D3A0F; line-height: 1.15; margin-bottom: 12px; }
+  .recommend p { color: #4D3A0F; font-size: 14.5px; line-height: 1.65; max-width: 720px; }
+  .recommend p + p { margin-top: 12px; }
+
+  /* TYPE PAIRING */
+  .type-card {
+    background: white; border: 1px solid var(--border); border-radius: 16px;
+    padding: 36px 40px; margin-top: 26px;
+  }
+  .type-row { display: flex; align-items: baseline; gap: 22px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+  .type-row:last-child { border-bottom: none; }
+  .type-row .label { width: 130px; flex-shrink: 0; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+  .type-row .sample { flex: 1; color: var(--ink); }
+  .type-row .meta { width: 160px; font-size: 11.5px; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+
+  /* PALETTE swatches */
+  .palette { display: flex; gap: 12px; margin-top: 14px; }
+  .sw {
+    flex: 1; border-radius: 10px; padding: 16px; color: white;
+    font-size: 11px; line-height: 1.4; min-height: 84px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .sw .nm { font-weight: 700; }
+  .sw .hex { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; opacity: .85; }
+  .sw.gold { color: #4D3A0F; }
+  .sw.light { color: var(--ink); border: 1px solid var(--border); }
+
+  @media (max-width: 880px) {
+    .brief-grid { grid-template-columns: repeat(2, 1fr); }
+    .marks { grid-template-columns: 1fr 1fr; }
+    .wordmark-row { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">Brand exploration · v0.1</div>
+    <h1>Logo concepts for <em>ATLAS</em></h1>
+    <p>Four directions, mocked at usable fidelity, each grounded in the audience (diocese gift offices and faith-based nonprofits) and the existing design system (DM Serif Display + DM Sans, navy with a warm gold accent). Built to read at 16px in a browser tab and at 200px on a board-deck title slide.</p>
+  </div>
+
+  <!-- BRAND BRIEF -->
+  <div class="section-h">
+    <span class="num">i.</span>
+    <h2>What the mark needs to do</h2>
+  </div>
+  <div class="brief-grid">
+    <div class="brief">
+      <div class="l">Audience</div>
+      <div class="v">Diocese gift offices</div>
+      <div class="d">Bishops, development directors, gift officers — buyers who prize gravitas over playfulness.</div>
+    </div>
+    <div class="brief">
+      <div class="l">Adjacent peers</div>
+      <div class="v">Blackbaud · DonorPerfect</div>
+      <div class="d">Crowded with stiff corporate marks. ATLAS can differentiate with warmth + craft.</div>
+    </div>
+    <div class="brief">
+      <div class="l">Tone target</div>
+      <div class="v">Cathedral, not call center</div>
+      <div class="d">Trusted, calm, foundational. References to architecture and navigation read well here.</div>
+    </div>
+    <div class="brief">
+      <div class="l">Already locked</div>
+      <div class="v">Navy + warm gold</div>
+      <div class="d">Type pairing: DM Serif Display headlines, DM Sans body. Logo should sit inside this language.</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- CONCEPT 1 — CONSTELLATION (MOVES) -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="concept">
+    <div class="concept-head">
+      <div class="concept-num">1</div>
+      <div>
+        <div class="concept-tag">Moves-management story</div>
+        <div class="concept-title">The Constellation</div>
+        <div class="concept-why">Each donor is a star. The lines between them are the cultivation moves an officer makes — visit, call, ask, close. The mark says the *job* Atlas actually does, not just the mythology. Highly differentiated from competitors (none use this idea).</div>
+      </div>
+    </div>
+
+    <div class="marks">
+      <div class="mark-box dark">
+        <svg width="160" height="120" viewBox="0 0 160 120" fill="none">
+          <line x1="22" y1="92" x2="58" y2="58" stroke="rgba(200,160,74,.55)" stroke-width="1.2"/>
+          <line x1="58" y1="58" x2="98" y2="38" stroke="rgba(200,160,74,.55)" stroke-width="1.2"/>
+          <line x1="98" y1="38" x2="138" y2="24" stroke="rgba(200,160,74,.55)" stroke-width="1.2"/>
+          <line x1="98" y1="38" x2="110" y2="78" stroke="rgba(200,160,74,.45)" stroke-width="1"/>
+          <circle cx="22" cy="92" r="4" fill="white"/>
+          <circle cx="58" cy="58" r="5" fill="white"/>
+          <circle cx="98" cy="38" r="5.5" fill="white"/>
+          <circle cx="110" cy="78" r="3.5" fill="rgba(255,255,255,.65)"/>
+          <circle cx="138" cy="24" r="7" fill="#C8A04A"/>
+          <circle cx="138" cy="24" r="10" fill="none" stroke="rgba(200,160,74,.4)" stroke-width="1"/>
+        </svg>
+        <div class="caption">Primary · navy</div>
+      </div>
+      <div class="mark-box gold-bg">
+        <svg width="120" height="100" viewBox="0 0 160 120" fill="none">
+          <line x1="22" y1="92" x2="58" y2="58" stroke="#0F172A" stroke-width="1.2"/>
+          <line x1="58" y1="58" x2="98" y2="38" stroke="#0F172A" stroke-width="1.2"/>
+          <line x1="98" y1="38" x2="138" y2="24" stroke="#0F172A" stroke-width="1.2"/>
+          <line x1="98" y1="38" x2="110" y2="78" stroke="rgba(15,23,42,.5)" stroke-width="1"/>
+          <circle cx="22" cy="92" r="4" fill="#0F172A"/>
+          <circle cx="58" cy="58" r="5" fill="#0F172A"/>
+          <circle cx="98" cy="38" r="5.5" fill="#0F172A"/>
+          <circle cx="110" cy="78" r="3.5" fill="rgba(15,23,42,.7)"/>
+          <circle cx="138" cy="24" r="7" fill="#0F172A"/>
+        </svg>
+        <div class="caption">On gold</div>
+      </div>
+      <div class="mark-box light">
+        <svg width="120" height="100" viewBox="0 0 160 120" fill="none">
+          <line x1="22" y1="92" x2="58" y2="58" stroke="#0F172A" stroke-width="1.2"/>
+          <line x1="58" y1="58" x2="98" y2="38" stroke="#0F172A" stroke-width="1.2"/>
+          <line x1="98" y1="38" x2="138" y2="24" stroke="#0F172A" stroke-width="1.2"/>
+          <line x1="98" y1="38" x2="110" y2="78" stroke="rgba(15,23,42,.4)" stroke-width="1"/>
+          <circle cx="22" cy="92" r="4" fill="#0F172A"/>
+          <circle cx="58" cy="58" r="5" fill="#0F172A"/>
+          <circle cx="98" cy="38" r="5.5" fill="#0F172A"/>
+          <circle cx="110" cy="78" r="3.5" fill="#475569"/>
+          <circle cx="138" cy="24" r="7" fill="#C8A04A"/>
+          <circle cx="138" cy="24" r="10" fill="none" stroke="rgba(200,160,74,.4)" stroke-width="1"/>
+        </svg>
+        <div class="caption">Light · gold accent</div>
+      </div>
+      <div class="mark-box mono">
+        <svg width="120" height="100" viewBox="0 0 160 120" fill="none">
+          <line x1="22" y1="92" x2="58" y2="58" stroke="#475569" stroke-width="1.2"/>
+          <line x1="58" y1="58" x2="98" y2="38" stroke="#475569" stroke-width="1.2"/>
+          <line x1="98" y1="38" x2="138" y2="24" stroke="#475569" stroke-width="1.2"/>
+          <line x1="98" y1="38" x2="110" y2="78" stroke="rgba(71,85,105,.5)" stroke-width="1"/>
+          <circle cx="22" cy="92" r="4" fill="#475569"/>
+          <circle cx="58" cy="58" r="5" fill="#475569"/>
+          <circle cx="98" cy="38" r="5.5" fill="#475569"/>
+          <circle cx="110" cy="78" r="3.5" fill="#94A3B8"/>
+          <circle cx="138" cy="24" r="7" fill="#1E293B"/>
+        </svg>
+        <div class="caption">Mono</div>
+      </div>
+    </div>
+
+    <div class="wordmark-row">
+      <div class="wm-box">
+        <svg width="48" height="40" viewBox="0 0 160 120" fill="none">
+          <line x1="22" y1="92" x2="58" y2="58" stroke="#0F172A" stroke-width="1.8"/>
+          <line x1="58" y1="58" x2="98" y2="38" stroke="#0F172A" stroke-width="1.8"/>
+          <line x1="98" y1="38" x2="138" y2="24" stroke="#0F172A" stroke-width="1.8"/>
+          <circle cx="22" cy="92" r="6" fill="#0F172A"/>
+          <circle cx="58" cy="58" r="7" fill="#0F172A"/>
+          <circle cx="98" cy="38" r="8" fill="#0F172A"/>
+          <circle cx="138" cy="24" r="9" fill="#C8A04A"/>
+        </svg>
+        <div class="word">atlas<span class="tld">by GiveCentral</span></div>
+      </div>
+      <div class="wm-box dark">
+        <svg width="48" height="40" viewBox="0 0 160 120" fill="none">
+          <line x1="22" y1="92" x2="58" y2="58" stroke="white" stroke-width="1.8"/>
+          <line x1="58" y1="58" x2="98" y2="38" stroke="white" stroke-width="1.8"/>
+          <line x1="98" y1="38" x2="138" y2="24" stroke="white" stroke-width="1.8"/>
+          <circle cx="22" cy="92" r="6" fill="white"/>
+          <circle cx="58" cy="58" r="7" fill="white"/>
+          <circle cx="98" cy="38" r="8" fill="white"/>
+          <circle cx="138" cy="24" r="9" fill="#F1D78F"/>
+        </svg>
+        <div class="word white">atlas<span class="tld">by GiveCentral</span></div>
+      </div>
+    </div>
+
+    <div class="apps">
+      <div class="app-tile" style="background: var(--navy)">
+        <svg width="36" height="32" viewBox="0 0 160 120" fill="none">
+          <line x1="22" y1="92" x2="58" y2="58" stroke="white" stroke-width="2.5"/>
+          <line x1="58" y1="58" x2="98" y2="38" stroke="white" stroke-width="2.5"/>
+          <line x1="98" y1="38" x2="138" y2="24" stroke="white" stroke-width="2.5"/>
+          <circle cx="22" cy="92" r="7" fill="white"/>
+          <circle cx="58" cy="58" r="8" fill="white"/>
+          <circle cx="98" cy="38" r="9" fill="white"/>
+          <circle cx="138" cy="24" r="11" fill="#C8A04A"/>
+        </svg>
+      </div>
+      <div class="app-favicon" style="background: var(--navy)">
+        <svg width="18" height="14" viewBox="0 0 160 120" fill="none">
+          <circle cx="22" cy="92" r="14" fill="white"/>
+          <circle cx="98" cy="38" r="16" fill="white"/>
+          <circle cx="138" cy="24" r="18" fill="#C8A04A"/>
+        </svg>
+      </div>
+      <div class="app-sig">
+        <strong>Sarah Reynolds</strong>
+        Director of Development · Diocese of Albany
+      </div>
+      <div class="app-label" style="margin-left: auto">App icon · favicon · email signature</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- CONCEPT 2 — KEYSTONE A -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="concept">
+    <div class="concept-head">
+      <div class="concept-num">2</div>
+      <div>
+        <div class="concept-tag">Architectural · faith-adjacent</div>
+        <div class="concept-title">The Keystone A</div>
+        <div class="concept-why">The letter A treated as a load-bearing arch — the keystone is the critical wedge that lets the whole thing stand. References cathedral architecture without being literal Catholic iconography (works across faiths and secular nonprofits). Carries gravitas at any size.</div>
+      </div>
+    </div>
+
+    <div class="marks">
+      <div class="mark-box dark">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+          <path d="M 30 96 L 60 16 L 90 96" stroke="white" stroke-width="6" stroke-linejoin="miter" stroke-linecap="butt" fill="none"/>
+          <path d="M 60 16 L 60 96" stroke="white" stroke-width="6" stroke-linecap="butt"/>
+          <path d="M 47 60 Q 60 50 73 60" stroke="#C8A04A" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <rect x="55" y="42" width="10" height="14" fill="#C8A04A"/>
+        </svg>
+        <div class="caption">Primary · navy</div>
+      </div>
+      <div class="mark-box gold-bg">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <path d="M 30 96 L 60 16 L 90 96" stroke="#0F172A" stroke-width="6" stroke-linejoin="miter" fill="none"/>
+          <path d="M 60 16 L 60 96" stroke="#0F172A" stroke-width="6"/>
+          <path d="M 47 60 Q 60 50 73 60" stroke="#0F172A" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <rect x="55" y="42" width="10" height="14" fill="#0F172A"/>
+        </svg>
+        <div class="caption">On gold</div>
+      </div>
+      <div class="mark-box light">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <path d="M 30 96 L 60 16 L 90 96" stroke="#0F172A" stroke-width="6" stroke-linejoin="miter" fill="none"/>
+          <path d="M 60 16 L 60 96" stroke="#0F172A" stroke-width="6"/>
+          <path d="M 47 60 Q 60 50 73 60" stroke="#C8A04A" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <rect x="55" y="42" width="10" height="14" fill="#C8A04A"/>
+        </svg>
+        <div class="caption">Light · gold keystone</div>
+      </div>
+      <div class="mark-box mono">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <path d="M 30 96 L 60 16 L 90 96" stroke="#475569" stroke-width="6" stroke-linejoin="miter" fill="none"/>
+          <path d="M 60 16 L 60 96" stroke="#475569" stroke-width="6"/>
+          <rect x="55" y="42" width="10" height="14" fill="#475569"/>
+        </svg>
+        <div class="caption">Mono</div>
+      </div>
+    </div>
+
+    <div class="wordmark-row">
+      <div class="wm-box">
+        <svg width="40" height="40" viewBox="0 0 120 120" fill="none">
+          <path d="M 30 96 L 60 16 L 90 96" stroke="#0F172A" stroke-width="9" stroke-linejoin="miter" fill="none"/>
+          <path d="M 60 16 L 60 96" stroke="#0F172A" stroke-width="9"/>
+          <rect x="53" y="40" width="14" height="16" fill="#C8A04A"/>
+        </svg>
+        <div class="word">ATLAS<span class="tld">by GiveCentral</span></div>
+      </div>
+      <div class="wm-box dark">
+        <svg width="40" height="40" viewBox="0 0 120 120" fill="none">
+          <path d="M 30 96 L 60 16 L 90 96" stroke="white" stroke-width="9" stroke-linejoin="miter" fill="none"/>
+          <path d="M 60 16 L 60 96" stroke="white" stroke-width="9"/>
+          <rect x="53" y="40" width="14" height="16" fill="#F1D78F"/>
+        </svg>
+        <div class="word white">ATLAS<span class="tld">by GiveCentral</span></div>
+      </div>
+    </div>
+
+    <div class="apps">
+      <div class="app-tile" style="background: var(--navy)">
+        <svg width="32" height="32" viewBox="0 0 120 120" fill="none">
+          <path d="M 30 96 L 60 16 L 90 96" stroke="white" stroke-width="9" stroke-linejoin="miter" fill="none"/>
+          <path d="M 60 16 L 60 96" stroke="white" stroke-width="9"/>
+          <rect x="53" y="40" width="14" height="16" fill="#C8A04A"/>
+        </svg>
+      </div>
+      <div class="app-favicon" style="background: white; border:1px solid var(--border)">
+        <svg width="18" height="18" viewBox="0 0 120 120" fill="none">
+          <path d="M 30 96 L 60 16 L 90 96" stroke="#0F172A" stroke-width="12" stroke-linejoin="miter" fill="none"/>
+          <rect x="51" y="38" width="18" height="18" fill="#C8A04A"/>
+        </svg>
+      </div>
+      <div class="app-sig">
+        <strong>ATLAS · Diocese of Albany</strong>
+        atlas.givecentral.org/albany
+      </div>
+      <div class="app-label" style="margin-left: auto">Scales cleanly to 16px favicon</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- CONCEPT 3 — COMPASS / NAVIGATOR -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="concept">
+    <div class="concept-head">
+      <div class="concept-num">3</div>
+      <div>
+        <div class="concept-tag">The navigator</div>
+        <div class="concept-title">The Compass Rose</div>
+        <div class="concept-why">Atlas the cartographer. The mark suggests guidance, direction, and decisiveness — the *help me figure out who to call next* feeling that the Guru AI promises. Reads modern and tool-like without losing dignity. Strong at 16px favicon size.</div>
+      </div>
+    </div>
+
+    <div class="marks">
+      <div class="mark-box dark">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="42" stroke="rgba(255,255,255,.18)" stroke-width="1" fill="none"/>
+          <path d="M 60 14 L 66 60 L 60 106 L 54 60 Z" fill="white"/>
+          <path d="M 14 60 L 60 54 L 106 60 L 60 66 Z" fill="rgba(255,255,255,.55)"/>
+          <circle cx="60" cy="60" r="6" fill="#C8A04A"/>
+        </svg>
+        <div class="caption">Primary · navy</div>
+      </div>
+      <div class="mark-box gold-bg">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="42" stroke="rgba(15,23,42,.20)" stroke-width="1" fill="none"/>
+          <path d="M 60 14 L 66 60 L 60 106 L 54 60 Z" fill="#0F172A"/>
+          <path d="M 14 60 L 60 54 L 106 60 L 60 66 Z" fill="rgba(15,23,42,.55)"/>
+          <circle cx="60" cy="60" r="6" fill="#0F172A"/>
+        </svg>
+        <div class="caption">On gold</div>
+      </div>
+      <div class="mark-box light">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="42" stroke="#E2E8F0" stroke-width="1" fill="none"/>
+          <path d="M 60 14 L 66 60 L 60 106 L 54 60 Z" fill="#0F172A"/>
+          <path d="M 14 60 L 60 54 L 106 60 L 60 66 Z" fill="rgba(15,23,42,.50)"/>
+          <circle cx="60" cy="60" r="6" fill="#C8A04A"/>
+        </svg>
+        <div class="caption">Light · gold pin</div>
+      </div>
+      <div class="mark-box mono">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <circle cx="60" cy="60" r="42" stroke="#CBD5E1" stroke-width="1" fill="none"/>
+          <path d="M 60 14 L 66 60 L 60 106 L 54 60 Z" fill="#475569"/>
+          <path d="M 14 60 L 60 54 L 106 60 L 60 66 Z" fill="rgba(71,85,105,.55)"/>
+          <circle cx="60" cy="60" r="6" fill="#1E293B"/>
+        </svg>
+        <div class="caption">Mono</div>
+      </div>
+    </div>
+
+    <div class="wordmark-row">
+      <div class="wm-box">
+        <svg width="44" height="44" viewBox="0 0 120 120" fill="none">
+          <path d="M 60 14 L 66 60 L 60 106 L 54 60 Z" fill="#0F172A"/>
+          <path d="M 14 60 L 60 54 L 106 60 L 60 66 Z" fill="#475569"/>
+          <circle cx="60" cy="60" r="6" fill="#C8A04A"/>
+        </svg>
+        <div class="word">atlas<span class="tld">by GiveCentral</span></div>
+      </div>
+      <div class="wm-box dark">
+        <svg width="44" height="44" viewBox="0 0 120 120" fill="none">
+          <path d="M 60 14 L 66 60 L 60 106 L 54 60 Z" fill="white"/>
+          <path d="M 14 60 L 60 54 L 106 60 L 60 66 Z" fill="rgba(255,255,255,.55)"/>
+          <circle cx="60" cy="60" r="6" fill="#F1D78F"/>
+        </svg>
+        <div class="word white">atlas<span class="tld">by GiveCentral</span></div>
+      </div>
+    </div>
+
+    <div class="apps">
+      <div class="app-tile" style="background: var(--navy)">
+        <svg width="36" height="36" viewBox="0 0 120 120" fill="none">
+          <path d="M 60 14 L 66 60 L 60 106 L 54 60 Z" fill="white"/>
+          <path d="M 14 60 L 60 54 L 106 60 L 60 66 Z" fill="rgba(255,255,255,.55)"/>
+          <circle cx="60" cy="60" r="6" fill="#C8A04A"/>
+        </svg>
+      </div>
+      <div class="app-favicon" style="background: var(--navy)">
+        <svg width="20" height="20" viewBox="0 0 120 120" fill="none">
+          <path d="M 60 14 L 66 60 L 60 106 L 54 60 Z" fill="white"/>
+          <circle cx="60" cy="60" r="9" fill="#C8A04A"/>
+        </svg>
+      </div>
+      <div class="app-sig">
+        <strong>The morning brief is ready.</strong>
+        atlas.givecentral.org
+      </div>
+      <div class="app-label" style="margin-left: auto">Login + product splash</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- CONCEPT 4 — PILLAR / COLUMNS -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="concept">
+    <div class="concept-head">
+      <div class="concept-num">4</div>
+      <div>
+        <div class="concept-tag">Foundational · cathedral</div>
+        <div class="concept-title">The Pillar Mark</div>
+        <div class="concept-why">Three columns under one capital — the most literal cathedral reference of the four, abstracted enough to feel modern. Reads as "support," "foundation," "what holds the rest up." Honors the mythological Atlas (the titan upholding the heavens) without being figurative.</div>
+      </div>
+    </div>
+
+    <div class="marks">
+      <div class="mark-box dark">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+          <rect x="14" y="22" width="92" height="8" rx="2" fill="white"/>
+          <rect x="22" y="38" width="14" height="64" rx="2" fill="white"/>
+          <rect x="53" y="38" width="14" height="64" rx="2" fill="white"/>
+          <rect x="84" y="38" width="14" height="64" rx="2" fill="#C8A04A"/>
+          <rect x="14" y="106" width="92" height="6" rx="2" fill="white"/>
+        </svg>
+        <div class="caption">Primary · navy</div>
+      </div>
+      <div class="mark-box gold-bg">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <rect x="14" y="22" width="92" height="8" rx="2" fill="#0F172A"/>
+          <rect x="22" y="38" width="14" height="64" rx="2" fill="#0F172A"/>
+          <rect x="53" y="38" width="14" height="64" rx="2" fill="#0F172A"/>
+          <rect x="84" y="38" width="14" height="64" rx="2" fill="#0F172A"/>
+          <rect x="14" y="106" width="92" height="6" rx="2" fill="#0F172A"/>
+        </svg>
+        <div class="caption">On gold</div>
+      </div>
+      <div class="mark-box light">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <rect x="14" y="22" width="92" height="8" rx="2" fill="#0F172A"/>
+          <rect x="22" y="38" width="14" height="64" rx="2" fill="#0F172A"/>
+          <rect x="53" y="38" width="14" height="64" rx="2" fill="#0F172A"/>
+          <rect x="84" y="38" width="14" height="64" rx="2" fill="#C8A04A"/>
+          <rect x="14" y="106" width="92" height="6" rx="2" fill="#0F172A"/>
+        </svg>
+        <div class="caption">Light · gold accent</div>
+      </div>
+      <div class="mark-box mono">
+        <svg width="100" height="100" viewBox="0 0 120 120" fill="none">
+          <rect x="14" y="22" width="92" height="8" rx="2" fill="#475569"/>
+          <rect x="22" y="38" width="14" height="64" rx="2" fill="#475569"/>
+          <rect x="53" y="38" width="14" height="64" rx="2" fill="#475569"/>
+          <rect x="84" y="38" width="14" height="64" rx="2" fill="#475569"/>
+          <rect x="14" y="106" width="92" height="6" rx="2" fill="#475569"/>
+        </svg>
+        <div class="caption">Mono</div>
+      </div>
+    </div>
+
+    <div class="wordmark-row">
+      <div class="wm-box">
+        <svg width="44" height="44" viewBox="0 0 120 120" fill="none">
+          <rect x="10" y="22" width="100" height="10" rx="2" fill="#0F172A"/>
+          <rect x="20" y="40" width="16" height="62" rx="2" fill="#0F172A"/>
+          <rect x="52" y="40" width="16" height="62" rx="2" fill="#0F172A"/>
+          <rect x="84" y="40" width="16" height="62" rx="2" fill="#C8A04A"/>
+        </svg>
+        <div class="word">atlas<span class="tld">by GiveCentral</span></div>
+      </div>
+      <div class="wm-box dark">
+        <svg width="44" height="44" viewBox="0 0 120 120" fill="none">
+          <rect x="10" y="22" width="100" height="10" rx="2" fill="white"/>
+          <rect x="20" y="40" width="16" height="62" rx="2" fill="white"/>
+          <rect x="52" y="40" width="16" height="62" rx="2" fill="white"/>
+          <rect x="84" y="40" width="16" height="62" rx="2" fill="#F1D78F"/>
+        </svg>
+        <div class="word white">atlas<span class="tld">by GiveCentral</span></div>
+      </div>
+    </div>
+
+    <div class="apps">
+      <div class="app-tile" style="background: var(--navy)">
+        <svg width="36" height="36" viewBox="0 0 120 120" fill="none">
+          <rect x="14" y="22" width="92" height="8" rx="2" fill="white"/>
+          <rect x="22" y="38" width="14" height="64" rx="2" fill="white"/>
+          <rect x="53" y="38" width="14" height="64" rx="2" fill="white"/>
+          <rect x="84" y="38" width="14" height="64" rx="2" fill="#C8A04A"/>
+        </svg>
+      </div>
+      <div class="app-favicon" style="background: white; border:1px solid var(--border)">
+        <svg width="20" height="20" viewBox="0 0 120 120" fill="none">
+          <rect x="6" y="22" width="108" height="10" rx="2" fill="#0F172A"/>
+          <rect x="22" y="38" width="16" height="68" rx="2" fill="#0F172A"/>
+          <rect x="52" y="38" width="16" height="68" rx="2" fill="#0F172A"/>
+          <rect x="82" y="38" width="16" height="68" rx="2" fill="#C8A04A"/>
+        </svg>
+      </div>
+      <div class="app-sig">
+        <strong>Foundation. Every relationship.</strong>
+        atlas.givecentral.org
+      </div>
+      <div class="app-label" style="margin-left: auto">Brochure pull-quote treatment</div>
+    </div>
+  </div>
+
+  <!-- RECOMMENDATION -->
+  <div class="recommend">
+    <div class="badge">My recommendation</div>
+    <h3>Lead with <em style="font-style:italic">The Constellation</em>. Second-choice <em style="font-style:italic">Keystone A</em>.</h3>
+    <p>The Constellation is the only mark that says what the product actually does. Every competitor in donor management looks like an enterprise CRM logo — generic monograms, abstract shapes, conservative type. ATLAS has a chance to plant a flag with a mark that's about <strong>the relationships between donors</strong>, not the database that stores them. The gold "closed-won" star is a useful brand asset across the product: campaign celebrations, milestone moments, the EOD wrap-up card on Tasks.</p>
+    <p>The <strong>Keystone A</strong> is the right backup. It carries gravitas on a board deck and a cathedral lobby alike, scales cleanly to 16px, and the gold keystone gives you a tasteful accent without leaning Catholic-specific. Use it if the constellation reads too playful to the bishop.</p>
+    <p style="font-size: 12.5px; opacity: .75; margin-top: 16px">All four are workable. Take them into a 20-minute review with three people — the constellation will either land immediately or get ruled out. That's the signal.</p>
+  </div>
+
+  <!-- TYPE PAIRING -->
+  <div class="section-h">
+    <span class="num">ii.</span>
+    <h2>Wordmark typography</h2>
+    <p>Already locked into the product — these are the type voices the mark sits inside of.</p>
+  </div>
+  <div class="type-card">
+    <div class="type-row">
+      <div class="label">Display</div>
+      <div class="sample" style="font-family:'DM Serif Display',serif;font-size:42px;letter-spacing:-.012em">atlas</div>
+      <div class="meta">DM Serif Display<br>400 · italic optional</div>
+    </div>
+    <div class="type-row">
+      <div class="label">Wordmark</div>
+      <div class="sample" style="font-family:'DM Serif Display',serif;font-size:30px">A T L A S</div>
+      <div class="meta">DM Serif Display<br>letter-spacing .14em</div>
+    </div>
+    <div class="type-row">
+      <div class="label">Tagline</div>
+      <div class="sample" style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--gold);letter-spacing:.14em;text-transform:uppercase">by GiveCentral</div>
+      <div class="meta">DM Sans 600<br>11px on the mark</div>
+    </div>
+    <div class="type-row">
+      <div class="label">Body</div>
+      <div class="sample" style="font-family:'DM Sans',sans-serif;font-size:14px">Donor management for dioceses that move slowly and gift officers who don't.</div>
+      <div class="meta">DM Sans 400<br>14.5px body</div>
+    </div>
+  </div>
+
+  <!-- PALETTE -->
+  <div class="section-h">
+    <span class="num">iii.</span>
+    <h2>The palette the marks sit inside</h2>
+  </div>
+  <div class="palette">
+    <div class="sw" style="background:#0F172A">
+      <div class="nm">Atlas Navy</div>
+      <div class="hex">#0F172A · primary</div>
+    </div>
+    <div class="sw" style="background:#1E3A8A">
+      <div class="nm">Vault Blue</div>
+      <div class="hex">#1E3A8A · depth</div>
+    </div>
+    <div class="sw" style="background:#2563EB">
+      <div class="nm">Signal Blue</div>
+      <div class="hex">#2563EB · interactive</div>
+    </div>
+    <div class="sw gold" style="background:#C8A04A">
+      <div class="nm">Cathedral Gold</div>
+      <div class="hex">#C8A04A · accent</div>
+    </div>
+    <div class="sw gold" style="background:#F1D78F">
+      <div class="nm">Vestment Light</div>
+      <div class="hex">#F1D78F · soft accent</div>
+    </div>
+    <div class="sw light" style="background:#F8FAFC">
+      <div class="nm">Parchment</div>
+      <div class="hex">#F8FAFC · canvas</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

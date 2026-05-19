@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas — Tribute &amp; In Honor Of Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #0E1E35; --navy2: #152844;
+      --blue:   #2563EB; --bluel: #DBEAFE; --bluep: #EFF6FF;
+      --green:  #15803D; --greenl: #DCFCE7; --greend: #14532D;
+      --amber:  #D97706; --amberl: #FEF3C7;
+      --rose:   #BE185D; --rosel:  #FCE7F3; --rosed:  #881337;
+      --teal:   #0D9488; --teall:  #CCFBF1;
+      --purp:   #7C3AED; --purpl:  #EDE9FE;
+      --slate:  #475569; --slatel: #F1F5F9;
+      --mauve:  #7E5BBF; --mauvel: #F3EFFF;
+      --warm:   #92400E; --warml:  #FEF9F0;
+      --text:   #1A1A2E; --text2: #334155; --text3: #64748B; --text4: #94A3B8;
+      --border: #E2E8F0; --surf:   #F8FAFC;
+    }
+    html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'DM Sans', sans-serif; background: #F0EEF8; color: var(--text); }
+
+    /* ── CHROME ── */
+    .chrome { background: var(--navy); padding: 0 28px; height: 52px; display: flex; align-items: center; gap: 14px; }
+    .chrome-mark { width: 28px; height: 28px; background: var(--blue); border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .chrome-mark svg { width: 13px; height: 13px; }
+    .chrome-name { font-family: 'Lora', serif; font-size: 15px; color: white; font-weight: 500; }
+    .chrome-sep  { width: 1px; height: 18px; background: rgba(255,255,255,.12); }
+    .chrome-path { font-size: 12px; color: rgba(255,255,255,.45); display: flex; align-items: center; gap: 6px; }
+    .chrome-path b { color: rgba(255,255,255,.78); font-weight: 500; }
+    .chrome-right { margin-left: auto; display: flex; gap: 7px; }
+    .cbtn { padding: 5px 13px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .12s; display: flex; align-items: center; gap: 5px; }
+    .cbtn svg { width: 11px; height: 11px; }
+    .cbtn-ghost { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); color: rgba(255,255,255,.7); }
+    .cbtn-ghost:hover { background: rgba(255,255,255,.14); }
+    .cbtn-primary { background: var(--mauve); color: white; border: none; }
+    .cbtn-primary:hover { background: #6d4dab; }
+
+    /* ── REPORT BANNER ── */
+    .report-banner { background: var(--navy2); padding: 18px 28px 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .rb-top { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+    .rb-icon { width: 44px; height: 44px; background: rgba(126,91,191,.25); border: 1px solid rgba(126,91,191,.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .rb-icon svg { width: 20px; height: 20px; }
+    .rb-title { font-family: 'Lora', serif; font-size: 21px; color: white; font-style: italic; }
+    .rb-sub { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 3px; }
+    .rb-stats { display: flex; gap: 0; margin-left: auto; background: rgba(0,0,0,.2); border-radius: 9px; overflow: hidden; flex-shrink: 0; }
+    .rbs { padding: 10px 16px; border-right: 1px solid rgba(255,255,255,.07); text-align: center; }
+    .rbs:last-child { border-right: none; }
+    .rbs-val { font-family: 'Lora', serif; font-size: 19px; color: white; line-height: 1; }
+    .rbs-val.mauve { color: #C4B5FD; }
+    .rbs-val.teal  { color: #5EEAD4; }
+    .rbs-val.amber { color: #FCD34D; }
+    .rbs-lbl { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-top: 2px; }
+    /* Type breakdown pills */
+    .rb-types { display: flex; gap: 8px; flex-wrap: wrap; }
+    .rbt { display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .rbt-memorial  { background: rgba(30,30,80,.4); border: 1px solid rgba(126,91,191,.35); color: #C4B5FD; }
+    .rbt-honor     { background: rgba(13,148,136,.15); border: 1px solid rgba(13,148,136,.35); color: #5EEAD4; }
+    .rbt-birthday  { background: rgba(217,119,6,.15); border: 1px solid rgba(217,119,6,.35); color: #FCD34D; }
+    .rbt-occasion  { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.6); }
+    .rbt-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* ── MAIN ── */
+    .main { padding: 20px 28px 64px; display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── VIEW TABS ── */
+    .view-bar { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+    .vb-tabs { display: flex; gap: 4px; }
+    .vb-tab { padding: 7px 16px; border-radius: 8px 8px 0 0; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; border: 1px solid var(--border); border-bottom: none; background: rgba(255,255,255,.5); color: var(--text3); transition: all .12s; }
+    .vb-tab.active { background: white; color: var(--text); font-weight: 600; border-color: var(--border); }
+    .vb-right { margin-left: auto; display: flex; gap: 7px; }
+
+    /* ── REPORT CARD ── */
+    .report-card { background: white; border: 1px solid var(--border); border-radius: 0 14px 14px 14px; overflow: hidden; }
+    .report-view { display: none; }
+    .report-view.active { display: block; }
+
+    /* ── TOOLBAR ── */
+    .toolbar { padding: 12px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--surf); }
+    .tb-info { flex: 1; }
+    .tb-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .tb-sub   { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .btn { padding: 5px 13px; border-radius: 7px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; border: 1px solid var(--border); background: white; color: var(--text2); display: flex; align-items: center; gap: 5px; transition: all .12s; white-space: nowrap; }
+    .btn:hover { background: var(--surf); }
+    .btn svg { width: 11px; height: 11px; }
+    .btn-navy  { background: var(--navy); color: white; border-color: var(--navy); }
+    .btn-navy:hover  { background: var(--navy2); }
+    .btn-mauve { background: var(--mauve); color: white; border-color: var(--mauve); }
+    .btn-mauve:hover { background: #6d4dab; }
+    .btn-teal  { background: var(--teal); color: white; border-color: var(--teal); }
+    .btn-teal:hover  { background: #0b8075; }
+
+    /* ── FILTER ROW ── */
+    .filter-row { padding: 9px 20px; border-bottom: 1px solid var(--border); display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+    .fp { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; border: 1px solid var(--border); background: white; color: var(--text3); transition: all .12s; }
+    .fp:hover { border-color: #94A3B8; color: var(--text2); }
+    .fp.active { background: var(--navy); color: white; border-color: var(--navy); }
+    .fp.memorial.active  { background: var(--mauve); border-color: var(--mauve); }
+    .fp.honor.active     { background: var(--teal);  border-color: var(--teal); }
+    .fp.birthday.active  { background: var(--amber); border-color: var(--amber); }
+    .f-search { padding: 5px 10px; border: 1px solid var(--border); border-radius: 7px; font-size: 12px; font-family: 'DM Sans', sans-serif; outline: none; background: white; color: var(--text); }
+    .f-search:focus { border-color: var(--mauve); }
+    .f-select { padding: 5px 10px; border: 1px solid var(--border); border-radius: 7px; font-size: 12px; font-family: 'DM Sans', sans-serif; outline: none; background: white; color: var(--text); cursor: pointer; }
+
+    /* ── HONOREE TABLE ── */
+    .hon-table-wrap { overflow-x: auto; }
+    .hon-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .hon-table th { padding: 9px 16px; text-align: left; font-size: 9px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: rgba(255,255,255,.65); background: var(--navy); border-right: 1px solid rgba(255,255,255,.07); white-space: nowrap; }
+    .hon-table th:last-child { border-right: none; }
+    .hon-table td { padding: 0; border-bottom: .5px solid var(--border); vertical-align: top; }
+    .hon-table tr:hover > td { background: #FAF9FF; }
+    .hon-table tr.expanded > td { background: #F5F2FF; border-bottom: none; }
+
+    /* Honoree name cell */
+    .hon-name-cell { padding: 11px 16px; }
+    .hn-name { font-family: 'Lora', serif; font-size: 14px; color: var(--text); font-weight: 500; margin-bottom: 2px; }
+    .hn-type { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 3px; }
+    .hnt-memorial { background: var(--mauvel); color: var(--mauve); }
+    .hnt-honor    { background: var(--teall);  color: var(--teal); }
+    .hnt-birthday { background: var(--amberl); color: var(--amber); }
+    .hnt-occasion { background: var(--slatel); color: var(--slate); }
+    .hn-family    { font-size: 11px; color: var(--text3); margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+    .hn-family svg { width: 10px; height: 10px; }
+
+    /* Amount cells */
+    .mon { font-family: 'DM Mono', monospace; font-size: 12px; padding: 11px 16px; }
+    .mon-total  { font-weight: 500; color: var(--text); }
+    .mon-count  { color: var(--text2); }
+    .mon-avg    { color: var(--text3); font-size: 11px; }
+
+    /* Donors preview */
+    .donors-preview { padding: 8px 16px; }
+    .dp-avatars { display: flex; gap: -6px; margin-bottom: 4px; }
+    .dp-av { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 700; color: white; flex-shrink: 0; border: 1.5px solid white; margin-right: -6px; }
+    .dp-more { font-size: 10px; color: var(--text3); margin-left: 14px; }
+
+    /* Notification status */
+    .notif-cell { padding: 9px 16px; }
+    .notif-status { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+    .ns-sent    { background: var(--greenl); color: var(--greend); }
+    .ns-pending { background: var(--amberl); color: var(--warm); }
+    .ns-none    { background: var(--slatel); color: var(--slate); border: 1px solid var(--border); }
+    .ns-date    { font-size: 10px; color: var(--text3); margin-top: 3px; }
+
+    /* Expand button */
+    .expand-btn { padding: 8px 16px; cursor: pointer; color: var(--text3); display: flex; align-items: center; justify-content: center; }
+    .expand-btn svg { width: 12px; height: 12px; transition: transform .15s; }
+    .expanded .expand-btn svg { transform: rotate(180deg); }
+
+    /* Expanded donor detail row */
+    .detail-row { background: #F5F2FF; }
+    .detail-row td { padding: 0 !important; border-bottom: .5px solid #DDD6FE !important; }
+    .detail-inner { padding: 14px 20px 14px 48px; }
+    .di-label { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--mauve); margin-bottom: 10px; }
+    .donor-gift-row { display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: white; border: .5px solid #DDD6FE; border-radius: 8px; margin-bottom: 5px; }
+    .dgr-last:last-child { margin-bottom: 0; }
+    .dgr-av { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; flex-shrink: 0; }
+    .dgr-name { flex: 1; font-size: 13px; font-weight: 500; color: var(--text); }
+    .dgr-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .dgr-amt  { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
+    .dgr-fund { font-size: 10px; color: var(--text3); text-align: right; margin-top: 1px; }
+    .dgr-date { font-size: 11px; color: var(--text3); text-align: right; }
+    .dgr-receipt { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 20px; }
+    .dr-sent  { background: var(--greenl); color: var(--greend); }
+    .dr-pend  { background: var(--amberl); color: var(--warm); }
+    .notif-action { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: .5px solid #DDD6FE; }
+    .na-btn { padding: 5px 12px; border-radius: 7px; font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; border: 1px solid var(--border); background: white; color: var(--text2); transition: all .12s; }
+    .na-btn:hover { background: var(--surf); }
+    .na-btn-primary { background: var(--mauve); color: white; border-color: var(--mauve); }
+    .na-btn-primary:hover { background: #6d4dab; }
+
+    /* ── DONOR VIEW TABLE ── */
+    .donor-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .donor-table th { padding: 9px 16px; text-align: left; font-size: 9px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: rgba(255,255,255,.65); background: var(--navy); border-right: 1px solid rgba(255,255,255,.07); white-space: nowrap; }
+    .donor-table th:last-child { border-right: none; }
+    .donor-table td { padding: 10px 16px; border-bottom: .5px solid var(--border); vertical-align: middle; font-size: 12px; }
+    .donor-table tr:hover td { background: var(--surf); }
+
+    /* ── NOTIFICATION LETTER VIEW ── */
+    .letter-shell { display: grid; grid-template-columns: 280px 1fr; min-height: 560px; }
+    .letter-list  { border-right: 1px solid var(--border); overflow-y: auto; }
+    .letter-list-head { padding: 10px 14px; background: var(--surf); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text3); }
+    .ll-item { padding: 11px 14px; border-bottom: .5px solid var(--border); cursor: pointer; transition: background .1s; }
+    .ll-item:hover { background: var(--surf); }
+    .ll-item.active { background: var(--mauvel); border-left: 3px solid var(--mauve); }
+    .ll-name  { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .ll-item.active .ll-name { color: var(--mauve); }
+    .ll-meta  { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+    .ll-status{ font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 20px; }
+    .lls-pending { background: var(--amberl); color: var(--warm); }
+    .lls-sent    { background: var(--greenl); color: var(--greend); }
+
+    /* Letter preview */
+    .letter-preview { padding: 28px 36px; overflow-y: auto; }
+    .lp-chrome { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--surf); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; font-size: 12px; color: var(--text2); }
+    .lp-chrome svg { width: 12px; height: 12px; color: var(--text3); }
+    .letter-paper { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 36px 40px; max-width: 560px; }
+    .lp-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .lp-logo-mark { width: 32px; height: 32px; background: var(--navy); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .lp-logo-mark svg { width: 14px; height: 14px; }
+    .lp-logo-name { font-family: 'Lora', serif; font-size: 14px; color: var(--text); font-weight: 500; }
+    .lp-logo-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .lp-date  { font-size: 12px; color: var(--text3); margin-bottom: 18px; }
+    .lp-addr  { font-size: 13px; color: var(--text2); margin-bottom: 20px; line-height: 1.7; }
+    .lp-salut { font-family: 'Lora', serif; font-size: 15px; color: var(--text); margin-bottom: 14px; }
+    .lp-body  { font-size: 13px; color: var(--text2); line-height: 1.85; margin-bottom: 14px; }
+    .lp-gift-box { background: var(--mauvel); border: 1px solid #DDD6FE; border-radius: 9px; padding: 14px 18px; margin: 18px 0; }
+    .lgb-title { font-family: 'Lora', serif; font-size: 13px; color: var(--mauve); margin-bottom: 10px; font-style: italic; }
+    .lgb-row  { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: .5px solid #DDD6FE; }
+    .lgb-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .lgb-key  { color: #534AB7; }
+    .lgb-val  { font-weight: 600; color: var(--mauve); }
+    .lp-note  { font-size: 12px; color: var(--text3); background: var(--surf); border-left: 3px solid var(--border); padding: 10px 12px; border-radius: 0 8px 8px 0; margin: 16px 0; line-height: 1.65; font-style: italic; }
+    .lp-close { font-size: 13px; color: var(--text2); line-height: 1.85; margin-bottom: 20px; }
+    .lp-sig   { font-family: 'Lora', serif; font-size: 15px; color: var(--text); margin-bottom: 3px; }
+    .lp-sig-title { font-size: 12px; color: var(--text3); }
+    .lp-footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text4); line-height: 1.6; }
+    .lp-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+    /* ── SUMMARY ANALYTICS ── */
+    .analytics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 16px 20px; border-bottom: 1px solid var(--border); background: var(--surf); }
+    .ag-stat { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+    .ag-val  { font-family: 'Lora', serif; font-size: 24px; color: var(--text); line-height: 1; margin-bottom: 3px; }
+    .ag-val.mauve { color: var(--mauve); }
+    .ag-val.teal  { color: var(--teal); }
+    .ag-val.amber { color: var(--amber); }
+    .ag-val.green { color: var(--green); }
+    .ag-lbl  { font-size: 11px; color: var(--text3); }
+
+    /* ── TOP HONOREES MINI-TABLE ── */
+    .mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .mini-table th { padding: 7px 14px; text-align: left; font-size: 9px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text3); background: var(--surf); border-bottom: 1px solid var(--border); }
+    .mini-table td { padding: 9px 14px; border-bottom: .5px solid var(--border); }
+    .mini-table tr:last-child td { border-bottom: none; }
+    .mini-table tr:hover td { background: var(--surf); }
+
+    /* ── REPORT FOOTER ── */
+    .report-footer { padding: 11px 20px; background: var(--navy); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .rf-s { text-align: center; }
+    .rf-v { font-family: 'Lora', serif; font-size: 16px; color: white; line-height: 1; }
+    .rf-l { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.38); margin-top: 2px; }
+    .rf-div { width: 1px; height: 28px; background: rgba(255,255,255,.1); }
+    .rf-note { flex: 1; font-size: 11px; color: rgba(255,255,255,.38); text-align: right; line-height: 1.6; }
+
+    /* ── TYPE BADGES INLINE ── */
+    .type-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+    .tb-mem { background: var(--mauvel); color: var(--mauve); }
+    .tb-hon { background: var(--teall); color: var(--teal); }
+    .tb-bdy { background: var(--amberl); color: var(--amber); }
+    .tb-occ { background: var(--slatel); color: var(--slate); }
+
+    .stagger { animation: fadeUp .3s ease both; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  </style>
+
+<style id="atlas-canon-sidebar-css">
+  /* Hide ONLY the top-level bespoke nav sidebar (direct-body child).
+     Inner feature sidebars (queue-lists, batch-folder rails) stay — they're
+     content, not navigation. */
+  body > aside.sidebar:not(.atlas-canon):not([id]) { display: none !important; }
+  /* Edge case: the original bespoke sidebar might exist deeper but be a system-
+     nav clone. Catch those too if they sit directly under <body>. */
+  body > aside.sidebar.atlas-canon ~ aside.sidebar { display: none !important; }
+
+  /* Shift page content to the right of the fixed sidebar */
+  body { padding-left: 220px !important; }
+
+  /* ── The canonical sidebar itself ── */
+  #atlas-canonical-sidebar.sidebar {
+    width: 220px !important;
+    background: #0E1E35 !important;
+    position: fixed !important;
+    top: 0 !important; left: 0 !important; bottom: 0 !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    z-index: 9999 !important;
+    margin: 0 !important; padding: 0 !important;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Logo */
+  #atlas-canonical-sidebar .sidebar-logo {
+    padding: 18px 18px 14px !important;
+    display: flex !important; align-items: center !important; gap: 9px !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    background: #0E1E35 !important;
+    flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .logo-mark {
+    width: 30px !important; height: 30px !important;
+    background: #2563EB !important; border-radius: 8px !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .logo-mark svg { width: 15px !important; height: 15px !important; }
+  #atlas-canonical-sidebar .logo-text-wrap { display: flex !important; flex-direction: column !important; }
+  #atlas-canonical-sidebar .logo-name { font-family: 'DM Serif Display', serif !important; font-size: 15px !important; color: white !important; line-height: 1 !important; }
+  #atlas-canonical-sidebar .logo-sub  { font-size: 9px !important; font-weight: 600 !important; letter-spacing: .1em !important; text-transform: uppercase !important; color: rgba(255,255,255,.3) !important; margin-top: 3px !important; }
+
+  /* Search */
+  #atlas-canonical-sidebar .sidebar-search {
+    margin: 12px 12px 6px !important;
+    background: rgba(255,255,255,.07) !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    display: flex !important; align-items: center !important; gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .sidebar-search svg {
+    width: 13px !important; height: 13px !important;
+    color: rgba(255,255,255,.3) !important; flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .sidebar-search input {
+    background: none !important; border: none !important; outline: none !important;
+    width: 100% !important; font-size: 12px !important;
+    color: rgba(255,255,255,.6) !important; font-family: 'DM Sans', sans-serif !important;
+    cursor: pointer !important;
+  }
+  #atlas-canonical-sidebar .sidebar-search input::placeholder { color: rgba(255,255,255,.3) !important; }
+
+  /* Scrollable middle */
+  #atlas-canonical-sidebar .sidebar-scroll {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  #atlas-canonical-sidebar .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+  #atlas-canonical-sidebar .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+  #atlas-canonical-sidebar .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.10); border-radius: 4px; }
+
+  /* Nav */
+  #atlas-canonical-sidebar .nav-group { padding: 8px 8px 0 !important; }
+  #atlas-canonical-sidebar .nav-label {
+    font-size: 9px !important; font-weight: 700 !important; letter-spacing: .1em !important;
+    text-transform: uppercase !important; color: rgba(255,255,255,.28) !important;
+    padding: 0 10px !important; margin-bottom: 4px !important;
+  }
+  #atlas-canonical-sidebar .nav-item {
+    display: flex !important; align-items: center !important; gap: 9px !important;
+    padding: 8px 10px !important; border-radius: 7px !important;
+    font-size: 12px !important; font-weight: 500 !important;
+    color: rgba(255,255,255,.55) !important; cursor: pointer !important;
+    transition: all .15s !important; margin-bottom: 1px !important;
+    text-decoration: none !important;
+  }
+  #atlas-canonical-sidebar .nav-item:hover { background: rgba(255,255,255,.07) !important; color: rgba(255,255,255,.85) !important; }
+  #atlas-canonical-sidebar .nav-item.active { background: #2563EB !important; color: white !important; }
+  #atlas-canonical-sidebar .nav-item svg { width: 14px !important; height: 14px !important; flex-shrink: 0 !important; }
+  #atlas-canonical-sidebar .nav-badge {
+    margin-left: auto !important; background: rgba(255,255,255,.12) !important;
+    color: rgba(255,255,255,.6) !important; border-radius: 10px !important;
+    padding: 1px 7px !important; font-size: 10px !important; font-weight: 600 !important;
+  }
+  #atlas-canonical-sidebar .nav-item.active .nav-badge { background: rgba(255,255,255,.2) !important; color: white !important; }
+  #atlas-canonical-sidebar .nav-badge.alert { background: #EF4444 !important; color: white !important; }
+
+  /* User block */
+  #atlas-canonical-sidebar .sidebar-user {
+    margin-top: auto !important; padding: 12px !important;
+    border-top: 1px solid rgba(255,255,255,.08) !important;
+    display: flex !important; align-items: center !important; gap: 9px !important;
+    background: #0E1E35 !important; flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .user-avatar {
+    width: 30px !important; height: 30px !important; border-radius: 50% !important;
+    background: #2563EB !important; display: flex !important;
+    align-items: center !important; justify-content: center !important;
+    font-size: 11px !important; font-weight: 700 !important; color: white !important;
+    flex-shrink: 0 !important;
+  }
+  #atlas-canonical-sidebar .user-name { font-size: 12px !important; font-weight: 500 !important; color: rgba(255,255,255,.75) !important; }
+  #atlas-canonical-sidebar .user-role { font-size: 10px !important; color: rgba(255,255,255,.35) !important; margin-top: 1px !important; }
+
+  /* Remove duplicate "GiveCentral Atlas" brand mark from chrome bar — kept only in sidebar */
+  .chrome > .chrome-mark, .chrome > .chrome-name, .chrome > .chrome-sep:first-of-type,
+  .page-chrome > .chrome-mark, .page-chrome > .chrome-title, .page-chrome > .chrome-sep:first-of-type {
+    display: none !important;
+  }
+</style>
+
+</head>
+<body>
+
+<!-- ════ Atlas canonical sidebar (auto-injected) ════ -->
+<aside class="sidebar atlas-canon" id="atlas-canonical-sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18" fill="none">
+        <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
+        <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
+      </svg>
+    </div>
+    <div class="logo-text-wrap">
+      <span class="logo-name">GiveCentral</span>
+      <span class="logo-sub">Atlas CRM</span>
+    </div>
+  </div>
+
+  <a href="atlas-search.html" style="display:block;text-decoration:none">
+    <div class="sidebar-search">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>
+      <input type="text" placeholder="Search donors, gifts…" readonly>
+    </div>
+  </a>
+
+  <div class="sidebar-scroll">
+
+    <div class="nav-group">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="atlas-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="1.5" width="4" height="4" rx="1.2"/><rect x="1.5" y="8.5" width="4" height="4" rx="1.2"/><rect x="8.5" y="8.5" width="4" height="4" rx="1.2"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="atlas-donors-list.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="4.5" r="3"/><path d="M1 13c0-2.8 2.2-5 5-5h1c2.8 0 5 2.2 5 5"/></svg>
+        Donors
+        <span class="nav-badge">3,847</span>
+      </a>
+      <a class="nav-item" href="atlas-gifts-pledges.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 1.5v11M2 6.5h10"/></svg>
+        Gifts &amp; pledges
+        <span class="nav-badge">142</span>
+      </a>
+      <a class="nav-item" href="atlas-campaign-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 8.5l2.5-2.5 2 2 2.5-2.5 2 2"/><rect x="1.5" y="1.5" width="11" height="11" rx="2"/></svg>
+        Campaigns
+      </a>
+      <a class="nav-item active" href="atlas-reports.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M1.5 3h11M1.5 7h7M1.5 11h5"/></svg>
+        Reports
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Fundraising</div>
+      <a class="nav-item" href="atlas-pipeline.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M7 4v4M7 10v.5"/></svg>
+        Prospect pipeline
+        <span class="nav-badge">28</span>
+      </a>
+      <a class="nav-item" href="atlas-tasks.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5"/><path d="M1.5 6h11M5 2.5v2M9 2.5v2"/></svg>
+        Tasks &amp; reminders
+        <span class="nav-badge alert">7</span>
+      </a>
+      <a class="nav-item" href="atlas-communications.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 3.5h10v7H2zM2 6.5h10M5 3.5v3"/></svg>
+        Communications
+      </a>
+      <a class="nav-item" href="atlas-events-dashboard.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="10" height="9" rx="1.5"/><path d="M2 6h10M5 2v2M9 2v2"/></svg>
+        Events
+      </a>
+      <a class="nav-item" href="atlas-volunteer-management.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Volunteers
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Intelligence</div>
+      <a class="nav-item" href="atlas-guru-ai.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="5" r="3.5"/><path d="M5 10c0 2 4 2 4 0M4.5 8.5c-2 1-3 3.5-3 4.5M9.5 8.5c2 1 3 3.5 3 4.5"/></svg>
+        Guru AI
+      </a>
+    </div>
+
+    <div class="nav-group" style="margin-top:8px">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item" href="atlas-users-roles.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="5" cy="5" r="2.5"/><circle cx="10" cy="5.5" r="2"/><path d="M1 12c0-2 1.7-3.5 4-3.5s4 1.5 4 3.5M9 12c0-1.5 1.2-2.7 3-2.7"/></svg>
+        Users &amp; roles
+      </a>
+      <a class="nav-item" href="atlas-integrations.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="4" cy="7" r="2.5"/><circle cx="10" cy="7" r="2.5"/><path d="M6.5 7h1"/></svg>
+        Integrations
+      </a>
+      <a class="nav-item" href="atlas-sync.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 7a5 5 0 0110 0M12 11a5 5 0 01-10 0M11 4l1.5-1L13 2M3 10l-1.5 1L1 12"/></svg>
+        Sync
+      </a>
+      <a class="nav-item" href="atlas-location-manage.html">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M7 12s5-3 5-7a5 5 0 00-10 0c0 4 5 7 5 7z"/><circle cx="7" cy="5" r="1.8"/></svg>
+        Location portal
+      </a>
+    </div>
+
+  </div><!-- /.sidebar-scroll -->
+
+  <div class="sidebar-user">
+    <div class="user-avatar">SR</div>
+    <div>
+      <div class="user-name">Sarah Reynolds</div>
+      <div class="user-role">Development Director</div>
+    </div>
+  </div>
+</aside>
+
+
+<!-- CHROME -->
+<div class="chrome">
+  <div class="chrome-mark"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/><path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/></svg></div>
+  <div class="chrome-name">GiveCentral Atlas</div>
+  <div class="chrome-sep"></div>
+  <div class="chrome-path">Reports → Giving → <b>Tribute &amp; In Honor Of</b></div>
+  <div class="chrome-right">
+    <button class="cbtn cbtn-ghost">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 1v7M3 5.5l3 3 3-3"/><path d="M1.5 10.5h9"/></svg>
+      Export CSV
+    </button>
+    <button class="cbtn cbtn-ghost">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1.5" y="1.5" width="9" height="9" rx="1.5"/><path d="M3.5 5h5M3.5 7h3"/></svg>
+      PDF report
+    </button>
+    <button class="cbtn cbtn-primary">Schedule delivery</button>
+  </div>
+</div>
+
+<!-- BANNER -->
+<div class="report-banner">
+  <div class="rb-top">
+    <div class="rb-icon">
+      <svg viewBox="0 0 20 20" fill="none" stroke="#C4B5FD" stroke-width="1.4" stroke-linecap="round">
+        <path d="M10 3.5C10 3.5 7 1 4.5 3.5c-2 2-1.5 5 0 7L10 17l5.5-6.5c1.5-2 2-5 0-7C13 1 10 3.5 10 3.5z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="rb-title">Tribute &amp; In Honor Of Report</div>
+      <div class="rb-sub">Diocese of St. Petersburg · Jan 1 – May 12, 2026 · All campaigns &amp; funds</div>
+    </div>
+    <div class="rb-stats">
+      <div class="rbs"><div class="rbs-val mauve">47</div><div class="rbs-lbl">Honorees</div></div>
+      <div class="rbs"><div class="rbs-val">124</div><div class="rbs-lbl">Tribute gifts</div></div>
+      <div class="rbs"><div class="rbs-val teal">$89,450</div><div class="rbs-lbl">Total raised</div></div>
+      <div class="rbs"><div class="rbs-val amber">38</div><div class="rbs-lbl">Notifications pending</div></div>
+    </div>
+  </div>
+  <div class="rb-types">
+    <div class="rbt rbt-memorial"><div class="rbt-dot" style="background:#C4B5FD"></div>In memory of — 28 honorees · $62,100</div>
+    <div class="rbt rbt-honor"><div class="rbt-dot" style="background:#5EEAD4"></div>In honor of — 12 honorees · $18,750</div>
+    <div class="rbt rbt-birthday"><div class="rbt-dot" style="background:#FCD34D"></div>Birthday tribute — 4 honorees · $6,200</div>
+    <div class="rbt rbt-occasion"><div class="rbt-dot" style="background:rgba(255,255,255,.5)"></div>Special occasion — 3 honorees · $2,400</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="view-bar">
+    <div class="vb-tabs">
+      <button class="vb-tab active" id="vtab-honoree"  onclick="setView('honoree',this)">By honoree</button>
+      <button class="vb-tab" id="vtab-donor"    onclick="setView('donor',this)">By donor</button>
+      <button class="vb-tab" id="vtab-letter"   onclick="setView('letter',this)">Notification letters</button>
+      <button class="vb-tab" id="vtab-summary"  onclick="setView('summary',this)">Summary &amp; analytics</button>
+    </div>
+    <div class="vb-right">
+      <select class="f-select">
+        <option>Jan 1 – May 12, 2026 (YTD)</option>
+        <option>May 2026</option>
+        <option>April 2026</option>
+        <option>Q1 2026</option>
+        <option>Full year 2025</option>
+        <option>Custom range…</option>
+      </select>
+      <select class="f-select">
+        <option>All funds</option>
+        <option>CMA Annual Fund</option>
+        <option>Cathedral Capital</option>
+        <option>General Fund</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="report-card">
+
+    <!-- ── BY HONOREE VIEW ── -->
+    <div class="report-view active" id="view-honoree">
+      <div class="toolbar">
+        <div class="tb-info">
+          <div class="tb-title">Tribute gifts by honoree</div>
+          <div class="tb-sub">47 honorees · 124 gifts · showing one row per honoree — expand to see individual donors</div>
+        </div>
+        <button class="btn">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M6 1v7M3 5.5l3 3 3-3"/><path d="M1.5 10.5h9"/></svg>CSV
+        </button>
+        <button class="btn btn-mauve">
+          <svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round"><path d="M1.5 3h9a.7.7 0 01.7.7v6a.7.7 0 01-.7.7h-9a.7.7 0 01-.7-.7V3.7a.7.7 0 01.7-.7z"/><path d="M1.5 3.5l4.5 3 4.5-3"/></svg>
+          Send all pending notifications
+        </button>
+      </div>
+      <div class="filter-row">
+        <button class="fp active" onclick="filterType('all',this)">All (47)</button>
+        <button class="fp memorial" onclick="filterType('memorial',this)">In memory of (28)</button>
+        <button class="fp honor"   onclick="filterType('honor',this)">In honor of (12)</button>
+        <button class="fp birthday" onclick="filterType('birthday',this)">Birthday tribute (4)</button>
+        <button class="fp"         onclick="filterType('occasion',this)">Special occasion (3)</button>
+        <div style="flex:1"></div>
+        <input type="text" class="f-search" placeholder="Search honoree name…" style="width:200px">
+        <select class="f-select">
+          <option>All notification statuses</option>
+          <option>Notification pending</option>
+          <option>Notification sent</option>
+          <option>No notification needed</option>
+        </select>
+      </div>
+
+      <div class="hon-table-wrap">
+        <table class="hon-table" id="honoree-table">
+          <thead>
+            <tr>
+              <th style="width:220px">Honoree</th>
+              <th style="width:100px">Type</th>
+              <th style="width:90px;text-align:right">Gifts</th>
+              <th style="width:110px;text-align:right">Total raised</th>
+              <th style="width:100px;text-align:right">Avg gift</th>
+              <th style="width:160px">Donors</th>
+              <th style="width:80px">Date range</th>
+              <th style="width:130px">Family notification</th>
+              <th style="width:50px"></th>
+            </tr>
+          </thead>
+          <tbody id="honoree-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="report-footer">
+        <div class="rf-s"><div class="rf-v">47</div><div class="rf-l">Honorees</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v">124</div><div class="rf-l">Total gifts</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v" style="color:#C4B5FD">$89,450</div><div class="rf-l">Total raised</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v" style="color:#FCD34D">38</div><div class="rf-l">Notifications pending</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v">$721</div><div class="rf-l">Avg gift</div></div>
+        <div class="rf-note">Tribute &amp; In Honor Of Report · Atlas CRM · May 12, 2026 · Confidential</div>
+      </div>
+    </div>
+
+    <!-- ── BY DONOR VIEW ── -->
+    <div class="report-view" id="view-donor">
+      <div class="toolbar">
+        <div class="tb-info">
+          <div class="tb-title">Tribute gifts by donor</div>
+          <div class="tb-sub">124 tribute and memorial gifts · showing the donor who made each gift · hard credit only</div>
+        </div>
+        <button class="btn btn-navy">PDF</button>
+      </div>
+      <div class="filter-row">
+        <button class="fp active">All (124)</button>
+        <button class="fp memorial">In memory of (78)</button>
+        <button class="fp honor">In honor of (32)</button>
+        <button class="fp birthday">Birthday (10)</button>
+        <div style="flex:1"></div>
+        <input type="text" class="f-search" placeholder="Search donor…" style="width:180px">
+      </div>
+      <div style="overflow-x:auto">
+        <table class="donor-table">
+          <thead>
+            <tr>
+              <th style="width:200px">Donor (hard credit)</th>
+              <th style="width:80px">Type</th>
+              <th style="width:200px">In tribute to</th>
+              <th style="width:100px;text-align:right">Amount</th>
+              <th style="width:140px">Fund</th>
+              <th style="width:90px">Gift date</th>
+              <th style="width:90px">Payment</th>
+              <th style="width:100px">Tax receipt</th>
+              <th style="width:130px">Soft credit to</th>
+              <th style="width:100px">Officer</th>
+            </tr>
+          </thead>
+          <tbody id="donor-tbody"></tbody>
+        </table>
+      </div>
+      <div class="report-footer">
+        <div class="rf-s"><div class="rf-v">124</div><div class="rf-l">Tribute gifts</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v" style="color:#C4B5FD">$89,450</div><div class="rf-l">Total</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v">$721</div><div class="rf-l">Avg gift</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v" style="color:#5EEAD4">124</div><div class="rf-l">Receipts issued to donors</div></div>
+        <div class="rf-note">Receipts issued to paying donors only · honorees receive notification letters, not tax receipts · Atlas CRM</div>
+      </div>
+    </div>
+
+    <!-- ── NOTIFICATION LETTERS VIEW ── -->
+    <div class="report-view" id="view-letter">
+      <div class="toolbar">
+        <div class="tb-info">
+          <div class="tb-title">Family notification letters</div>
+          <div class="tb-sub">38 pending · 86 sent · letters are courtesy notifications only — no tax language</div>
+        </div>
+        <button class="btn">Preview template</button>
+        <button class="btn btn-mauve">Send all 38 pending</button>
+      </div>
+      <div class="letter-shell">
+        <div class="letter-list">
+          <div class="letter-list-head">Pending notifications (38)</div>
+          <div id="letter-list-items"></div>
+        </div>
+        <div class="letter-preview" id="letter-preview-area">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SUMMARY VIEW ── -->
+    <div class="report-view" id="view-summary">
+      <div class="toolbar">
+        <div class="tb-info">
+          <div class="tb-title">Tribute giving — summary &amp; analytics</div>
+          <div class="tb-sub">Year-to-date · all funds · Diocese of St. Petersburg</div>
+        </div>
+        <button class="btn btn-navy">PDF summary</button>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="ag-stat"><div class="ag-val mauve">$89,450</div><div class="ag-lbl">Total tribute giving YTD</div></div>
+        <div class="ag-stat"><div class="ag-val teal">124</div><div class="ag-lbl">Tribute gifts received</div></div>
+        <div class="ag-stat"><div class="ag-val amber">47</div><div class="ag-lbl">Unique honorees</div></div>
+        <div class="ag-stat"><div class="ag-val green">86</div><div class="ag-lbl">Notification letters sent</div></div>
+        <div class="ag-stat"><div class="ag-val">$721</div><div class="ag-lbl">Average gift amount</div></div>
+        <div class="ag-stat"><div class="ag-val">2.6</div><div class="ag-lbl">Avg donors per honoree</div></div>
+        <div class="ag-stat"><div class="ag-val mauve">69%</div><div class="ag-lbl">Memorial vs. honor (memorial %)</div></div>
+        <div class="ag-stat"><div class="ag-val teal">18</div><div class="ag-lbl">New donor first gifts via tribute</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--border)">
+        <div style="padding:16px 20px;border-right:1px solid var(--border)">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Top 10 honorees by amount raised</div>
+          <table class="mini-table">
+            <thead><tr><th>Honoree</th><th>Type</th><th style="text-align:right">Gifts</th><th style="text-align:right">Total</th></tr></thead>
+            <tbody id="top-honorees"></tbody>
+          </table>
+        </div>
+        <div style="padding:16px 20px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Tribute giving by fund</div>
+          <table class="mini-table">
+            <thead><tr><th>Fund</th><th style="text-align:right">Gifts</th><th style="text-align:right">Total</th><th style="text-align:right">% of tribute</th></tr></thead>
+            <tbody>
+              <tr><td>CMA Annual Fund</td><td style="text-align:right">54</td><td style="text-align:right;font-family:'DM Mono',monospace">$38,200</td><td style="text-align:right;color:var(--text3)">42.7%</td></tr>
+              <tr><td>Cathedral Capital</td><td style="text-align:right">31</td><td style="text-align:right;font-family:'DM Mono',monospace">$28,500</td><td style="text-align:right;color:var(--text3)">31.9%</td></tr>
+              <tr><td>General Fund</td><td style="text-align:right">22</td><td style="text-align:right;font-family:'DM Mono',monospace">$14,750</td><td style="text-align:right;color:var(--text3)">16.5%</td></tr>
+              <tr><td>School Scholarship</td><td style="text-align:right">12</td><td style="text-align:right;font-family:'DM Mono',monospace">$6,200</td><td style="text-align:right;color:var(--text3)">6.9%</td></tr>
+              <tr><td>Bishop's Annual Fund</td><td style="text-align:right">5</td><td style="text-align:right;font-family:'DM Mono',monospace">$1,800</td><td style="text-align:right;color:var(--text3)">2.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border)">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);margin-bottom:12px">Key observations</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div style="padding:12px 14px;background:var(--mauvel);border:1px solid #DDD6FE;border-radius:9px">
+            <div style="font-size:12px;font-weight:600;color:var(--mauve);margin-bottom:4px">18 new donors acquired</div>
+            <div style="font-size:12px;color:#534AB7;line-height:1.6">Tribute gifts brought 18 first-time donors to the diocese this year. Memorial gifts are a significant acquisition channel.</div>
+          </div>
+          <div style="padding:12px 14px;background:var(--teall);border:1px solid #5EEAD4;border-radius:9px">
+            <div style="font-size:12px;font-weight:600;color:var(--teal);margin-bottom:4px">$28,500 to capital campaign</div>
+            <div style="font-size:12px;color:#0F766E;line-height:1.6">The Cathedral Restoration campaign received 31 tribute gifts. Memorial donors often designate to legacy funds — worth featuring in campaign materials.</div>
+          </div>
+          <div style="padding:12px 14px;background:var(--amberl);border:1px solid #FDE68A;border-radius:9px">
+            <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:4px">38 notifications outstanding</div>
+            <div style="font-size:12px;color:var(--warm);line-height:1.6">38 families are awaiting notification. Timely notification is a key stewardship moment — families who receive prompt letters are significantly more likely to become donors themselves.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-footer">
+        <div class="rf-s"><div class="rf-v" style="color:#C4B5FD">$89,450</div><div class="rf-l">YTD tribute total</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v">+12%</div><div class="rf-l">vs. same period 2025</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v">18</div><div class="rf-l">New donors via tribute</div></div>
+        <div class="rf-div"></div>
+        <div class="rf-s"><div class="rf-v" style="color:#FCD34D">38</div><div class="rf-l">Notifications pending</div></div>
+        <div class="rf-note">Summary analytics · Atlas CRM · Generated May 12, 2026</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const COLORS = ['#7C3AED','#0D9488','#2563EB','#D97706','#BE185D','#15803D','#0E7490','#9333EA'];
+
+const HONOREES = [
+  { id:1,  name:"Fr. James Collins",         type:"memorial", family:"Collins family",     contact:"Margaret Collins", gifts:8,  total:12500, avg:1563, range:"Jan–Mar 2026", notifStatus:"sent",    notifDate:"Feb 15, 2026",
+    donors:[{name:"O'Brien, James",c:'#7C3AED',amt:2500,fund:"CMA Annual Fund",date:"Jan 14",receipt:"sent"},{name:"Sullivan, Margaret",c:'#0D9488',amt:2500,fund:"Cathedral Capital",date:"Jan 20",receipt:"sent"},{name:"Harrington, David",c:'#2563EB',amt:2000,fund:"CMA Annual Fund",date:"Feb 2",receipt:"sent"},{name:"Kim, Patricia",c:'#D97706',amt:1500,fund:"General Fund",date:"Feb 10",receipt:"sent"},{name:"Walsh, Thomas",c:'#BE185D',amt:1000,fund:"CMA Annual Fund",date:"Feb 28",receipt:"sent"},{name:"Others (3)",c:'#64748B',amt:2500,fund:"Various",date:"Mar 2026",receipt:"sent"}]},
+  { id:2,  name:"Bishop Robert Walsh",        type:"memorial", family:"Diocese / family",   contact:"Chancery office",  gifts:14, total:18750, avg:1339, range:"Jan–May 2026", notifStatus:"sent",    notifDate:"Mar 1, 2026",
+    donors:[{name:"Catholic Community Fdn",c:'#0D9488',amt:5000,fund:"CMA Annual Fund",date:"Jan 30",receipt:"sent"},{name:"First Catholic Bank",c:'#2563EB',amt:5000,fund:"Cathedral Capital",date:"Feb 5",receipt:"sent"},{name:"Morrison, Peter",c:'#7C3AED',amt:2500,fund:"CMA Annual Fund",date:"Feb 14",receipt:"sent"},{name:"Others (11)",c:'#64748B',amt:6250,fund:"Various",date:"Various",receipt:"sent"}]},
+  { id:3,  name:"Sr. Agnes Mary Murphy",      type:"memorial", family:"Murphy family",      contact:"Thomas Murphy",    gifts:5,  total:4200,  avg:840,  range:"Feb–Mar 2026", notifStatus:"pending", notifDate:null,
+    donors:[{name:"Fitzgerald, Anne",c:'#15803D',amt:1000,fund:"General Fund",date:"Feb 20",receipt:"sent"},{name:"Costello, Barbara",c:'#D97706',amt:1000,fund:"General Fund",date:"Feb 22",receipt:"sent"},{name:"Ramirez, Elena",c:'#9333EA',amt:750,fund:"CMA Annual Fund",date:"Mar 5",receipt:"sent"},{name:"Others (2)",c:'#64748B',amt:1450,fund:"Various",date:"Mar 2026",receipt:"sent"}]},
+  { id:4,  name:"Margaret O'Brien Sullivan",  type:"memorial", family:"O'Brien family",     contact:"James O'Brien",    gifts:6,  total:7500,  avg:1250, range:"Mar–Apr 2026", notifStatus:"pending", notifDate:null,
+    donors:[{name:"Harrington, David",c:'#2563EB',amt:2000,fund:"Cathedral Capital",date:"Mar 18",receipt:"sent"},{name:"Walsh, Thomas",c:'#BE185D',amt:2000,fund:"CMA Annual Fund",date:"Mar 20",receipt:"sent"},{name:"Morrison, Peter",c:'#7C3AED',amt:1500,fund:"CMA Annual Fund",date:"Apr 2",receipt:"sent"},{name:"Others (3)",c:'#64748B',amt:2000,fund:"Various",date:"Apr 2026",receipt:"sent"}]},
+  { id:5,  name:"Dr. Patricia Kim",           type:"honor",    family:"Kim family",         contact:"Patricia Kim",     gifts:4,  total:3200,  avg:800,  range:"Apr 2026",     notifStatus:"sent",    notifDate:"Apr 28, 2026",
+    donors:[{name:"Mendez, Carlos",c:'#0E7490',amt:1000,fund:"CMA Annual Fund",date:"Apr 15",receipt:"sent"},{name:"Grant, Michael",c:'#9333EA',amt:1000,fund:"General Fund",date:"Apr 16",receipt:"sent"},{name:"Walsh, Susan",c:'#D97706',amt:700,fund:"CMA Annual Fund",date:"Apr 20",receipt:"sent"},{name:"Nguyen, Thomas",c:'#15803D',amt:500,fund:"CMA Annual Fund",date:"Apr 22",receipt:"sent"}]},
+  { id:6,  name:"Fr. Matthew Kelly",          type:"birthday", family:"St. Michael's parish",contact:"Parish office",    gifts:3,  total:1800,  avg:600,  range:"May 2026",     notifStatus:"pending", notifDate:null,
+    donors:[{name:"O'Brien, James",c:'#7C3AED',amt:750,fund:"CMA Annual Fund",date:"May 1",receipt:"sent"},{name:"Sullivan, Margaret",c:'#0D9488',amt:600,fund:"General Fund",date:"May 3",receipt:"sent"},{name:"Kim, Patricia",c:'#D97706',amt:450,fund:"CMA Annual Fund",date:"May 5",receipt:"sent"}]},
+  { id:7,  name:"Thomas &amp; Anne Walsh — 50th Anniversary", type:"occasion", family:"Walsh family", contact:"Thomas Walsh", gifts:2, total:1200, avg:600, range:"May 2026", notifStatus:"pending", notifDate:null,
+    donors:[{name:"Harrington, David",c:'#2563EB',amt:750,fund:"Cathedral Capital",date:"May 8",receipt:"sent"},{name:"Morrison, Peter",c:'#7C3AED',amt:450,fund:"CMA Annual Fund",date:"May 9",receipt:"sent"}]},
+];
+
+const DONOR_ROWS = [
+  { donor:"O'Brien, James",     type:"memorial", honoree:"Fr. James Collins",  amt:2500, fund:"CMA Annual Fund",   date:"Jan 14, 2026", pay:"Check",  soft:"Collins family" },
+  { donor:"Sullivan, Margaret", type:"memorial", honoree:"Fr. James Collins",  amt:2500, fund:"Cathedral Capital", date:"Jan 20, 2026", pay:"Check",  soft:"Collins family" },
+  { donor:"Catholic Comm. Fdn", type:"memorial", honoree:"Bishop Robert Walsh", amt:5000, fund:"CMA Annual Fund",  date:"Jan 30, 2026", pay:"DAF",    soft:"Walsh family" },
+  { donor:"First Catholic Bank",type:"memorial", honoree:"Bishop Robert Walsh", amt:5000, fund:"Cathedral Capital",date:"Feb 5, 2026",  pay:"Check",  soft:"Walsh family" },
+  { donor:"Harrington, David",  type:"memorial", honoree:"Fr. James Collins",  amt:2000, fund:"CMA Annual Fund",   date:"Feb 2, 2026",  pay:"Credit", soft:"Collins family" },
+  { donor:"Kim, Patricia",      type:"memorial", honoree:"Fr. James Collins",  amt:1500, fund:"General Fund",      date:"Feb 10, 2026", pay:"Credit", soft:"Collins family" },
+  { donor:"Fitzgerald, Anne",   type:"memorial", honoree:"Sr. Agnes Mary Murphy",amt:1000,fund:"General Fund",     date:"Feb 20, 2026", pay:"Check",  soft:"Murphy family" },
+  { donor:"Costello, Barbara",  type:"memorial", honoree:"Sr. Agnes Mary Murphy",amt:1000,fund:"General Fund",     date:"Feb 22, 2026", pay:"Check",  soft:"Murphy family" },
+  { donor:"Morrison, Peter",    type:"memorial", honoree:"Bishop Robert Walsh", amt:2500, fund:"CMA Annual Fund",  date:"Feb 14, 2026", pay:"Credit", soft:"Walsh family / Diocese" },
+  { donor:"Walsh, Thomas",      type:"memorial", honoree:"Fr. James Collins",  amt:1000, fund:"CMA Annual Fund",   date:"Feb 28, 2026", pay:"Check",  soft:"Collins family" },
+  { donor:"Harrington, David",  type:"memorial", honoree:"Margaret O'Brien Sullivan",amt:2000,fund:"Cathedral Capital",date:"Mar 18, 2026",pay:"Credit",soft:"O'Brien family" },
+  { donor:"Mendez, Carlos",     type:"honor",    honoree:"Dr. Patricia Kim",   amt:1000, fund:"CMA Annual Fund",   date:"Apr 15, 2026", pay:"Credit", soft:"Kim, Patricia" },
+  { donor:"Grant, Michael",     type:"honor",    honoree:"Dr. Patricia Kim",   amt:1000, fund:"General Fund",      date:"Apr 16, 2026", pay:"Credit", soft:"Kim, Patricia" },
+  { donor:"O'Brien, James",     type:"birthday", honoree:"Fr. Matthew Kelly",  amt:750,  fund:"CMA Annual Fund",   date:"May 1, 2026",  pay:"Check",  soft:"Kelly, Fr. Matthew" },
+  { donor:"Sullivan, Margaret", type:"birthday", honoree:"Fr. Matthew Kelly",  amt:600,  fund:"General Fund",      date:"May 3, 2026",  pay:"Credit", soft:"Kelly, Fr. Matthew" },
+];
+
+const LETTER_LIST = [
+  { id:3,  name:"Sr. Agnes Mary Murphy",           family:"Murphy family",      contact:"Thomas Murphy",  count:5, total:"$4,200" },
+  { id:4,  name:"Margaret O'Brien Sullivan",        family:"O'Brien family",     contact:"James O'Brien",  count:6, total:"$7,500" },
+  { id:6,  name:"Fr. Matthew Kelly",               family:"St. Michael's",      contact:"Parish office",  count:3, total:"$1,800" },
+  { id:7,  name:"Thomas &amp; Anne Walsh — 50th",  family:"Walsh family",       contact:"Thomas Walsh",   count:2, total:"$1,200" },
+];
+
+let activeLetterIdx = 0;
+
+// ── RENDER HONOREE TABLE ──────────────────────────────────────────────────────
+function renderHonorees(filter) {
+  const rows = filter === 'all' ? HONOREES : HONOREES.filter(h => h.type === filter);
+  const typeLabels = { memorial:'In memory of', honor:'In honor of', birthday:'Birthday tribute', occasion:'Special occasion' };
+  const typeClass  = { memorial:'hnt-memorial', honor:'hnt-honor', birthday:'hnt-birthday', occasion:'hnt-occasion' };
+  document.getElementById('honoree-tbody').innerHTML = rows.map((h,i) => {
+    const nsClass = h.notifStatus === 'sent' ? 'ns-sent' : h.notifStatus === 'pending' ? 'ns-pending' : 'ns-none';
+    const nsLabel = h.notifStatus === 'sent' ? '✓ Sent' : h.notifStatus === 'pending' ? 'Pending' : 'Not needed';
+    const avatars = h.donors.slice(0,4).map((d,di) =>
+      `<div class="dp-av" style="background:${COLORS[di%COLORS.length]}">${d.name.slice(0,2).toUpperCase()}</div>`
+    ).join('');
+    const extraCount = h.gifts > 4 ? `<span class="dp-more">+${h.gifts-4} more</span>` : '';
+    return `<tr id="hon-row-${h.id}" class="stagger" style="animation-delay:${i*0.04}s">
+      <td class="hon-name-cell">
+        <div class="hn-name">${h.name}</div>
+        <span class="hn-type ${typeClass[h.type]}">${typeLabels[h.type]}</span>
+        <div class="hn-family">
+          <svg viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><circle cx="4.5" cy="3" r="2"/><path d="M1 8c0-1.9 1.6-3.5 3.5-3.5S8 6.1 8 8"/></svg>
+          ${h.family}
+        </div>
+      </td>
+      <td style="padding:11px 16px"><span class="hn-type ${typeClass[h.type]}">${typeLabels[h.type]}</span></td>
+      <td class="mon mon-count" style="text-align:right">${h.gifts}</td>
+      <td class="mon mon-total" style="text-align:right">$${h.total.toLocaleString()}</td>
+      <td class="mon mon-avg" style="text-align:right">$${h.avg.toLocaleString()}</td>
+      <td class="donors-preview">
+        <div class="dp-avatars">${avatars}</div>
+        <div class="dp-more">${h.gifts} donor${h.gifts!==1?'s':''}</div>
+      </td>
+      <td style="padding:11px 16px;font-size:11px;color:var(--text3)">${h.range}</td>
+      <td class="notif-cell">
+        <span class="notif-status ${nsClass}">${nsLabel}</span>
+        ${h.notifDate ? `<div class="ns-date">${h.notifDate}</div>` : (h.notifStatus==='pending'?`<div class="ns-date" style="color:var(--amber)">Action needed</div>`:'') }
+      </td>
+      <td class="expand-btn" onclick="toggleHonRow(${h.id})">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 4.5l3 3 3-3"/></svg>
+      </td>
+    </tr>
+    <tr id="hon-detail-${h.id}" class="detail-row" style="display:none">
+      <td colspan="9">
+        <div class="detail-inner">
+          <div class="di-label">Individual donors — ${h.gifts} gifts totalling $${h.total.toLocaleString()}</div>
+          ${h.donors.map(d => `
+            <div class="donor-gift-row">
+              <div class="dgr-av" style="background:${d.c}">${d.name.slice(0,2).toUpperCase()}</div>
+              <div style="flex:1">
+                <div class="dgr-name">${d.name}</div>
+                <div class="dgr-sub">${d.fund} · ${d.date}</div>
+              </div>
+              <div style="text-align:right">
+                <div class="dgr-amt">$${d.amt.toLocaleString()}</div>
+                <div class="dgr-fund"><span class="dgr-receipt ${d.receipt==='sent'?'dr-sent':'dr-pend'}">${d.receipt==='sent'?'Receipt sent':'Receipt pending'}</span></div>
+              </div>
+            </div>`).join('')}
+          <div class="notif-action">
+            <button class="na-btn na-btn-primary" onclick="selectLetter(${h.id})">
+              ${h.notifStatus==='sent'?'View sent notification':'Send notification letter to family'}
+            </button>
+            <button class="na-btn">Download donor list</button>
+            <button class="na-btn">Add to stewardship queue</button>
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleHonRow(id) {
+  const detail = document.getElementById(`hon-detail-${id}`);
+  const row    = document.getElementById(`hon-row-${id}`);
+  const showing = detail.style.display !== 'none';
+  detail.style.display = showing ? 'none' : 'table-row';
+  row.classList.toggle('expanded', !showing);
+}
+
+// ── RENDER DONOR TABLE ────────────────────────────────────────────────────────
+function renderDonors() {
+  const typeClass = { memorial:'tb-mem', honor:'tb-hon', birthday:'tb-bdy', occasion:'tb-occ' };
+  const typeLabel = { memorial:'Memorial', honor:'In honor', birthday:'Birthday', occasion:'Occasion' };
+  document.getElementById('donor-tbody').innerHTML = DONOR_ROWS.map((r,i) => `
+    <tr class="stagger" style="animation-delay:${i*0.03}s">
+      <td>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${r.donor}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:1px">Hard credit · tax receipt issued to donor</div>
+      </td>
+      <td><span class="type-badge ${typeClass[r.type]}">${typeLabel[r.type]}</span></td>
+      <td>
+        <div style="font-size:13px;font-style:italic;color:var(--text2)">${r.honoree}</div>
+      </td>
+      <td style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500;text-align:right;padding-right:16px">$${r.amt.toLocaleString()}</td>
+      <td style="font-size:12px;color:var(--text2)">${r.fund}</td>
+      <td style="font-size:12px;color:var(--text2)">${r.date}</td>
+      <td style="font-size:12px;color:var(--text3)">${r.pay}</td>
+      <td><span class="notif-status ns-sent" style="font-size:10px">✓ To donor</span></td>
+      <td style="font-size:12px;color:var(--mauve);font-weight:500">${r.soft}</td>
+      <td style="font-size:11px;color:var(--text3)">Mike D.</td>
+    </tr>`).join('');
+}
+
+// ── LETTER LIST + PREVIEW ─────────────────────────────────────────────────────
+function renderLetterList() {
+  document.getElementById('letter-list-items').innerHTML = LETTER_LIST.map((l,i) => `
+    <div class="ll-item ${i===activeLetterIdx?'active':''}" onclick="selectLetterByIdx(${i})">
+      <div class="ll-name">${l.name}</div>
+      <div class="ll-meta">
+        ${l.family} · ${l.count} gifts · ${l.total}
+        <span class="ll-status lls-pending">Pending</span>
+      </div>
+    </div>`).join('');
+  renderLetterPreview(LETTER_LIST[activeLetterIdx]);
+}
+
+function selectLetterByIdx(idx) {
+  activeLetterIdx = idx;
+  document.querySelectorAll('.ll-item').forEach((el,i) => el.classList.toggle('active', i===idx));
+  renderLetterPreview(LETTER_LIST[idx]);
+}
+
+function selectLetter(honoreeId) {
+  setView('letter', document.getElementById('vtab-letter'));
+  const idx = LETTER_LIST.findIndex(l => l.id === honoreeId);
+  if (idx >= 0) selectLetterByIdx(idx);
+}
+
+function renderLetterPreview(l) {
+  const name = l.name.replace('&amp;','&');
+  document.getElementById('letter-preview-area').innerHTML = `
+    <div class="lp-chrome">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M1.5 3h9a.7.7 0 01.7.7v6a.7.7 0 01-.7.7h-9a.7.7 0 01-.7-.7V3.7a.7.7 0 01.7-.7z"/><path d="M1.5 3.5l4.5 3 4.5-3"/></svg>
+      To: ${l.contact} &lt;${l.contact.toLowerCase().replace(/\s/g,'.')}@example.com&gt;
+      &nbsp;·&nbsp; Subject: A tribute gift has been made in memory of ${name}
+    </div>
+    <div class="letter-paper">
+      <div class="lp-logo">
+        <div class="lp-logo-mark"><svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M4.5 7.5C5.2 9 7 10.5 7 10.5s1.8-1.5 2.5-3S10 3.5 7 3.5 4 6 4.5 7.5z"/></svg></div>
+        <div>
+          <div class="lp-logo-name">Catholic Community Foundation</div>
+          <div class="lp-logo-sub">Diocese of St. Petersburg · 1404 East Ninth Street, Cleveland OH 44114</div>
+        </div>
+      </div>
+      <div class="lp-date">May 12, 2026</div>
+      <div class="lp-addr">${l.contact}<br>${l.family}<br>Diocese of St. Petersburg</div>
+      <div class="lp-salut">Dear ${l.contact.split(' ')[0]},</div>
+      <div class="lp-body">We write to share the beautiful news that friends and parishioners have made tribute gifts to the Diocese of St. Petersburg in memory of <em>${name}</em>. These generous acts of remembrance are a testament to the profound impact ${name.split(' ').slice(-1)[0]} had on so many lives in our community.</div>
+      <div class="lp-gift-box">
+        <div class="lgb-title">Tribute gifts received in memory of ${name}</div>
+        <div class="lgb-row"><span class="lgb-key">Number of gifts</span><span class="lgb-val">${l.count} gifts</span></div>
+        <div class="lgb-row"><span class="lgb-key">Total tribute giving</span><span class="lgb-val">${l.total}</span></div>
+        <div class="lgb-row"><span class="lgb-key">Fund designated</span><span class="lgb-val">As directed by each donor</span></div>
+        <div class="lgb-row"><span class="lgb-key">Period of giving</span><span class="lgb-val">January – May 2026</span></div>
+      </div>
+      <div class="lp-note">This letter is a courtesy notification. Tax receipts have been issued separately to each individual donor. This letter does not serve as a tax receipt and does not reflect any deductible contribution on your part.</div>
+      <div class="lp-body">These gifts will support the mission of the Diocese and stand as a living memorial to ${name.split(' ').slice(-1)[0]}'s faith and generosity. We are grateful for the love and support of your family during this time.</div>
+      <div class="lp-close">If you would like to know more about how these tribute gifts will be used, or if you wish to receive the names of the donors who have given in ${name.split(' ').slice(-1)[0]}'s memory, please contact our development office. We would be honored to share more with you.</div>
+      <div class="lp-close">With gratitude and in prayer,</div>
+      <div style="margin-top:16px">
+        <div class="lp-sig">Kaitlyn Novicky</div>
+        <div class="lp-sig-title">Development Associate<br>Catholic Community Foundation<br>(216) 696-6525 x1680 · knovicky@catholiccommunity.org</div>
+      </div>
+      <div class="lp-footer">Catholic Community Foundation · 1404 East Ninth Street · Cleveland, Ohio 44114 · (216) 696-6525 · catholiccommunity.org<br>This is a notification letter only. No tax deduction is claimed or implied. Tax receipts were issued to individual donors at the time of their gifts.</div>
+    </div>
+    <div class="lp-actions" style="margin-top:16px">
+      <button class="btn btn-mauve">
+        <svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round"><path d="M1.5 3h9a.7.7 0 01.7.7v6a.7.7 0 01-.7.7h-9a.7.7 0 01-.7-.7V3.7a.7.7 0 01.7-.7z"/><path d="M1.5 3.5l4.5 3 4.5-3"/></svg>
+        Send this letter
+      </button>
+      <button class="btn btn-navy">Download PDF</button>
+      <button class="btn">Edit before sending</button>
+      <button class="btn">Include donor names</button>
+    </div>`;
+}
+
+// ── TOP HONOREES MINI TABLE ───────────────────────────────────────────────────
+function renderTopHonorees() {
+  const sorted = [...HONOREES].sort((a,b) => b.total - a.total).slice(0,7);
+  const typeLabel = { memorial:'In memory of', honor:'In honor of', birthday:'Birthday', occasion:'Occasion' };
+  const typeClass = { memorial:'tb-mem', honor:'tb-hon', birthday:'tb-bdy', occasion:'tb-occ' };
+  document.getElementById('top-honorees').innerHTML = sorted.map(h => `
+    <tr>
+      <td style="font-size:13px;font-style:italic;color:var(--text)">${h.name}</td>
+      <td><span class="type-badge ${typeClass[h.type]}" style="font-size:9px">${typeLabel[h.type]}</span></td>
+      <td style="text-align:right;color:var(--text3)">${h.gifts}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:500">$${h.total.toLocaleString()}</td>
+    </tr>`).join('');
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────────
+function setView(id, btn) {
+  document.querySelectorAll('.report-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.vb-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'letter')  renderLetterList();
+}
+
+// ── FILTER ────────────────────────────────────────────────────────────────────
+function filterType(f, btn) {
+  document.querySelectorAll('.fp').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderHonorees(f);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderHonorees('all');
+renderDonors();
+renderTopHonorees();
+</script>
+<!-- ════════════════════════════════════════════════════════
+     Atlas Dead-CTA Rescue · v1
+     Single click-delegation script that catches button/anchor
+     clicks whose text matches an entry in ACTIONS. Fires a toast,
+     navigates, opens a modal, or toggles a state as appropriate.
+     Safe to load on every page — no-ops when the text isn't in
+     ACTIONS, leaving page-native handlers and the wire-script alone.
+     ════════════════════════════════════════════════════════ -->
+<style id="atlas-rescue-css">
+  #atlas-rescue-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background:#0F172A; color:white; padding:12px 18px; border-radius:10px; box-shadow:0 8px 24px rgba(15,23,42,.20); font-size:13px; font-family:'DM Sans',sans-serif; z-index:100010; display:flex; align-items:center; gap:10px; opacity:0; transition:opacity .2s,transform .2s; pointer-events:none; max-width: 480px; }
+  #atlas-rescue-toast.show { opacity:1; transform:translateX(-50%); pointer-events:auto; }
+  #atlas-rescue-toast .ico { width:22px; height:22px; border-radius:50%; background:#15803D; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0; }
+  #atlas-rescue-toast .msg { line-height:1.4; }
+</style>
+<div id="atlas-rescue-toast"><span class="ico">✓</span><span class="msg"></span></div>
+<script id="atlas-rescue">
+(function(){
+  if (window.__atlasRescue) return; window.__atlasRescue = true;
+
+  // ── Text → Action lookup table ──
+  // Match is case-insensitive, EXACT trimmed text equality (to avoid false positives like "Export" matching "Export forecast")
+  var ACTIONS = {
+    'send all pending notifications': { type:'toast', msg:'38 tribute notifications queued · families will be emailed in the next hour' },
+    'send all 38 pending':            { type:'toast', msg:'38 tribute notifications queued · families will be emailed in the next hour' },
+    'send this letter':               { type:'toast', msg:'Letter sent · added to donor stewardship log' },
+    'edit before sending':            { type:'route', dest:'atlas-email-compose.html' },
+    'preview template':               { type:'toast', msg:'Template preview · opens in a new tab' },
+    'pdf':                            { type:'toast', msg:'PDF downloaded' },
+    'pdf summary':                    { type:'toast', msg:'PDF summary downloaded' },
+    'download donor list':            { type:'toast', msg:'Donor CSV downloaded · 124 records' },
+    'add to stewardship queue':       { type:'toast', msg:'Added to stewardship queue · honorees will be touch-scheduled' },
+    'include donor names':            { type:'toast', msg:'Donor names will be included on the notification letter' },
+    'all (124)':                      { type:'special', fn:'filterTributes', val:'all' },
+    'in memory of (78)':              { type:'special', fn:'filterTributes', val:'memorial' },
+    'in honor of (32)':               { type:'special', fn:'filterTributes', val:'honor' },
+    'birthday (10)':                  { type:'special', fn:'filterTributes', val:'birthday' },
+
+    'import csv':                  { type:'toast', msg:'CSV import started · drop or pick a file in the next step' },
+    'save draft':                  { type:'toast', msg:'Draft saved · resume anytime from Batches → Drafts' },
+    'csv file':                    { type:'toast', msg:'CSV import selected · choose file…' },
+    'excel':                       { type:'toast', msg:'Excel import selected · choose .xlsx file…' },
+    'pdf scan':                    { type:'toast', msg:'PDF OCR scan · drop a check image or pledge form' },
+    'gifts & pledges':             { type:'route', dest:'atlas-gifts-pledges.html' },
+    'tribute report':              { type:'route', dest:'atlas-tribute-report.html' },
+    'tribute & in honor of':       { type:'route', dest:'atlas-tribute-report.html' },
+    'pledge report':               { type:'route', dest:'atlas-pledge-reports.html' },
+    'pledge reports':              { type:'route', dest:'atlas-pledge-reports.html' },
+    'capital campaign pledge report': { type:'route', dest:'atlas-pledge-reports.html' },
+    'report queue':                { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'queue & schedule':            { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'queue scheduler':             { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'schedule queue':              { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'schedule delivery':           { type:'route', dest:'atlas-report-queue-scheduler.html' },
+    'send notifications':          { type:'toast', msg:'Tribute notifications queued · 38 recipients' },
+    'export':                      { type:'toast', msg:'Export ready · CSV downloaded' },
+    'email report':                { type:'toast', msg:'Report emailed · delivered to recipients' },
+    'new queue':                   { type:'route', dest:'atlas-report-queue-scheduler.html' },
+
+    // Generic exports / downloads → simulated toast
+    'export':                      { type:'toast', msg:'Export ready · CSV downloaded to your device' },
+    'export csv':                  { type:'toast', msg:'CSV exported · check your downloads' },
+    'export pdf':                  { type:'toast', msg:'PDF generated · downloading now' },
+    'export all':                  { type:'toast', msg:'Bulk export queued · ready in ~60 seconds' },
+    'export list':                 { type:'toast', msg:'List exported as CSV · check downloads' },
+    'export roster':               { type:'toast', msg:'Roster exported · CSV ready' },
+    'export forecast':             { type:'toast', msg:'Forecast exported · CSV downloaded' },
+    'export profile':              { type:'toast', msg:'Profile export queued · ready in 30 seconds' },
+    'export exception report':     { type:'toast', msg:'Exception report exported · CSV ready' },
+    'download csv':                { type:'toast', msg:'CSV downloaded' },
+    'download pdf':                { type:'toast', msg:'PDF downloaded' },
+    'download report':             { type:'toast', msg:'Report downloaded · PDF ready' },
+    'pdf report':                  { type:'toast', msg:'PDF report generated · downloading now' },
+
+    // Email / send actions
+    'email to donor':              { type:'toast', msg:'Receipt emailed · delivered to donor inbox' },
+    'email statement':             { type:'toast', msg:'Statement emailed · donor will receive shortly' },
+    'email':                       { type:'route', dest:'atlas-email-compose.html' },
+    'schedule send':               { type:'toast', msg:'Scheduled · will send tomorrow at 9 AM' },
+    'schedule a recurring report': { type:'toast', msg:'Recurring report set up · weekly Monday 8 AM' },
+    'promote':                     { type:'toast', msg:'Promotion drafted · review before scheduling send' },
+
+    // Sync & duplicate management
+    'force re-sync now':           { type:'toast', msg:'Sync started · this may take 60 seconds' },
+    're-scan now':                 { type:'toast', msg:'Duplicate scan started · ETA 30 seconds' },
+    'mark not duplicate':          { type:'toast', msg:'Marked as separate records · removed from queue' },
+    'keep both as separate':       { type:'toast', msg:'Records kept separate · removed from queue' },
+    'apply recommendations':       { type:'toast', msg:'Recommendations applied · 3 fields merged' },
+    "save as decision (don't merge yet)": { type:'toast', msg:'Decision saved · Atlas will re-surface in 14 days' },
+    'snooze':                      { type:'toast', msg:'Snoozed 7 days · we\'ll re-surface next week' },
+
+    // Notifications
+    'mark all as read':            { type:'special', fn:'markAllRead' },
+    'clear cleared':               { type:'toast', msg:'Cleared notifications removed' },
+
+    // Bulk actions
+    'add to outreach list':        { type:'toast', msg:'23 donors added to outreach list' },
+    'add task':                    { type:'route', dest:'atlas-task-modal.html' },
+    'tag':                         { type:'toast', msg:'Tag "Q2 outreach" applied to 23 donors' },
+    'dismiss':                     { type:'toast', msg:'Dismissed' },
+
+    // Direct routes to existing pages
+    'record payment':              { type:'route', dest:'atlas-pledge-payment.html' },
+    'add custom payment':          { type:'route', dest:'atlas-pledge-payment.html' },
+    'sign in to atlas →':          { type:'route', dest:'atlas-dashboard.html' },
+    'sign in to atlas':            { type:'route', dest:'atlas-dashboard.html' },
+    'sign in with password':       { type:'route', dest:'atlas-dashboard.html' },
+    'email me a sign-in link':     { type:'toast', msg:'Magic-link emailed · check your inbox' },
+    'new event':                   { type:'special', fn:'newEvent' },
+    'event page':                  { type:'route', dest:'atlas-gala-management.html' },
+    'view audit log':              { type:'special', fn:'auditLog' },
+    'view configuration':          { type:'route', dest:'atlas-sync.html' },
+    'edit configuration':          { type:'route', dest:'atlas-sync.html' },
+    'view full donor profile':     { type:'route', dest:'atlas-donor-360.html' },
+    'log a note after the call':   { type:'route', dest:'atlas-log-activity.html' },
+    'flag an issue with this brief': { type:'toast', msg:'Issue flagged · DBA team will review' },
+    'brief history':               { type:'toast', msg:'Showing last 12 briefs for this donor' },
+    'review overdue pledges →':    { type:'route', dest:'atlas-pledges-list.html' },
+    'review mapping →':            { type:'route', dest:'atlas-sync.html' },
+    'view in docusign':            { type:'toast', msg:'Opening DocuSign · external app' },
+    'view envelope':               { type:'toast', msg:'Envelope detail · opening in DocuSign' },
+    'view voided':                 { type:'toast', msg:'Voided envelopes · 2 records' },
+    'view posted batch':           { type:'route', dest:'atlas-gifts-pledges.html' },
+    'fix errors inline':           { type:'toast', msg:'Error-fix mode · click any flagged row to correct it' },
+    'post all 14 (including warnings)': { type:'toast', msg:'14 gifts posted · receipts queued' },
+    'assign to supervisor':        { type:'toast', msg:'Batch reassigned to supervisor for review' },
+
+    // Donor-portal recurring-gift actions
+    'pause':                       { type:'special', fn:'togglePause' },
+    'resume':                      { type:'special', fn:'togglePause' },
+    'resume now':                  { type:'special', fn:'togglePause' },
+    'extend pause':                { type:'toast', msg:'Pause extended · resumes in 60 days' },
+    'cancel this gift':            { type:'toast', msg:'Recurring gift cancelled · final receipt will be sent' },
+    'cancel permanently':          { type:'toast', msg:'Cancelled permanently · thank you for your support' },
+    'change amount':               { type:'toast', msg:'Opening amount editor · current: $50/month' },
+    'update card':                 { type:'toast', msg:'Card update form · current: Visa ending 4242' },
+    'change designation':          { type:'toast', msg:'Designation picker · current: Annual Fund' },
+    'pay now':                     { type:'route', dest:'atlas-donate-onetime.html' },
+    'receipt':                     { type:'route', dest:'atlas-receipt-preview.html' },
+
+    // Reports
+    'build a custom report':       { type:'special', fn:'buildReport' },
+    'save as view':                { type:'toast', msg:'Saved as view · access from Reports → Saved' },
+
+    // Add / config
+    'add location':                { type:'route', dest:'atlas-location-manage.html' },
+    'add another seat':            { type:'toast', msg:'Seat added · capacity now 32' },
+    'connect →':                   { type:'toast', msg:'OAuth flow starting · approve in popup' },
+    'disconnect':                  { type:'toast', msg:'Integration disconnected · sync paused' },
+    'screening history':           { type:'toast', msg:'Showing last 90 days of screenings' },
+
+    // Editor / filter / paginate
+    'filter':                      { type:'toast', msg:'Filter panel · pick fields below' },
+    'filter view':                 { type:'toast', msg:'Filter view · pick fields below' },
+    'set targets':                 { type:'toast', msg:'Target editor · set per-officer goals' },
+    'settings':                    { type:'toast', msg:'Settings panel' },
+    'discard changes':             { type:'toast', msg:'Changes discarded · restored from saved' },
+    'add another seat':            { type:'toast', msg:'Seat row added · fill in attendee details' },
+
+    // Donate confirmation share buttons
+    'share on x':                  { type:'toast', msg:'Sharing to X · opening compose window' },
+    'share on facebook':           { type:'toast', msg:'Sharing to Facebook · opening dialog' },
+    'share on linkedin':           { type:'toast', msg:'Sharing to LinkedIn · opening dialog' },
+    'copy link':                   { type:'special', fn:'copyLink' },
+
+    // Guru AI
+    'query history':               { type:'toast', msg:'Showing last 30 queries' },
+    'saved queries':               { type:'toast', msg:'Showing saved queries · 8 saved' },
+
+    // Component library — keep dead (intentional demos)
+  };
+
+  // ── Toast helper ──
+  var toast = document.getElementById('atlas-rescue-toast');
+  function showToast(msg){
+    if (!toast) return;
+    toast.querySelector('.msg').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
+  }
+  window.atlasToast = showToast;
+
+  // ── Click handler ──
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('button, a');
+    if (!el) return;
+    // Skip if it has an existing href/onclick that isn't '#' or empty
+    var href = el.getAttribute('href');
+    if (href && href !== '#' && !el.dataset.atlasRescue) return;
+    var onc = el.getAttribute('onclick');
+    if (onc && onc.trim()) return;
+    // Skip if the click already had its default prevented by something earlier
+    if (e.defaultPrevented) return;
+
+    var txt = (el.textContent || '').trim().toLowerCase().replace(/\s+/g,' ');
+    if (!txt || txt.length > 80) return;
+
+    var act = ACTIONS[txt];
+    if (!act) {
+      // Try fuzzy: strip trailing arrows / counts / parens
+      var stripped = txt.replace(/\s*[→←]\s*$/,'').replace(/\s+\d+(\.\d+)?$/,'').replace(/\s*\(.*\)\s*$/,'').trim();
+      act = ACTIONS[stripped];
+    }
+    if (!act) return;
+
+    // Skip if a more specific page handler is going to fire (heuristic: button has an id that's referenced by scripts)
+    if (el.id) { /* not used currently */ }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (act.type === 'toast') {
+      showToast(act.msg);
+    } else if (act.type === 'route') {
+      showToast('Opening · ' + act.dest.replace('atlas-','').replace('.html','').replace(/-/g,' '));
+      setTimeout(function(){ window.location = act.dest; }, 250);
+    } else if (act.type === 'special') {
+      try { (RESCUE_SPECIALS[act.fn] || function(){})(el, e); }
+      catch(err){ console.error('rescue special failed', err); }
+    }
+  });
+
+  // ── Special handlers ──
+  var RESCUE_SPECIALS = {
+    markAllRead: function(){
+      // Find unread notification items and clear their unread state
+      var marks = document.querySelectorAll('.unread, .nf-row.unread, .notif-unread, [data-unread="true"]');
+      marks.forEach(function(n){ n.classList.remove('unread'); });
+      // Update badge counts
+      document.querySelectorAll('.unread-count, .nav-badge, .nf-count').forEach(function(b){ b.textContent = '0'; });
+      showToast('All notifications marked as read · 14 cleared');
+    },
+
+    togglePause: function(btn){
+      // Find the closest card-like ancestor and toggle paused state
+      var card = btn.closest('.gift-card, .rec-row, .recurring-card, .rg-row, [data-recurring], article, .card');
+      if (card) {
+        var paused = card.classList.toggle('paused');
+        if (paused) card.classList.remove('active');
+        else card.classList.add('active');
+        showToast(paused ? 'Recurring gift paused · resume anytime' : 'Recurring gift resumed · charges resume on next cycle');
+        // Update the button label if it says Pause/Resume
+        var curText = btn.textContent.trim().toLowerCase();
+        if (/pause/i.test(curText)) btn.textContent = 'Resume';
+        else if (/resume/i.test(curText)) btn.textContent = 'Pause';
+      } else {
+        showToast(btn.textContent.trim() + ' · status toggled');
+      }
+    },
+
+    copyLink: function(){
+      try { navigator.clipboard.writeText(window.location.href); } catch(_){}
+      showToast('Link copied to clipboard');
+    },
+
+    newEvent: function(){
+      // Open a slim event-creation modal
+      openSimpleModal({
+        title: 'Create new event',
+        sub: 'Quick-start · fill the basics, refine in the gala module',
+        fields: [
+          { id:'ne-name',  label:'Event name *',  type:'text',   placeholder:'e.g. Bishop\'s Annual Gala 2026' },
+          { id:'ne-type',  label:'Type',          type:'select', options:['Gala / dinner','Retreat','Cultivation lunch','Donor reception','Volunteer drive','Capital tour'] },
+          { id:'ne-date',  label:'Event date *',  type:'date',   value: new Date().toISOString().slice(0,10) },
+          { id:'ne-goal',  label:'Fundraising goal', type:'text', placeholder:'$50,000' },
+          { id:'ne-venue', label:'Venue',         type:'text',   placeholder:'e.g. Albany Capital Center' }
+        ],
+        cta: 'Create event →',
+        onSave: function(vals){
+          if (!vals['ne-name']) { alert('Name the event before saving.'); return false; }
+          showToast('Event created · "' + vals['ne-name'] + '" · opening gala management');
+          setTimeout(function(){ window.location = 'atlas-gala-management.html'; }, 600);
+          return true;
+        }
+      });
+    },
+
+    auditLog: function(){
+      // Open a slim audit-log modal showing the last 6 entries
+      var entries = [
+        { who:'Sarah Reynolds', what:'Created role "Custom · Region Coordinator"',     when:'12 min ago', tag:'role' },
+        { who:'Sarah Reynolds', what:'Invited jamie.morrison@diocese.org as Gift Officer', when:'Today, 9:14 AM', tag:'invite' },
+        { who:'Daniel Cho',     what:'Updated donor preferences for 24 records',         when:'Yesterday, 4:22 PM', tag:'data' },
+        { who:'System',         what:'Daily duplicate scan · 3 candidates surfaced',     when:'Yesterday, 6:00 AM', tag:'system' },
+        { who:'Bridget McCarthy', what:'Resigned consent for 1 donor (do-not-contact)',  when:'2 days ago',         tag:'consent' },
+        { who:'Sarah Reynolds', what:'Posted batch BX-2026-014 · 23 gifts · $87,400',    when:'3 days ago',         tag:'gift' }
+      ];
+      var html = '<div style="max-height:420px;overflow:auto">';
+      html += entries.map(function(e){
+        var col = {role:'#7C3AED', invite:'#2563EB', data:'#0D9488', system:'#64748B', consent:'#BE185D', gift:'#15803D'}[e.tag] || '#64748B';
+        return '<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #F1F5F9">' +
+                 '<div style="width:8px;height:8px;border-radius:50%;background:' + col + ';margin-top:6px;flex-shrink:0"></div>' +
+                 '<div style="flex:1">' +
+                   '<div style="font-size:13px;color:#0F172A">' + e.what + '</div>' +
+                   '<div style="font-size:11.5px;color:#64748B;margin-top:2px"><strong>' + e.who + '</strong> · ' + e.when + '</div>' +
+                 '</div>' +
+               '</div>';
+      }).join('');
+      html += '</div>';
+      openSimpleModal({
+        title: 'Audit log',
+        sub: 'Immutable 7-year record · all data + access changes',
+        rawBody: html,
+        cta: 'Export full log →',
+        onSave: function(){
+          showToast('Audit log export queued · CSV ready in 60s');
+          return true;
+        }
+      });
+    },
+
+    buildReport: function(){
+      // Open the Build-a-Custom-Report 4-step slide-over drawer
+      var existing = document.getElementById('rpt-drawer');
+      if (existing) { existing.remove(); document.getElementById('rpt-scrim').remove(); }
+      var scrim = document.createElement('div');
+      scrim.id = 'rpt-scrim';
+      scrim.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:100020;opacity:0;transition:opacity .18s';
+      document.body.appendChild(scrim);
+      var drawer = document.createElement('aside');
+      drawer.id = 'rpt-drawer';
+      drawer.style.cssText = 'position:fixed;top:0;right:0;height:100vh;width:min(580px,94vw);background:white;z-index:100021;box-shadow:-16px 0 40px rgba(15,23,42,.18);transform:translateX(100%);transition:transform .22s cubic-bezier(.22,.61,.36,1);display:flex;flex-direction:column;font-family:DM Sans,sans-serif';
+      drawer.innerHTML =
+        '<style>' +
+          '#rpt-drawer .rh{padding:18px 22px 14px;background:linear-gradient(135deg,#0F172A,#2563EB);color:white;display:flex;align-items:flex-start;gap:12px}' +
+          '#rpt-drawer .rh h3{margin:0;font-family:DM Serif Display,serif;font-size:20px;font-weight:400}' +
+          '#rpt-drawer .rh .sub{font-size:12px;opacity:.86;margin-top:3px}' +
+          '#rpt-drawer .rx{margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer}' +
+          '#rpt-drawer .stepper{padding:14px 22px;display:flex;gap:10px;border-bottom:1px solid #F1F5F9;background:#FAFAFA}' +
+          '#rpt-drawer .stepper .st{flex:1;font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:6px}' +
+          '#rpt-drawer .stepper .st .dot{width:22px;height:22px;border-radius:50%;background:#E2E8F0;color:#64748B;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700}' +
+          '#rpt-drawer .stepper .st.cur .dot{background:#2563EB;color:white}' +
+          '#rpt-drawer .stepper .st.done .dot{background:#15803D;color:white}' +
+          '#rpt-drawer .body{padding:20px 22px;overflow:auto;flex:1}' +
+          '#rpt-drawer .sec{margin-bottom:16px}' +
+          '#rpt-drawer .lbl{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#475569;margin-bottom:8px}' +
+          '#rpt-drawer .fld{width:100%;padding:9px 11px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;font-family:DM Sans,sans-serif;color:#0F172A;box-sizing:border-box;outline:none}' +
+          '#rpt-drawer .fld:focus{border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.10)}' +
+          '#rpt-drawer .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}' +
+          '#rpt-drawer .ds{padding:14px 16px;border:1.5px solid #E2E8F0;border-radius:10px;cursor:pointer;transition:all .15s;background:white}' +
+          '#rpt-drawer .ds:hover{border-color:#93C5FD;background:#F0F9FF}' +
+          '#rpt-drawer .ds.sel{border-color:#2563EB;background:#EFF6FF;box-shadow:0 0 0 2px rgba(37,99,235,.10)}' +
+          '#rpt-drawer .ds .ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;margin-bottom:7px}' +
+          '#rpt-drawer .ds .nm{font-size:13.5px;font-weight:600;color:#0F172A;margin-bottom:3px}' +
+          '#rpt-drawer .ds .dz{font-size:11px;color:#64748B;line-height:1.45}' +
+          '#rpt-drawer .cols{display:flex;flex-wrap:wrap;gap:6px}' +
+          '#rpt-drawer .col-chip{padding:6px 11px;border:1.5px solid #E2E8F0;border-radius:99px;font-size:12px;color:#475569;cursor:pointer;background:white;transition:all .12s;user-select:none}' +
+          '#rpt-drawer .col-chip:hover{border-color:#93C5FD}' +
+          '#rpt-drawer .col-chip.on{background:#2563EB;border-color:#2563EB;color:white;font-weight:600}' +
+          '#rpt-drawer .viz{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}' +
+          '#rpt-drawer .viz .vz{padding:14px 8px;border:1.5px solid #E2E8F0;border-radius:9px;text-align:center;cursor:pointer;font-size:11px;font-weight:600;color:#475569;transition:all .12s;background:white}' +
+          '#rpt-drawer .viz .vz:hover{border-color:#93C5FD}' +
+          '#rpt-drawer .viz .vz.sel{border-color:#2563EB;background:#EFF6FF;color:#2563EB}' +
+          '#rpt-drawer .viz .vz svg{width:26px;height:26px;margin-bottom:6px}' +
+          '#rpt-drawer .foot{padding:14px 22px;border-top:1px solid #F1F5F9;display:flex;gap:10px;background:#FAFAFA;align-items:center}' +
+          '#rpt-drawer .foot .l{font-size:11.5px;color:#64748B;display:flex;gap:6px;align-items:center}' +
+          '#rpt-drawer .btn-back{padding:8px 14px;background:white;border:1.5px solid #E2E8F0;border-radius:8px;font-size:12.5px;color:#475569;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:500}' +
+          '#rpt-drawer .btn-next{padding:8px 16px;background:linear-gradient(135deg,#2563EB,#1E40AF);color:white;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;margin-left:auto;box-shadow:0 4px 12px rgba(37,99,235,.25)}' +
+          '#rpt-drawer .pane{display:none}' +
+          '#rpt-drawer .pane.on{display:block;animation:fadeUp .22s ease}' +
+          '@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}' +
+        '</style>' +
+        '<div class="rh">' +
+          '<div style="width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.20);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M3 14l3-4 3 2 5-7"/><rect x="2" y="2" width="14" height="14" rx="1.5"/></svg></div>' +
+          '<div><h3>Build a custom report</h3><div class="sub">4 steps · save, schedule, or export as CSV / PDF</div></div>' +
+          '<div class="rx" id="rpt-x"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg></div>' +
+        '</div>' +
+        '<div class="stepper">' +
+          '<div class="st cur" data-i="1"><div class="dot">1</div>Dataset</div>' +
+          '<div class="st" data-i="2"><div class="dot">2</div>Columns</div>' +
+          '<div class="st" data-i="3"><div class="dot">3</div>Filters</div>' +
+          '<div class="st" data-i="4"><div class="dot">4</div>Save</div>' +
+        '</div>' +
+        '<div class="body">' +
+          '<div class="pane on" data-i="1">' +
+            '<div class="lbl">Pick a dataset</div>' +
+            '<div class="grid">' +
+              '<div class="ds sel" data-ds="gifts"><div class="ico" style="background:#2563EB">$</div><div class="nm">Gifts</div><div class="dz">All gifts, including pledge payments and recurring · 142,830 records</div></div>' +
+              '<div class="ds" data-ds="donors"><div class="ico" style="background:#7C3AED">P</div><div class="nm">Constituents</div><div class="dz">Individuals, households, organizations · 3,847 records</div></div>' +
+              '<div class="ds" data-ds="pledges"><div class="ico" style="background:#15803D">✓</div><div class="nm">Pledges</div><div class="dz">Pledge schedules + payment status · 218 active</div></div>' +
+              '<div class="ds" data-ds="campaigns"><div class="ico" style="background:#F59E0B">C</div><div class="nm">Campaigns</div><div class="dz">Goal vs. actual · appeal mix · 8 active</div></div>' +
+              '<div class="ds" data-ds="events"><div class="ico" style="background:#BE185D">E</div><div class="nm">Events</div><div class="dz">Galas, retreats · attendance + revenue · 14 records</div></div>' +
+              '<div class="ds" data-ds="custom"><div class="ico" style="background:#0D9488">✕</div><div class="nm">SQL · custom</div><div class="dz">Write your own query · advanced users only</div></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="pane" data-i="2">' +
+            '<div class="lbl">Pick columns <span style="font-weight:400;text-transform:none;color:#64748B;font-size:11px;margin-left:6px">click to toggle · drag in Phase 2 to reorder</span></div>' +
+            '<div class="cols" id="rpt-cols">' +
+              '<div class="col-chip on">Gift ID</div>' +
+              '<div class="col-chip on">Donor name</div>' +
+              '<div class="col-chip on">Amount</div>' +
+              '<div class="col-chip on">Gift date</div>' +
+              '<div class="col-chip">Campaign</div>' +
+              '<div class="col-chip">Appeal</div>' +
+              '<div class="col-chip">Fund / GL code</div>' +
+              '<div class="col-chip">Payment method</div>' +
+              '<div class="col-chip">Designation</div>' +
+              '<div class="col-chip">Soft credits</div>' +
+              '<div class="col-chip">Receipt #</div>' +
+              '<div class="col-chip">Officer</div>' +
+              '<div class="col-chip">Donor email</div>' +
+              '<div class="col-chip">Lifetime giving</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="pane" data-i="3">' +
+            '<div class="lbl">Date range</div>' +
+            '<div class="grid"><select class="fld"><option>This fiscal year (Jul 2025 – Jun 2026)</option><option>Last fiscal year</option><option>Last 30 days</option><option>Custom range</option></select><input class="fld" type="date" value="2025-07-01"></div>' +
+            '<div class="lbl" style="margin-top:14px">Filter by</div>' +
+            '<div class="grid">' +
+              '<div><select class="fld"><option>Campaign: All campaigns</option><option>Cathedral Capital 2026</option><option>Annual Appeal</option><option>Bishop\'s Gala</option></select></div>' +
+              '<div><select class="fld"><option>Fund: All funds</option><option>Cathedral Restoration</option><option>General Operating</option><option>Scholarship</option></select></div>' +
+              '<div><select class="fld"><option>Amount: Any</option><option>$1,000+</option><option>$10,000+</option><option>$50,000+</option></select></div>' +
+              '<div><select class="fld"><option>Status: All</option><option>Posted only</option><option>Pending</option><option>Voided excluded</option></select></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="pane" data-i="4">' +
+            '<div class="lbl">Visualization</div>' +
+            '<div class="viz">' +
+              '<div class="vz sel"><svg viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 10h18M9 5v14"/></svg>Table</div>' +
+              '<div class="vz"><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.6" stroke-linejoin="round"><path d="M3 19l5-7 4 3 6-9 3 5" stroke-linecap="round"/></svg>Line</div>' +
+              '<div class="vz"><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="14" width="3" height="6"/><rect x="9" y="9" width="3" height="11"/><rect x="15" y="5" width="3" height="15"/></svg>Bar</div>' +
+              '<div class="vz"><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.6" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l7 4" stroke-linecap="round"/></svg>Pie</div>' +
+            '</div>' +
+            '<div class="lbl" style="margin-top:18px">Report name <span style="color:#BE185D">*</span></div>' +
+            '<input class="fld" id="rpt-name" placeholder="e.g. Q2 Gift Officer performance">' +
+            '<div class="lbl" style="margin-top:14px">Schedule <span style="font-weight:400;text-transform:none;color:#64748B;font-size:11px;margin-left:6px">optional</span></div>' +
+            '<select class="fld" id="rpt-sched"><option>Don\'t schedule — run on demand</option><option>Daily · 7 AM</option><option>Weekly · Monday 8 AM</option><option>Monthly · 1st of month</option></select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="foot">' +
+          '<div class="l"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#15803D" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l1.5 1.5L9 6"/></svg>Auto-saved</div>' +
+          '<button class="btn-back" id="rpt-back" style="display:none">← Back</button>' +
+          '<button class="btn-next" id="rpt-next">Next: Columns →</button>' +
+        '</div>';
+      document.body.appendChild(drawer);
+
+      // Animate in
+      requestAnimationFrame(function(){ scrim.style.opacity = 1; drawer.style.transform = 'none'; });
+
+      // Step machine
+      var step = 1;
+      function show(n){
+        step = n;
+        drawer.querySelectorAll('.pane').forEach(function(p){ p.classList.toggle('on', +p.dataset.i === n); });
+        drawer.querySelectorAll('.st').forEach(function(s){
+          s.classList.remove('cur','done');
+          var i = +s.dataset.i;
+          if (i === n) s.classList.add('cur');
+          else if (i < n) s.classList.add('done');
+        });
+        drawer.querySelector('#rpt-back').style.display = n > 1 ? '' : 'none';
+        var next = drawer.querySelector('#rpt-next');
+        if (n === 1) next.textContent = 'Next: Columns →';
+        else if (n === 2) next.textContent = 'Next: Filters →';
+        else if (n === 3) next.textContent = 'Next: Save →';
+        else if (n === 4) next.textContent = 'Save report ✓';
+      }
+      drawer.querySelectorAll('.ds').forEach(function(d){
+        d.addEventListener('click', function(){
+          drawer.querySelectorAll('.ds').forEach(function(x){ x.classList.remove('sel'); });
+          d.classList.add('sel');
+        });
+      });
+      drawer.querySelectorAll('.col-chip').forEach(function(c){
+        c.addEventListener('click', function(){ c.classList.toggle('on'); });
+      });
+      drawer.querySelectorAll('.vz').forEach(function(v){
+        v.addEventListener('click', function(){
+          drawer.querySelectorAll('.vz').forEach(function(x){ x.classList.remove('sel'); });
+          v.classList.add('sel');
+        });
+      });
+      drawer.querySelector('#rpt-next').addEventListener('click', function(){
+        if (step < 4) show(step + 1);
+        else {
+          var nameFld = drawer.querySelector('#rpt-name');
+          var name = nameFld ? nameFld.value.trim() : '';
+          if (!name) { alert('Name your report before saving.'); nameFld && nameFld.focus(); return; }
+          closeDrawer();
+          showToast('Saved · "' + name + '" appears in Reports → Saved views');
+        }
+      });
+      drawer.querySelector('#rpt-back').addEventListener('click', function(){ if (step > 1) show(step - 1); });
+      function closeDrawer(){
+        scrim.style.opacity = 0;
+        drawer.style.transform = 'translateX(100%)';
+        setTimeout(function(){ scrim.remove(); drawer.remove(); }, 240);
+      }
+      drawer.querySelector('#rpt-x').addEventListener('click', closeDrawer);
+      scrim.addEventListener('click', closeDrawer);
+    }
+  };
+
+  // ── Simple modal builder (used by newEvent, auditLog) ──
+  function openSimpleModal(opts){
+    var sc = document.createElement('div');
+    sc.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:100022;opacity:0;transition:opacity .15s';
+    var md = document.createElement('div');
+    md.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.97);width:min(520px,92vw);max-height:88vh;background:white;border-radius:14px;box-shadow:0 24px 64px rgba(15,23,42,.30);z-index:100023;opacity:0;transition:opacity .15s,transform .15s;font-family:DM Sans,sans-serif;overflow:hidden;display:flex;flex-direction:column';
+    var fldsHtml = '';
+    if (opts.fields) {
+      fldsHtml = opts.fields.map(function(f){
+        if (f.type === 'select') return '<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#475569;margin-bottom:6px">' + f.label + '</div><select id="' + f.id + '" style="width:100%;padding:9px 11px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;font-family:DM Sans,sans-serif;color:#0F172A;outline:none;box-sizing:border-box">' + f.options.map(function(o){ return '<option>' + o + '</option>'; }).join('') + '</select></div>';
+        return '<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#475569;margin-bottom:6px">' + f.label + '</div><input id="' + f.id + '" type="' + (f.type || 'text') + '" ' + (f.value ? 'value="' + f.value + '"' : '') + ' placeholder="' + (f.placeholder || '') + '" style="width:100%;padding:9px 11px;border:1.5px solid #E2E8F0;border-radius:8px;font-size:13px;font-family:DM Sans,sans-serif;color:#0F172A;outline:none;box-sizing:border-box"></div>';
+      }).join('');
+    }
+    md.innerHTML =
+      '<div style="padding:18px 22px 14px;background:linear-gradient(135deg,#1E3A8A,#2563EB);color:white;display:flex;align-items:flex-start;gap:12px">' +
+        '<div><div style="font-family:DM Serif Display,serif;font-size:20px">' + opts.title + '</div><div style="font-size:12px;opacity:.86;margin-top:3px">' + (opts.sub || '') + '</div></div>' +
+        '<div id="sm-x" style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer">×</div>' +
+      '</div>' +
+      '<div style="padding:18px 22px;overflow:auto;flex:1">' + (opts.rawBody || fldsHtml) + '</div>' +
+      '<div style="padding:14px 22px;border-top:1px solid #F1F5F9;display:flex;gap:10px;background:#FAFAFA">' +
+        '<button id="sm-cancel" style="padding:8px 14px;background:white;border:1.5px solid #E2E8F0;border-radius:8px;font-size:12.5px;color:#475569;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:500">Cancel</button>' +
+        '<button id="sm-save" style="padding:8px 16px;background:linear-gradient(135deg,#2563EB,#1E40AF);color:white;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;margin-left:auto">' + (opts.cta || 'Save') + '</button>' +
+      '</div>';
+    document.body.appendChild(sc);
+    document.body.appendChild(md);
+    requestAnimationFrame(function(){ sc.style.opacity = 1; md.style.opacity = 1; md.style.transform = 'translate(-50%,-50%) scale(1)'; });
+    function close(){ sc.style.opacity = 0; md.style.opacity = 0; md.style.transform = 'translate(-50%,-50%) scale(.97)'; setTimeout(function(){ sc.remove(); md.remove(); }, 180); }
+    md.querySelector('#sm-x').addEventListener('click', close);
+    md.querySelector('#sm-cancel').addEventListener('click', close);
+    sc.addEventListener('click', close);
+    md.querySelector('#sm-save').addEventListener('click', function(){
+      var vals = {};
+      if (opts.fields) opts.fields.forEach(function(f){ var el = md.querySelector('#' + f.id); if (el) vals[f.id] = el.value.trim(); });
+      var ok = opts.onSave ? opts.onSave(vals) : true;
+      if (ok !== false) close();
+    });
+  }
+  window.atlasOpenModal = openSimpleModal;
+})();
+</script>
+<!-- end Atlas Dead-CTA Rescue -->
+
+
+<script id="tribute-tab-filter">
+(function(){
+  // Wire the tab filter buttons on atlas-tribute-report.html
+  var RESCUE_SPECIALS = (window._rescueSpecials = window._rescueSpecials || {});
+  // The original rescue script defines RESCUE_SPECIALS inside its IIFE — we extend with our own delegation
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('button');
+    if (!b) return;
+    var t = (b.textContent||'').trim().toLowerCase();
+    if (!/^(all|in memory of|in honor of|birthday)\s*\(\d+\)$/.test(t)) return;
+    // Highlight selected tab
+    document.querySelectorAll('button').forEach(function(x){
+      var xt = (x.textContent||'').trim().toLowerCase();
+      if (/^(all|in memory of|in honor of|birthday)\s*\(\d+\)$/.test(xt)) {
+        x.style.background = (x === b) ? 'rgba(255,255,255,.18)' : '';
+        x.style.color = (x === b) ? 'white' : '';
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
