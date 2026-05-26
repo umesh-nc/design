@@ -163,25 +163,23 @@
       border-radius: 14px; overflow: hidden; margin-bottom: 18px;
     }
     .hero-banner {
-      height: 72px;
-      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-3) 100%);
+      height: 0;
+      background: transparent;
       position: relative;
+      display: none;
     }
-    .hero-banner-pattern {
-      position: absolute; inset: 0; opacity: .15;
-      background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,.4) 0%, transparent 60%),
-                        radial-gradient(circle at 80% 20%, rgba(59,130,246,.6) 0%, transparent 50%);
-    }
-    .hero-body { padding: 0 22px 20px; }
-    .hero-identity { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 16px; margin-top: -26px; }
+    .hero-banner-pattern { display: none; }
+    .hero-body { padding: 20px 22px 20px; }
+    .hero-identity { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; margin-top: 0; }
     .donor-avatar {
       width: 60px; height: 60px; border-radius: 50%;
       background: var(--blue); border: 3px solid white;
       display: flex; align-items: center; justify-content: center;
       font-family: 'DM Serif Display', serif; font-size: 22px; color: white;
       flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,.15);
+      margin-top: 0; align-self: center;
     }
-    .hero-name-wrap { padding-bottom: 4px; }
+    .hero-name-wrap { padding-bottom: 0; min-width: 0; }
     .donor-name { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--text); letter-spacing: -.01em; }
     .donor-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .donor-tag {
@@ -488,15 +486,15 @@ body {
   <!-- ══════════════ SIDEBAR ══════════════ -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-mark">
+      <div class="sidebar-logo-mark logo-mark">
         <svg viewBox="0 0 18 18" fill="none">
           <circle cx="9" cy="9" r="7.5" stroke="white" stroke-width="1.5"/>
           <path d="M5.5 9.5C6.5 11.5 9 13 9 13s2.5-1.5 3.5-3.5S12 5 9 5 4.5 7.5 5.5 9.5z" fill="white" fill-opacity=".9"/>
         </svg>
       </div>
-      <div class="logo-text-wrap">
-        <span class="logo-name">GiveCentral</span>
-        <span class="logo-sub">Atlas CRM</span>
+      <div class="sidebar-logo-text logo-text-wrap">
+        <span class="sidebar-logo-name logo-name">GiveCentral</span>
+        <span class="sidebar-logo-sub logo-sub">Atlas CRM</span>
       </div>
     </div>
 
@@ -610,7 +608,7 @@ body {
     <!-- Topbar -->
     <div class="topbar">
       <div class="breadcrumb">
-        <a href="#">Donors</a>
+        <a href="atlas-donors-list.html">Donors</a>
         <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 2l4 3-4 3"/></svg>
         <span>Margaret T. Sullivan</span>
       </div>
@@ -1911,6 +1909,376 @@ body {
 })();
 </script>
 <!-- end Atlas Dead-CTA Rescue -->
+
+<!-- ════════════════════════════════════════════════════════
+     Donor-360 page-specific wiring
+     Wires section-action spans, ai-action, side-edit chips,
+     pledge/gift/activity/task rows, contact items, relationships.
+     ════════════════════════════════════════════════════════ -->
+<script id="donor360-wire">
+(function(){
+  if (window.__donor360Wired) return; window.__donor360Wired = true;
+
+  function toast(msg){
+    var t = document.getElementById('atlas-rescue-toast');
+    if (!t) { alert(msg); return; }
+    t.querySelector('.msg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(window.__donorToastT);
+    window.__donorToastT = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+  }
+  function go(url){ window.location = url; }
+
+  // ── Section-action spans (View all gifts / All gifts / Manage pledges / All activity) ──
+  document.querySelectorAll('.section-action').forEach(function(el){
+    el.style.cursor = 'pointer';
+    var txt = (el.innerText || '').toLowerCase();
+    el.addEventListener('click', function(){
+      if (txt.indexOf('gift') !== -1)         return go('atlas-gifts-pledges.html');
+      if (txt.indexOf('pledge') !== -1)       return go('atlas-pledges-list.html');
+      if (txt.indexOf('activity') !== -1)     return go('atlas-log-activity.html');
+      go('atlas-gifts-pledges.html');
+    });
+  });
+
+  // ── Guru AI insight CTA ──
+  document.querySelectorAll('.ai-action').forEach(function(el){
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function(){ go('atlas-guru-ai.html'); });
+  });
+
+  // ── Side-section edit chips (Contact: Edit / Segments: Manage / Relationships: Add / Tasks: Add) ──
+  document.querySelectorAll('.side-edit').forEach(function(el){
+    el.style.cursor = 'pointer';
+    var txt = (el.innerText || '').toLowerCase().trim();
+    var section = el.parentElement ? (el.parentElement.innerText || '').toLowerCase() : '';
+    el.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (section.indexOf('contact') !== -1)       return go('atlas-edit-constituent.html');
+      if (section.indexOf('segment') !== -1 || section.indexOf('tag') !== -1) return go('atlas-segment-builder.html');
+      if (section.indexOf('relationship') !== -1)  return openAddRelationship();
+      if (section.indexOf('task') !== -1)          return go('atlas-task-modal.html');
+      go('atlas-edit-constituent.html');
+    });
+  });
+
+  // ── Gift table rows → pledge detail or gift entry depending on Type column ──
+  document.querySelectorAll('.gift-table tbody tr').forEach(function(tr){
+    tr.style.cursor = 'pointer';
+    tr.addEventListener('click', function(){
+      var typeCell = tr.children[2];
+      var t = (typeCell ? typeCell.textContent : '').toLowerCase();
+      if (t.indexOf('pledge') !== -1) return go('atlas-pledge-detail.html');
+      go('atlas-gift-entry.html');
+    });
+  });
+
+  // ── Pledge row → pledge detail ──
+  document.querySelectorAll('.pledge-row').forEach(function(p){
+    p.style.cursor = 'pointer';
+    p.addEventListener('click', function(){ go('atlas-pledge-detail.html'); });
+  });
+
+  // ── Activity items → log activity screen ──
+  document.querySelectorAll('.activity-item').forEach(function(a){
+    a.style.cursor = 'pointer';
+    a.addEventListener('click', function(){ go('atlas-log-activity.html'); });
+  });
+
+  // ── Contact items → edit constituent ──
+  document.querySelectorAll('.contact-item').forEach(function(c){
+    c.style.cursor = 'pointer';
+    c.addEventListener('click', function(){
+      var t = (c.innerText || '').toLowerCase();
+      if (t.indexOf('@') !== -1)  return go('atlas-email-compose.html');
+      go('atlas-edit-constituent.html');
+    });
+  });
+
+  // ── Tag pills → segment builder ──
+  document.querySelectorAll('.tag-pill').forEach(function(t){
+    t.style.cursor = 'pointer';
+    t.addEventListener('click', function(){ go('atlas-segment-builder.html'); });
+  });
+
+  // ── Score card rows → wealth screening (whole card except already-linked rows) ──
+  document.querySelectorAll('.score-card .score-row').forEach(function(r){
+    if (r.tagName === 'A') return; // already routed
+    r.style.cursor = 'pointer';
+    r.addEventListener('click', function(){ go('atlas-wealth-screening.html'); });
+  });
+  // Make the whole score-card title also clickable
+  document.querySelectorAll('.score-card .score-title').forEach(function(s){
+    s.style.cursor = 'pointer';
+    s.addEventListener('click', function(){ go('atlas-guru-ai.html'); });
+  });
+
+  // ── Relationships → that donor's 360 ──
+  document.querySelectorAll('.rel-item').forEach(function(r){
+    r.style.cursor = 'pointer';
+    r.addEventListener('click', function(){ go('atlas-donor-360.html'); });
+  });
+
+  // ── Task items → task modal (clicking text, not the checkbox) ──
+  document.querySelectorAll('.task-item').forEach(function(t){
+    var txt = t.querySelector('.task-text');
+    if (!txt) return;
+    txt.style.cursor = 'pointer';
+    txt.addEventListener('click', function(e){ e.stopPropagation(); go('atlas-task-modal.html'); });
+  });
+
+  // ── Donor avatar / name → edit constituent ──
+  var avatar = document.querySelector('.donor-avatar');
+  var nameEl = document.querySelector('.donor-name');
+  [avatar, nameEl].forEach(function(el){
+    if (!el) return;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function(){ go('atlas-edit-constituent.html'); });
+  });
+
+  // ════════════════════════════════════════════════════════
+  // ADD RELATIONSHIP — inline modal
+  // ════════════════════════════════════════════════════════
+  var REL_SUGGESTIONS = [
+    { initials:'TS', name:'Thomas Sullivan',    role:'Spouse · already linked',         bg:'#DBEAFE', fg:'#1D4ED8', dim:true },
+    { initials:'JS', name:'Jennifer Sullivan',  role:'Daughter · already linked',       bg:'#FEF3C7', fg:'#B45309', dim:true },
+    { initials:'PM', name:'Patrick Sullivan',   role:'Son · 28 · St. Michael\'s Parish',bg:'#DCFCE7', fg:'#15803D' },
+    { initials:'CR', name:'Catherine Reagan',   role:'Sister · Boca Raton FL',          bg:'#FCE7F3', fg:'#BE185D' },
+    { initials:'SF', name:'Sullivan Family Foundation', role:'Donor-advised fund · $250k assets', bg:'#EDE9FE', fg:'#7C3AED' },
+    { initials:'GT', name:'Greenwood Trust',    role:'Trust · Margaret is trustee',     bg:'#E0E7FF', fg:'#3730A3' },
+    { initials:'MS', name:'Michael Sullivan',   role:'Nephew · Tampa FL',               bg:'#FEE2E2', fg:'#BE123C' }
+  ];
+  var REL_TYPES = ['Spouse','Child','Parent','Sibling','Grandchild','In-law','Cousin','Friend','Colleague','Employer / employee','Donor-advised fund','Foundation','Trust','Estate executor','Other'];
+
+  function openAddRelationship(){
+    // Scrim
+    var sc = document.createElement('div');
+    sc.id = 'ar-scrim';
+    sc.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,.42);z-index:100020;opacity:0;transition:opacity .18s;backdrop-filter:blur(2px);';
+    // Drawer
+    var dw = document.createElement('div');
+    dw.id = 'ar-drawer';
+    dw.style.cssText = 'position:fixed;top:0;right:0;bottom:0;width:460px;max-width:96vw;background:white;z-index:100021;box-shadow:-12px 0 32px rgba(15,23,42,.18);font-family:DM Sans,sans-serif;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .22s ease;';
+
+    dw.innerHTML =
+      '<div style="padding:18px 22px 14px;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;gap:8px">'+
+        '<div>'+
+          '<div style="font-family:DM Serif Display,serif;font-size:18px;color:#0F172A">Add relationship</div>'+
+          '<div style="font-size:11.5px;color:#64748B;margin-top:3px">Link Margaret to another donor, household, or entity</div>'+
+        '</div>'+
+        '<button id="ar-x" style="width:30px;height:30px;border:0;background:#F1F5F9;border-radius:8px;cursor:pointer;font-size:18px;color:#475569">×</button>'+
+      '</div>'+
+
+      '<div style="padding:16px 22px 8px;display:flex;flex-direction:column;gap:14px;overflow:auto;flex:1">'+
+
+        // Search
+        '<div>'+
+          '<label style="font-size:11px;font-weight:600;color:#475569;letter-spacing:.03em;text-transform:uppercase">Find person, household, or entity</label>'+
+          '<div style="position:relative;margin-top:6px">'+
+            '<svg viewBox="0 0 14 14" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5l2.5 2.5"/></svg>'+
+            '<input id="ar-search" placeholder="Search Atlas — type a name, parish, or org…" style="width:100%;padding:10px 12px 10px 34px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:13px;font-family:DM Sans,sans-serif;outline:none;box-sizing:border-box">'+
+          '</div>'+
+          '<div id="ar-quick" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>'+
+        '</div>'+
+
+        // Suggestions list
+        '<div>'+
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'+
+            '<label style="font-size:11px;font-weight:600;color:#475569;letter-spacing:.03em;text-transform:uppercase">Suggested matches</label>'+
+            '<span style="font-size:10.5px;color:#94A3B8">Guru AI · ranked by overlap</span>'+
+          '</div>'+
+          '<div id="ar-list" style="display:flex;flex-direction:column;gap:4px;border:1px solid #E2E8F0;border-radius:10px;padding:4px;background:#F8FAFC"></div>'+
+        '</div>'+
+
+        // Type
+        '<div>'+
+          '<label style="font-size:11px;font-weight:600;color:#475569;letter-spacing:.03em;text-transform:uppercase">Relationship type</label>'+
+          '<div id="ar-types" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px"></div>'+
+        '</div>'+
+
+        // Soft credit + household
+        '<div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:10px">'+
+          '<label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:12.5px;color:#334155;line-height:1.4">'+
+            '<input id="ar-soft" type="checkbox" checked style="margin-top:2px;accent-color:#2563EB">'+
+            '<span><strong style="color:#0F172A">Soft-credit gifts</strong> to Margaret&rsquo;s record<br><span style="font-size:11px;color:#64748B">Both records receive credit on shared campaigns and stewardship</span></span>'+
+          '</label>'+
+          '<label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:12.5px;color:#334155;line-height:1.4">'+
+            '<input id="ar-house" type="checkbox" style="margin-top:2px;accent-color:#2563EB">'+
+            '<span><strong style="color:#0F172A">Add to household</strong> (Sullivan Family)<br><span style="font-size:11px;color:#64748B">Combines mailings, receipts, and giving roll-ups</span></span>'+
+          '</label>'+
+          '<label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:12.5px;color:#334155;line-height:1.4">'+
+            '<input id="ar-stew" type="checkbox" style="margin-top:2px;accent-color:#2563EB">'+
+            '<span><strong style="color:#0F172A">Notify Sarah Reynolds</strong> · gift officer<br><span style="font-size:11px;color:#64748B">Sends a portfolio update so stewardship stays in sync</span></span>'+
+          '</label>'+
+        '</div>'+
+
+        // Note
+        '<div>'+
+          '<label style="font-size:11px;font-weight:600;color:#475569;letter-spacing:.03em;text-transform:uppercase">Internal note <span style="color:#94A3B8;font-weight:500;text-transform:none">(optional)</span></label>'+
+          '<textarea id="ar-note" placeholder="e.g. Met at Cathedral fundraiser · met through Bishop O&rsquo;Connor…" style="width:100%;margin-top:6px;padding:10px 12px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:12.5px;font-family:DM Sans,sans-serif;outline:none;box-sizing:border-box;resize:vertical;min-height:60px"></textarea>'+
+        '</div>'+
+
+      '</div>'+
+
+      // Footer
+      '<div style="padding:14px 22px;border-top:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;gap:10px;background:white">'+
+        '<a href="atlas-add-constituent.html" style="font-size:12px;color:#2563EB;text-decoration:none;font-weight:500">+ Create new person instead →</a>'+
+        '<div style="display:flex;gap:8px">'+
+          '<button id="ar-cancel" style="padding:9px 14px;background:white;border:1.5px solid #E2E8F0;border-radius:8px;font-size:12.5px;color:#475569;cursor:pointer;font-weight:500;font-family:DM Sans,sans-serif">Cancel</button>'+
+          '<button id="ar-save" style="padding:9px 18px;background:linear-gradient(135deg,#2563EB,#1E40AF);color:white;border:none;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif;opacity:.55;pointer-events:none" disabled>Add relationship</button>'+
+        '</div>'+
+      '</div>';
+
+    document.body.appendChild(sc);
+    document.body.appendChild(dw);
+    requestAnimationFrame(function(){ sc.style.opacity = 1; dw.style.transform = 'translateX(0)'; });
+
+    var picked = { person: null, type: null };
+
+    // Quick-search pills
+    var quickWrap = dw.querySelector('#ar-quick');
+    ['Family','Foundations','Co-donors','Parish leaders','Recent contacts'].forEach(function(p){
+      var c = document.createElement('span');
+      c.style.cssText = 'padding:4px 10px;border:1px solid #E2E8F0;border-radius:999px;background:white;font-size:11px;color:#475569;cursor:pointer';
+      c.textContent = p;
+      c.addEventListener('mouseenter', function(){ c.style.background='#EFF6FF'; c.style.borderColor='#BFDBFE'; c.style.color='#1D4ED8'; });
+      c.addEventListener('mouseleave', function(){ c.style.background='white'; c.style.borderColor='#E2E8F0'; c.style.color='#475569'; });
+      c.addEventListener('click', function(){
+        dw.querySelector('#ar-search').value = p;
+        renderList(p.toLowerCase());
+      });
+      quickWrap.appendChild(c);
+    });
+
+    // Suggestions
+    var listEl = dw.querySelector('#ar-list');
+    function renderList(filter){
+      listEl.innerHTML = '';
+      var rows = REL_SUGGESTIONS.filter(function(r){
+        if (!filter) return true;
+        var hay = (r.name + ' ' + r.role).toLowerCase();
+        return hay.indexOf(filter) !== -1;
+      });
+      if (!rows.length) {
+        listEl.innerHTML = '<div style="padding:18px 12px;text-align:center;color:#94A3B8;font-size:12.5px">No matches · <a href="atlas-add-constituent.html" style="color:#2563EB;text-decoration:none">create new person →</a></div>';
+        return;
+      }
+      rows.forEach(function(r){
+        var row = document.createElement('div');
+        row.dataset.name = r.name;
+        row.style.cssText = 'display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:8px;background:white;cursor:'+(r.dim?'not-allowed':'pointer')+';opacity:'+(r.dim?.55:1)+';border:1.5px solid transparent;transition:all .14s';
+        row.innerHTML =
+          '<div style="width:34px;height:34px;border-radius:50%;background:'+r.bg+';color:'+r.fg+';display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;flex-shrink:0">'+r.initials+'</div>'+
+          '<div style="flex:1;min-width:0">'+
+            '<div style="font-size:13px;font-weight:600;color:#0F172A">'+r.name+'</div>'+
+            '<div style="font-size:11px;color:#64748B;margin-top:1px">'+r.role+'</div>'+
+          '</div>'+
+          (r.dim ? '<span style="font-size:10px;color:#94A3B8;background:#F1F5F9;padding:3px 7px;border-radius:6px">Linked</span>' : '<div class="ar-check" style="width:18px;height:18px;border-radius:50%;border:1.5px solid #CBD5E1;flex-shrink:0;display:flex;align-items:center;justify-content:center"></div>');
+        if (!r.dim) {
+          row.addEventListener('mouseenter', function(){ if (picked.person !== r.name) { row.style.background='#F0F9FF'; row.style.borderColor='#BFDBFE'; } });
+          row.addEventListener('mouseleave', function(){ if (picked.person !== r.name) { row.style.background='white'; row.style.borderColor='transparent'; } });
+          row.addEventListener('click', function(){
+            // Deselect all
+            listEl.querySelectorAll('[data-name]').forEach(function(x){ x.style.background='white'; x.style.borderColor='transparent'; var c=x.querySelector('.ar-check'); if (c) { c.style.background='transparent'; c.style.borderColor='#CBD5E1'; c.innerHTML=''; }});
+            picked.person = r.name;
+            row.style.background='#EFF6FF';
+            row.style.borderColor='#2563EB';
+            var c = row.querySelector('.ar-check');
+            if (c) { c.style.background='#2563EB'; c.style.borderColor='#2563EB'; c.innerHTML = '<svg viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"><path d="M2 5l2 2 4-4"/></svg>'; }
+            // Smart-suggest type
+            var hint = r.role.toLowerCase();
+            var smart = null;
+            if (hint.indexOf('foundation') !== -1) smart = 'Foundation';
+            else if (hint.indexOf('trust') !== -1) smart = 'Trust';
+            else if (hint.indexOf('fund') !== -1) smart = 'Donor-advised fund';
+            else if (hint.indexOf('son') !== -1 || hint.indexOf('daughter') !== -1) smart = 'Child';
+            else if (hint.indexOf('sister') !== -1 || hint.indexOf('brother') !== -1) smart = 'Sibling';
+            else if (hint.indexOf('nephew') !== -1 || hint.indexOf('niece') !== -1) smart = 'Cousin';
+            if (smart) selectType(smart);
+            updateSave();
+          });
+        }
+        listEl.appendChild(row);
+      });
+    }
+    renderList('');
+
+    // Search input filter
+    dw.querySelector('#ar-search').addEventListener('input', function(){ renderList(this.value.toLowerCase().trim()); });
+
+    // Type chips
+    var typeWrap = dw.querySelector('#ar-types');
+    function selectType(t){
+      picked.type = t;
+      typeWrap.querySelectorAll('span').forEach(function(s){
+        var on = s.textContent === t;
+        s.style.background = on ? '#EFF6FF' : 'white';
+        s.style.borderColor = on ? '#2563EB' : '#E2E8F0';
+        s.style.color = on ? '#1D4ED8' : '#475569';
+        s.style.fontWeight = on ? '600' : '500';
+      });
+      updateSave();
+    }
+    REL_TYPES.forEach(function(t){
+      var s = document.createElement('span');
+      s.style.cssText = 'padding:6px 12px;border:1.5px solid #E2E8F0;border-radius:999px;background:white;font-size:11.5px;font-weight:500;color:#475569;cursor:pointer;transition:all .12s';
+      s.textContent = t;
+      s.addEventListener('click', function(){ selectType(t); });
+      typeWrap.appendChild(s);
+    });
+
+    function updateSave(){
+      var b = dw.querySelector('#ar-save');
+      var ok = picked.person && picked.type;
+      b.style.opacity = ok ? '1' : '.55';
+      b.style.pointerEvents = ok ? 'auto' : 'none';
+      b.disabled = !ok;
+    }
+
+    function close(){
+      sc.style.opacity = 0;
+      dw.style.transform = 'translateX(100%)';
+      setTimeout(function(){ sc.remove(); dw.remove(); }, 220);
+    }
+    dw.querySelector('#ar-x').addEventListener('click', close);
+    dw.querySelector('#ar-cancel').addEventListener('click', close);
+    sc.addEventListener('click', close);
+    document.addEventListener('keydown', function escListener(e){ if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escListener); }});
+
+    dw.querySelector('#ar-save').addEventListener('click', function(){
+      if (!picked.person || !picked.type) return;
+      // Prepend new relationship row into the live sidebar list
+      var listSidebar = document.querySelector('.rel-list');
+      if (listSidebar) {
+        var newRow = document.createElement('div');
+        newRow.className = 'rel-item';
+        newRow.style.cssText = 'animation: arFade .35s ease both';
+        var initials = picked.person.split(/\s+/).map(function(w){return w[0];}).slice(0,2).join('');
+        newRow.innerHTML =
+          '<div class="rel-avatar" style="background:#DCFCE7;color:#15803D">'+initials+'</div>'+
+          '<div>'+
+            '<div class="rel-name">'+picked.person+'</div>'+
+            '<div class="rel-type">'+picked.type+(dw.querySelector('#ar-soft').checked ? ' · Soft-credit' : '')+'</div>'+
+          '</div>';
+        listSidebar.insertBefore(newRow, listSidebar.firstChild);
+      }
+      close();
+      toast(picked.person + ' linked as ' + picked.type.toLowerCase() + ' · ' + (dw.querySelector('#ar-soft').checked ? 'soft-credit on' : 'no soft-credit'));
+    });
+
+    // Focus search after animation
+    setTimeout(function(){ var s = dw.querySelector('#ar-search'); if (s) s.focus(); }, 280);
+
+    // Add the fade keyframe once
+    if (!document.getElementById('ar-anim-style')) {
+      var st = document.createElement('style');
+      st.id = 'ar-anim-style';
+      st.textContent = '@keyframes arFade { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }';
+      document.head.appendChild(st);
+    }
+  }
+})();
+</script>
 
 </body>
 </html>
